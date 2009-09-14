@@ -35,6 +35,6 @@ end
 
 db_mysql_set_privileges "setup user privileges" do
   preset 'user'
-  username @node[:app_rails][:db_app_user]
-  password @node[:app_rails][:db_app_passwd]
+  username @node[:rails][:db_app_user]
+  password @node[:rails][:db_app_passwd]
 end

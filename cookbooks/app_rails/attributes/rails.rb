@@ -46,6 +46,6 @@ set[:rails][:code][:destination] = "/home/webapp/#{rails[:application_name]}"
 # default apache is worker model -- use prefork for single thread
 set_unless[:apache][:mpm] = "prefork" 
 
-if rails.has_key?(:application_port)
-  apache[:listen_ports] = rails[:application_port]
+if rails.has_key?(:application_port) 
+  apache[:listen_ports] = rails[:application_port]
 end

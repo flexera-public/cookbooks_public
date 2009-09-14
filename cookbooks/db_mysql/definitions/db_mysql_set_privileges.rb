@@ -36,7 +36,7 @@ define :db_mysql_set_privileges, preset => "administrator", username => nil, pas
 
       con = Mysql.new("", "root" )
     
-      case #{priv_preset}
+      case '#{priv_preset}'
       when 'administrator'
         con.query("GRANT ALL PRIVILEGES on *.* TO '#{username}'@'%' IDENTIFIED BY '#{password}' WITH GRANT OPTION")
         con.query("GRANT ALL PRIVILEGES on *.* TO '#{username}'@'localhost' IDENTIFIED BY '#{password}' WITH GRANT OPTION")

@@ -14,9 +14,9 @@ attribute "rs_utils/timezone",
   
 attribute "rs_utils/process_list",
   :display_name => "Process List",
-  :description => "Adds extra processes for RightScale to monitor.",
+  :description => "Adds extra processes for RightScale to monitor."
 
 attribute "rs_utils/private_ssh_key",
   :display_name => "Private SSH Key",
-  :description => "Private SSH key to install on instance.",
+  :description => "Private SSH key to install on instance."
 
