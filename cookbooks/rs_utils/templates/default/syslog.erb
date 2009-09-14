@@ -1,0 +1,91 @@
+# syslog-ng configuration file.
+#
+# See syslog-ng(8) and syslog-ng.conf(5) for more information.
+
+options {
+    sync (0);
+    time_reopen (10);
+    log_fifo_size (1000);
+    long_hostnames (off);
+    use_dns (no);
+    use_fqdn (no);
+    create_dirs (yes);
+    keep_hostname (yes);
+    log_msg_size(8192);
+};
+
+source s_sys {
+    file ("/proc/kmsg" log_prefix("kernel: "));
+    unix-stream ("/dev/log");
+    internal();
+    udp(ip(127.0.0.1) port(514));
+};
+
+destination d_cons { file("/dev/console"); };
+destination d_mesg { file("/var/log/messages"); };
+destination d_auth { file("/var/log/secure"); };
+destination d_mail { file("/var/log/maillog" sync(10)); };
+destination d_spol { file("/var/log/spooler"); };
+destination d_boot { file("/var/log/boot.log"); };
+destination d_cron { file("/var/log/cron"); };
+destination d_mlal { usertty("*"); };
+destination d_rail { file("/var/log/rails/rails.log"); };
+destination d_daem { file("/var/log/rails/daemons.log"); };
+destination d_hpxy { file("/var/log/httpd/haproxy.log"); };
+#destination d_http { file("/var/log/httpd/http.log"); };
+#destination d_https { file("/var/log/httpd/https.log"); };
+destination d_httperror { file("/var/log/httpd/error_log"); };
+destination d_dhcp { pipe("/dev/null.syslog-ng"); };
+destination d_udp { udp("<%= @node[:rightscale][:server][:lumberjack] %>" template("<$PRI>$DATE <%= @node[:cloud][:instance_uid] %>  $MSG")); }; 
+
+#
+# fun stuff
+#
+# Rails is recognized program rails
+filter f_rail { facility(local0) or program(rails); };
+log           { source(s_sys); filter(f_rail); destination(d_rail); };
+# Application daemons should use facility local1
+filter f_daem { facility(local1); };
+log           { source(s_sys); filter(f_daem); destination(d_daem); };
+# HAproxy should log to facility local2
+filter f_hpxy { facility(local2); };
+log           { source(s_sys); filter(f_hpxy); destination(d_hpxy); };
+# Ship (almost) everything to central syslog system 
+filter f_udp  { not facility(authpriv) or (program(dhclient) and match(DHCPREQUEST)); };
+log           { source(s_sys); filter(f_udp); destination(d_udp); };
+# Messages -- need to exclude everything else
+filter f_mesg { level(info..emerg) and
+                not (facility(mail,authpriv,cron,local0,local1,local2,local3) or
+                     (program(dhclient) and match(DHCPREQUEST)) or
+                     program(rails)); };
+log           { source(s_sys); filter(f_mesg); destination(d_mesg); };
+# Apache 
+#these are configured in the vhost
+#filter f_http { facility(local3) and match(http); };
+#log           { source(s_sys); filter(f_http); destination(d_http); };
+#filter f_https { facility(local3) and match(https); };
+#log           { source(s_sys); filter(f_https); destination(d_https); };
+filter f_httperror { facility(local3) and match(httperror); };
+log           { source(s_sys); filter(f_httperror); destination(d_httperror); };
+#
+# std stuff
+#
+filter f_filter3   { facility(authpriv); };
+log { source(s_sys); filter(f_filter3); destination(d_auth); };
+filter f_filter4   { facility(mail); };
+log { source(s_sys); filter(f_filter4); destination(d_mail); };
+filter f_filter5   { level(emerg); };
+log { source(s_sys); filter(f_filter5); destination(d_mlal); };
+filter f_filter8   { facility(cron); };
+log { source(s_sys); filter(f_filter8); destination(d_cron); };
+filter f_filter11  { program(dhclient) and match(DHCPREQUEST); };
+log { source(s_sys); filter(f_filter11); destination(d_dhcp); };
+
+# stuff that is not particularly useful...
+#filter f_filter1   { facility(kern); };
+#log { source(s_sys); filter(f_filter1); destination(d_cons); };
+#filter f_filter6   { facility(uucp) or
+#                     (facility(news) and level(crit..emerg)); };
+#log { source(s_sys); filter(f_filter6); destination(d_spol); };
+#filter f_filter7   { facility(local7); };
+#log { source(s_sys); filter(f_filter7); destination(d_boot); };

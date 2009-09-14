@@ -1,0 +1,25 @@
+# MySQL (default setup).  Versions 4.1 and 5.0 are recommended.
+#
+# Install the MySQL driver:
+#   gem install mysql
+# On MacOS X:
+#   gem install mysql -- --include=/usr/local/lib
+# On Windows:
+#   gem install mysql
+#       Choose the win32 build.
+#       Install MySQL and put its /bin directory on your path.
+#
+# And be sure to use new-style password hashing:
+#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+development:
+ adapter: mysql
+ database: photo_demo_development
+ username: root
+ password:
+
+<%= @node[:rails][:env] %>: 
+ adapter: mysql
+ host:  <%= @node[:rails][:db_dns_name] %>
+ username: <%= @node[:rails][:db_app_user] %>
+ password:  <%= @node[:rails][:db_app_passwd] %>
+ database:  <%= @node[:rails][:db_schema_name] %>

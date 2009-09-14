@@ -1,0 +1,217 @@
+#!/bin/bash
+#
+# mysqld	This shell script takes care of starting and stopping
+#		    the MySQL subsystem (mysqld).
+#
+# chkconfig: - 64 36
+# description:	MySQL database server.
+# processname: mysqld
+# config: /etc/my.cnf
+# pidfile: /var/run/mysqld/mysqld.pid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+prog="MySQL"
+MYADMIN="/usr/bin/mysqladmin"
+
+# *** Wait for process to be alive, connected, and innodb ready.  
+# on startup: timeout results in failure status even if mysql is half up (and connection is available).
+# innodb *must be enabled
+START_TIMEOUT=<%= @node[:db_mysql][:init_timeout] %>
+
+# *** Wait for process to exit
+# on shutdown: timeout results in forced shutdown, do not set this too low!
+STOP_TIMEOUT=<%= @node[:db_mysql][:init_timeout] %>
+
+# extract value of a MySQL option from config files
+# Usage: get_mysql_option SECTION VARNAME DEFAULT
+# result is returned in $result
+# We use my_print_defaults which prints all options from multiple files,
+# with the more specific ones later; hence take the last match.
+get_mysql_option(){
+	result=`/usr/bin/my_print_defaults "$1" | sed -n "s/^--$2=//p" | tail -n 1`
+	if [ -z "$result" ]; then
+	    # not found, use default
+	    result="$3"
+	fi
+}
+
+get_mysql_option mysqld datadir "/var/lib/mysql"
+datadir="$result"
+get_mysql_option mysqld socket "$datadir/mysql.sock"
+socketfile="$result"
+get_mysql_option mysqld_safe log-error "/var/log/mysqld.log"
+errlogfile="$result"
+get_mysql_option mysqld_safe pid-file "/var/run/mysqld/mysqld.pid"
+mypidfile="$result"
+
+start(){
+  # check if mysql is already running
+  check_pid
+  if [ $PID_ALIVE -eq 0 ]; then
+    echo "already running"
+    start_failed; exit 1
+  fi
+
+	touch "$errlogfile"
+	chown mysql:mysql "$errlogfile" 
+	chmod 0640 "$errlogfile"
+	[ -x /sbin/restorecon ] && /sbin/restorecon "$errlogfile"
+	if [ ! -d "$datadir/mysql" ] ; then
+	    action $"Initializing MySQL database: " /usr/bin/mysql_install_db
+	    ret=$?
+	    chown -R mysql:mysql "$datadir"
+	    if [ $ret -ne 0 ] ; then
+		return $ret
+	    fi
+	fi
+	chown mysql:mysql "$datadir"
+	chmod 0755 "$datadir"
+	# Pass all the options determined above, to ensure consistent behavior.
+	# In many cases mysqld_safe would arrive at the same conclusions anyway
+	# but we need to be sure.
+	/usr/bin/mysqld_safe   --datadir="$datadir" --relay_log="$datadir/mysqld-relay-bin" --socket="$socketfile" \
+		--log-error="$errlogfile" --pid-file="$mypidfile" \
+		>/dev/null 2>&1 &
+	ret=$?
+	if [ $ret -eq 0 ]; then
+    wait_for_startup
+    if [ $STARTED -eq 0 ]; then
+      start_success
+    else
+      start_failed
+    fi
+	else
+    start_failed
+  fi
+}
+
+stop() {
+  check_pid
+  if [ $PID_ALIVE -eq 0 ]; then
+    kill_and_wait
+    if [ $KILLED -eq 0 ]; then
+      stop_success
+    else 
+      kill_and_wait 9
+      # we will never fail to kill
+      stop_success
+    fi
+  else
+    echo "not running"
+    stop_failed
+  fi
+}
+
+restart(){
+    stop
+    start
+}
+
+condrestart(){
+    [ -e /var/lock/subsys/mysqld ] && restart || :
+}
+
+# Checks that pid file exists and that process is running
+check_pid() {
+  MYSQLPID=`cat "$mypidfile"  2>/dev/null `
+  PID_ALIVE=1
+  if [ -n "$MYSQLPID" ]; then
+    ps $MYSQLPID > /dev/null 2>&1 
+    if [ $? -eq 0 ]; then PID_ALIVE=0; fi
+  fi
+}
+
+# Check for innodb engine status
+check_innodb() {
+  INNODB_ALIVE=1
+  $MYADMIN variables 2> /dev/null | egrep -q have_innodb.*YES 
+  if [ $? -eq 0 ]; then INNODB_ALIVE=0; fi
+}
+
+# wait N seconds for mysqld to be ready
+wait_for_startup() {
+  STARTTIMEOUT=$START_TIMEOUT
+  while [ 1 ]; do
+    check_innodb
+    if [ $INNODB_ALIVE -eq 0 ]; then STARTED=0; break; fi
+    if [ $STARTTIMEOUT -eq 0 ]; then STARTED=1; break; fi
+    let STARTTIMEOUT=${STARTTIMEOUT}-1
+    sleep 1
+  done
+}
+
+start_failed() {
+  action $"Starting $prog: " /bin/false
+  return 1
+}
+
+start_success() {
+  action $"Starting $prog: " /bin/true
+  touch /var/lock/subsys/mysqld
+  return 0
+}
+
+# send kill signal
+kill_and_wait() {
+  if [ "$1" = "9" ]; then
+    echo "killing mysql with signal 9"
+    # mysqld_safe will restart mysql if we do not remove pid
+    rm -f $mypidfile
+    /bin/kill -9 "$MYSQLPID" >/dev/null 2>&1
+  else
+    /bin/kill "$MYSQLPID" >/dev/null 2>&1
+  fi
+  KILLED=$?
+  # wait for death
+  STOPTIMEOUT=$STOP_TIMEOUT
+  while [ $STOPTIMEOUT -gt 0 ]; do
+    /bin/kill -0 "$MYSQLPID" >/dev/null 2>&1 || break
+    sleep 1
+    let STOPTIMEOUT=${STOPTIMEOUT}-1
+  done
+  if [ $STOPTIMEOUT -eq 0 ]; then
+    echo "timeout occured"
+    KILLED=1
+  fi
+}
+
+stop_success() {
+  rm -f /var/lock/subsys/mysqld
+  rm -f "$socketfile"
+  action $"Stopping $prog: " /bin/true
+  return 0
+}
+
+stop_failed() {
+  action $"Stopping $prog: " /bin/false
+  return 1
+}
+  
+# MAIN
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status mysqld
+    ;;
+  restart)
+    restart
+    ;;
+  condrestart)
+    condrestart
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|status|condrestart|restart}"
+    exit 1
+esac
+
+exit $?

@@ -1,0 +1,11 @@
+# Automatically overwritten by RightScale
+[client]
+host     = localhost
+user     = root
+password = 
+socket   = /var/run/mysqld/mysqld.sock
+[mysql_upgrade]
+user     = root
+password = 
+socket   = /var/run/mysqld/mysqld.sock
+basedir  = /usr

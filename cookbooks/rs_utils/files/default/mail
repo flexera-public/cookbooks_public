@@ -1,0 +1,8 @@
+/var/spool/mail/* {
+    daily
+    compress
+    notifempty
+    missingok
+    olddir /var/spool/oldmail
+}
+

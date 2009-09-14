@@ -1,0 +1,299 @@
+{
+  "replacing": {
+
+  },
+  "long_description": "= DESCRIPTION:\n\nConfigures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.\n\n= REQUIREMENTS:\n\n* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.\n* Due to the EBS dependency, this currently only runs on EC2 clouds.\n* Requires a DNSMadeEasy.com account.\n\n= ATTRIBUTES: \n\nSee metadata.rb \n\n= USAGE:\n\nDesigned to be run within a RightScale server template with the following run order:\n\nBoot Scripts\n  * server - performs base server install and configuration.\n  * continuous_backups - Schedule continuous backups of the database.\n\nOperational Scripts\n  * restore_master - restores the database from the most recent snapshot and sets master DNS.\n  * backup - backs up the binary DB contents to an EBS snapshot.\n  * register_public_ip - Registers the public IP of the current instance to dns madeeasy.\n  \nDecommission Scripts\n  * decommission - stops the database and detaches EBS volume.\n\n",
+  "recipes": {
+    "db_mysql::decommission": "Stop DB, Unmount, detach and delete the current volume mounted for mysql DB.",
+    "db_mysql": "",
+    "db_mysql::backup": "Backs up the binary DB contents to an EBS snapshot.",
+    "db_mysql::default": "Runs the 'server' and 'continuous_backups' recipes.",
+    "db_mysql::register_public_ip": "Registers the public IP of the current instance to dns madeeasy.",
+    "db_mysql::continuous_backups": "Schedule continuous backups of the database.",
+    "db_mysql::ddns_check": "Throw an error of the DNS TTL is too high.",
+    "db_mysql::install_mysql": "Installs packages required for mysql servers w\/o manual intervention.",
+    "db_mysql::restore_master": "Restores the database from the most recent EBS snapshot and updates DNS to point to the new master.",
+    "db_mysql::setup_admin_privileges": "Add username and password for user with GRANT privileges."
+  },
+  "maintainer": "RightScale, Inc.",
+  "recommendations": {
+
+  },
+  "dependencies": {
+    "mysql": [
+      "= 0.9"
+    ],
+    "rs_tools": [
+
+    ]
+  },
+  "platforms": {
+
+  },
+  "maintainer_email": "support@rightscale.com",
+  "name": "db_mysql",
+  "attributes": {
+    "db_mysql\/backup\/keep_minimum": {
+      "default": "60",
+      "type": "string",
+      "description": "The minimum number of snapshots to keep. The oldest snapshot will be deleted when this is exceeded. This is overrides of the Daily, Weekly, etc. backup count.  Typically set to the total number of backups made in a day.",
+      "multiple_values": false,
+      "display_name": "Minimum backup count",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/server_usage": {
+      "default": "dedicated",
+      "type": "string",
+      "description": "* dedicated (where the mysql config allocates all existing resources of the machine)\n* shared (where the mysql is configured to use less resources so that it can be run concurrently with other apps like apache and rails for example)",
+      "multiple_values": false,
+      "display_name": "Server Usage",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "dns\/password": {
+      "type": "string",
+      "description": "The password of your DNSMadeEasy account.",
+      "multiple_values": false,
+      "display_name": "DNSMadeEasy password",
+      "required": true,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/replication_user": {
+      "type": "string",
+      "description": "The username that's used for replication between master and slave databases.",
+      "multiple_values": false,
+      "display_name": "Replication username",
+      "required": true,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql": {
+      "type": "hash",
+      "multiple_values": false,
+      "display_name": "General database options",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/datadir_relocate": {
+      "default": "\/mnt\/mysql",
+      "type": "string",
+      "description": "This sets final destination of the MySQL data directory. (i.e. an LVM or EBS volume)",
+      "multiple_values": false,
+      "display_name": "MySQL data-directory destination",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/backup\/keep_yearly": {
+      "default": "2",
+      "type": "string",
+      "description": "The number of yearly snapshots to keep (i.e. rotation size). See 'Archiving Snapshots' on RightScale Support for further details on the archiving logic.",
+      "multiple_values": false,
+      "display_name": "Yearly backup count",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/backup\/keep_monthly": {
+      "default": "12",
+      "type": "string",
+      "description": "The number of monthly snapshots to keep (i.e. rotation size). See 'Archiving Snapshots' on RightScale Support for further details on the archiving logic.",
+      "multiple_values": false,
+      "display_name": "Monthly backup count",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/admin_password": {
+      "type": "string",
+      "description": "The password of the database user that has 'admin' privilages.",
+      "multiple_values": false,
+      "display_name": "Database admin password",
+      "required": true,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/tmpdir": {
+      "default": "\/tmp",
+      "type": "string",
+      "description": "This sets the tmp variable in MySQL config file.",
+      "multiple_values": false,
+      "display_name": "MySQL tmp directory",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/log_bin": {
+      "default": "\/mnt\/mysql-binlogs\/mysql-bin",
+      "type": "string",
+      "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory.",
+      "multiple_values": false,
+      "display_name": "Maximum allowable DNS TTL limit",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/backup\/keep_daily": {
+      "default": "14",
+      "type": "string",
+      "description": "The number of daily snapshots to keep (i.e. rotation size). See 'Archiving Snapshots' on RightScale Support for further details on the archiving logic.",
+      "multiple_values": false,
+      "display_name": "Daily backup count",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/backup\/prefix_override": {
+      "default": "",
+      "type": "string",
+      "description": "Override prefix to restore from a specific snapshot.",
+      "multiple_values": false,
+      "display_name": "Backup prfix override",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/dns\/master_id": {
+      "type": "string",
+      "description": "The record ID (or DNS ID) of the server is used to update the DNS record to point to the new server IP address. This 7-digit number is provided by DNSMadeEasy. This record should point to the fully qualified domain name of the servers EIP.  Ex: 4404922",
+      "multiple_values": false,
+      "display_name": "External DNS ID",
+      "required": true,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/dns\/ttl_limit": {
+      "default": "120",
+      "type": "string",
+      "description": "Verification that master database DNS TTL is low enough",
+      "multiple_values": false,
+      "display_name": "Maximum allowable DNS TTL limit",
+      "required": false,
+      "recipes": [
+        "db_mysql::ddns_check"
+      ]
+    },
+    "db_mysql\/backup": {
+      "type": "hash",
+      "multiple_values": false,
+      "display_name": "Database backup options",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/dns\/master_name": {
+      "type": "string",
+      "description": "This DNS name is the FNDQ MySQL Master used by the slave and application to connect to the MySQL server",
+      "multiple_values": false,
+      "display_name": "Master DNS name",
+      "required": true,
+      "recipes": [
+        "db_mysql::continuous_backups",
+        "db_mysql::ddns_check"
+      ]
+    },
+    "db_mysql\/dns": {
+      "type": "hash",
+      "multiple_values": false,
+      "display_name": "Database DNS options",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/admin_user": {
+      "type": "string",
+      "description": "The username of the database user that has 'admin' privilages.",
+      "multiple_values": false,
+      "display_name": "Database admin username",
+      "required": true,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/backup\/keep_weekly": {
+      "default": "6",
+      "type": "string",
+      "description": "The number of weekly snapshots to keep (i.e. rotation size). See 'Archiving Snapshots' on RightScale Support for further details on the archiving logic.",
+      "multiple_values": false,
+      "display_name": "Weekly backup count",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/backup\/prefix": {
+      "type": "string",
+      "description": "The prefix that will be used to name the EBS snapshots of your MySQL database backups.  For example, if prefix is 'mydb' the filename will be 'mydb-master-date\/time stamp' for a snapshot of your master database and 'mydb-slave-date\/time stamp' for a slave.  During a restore, it will use the most recent MySQL EBS snapshot with the same prefix.",
+      "multiple_values": false,
+      "display_name": "Backup prefix",
+      "required": true,
+      "recipes": [
+
+      ]
+    },
+    "dns\/user": {
+      "type": "string",
+      "description": "The username of your DNSMadeEasy account.",
+      "multiple_values": false,
+      "display_name": "DNSMadeEasy username",
+      "required": true,
+      "recipes": [
+
+      ]
+    },
+    "db_mysql\/replication_password": {
+      "type": "string",
+      "description": "The password that's used for replication between master and slave databases.",
+      "multiple_values": false,
+      "display_name": "Replication Password",
+      "required": true,
+      "recipes": [
+
+      ]
+    }
+  },
+  "suggestions": {
+
+  },
+  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "conflicting": {
+
+  },
+  "version": "0.0.1",
+  "providing": {
+    "db_mysql": [
+
+    ],
+    "db_mysql_set_privileges(type, username, password)": [
+
+    ],
+    "db_mysql::install_mysql": [
+
+    ],
+    "db_mysql::setup_admin_privileges": [
+
+    ]
+  },
+  "description": "Installs\/configures a MySQL database server with automated backups"
+}
