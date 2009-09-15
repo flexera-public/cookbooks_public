@@ -33,7 +33,7 @@ link "/usr/share/zoneinfo/#{@node[:rs_utils][:timezone]}" do
 end
 
 #configure syslog
-if @node[:rightscale][:lumberjack] 
+if "#{@node[:rightscale][:lumberjack]}" != ""
   package "syslog-ng" 
 
   execute "ensure_dev_null" do 
@@ -114,14 +114,17 @@ service "collectd" do
 end
 
 #install private key
-if "@node[:rs_utils][:private_ssh_key]" != ""
+if "#{@node[:rs_utils][:private_ssh_key]}" != ""
+  directory "/root/.ssh" do
+    recursive true
+  end 
   execute "add_ssh_key" do 
     command "echo '#{@node[:rs_utils][:private_ssh_key]}' >> /root/.ssh/id_rsa && chmod 700 /root/.ssh/id_rsa"
   end
 end
 
 #set hostname
-if "@node[:rs_utils][:hostname]" != "" 
+if "#{@node[:rs_utils][:hostname]}" != "" 
   execute "set_hostname" do
     command "hostname #{@node[:rs_utils][:hostname]}" 
   end

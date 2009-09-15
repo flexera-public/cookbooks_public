@@ -28,7 +28,7 @@ set_unless[:db_mysql][:tunable][:net_write_timeout]   = "30"
 set_unless[:db_mysql][:tunable][:back_log]            = "128" 
 set_unless[:db_mysql][:tunable][:max_heap_table_size] = "32M" 
 
-if ec2 == nil 
+if !attribute?("ec2")
   set_unless[:db_mysql][:init_timeout] = 1200
   
   # using the same settings as a dedicated-m1.small ec2 instance
