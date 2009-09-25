@@ -38,7 +38,7 @@
     "db_mysql": {
       "type": "hash",
       "multiple_values": false,
-      "display_name": "General database options",
+      "display_name": "General Database Options",
       "required": false,
       "recipes": [
 
@@ -49,17 +49,18 @@
       "type": "string",
       "description": "This sets final destination of the MySQL data directory. (i.e. an LVM or EBS volume)",
       "multiple_values": false,
-      "display_name": "MySQL data-directory destination",
+      "display_name": "MySQL Data-Directory Destination",
       "required": false,
       "recipes": [
 
       ]
     },
     "db_mysql\/admin_password": {
+      "user_data": "rs_input:DBADMIN_PASSWORD",
       "type": "string",
       "description": "The password of the database user that has 'admin' privilages.",
       "multiple_values": false,
-      "display_name": "Database admin password",
+      "display_name": "Database Admin Password",
       "required": true,
       "recipes": [
 
@@ -70,7 +71,7 @@
       "type": "string",
       "description": "This sets the tmp variable in MySQL config file.",
       "multiple_values": false,
-      "display_name": "MySQL tmp directory",
+      "display_name": "MySQL Tmp Directory",
       "required": false,
       "recipes": [
 
@@ -81,7 +82,7 @@
       "type": "string",
       "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory.",
       "multiple_values": false,
-      "display_name": "Maximum allowable DNS TTL limit",
+      "display_name": "MySQL Binlog Destination",
       "required": false,
       "recipes": [
 
@@ -91,7 +92,7 @@
       "type": "string",
       "description": "The username of the database user that has 'admin' privilages.",
       "multiple_values": false,
-      "display_name": "Database admin username",
+      "display_name": "Database Admin Username",
       "required": true,
       "recipes": [
 

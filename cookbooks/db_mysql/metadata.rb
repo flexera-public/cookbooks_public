@@ -18,18 +18,19 @@ recipe  "db_mysql::setup_admin_privileges", "Add username and password for super
 # required attributes
 #
 attribute "db_mysql",
-  :display_name => "General database options",
+  :display_name => "General Database Options",
   :type => "hash"
   
 attribute "db_mysql/admin_user",
-  :display_name => "Database admin username",
+  :display_name => "Database Admin Username",
   :description => "The username of the database user that has 'admin' privilages.",
   :required => true
 
 attribute "db_mysql/admin_password",
-  :display_name => "Database admin password",
+  :display_name => "Database Admin Password",
   :description => "The password of the database user that has 'admin' privilages.",
-  :required => true 
+  :required => true,
+  :user_data => "rs_input:DBADMIN_PASSWORD" 
 
 #
 # recommended attributes
@@ -43,17 +44,17 @@ attribute "db_mysql/server_usage",
 # optional attributes
 #
 attribute "db_mysql/log_bin",
-  :display_name => "Maximum allowable DNS TTL limit",
+  :display_name => "MySQL Binlog Destination",
   :description => "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory.",
   :default => "/mnt/mysql-binlogs/mysql-bin"
   
 attribute "db_mysql/datadir_relocate",
-  :display_name => "MySQL data-directory destination",
+  :display_name => "MySQL Data-Directory Destination",
   :description => "This sets final destination of the MySQL data directory. (i.e. an LVM or EBS volume)",
   :default => "/mnt/mysql"
 
 attribute "db_mysql/tmpdir",
-  :display_name => "MySQL tmp directory",
+  :display_name => "MySQL Tmp Directory",
   :description => "This sets the tmp variable in MySQL config file.",
   :default => "/tmp"
   
