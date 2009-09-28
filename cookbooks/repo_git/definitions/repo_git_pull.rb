@@ -38,7 +38,7 @@ define :repo_git_pull, url => "", branch => "master", dest => "", cred => "" do
       code <<-EOH
         echo -n '#{params[:cred]}' > #{keyfile}
 	      chmod 700 #{keyfile}
-        echo 'exec ssh -i #{keyfile} "$@"' > #{keyfile}.sh
+        echo 'exec ssh -oStrictHostKeyChecking=no -i #{keyfile} "$@"' > #{keyfile}.sh
 	      chmod +x #{keyfile}.sh
       EOH
     end
