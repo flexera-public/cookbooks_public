@@ -35,12 +35,12 @@
   RewriteRule ^.*$ /system/maintenance.html [L]
 
   # Setup the logs in the appropriate directory
-  CustomLog <%= @node[:apache][:log_dir] %>/access_log combined
-  ErrorLog  <%= @node[:apache][:log_dir] %>/error_log
+  CustomLog <%= @node[:apache][:log_dir] %>/access.log combined
+  ErrorLog  <%= @node[:apache][:log_dir] %>/error.log
 
-  #Remote logging -- handle by syslog
-  ErrorLog "|logger -p local3.info -t httperror"
-  CustomLog "|logger -p local3.info -t http" combined
+#  #Remote logging -- handle by syslog
+#  ErrorLog "|logger -p local3.info -t httperror"
+#  CustomLog "|logger -p local3.info -t http" combined
 
   LogLevel warn
 
