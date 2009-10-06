@@ -1,18 +1,18 @@
 {
-  "replacing": {
+  "maintainer": "RightScale, Inc.",
+  "recommendations": {
 
   },
-  "long_description": "",
+  "maintainer_email": "support@rightscale.com",
   "recipes": {
-    "app_rails": "",
     "app_rails::do_db_restore": "Restore application database schema from remote location.",
     "app_rails::setup_db_config": "Configures the rails database.yml file",
     "app_rails::install_rails": "Installs the rails application server.",
     "app_rails::do_update_code": "Update application source files from remote repository.",
-    "app_rails::default": "Runs app_rails::install_rails."
+    "app_rails::default": "Runs app_rails::install_rails.",
+    "app_rails": ""
   },
-  "maintainer": "RightScale, Inc.",
-  "recommendations": {
+  "suggestions": {
 
   },
   "dependencies": {
@@ -41,7 +41,7 @@
   "platforms": {
 
   },
-  "maintainer_email": "support@rightscale.com",
+  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
   "name": "app_rails",
   "attributes": {
     "rails\/spawn_method": {
@@ -49,7 +49,7 @@
       "type": "string",
       "description": "what spawn method should we use?",
       "multiple_values": false,
-      "display_name": "spawn method",
+      "display_name": "Spawn Method",
       "required": false,
       "recipes": [
 
@@ -60,7 +60,7 @@
       "type": "string",
       "description": "the port your rails application will listen on",
       "multiple_values": false,
-      "display_name": "application port",
+      "display_name": "Application Port",
       "required": false,
       "recipes": [
 
@@ -70,7 +70,7 @@
       "type": "string",
       "description": "Full path in git repository to mysqldump file to restore",
       "multiple_values": false,
-      "display_name": "mysqldump file path",
+      "display_name": "Mysqldump File Path",
       "required": false,
       "recipes": [
 
@@ -80,7 +80,7 @@
       "type": "string",
       "description": "credentials for code repository",
       "multiple_values": false,
-      "display_name": "repository credentials",
+      "display_name": "Repository Credentials",
       "required": true,
       "recipes": [
 
@@ -110,7 +110,7 @@
       "type": "array",
       "description": "list of gems required by your application",
       "multiple_values": false,
-      "display_name": "gems_list",
+      "display_name": "Gems List",
       "required": false,
       "recipes": [
 
@@ -121,7 +121,7 @@
       "type": "string",
       "description": "branch to pull source from",
       "multiple_values": false,
-      "display_name": "repository branch",
+      "display_name": "Repository Branch",
       "required": false,
       "recipes": [
 
@@ -131,7 +131,7 @@
       "type": "string",
       "description": "database schema to use",
       "multiple_values": false,
-      "display_name": "database schema name",
+      "display_name": "Database Schema Name",
       "required": true,
       "recipes": [
 
@@ -141,7 +141,7 @@
       "type": "string",
       "description": "password for database access",
       "multiple_values": false,
-      "display_name": "database password",
+      "display_name": "Database Password",
       "required": true,
       "recipes": [
 
@@ -163,7 +163,7 @@
       "type": "string",
       "description": "FQDN for the server",
       "multiple_values": false,
-      "display_name": "server name",
+      "display_name": "Server Name",
       "required": false,
       "recipes": [
 
@@ -174,7 +174,7 @@
       "type": "string",
       "description": "give a name to your application",
       "multiple_values": false,
-      "display_name": "application name",
+      "display_name": "Application Name",
       "required": false,
       "recipes": [
 
@@ -195,7 +195,7 @@
       "type": "string",
       "description": "username for code repository",
       "multiple_values": false,
-      "display_name": "repository username",
+      "display_name": "Repository Username",
       "required": true,
       "recipes": [
 
@@ -205,7 +205,7 @@
       "type": "string",
       "description": "location of application code repository",
       "multiple_values": false,
-      "display_name": "repository url",
+      "display_name": "Repository URL",
       "required": true,
       "recipes": [
 
@@ -224,7 +224,7 @@
       "type": "string",
       "description": "FQDN of the database server",
       "multiple_values": false,
-      "display_name": "database dns name",
+      "display_name": "Database DNS Name",
       "required": true,
       "recipes": [
 
@@ -234,21 +234,16 @@
       "type": "string",
       "description": "username for database access",
       "multiple_values": false,
-      "display_name": "database user",
+      "display_name": "Database User",
       "required": true,
       "recipes": [
 
       ]
     }
   },
-  "suggestions": {
-
-  },
-  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
   "conflicting": {
 
   },
-  "version": "0.0.1",
   "providing": {
     "app_rails::do_db_restore": [
 
@@ -266,5 +261,10 @@
 
     ]
   },
+  "version": "0.0.1",
+  "replacing": {
+
+  },
+  "long_description": "",
   "description": "Installs the rails application server on apache+passenger."
 }
