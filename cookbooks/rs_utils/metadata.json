@@ -1,14 +1,15 @@
 {
-  "replacing": {
-
-  },
-  "long_description": "",
-  "recipes": {
-    "rs_utils": "",
-    "rs_utils::install_utils": ""
-  },
   "maintainer": "RightScale, Inc.",
   "recommendations": {
+
+  },
+  "maintainer_email": "support@rightscale.com",
+  "recipes": {
+    "rs_utils": "",
+    "rs_utils::install_utils": "Installs basic utilities used by all RightScale instances.",
+    "rs_utils::developer_setup": "Configures instance for chef recipe development"
+  },
+  "suggestions": {
 
   },
   "dependencies": {
@@ -17,7 +18,7 @@
   "platforms": {
 
   },
-  "maintainer_email": "support@rightscale.com",
+  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
   "name": "rs_utils",
   "attributes": {
     "rs_utils\/process_list": {
@@ -52,21 +53,24 @@
       ]
     }
   },
-  "suggestions": {
-
-  },
-  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
   "conflicting": {
 
   },
-  "version": "0.0.1",
   "providing": {
     "rs_utils::install_utils": [
 
     ],
     "rs_utils": [
 
+    ],
+    "rs_utils::developer_setup": [
+
     ]
   },
+  "version": "0.0.1",
+  "replacing": {
+
+  },
+  "long_description": "",
   "description": "Installs common utilities used by RightScale instances."
 }
