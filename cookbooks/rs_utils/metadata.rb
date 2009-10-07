@@ -4,6 +4,9 @@ license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..'
 description      "Installs common utilities used by RightScale instances."
 version          "0.0.1"
 
+recipe "rs_utils::install_utils", "Installs basic utilities used by all RightScale instances."
+recipe "rs_utils::developer_setup", "Configures instance for chef recipe development"
+
 #
 # optional
 #
