@@ -25,7 +25,7 @@
 
 bash "Setup bash shell" do
   code <<-EOH
-    cat << EOF > ~/.bashrc
+    cat <<-EOF > ~/.bashrc
     alias pu=pushd
     alias po=popd
     alias rd='pushd +1'
