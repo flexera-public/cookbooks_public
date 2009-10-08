@@ -12,11 +12,11 @@ See metadata.rb
 
 = USAGE:
 
-Designed to be run within a RightScale server template with the following run order:
+Designed to be run within a RightScale ServerTemplate with the following run order:
 
 Boot Scripts
-  * install_mysql - performs base server install and configuration.
+  * install_mysql - Performs base server install and configuration.
 
 Definitions
-  * db_mysql_restore - restores database from mysql dump retrieved from a remote location.
-  * db_mysql_set_privileges - configures a users privileges.  Currently only 'administrator' and 'user' setting are supported.
+  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.
+  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.
