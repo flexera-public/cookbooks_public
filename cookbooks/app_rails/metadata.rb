@@ -75,7 +75,7 @@ attribute "rails/server_name",
 
 attribute "rails/application_name",
   :display_name => "Application Name",
-  :description => "give a name to your application",
+  :description => "Give a name to your application",
   :default => "myapp"
   
 attribute "rails/environment",
