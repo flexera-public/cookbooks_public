@@ -1,19 +1,32 @@
 {
-  "maintainer": "RightScale, Inc.",
-  "recommendations": {
+  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "conflicting": {
 
   },
-  "maintainer_email": "support@rightscale.com",
+  "providing": {
+    "app_rails::do_db_restore": [
+
+    ],
+    "app_rails::setup_db_config": [
+
+    ],
+    "app_rails": [
+
+    ],
+    "app_rails::install_rails": [
+
+    ],
+    "app_rails::do_update_code": [
+
+    ]
+  },
   "recipes": {
     "app_rails::do_db_restore": "Restore application database schema from remote location.",
     "app_rails::setup_db_config": "Configures the rails database.yml file",
     "app_rails::install_rails": "Installs the rails application server.",
+    "app_rails": "",
     "app_rails::do_update_code": "Update application source files from remote repository.",
-    "app_rails::default": "Runs app_rails::install_rails.",
-    "app_rails": ""
-  },
-  "suggestions": {
-
+    "app_rails::default": "Runs app_rails::install_rails."
   },
   "dependencies": {
     "repo_git_pull(url, branch, user, dest, cred)": [
@@ -41,7 +54,6 @@
   "platforms": {
 
   },
-  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
   "name": "app_rails",
   "attributes": {
     "rails\/spawn_method": {
@@ -50,10 +62,10 @@
       "description": "what spawn method should we use?",
       "multiple_values": false,
       "display_name": "Spawn Method",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "rails\/application_port": {
       "default": "8000",
@@ -61,20 +73,20 @@
       "description": "the port your rails application will listen on",
       "multiple_values": false,
       "display_name": "Application Port",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "rails\/db_mysqldump_file_path": {
       "type": "string",
       "description": "Full path in git repository to mysqldump file to restore",
       "multiple_values": false,
       "display_name": "Mysqldump File Path",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "rails\/code\/credentials": {
       "type": "string",
@@ -90,10 +102,10 @@
       "type": "hash",
       "multiple_values": false,
       "display_name": "Rails Passenger Settings",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "rails\/version": {
       "default": "false",
@@ -101,10 +113,10 @@
       "description": "Specify the version of Rails to install",
       "multiple_values": false,
       "display_name": "Rails Version",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "rails\/gems_list": {
       "type": "array",
@@ -122,10 +134,10 @@
       "description": "branch to pull source from",
       "multiple_values": false,
       "display_name": "Repository Branch",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "rails\/db_schema_name": {
       "type": "string",
@@ -153,10 +165,10 @@
       "description": "Specify the MaxPoolSize in the Apache vhost",
       "multiple_values": false,
       "display_name": "Rails Max Pool Size",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "rails\/server_name": {
       "default": "myserver",
@@ -164,10 +176,10 @@
       "description": "FQDN for the server",
       "multiple_values": false,
       "display_name": "Server Name",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "rails\/application_name": {
       "default": "myapp",
@@ -175,10 +187,10 @@
       "description": "give a name to your application",
       "multiple_values": false,
       "display_name": "Application Name",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "rails\/environment": {
       "default": "production",
@@ -186,10 +198,10 @@
       "description": "Specify the environment to use for Rails",
       "multiple_values": false,
       "display_name": "Rails Environment",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "rails\/code\/user": {
       "type": "string",
@@ -215,10 +227,10 @@
       "type": "hash",
       "multiple_values": false,
       "display_name": "Rails Application Code",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "rails\/db_dns_name": {
       "type": "string",
@@ -241,30 +253,18 @@
       ]
     }
   },
-  "conflicting": {
-
-  },
-  "providing": {
-    "app_rails::do_db_restore": [
-
-    ],
-    "app_rails::setup_db_config": [
-
-    ],
-    "app_rails": [
-
-    ],
-    "app_rails::install_rails": [
-
-    ],
-    "app_rails::do_update_code": [
-
-    ]
-  },
-  "version": "0.0.1",
   "replacing": {
 
   },
   "long_description": "",
-  "description": "Installs the rails application server on apache+passenger."
+  "maintainer": "RightScale, Inc.",
+  "recommendations": {
+
+  },
+  "version": "0.0.1",
+  "maintainer_email": "support@rightscale.com",
+  "description": "Installs the rails application server on apache+passenger.",
+  "suggestions": {
+
+  }
 }
