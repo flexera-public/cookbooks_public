@@ -32,10 +32,12 @@ Chef::Log.warn("WARNING: You did not provide credentials for your code repositor
 Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{@node[:rails][:code][:branch]}" == "") 
 
 # grab application source from remote repository
-repo_git_pull "Get Repository" do
+repo "Get Repository" do
   url @node[:rails][:code][:url]
   branch @node[:rails][:code][:branch] 
   user @node[:rails][:code][:user]
   dest @node[:rails][:code][:destination]
   cred @node[:rails][:code][:credentials]
+  action :pull
+  provider "repo_git"
 end
