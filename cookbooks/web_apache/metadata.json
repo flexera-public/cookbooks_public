@@ -1,14 +1,16 @@
 {
-  "replacing": {
+  "conflicting": {
 
   },
-  "long_description": "",
-  "recipes": {
-    "web_apache::install_apache": "",
-    "web_apache": ""
+  "providing": {
+    "web_apache::install_apache": [
+
+    ],
+    "web_apache": [
+
+    ]
   },
-  "maintainer": "RightScale, Inc.",
-  "recommendations": {
+  "replacing": {
 
   },
   "dependencies": {
@@ -19,8 +21,12 @@
   "platforms": {
 
   },
-  "maintainer_email": "support@rightscale.com",
+  "long_description": "",
   "name": "web_apache",
+  "recipes": {
+    "web_apache::install_apache": "",
+    "web_apache": ""
+  },
   "attributes": {
     "web_apache\/mpm": {
       "default": [
@@ -28,51 +34,45 @@
         "prefork"
       ],
       "type": "string",
-      "description": "setting for MPM, ",
+      "description": "Can be set to 'worker' or 'prefork' and defines the setting in httpd.conf.  Use 'worker' for Rails\/Tomcat\/Standalone frontends and 'prefork' for PHP.",
       "multiple_values": true,
       "display_name": "Multi-Processing Module",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "web_apache\/contact": {
       "default": "root@localhost",
       "type": "string",
-      "description": "contact email address for web admin",
+      "description": "The email address that Apache uses to send administrative mail (set in \/etc\/httpd\/conf\/httpd.conf).  By setting it to root@localhost.com emails are saved on the server.  You can use your own email address, but your spam filters might block them because reverse DNS lookup will show a mismatch between EC2 and your domain.",
       "multiple_values": false,
       "display_name": "contact email ",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     },
     "web_apache": {
       "type": "hash",
       "description": "Apache Web Server",
       "multiple_values": false,
       "display_name": "apache hash",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": false
     }
   },
+  "maintainer": "RightScale, Inc.",
+  "recommendations": {
+
+  },
+  "maintainer_email": "support@rightscale.com",
+  "version": "0.0.1",
   "suggestions": {
 
   },
-  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
-  "conflicting": {
-
-  },
-  "version": "0.0.1",
-  "providing": {
-    "web_apache::install_apache": [
-
-    ],
-    "web_apache": [
-
-    ]
-  },
-  "description": "Installs\/configures the apache2 webserver"
+  "description": "Installs\/configures the apache2 webserver",
+  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
 }
