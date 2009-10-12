@@ -26,17 +26,18 @@
 require 'uri'
 
 action :pull do
+  my_resource = new_resource
   
   # include the public recipe to install git
   include_recipe "git"
    
   # add repository credentials
   keyfile = nil
-  if "#{new_resource.cred}" != ""
+  if "#{my_resource.cred}" != ""
     keyfile = "/tmp/gitkey"
     bash 'create_temp_git_ssh_key' do
       code <<-EOH
-        echo -n '#{new_resource.cred}' > #{keyfile}
+        echo -n '#{my_resource.cred}' > #{keyfile}
 	      chmod 700 #{keyfile}
         echo 'exec ssh -oStrictHostKeyChecking=no -i #{keyfile} "$@"' > #{keyfile}.sh
 	      chmod +x #{keyfile}.sh
@@ -46,10 +47,10 @@ action :pull do
 
   # pull repo (if exist)
   ruby "pull-exsiting-local-repo" do
-    cwd new_resource.dest
-    only_if do File.directory?(new_resource.dest) end
+    cwd my_resource.dest
+    only_if do File.directory?(my_resource.dest) end
     code <<-EOH
-      puts "Updateing existing repo at #{new_resource.dest}"
+      puts "Updateing existing repo at #{my_resource.dest}"
       ENV["GIT_SSH"] = "#{keyfile}.sh" unless ("#{keyfile}" == "")
       puts `git pull` 
     EOH
@@ -57,22 +58,22 @@ action :pull do
   
   # clone repo (if not exist)
   ruby "create-new-local-repo" do
-    not_if do File.directory?(new_resource.dest) end
+    not_if do File.directory?(my_resource.dest) end
     code <<-EOH
-      puts "Creating new repo at #{new_resource.dest}"
+      puts "Creating new repo at #{my_resource.dest}"
       ENV["GIT_SSH"] = "#{keyfile}.sh" unless ("#{keyfile}" == "")
-      puts `git clone #{new_resource.url} -- #{new_resource.dest}`
+      puts `git clone #{my_resource.url} -- #{my_resource.dest}`
 
-      if "#{new_resource.branch}" != "master" 
-	      dir = "#{new_resource.dest}"
+      if "#{my_resource.branch}" != "master" 
+	      dir = "#{my_resource.dest}"
         Dir.chdir(dir) 
-        puts `git checkout --track -b #{new_resource.branch} origin/#{new_resource.branch}`
+        puts `git checkout --track -b #{my_resource.branch} origin/#{my_resource.branch}`
       end
     EOH
   end
 
   # delete SSH key & clear GIT_SSH
-  if new_resource.cred != nil
+  if my_resource.cred != nil
      bash 'delete_temp_git_ssh_key' do
        code <<-EOH
          rm -f #{keyfile}
