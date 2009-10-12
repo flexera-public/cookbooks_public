@@ -9,7 +9,6 @@
     ],
     "web_apache": [
 
-    ]
   },
   "recipes": {
     "web_apache::install_apache": "",

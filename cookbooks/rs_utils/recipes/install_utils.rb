@@ -22,6 +22,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+log "WHAT ARE THE ATTRIBUTES SET TO"
+log "UUID: #{@node[:rightscale][:instance_uuid]}"
+log "LUMBERJACK: #{@node[:rightscale][:servers][:lumberjack][:hostname]}"
+log "SKETCHY: #{@node[:rightscale][:servers][:sketchy][:hostname]}"
+log "DONE WITH ATTRIBUTES"
+
 #install rs_utils command for ubuntu
 package "sysvconfig" do
   only_if { @node[:platform] == "ubuntu" }
@@ -33,7 +39,7 @@ link "/usr/share/zoneinfo/#{@node[:rs_utils][:timezone]}" do
 end
 
 #configure syslog
-if "#{@node[:rightscale][:lumberjack]}" != ""
+if "#{@node[:rightscale][:servers][:lumberjack][:hostname]}" != ""
   package "syslog-ng" 
 
   execute "ensure_dev_null" do 
@@ -97,6 +103,8 @@ bash "configure_process_monitoring" do
     echo "</Plugin>" >> #{@node[:rs_utils][:collectd_plugin_dir]}/processes.conf
   EOH
 end
+
+right_link_tag "rs_monitoring:state=active"
 
 #configure cron
 cron "collectd_restart" do 

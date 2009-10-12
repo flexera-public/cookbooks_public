@@ -22,6 +22,11 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #
+# RightScale Enviroment Attributes.
+# These are needed by all RightScale Cookbooks.  Rs_utils should be included in all server templates
+# so these attributes are declared here.
+
+#
 # Optional attributes
 #
 set_unless[:rs_utils][:timezone] = "UTC"    
