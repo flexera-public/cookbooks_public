@@ -19,6 +19,5 @@ attribute "web_apache/contact",
 attribute "web_apache/mpm",
   :display_name => "Multi-Processing Module",
   :description => "Can be set to 'worker' or 'prefork' and defines the setting in httpd.conf.  Use 'worker' for Rails/Tomcat/Standalone frontends and 'prefork' for PHP.",
-  :multiple_values => true,
-  :default => [ "worker", "prefork" ]
+  :default =>  "worker"
 
