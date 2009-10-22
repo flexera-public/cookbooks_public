@@ -55,10 +55,6 @@ attribute "rails/code/url",
   :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
   :required => true
 
-attribute "rails/code/credentials",
-  :display_name => "Repository Credentials",
-  :description => "The private SSH key of the git repository.",
-  :required => true  
 
 #
 # recommended attributes
@@ -86,6 +82,10 @@ attribute "rails/db_mysqldump_file_path",
 #
 # optional attributes
 #
+attribute "rails/code/credentials",
+  :display_name => "Repository Credentials",
+  :description => "The private SSH key of the git repository."
+  
 attribute "rails/version",
   :display_name => "Rails Version",
   :description => "Specify which version of Rails to install.  Ex: 2.2.2",

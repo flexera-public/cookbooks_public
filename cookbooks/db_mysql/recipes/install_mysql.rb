@@ -25,7 +25,7 @@
 
 include_recipe "mysql::client"
 
-log "EC2 Instance type detected: #{@node[:db_mysql][:server_usage]}-#{@node[:ec2][:instance_type]}" if @node[:ec2]
+log "EC2 Instance type detected: #{@node[:db_mysql][:server_usage]}-#{@node[:ec2][:instance_type]}" if @node[:ec2] == "true"
 
 # preseeding is only required for ubuntu and debian
 case node[:platform]

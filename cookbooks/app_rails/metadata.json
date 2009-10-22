@@ -66,22 +66,22 @@
 
       ]
     },
+    "rails\/code\/credentials": {
+      "type": "string",
+      "description": "The private SSH key of the git repository.",
+      "multiple_values": false,
+      "display_name": "Repository Credentials",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
     "rails\/db_mysqldump_file_path": {
       "type": "string",
       "description": "This input allows you to restore your database by choosing a specific MySQL database backup file.  You will need to specify a full path and\/or filename.  Ex: branch\/mydb-200910300402.gz",
       "multiple_values": false,
       "display_name": "Mysqldump File Path",
       "required": false,
-      "recipes": [
-
-      ]
-    },
-    "rails\/code\/credentials": {
-      "type": "string",
-      "description": "The private SSH key of the git repository.",
-      "multiple_values": false,
-      "display_name": "Repository Credentials",
-      "required": true,
       "recipes": [
 
       ]
