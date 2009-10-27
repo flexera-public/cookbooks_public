@@ -65,7 +65,7 @@
       "display_name": "Git Depth",
       "required": "optional",
       "recipes": [
-
+        "repo::do_pull_git"
       ]
     },
     "repo\/revision": {
@@ -91,7 +91,7 @@
       "display_name": "Subversion Arguments",
       "required": "optional",
       "recipes": [
-
+        "repo::do_pull_svn"
       ]
     },
     "repo\/git\/remote": {
@@ -105,7 +105,7 @@
       "display_name": "Git Remote",
       "required": "optional",
       "recipes": [
-
+        "repo::do_pull_git"
       ]
     },
     "repo\/svn\/username": {
@@ -118,7 +118,7 @@
       "display_name": "Subversion User Name",
       "required": "optional",
       "recipes": [
-
+        "repo::do_pull_svn"
       ]
     },
     "repo\/git\/ssh_key": {
@@ -132,7 +132,7 @@
       "display_name": "Git SSH Key",
       "required": "optional",
       "recipes": [
-
+        "repo::do_pull_git"
       ]
     },
     "repo\/git\/enable_submodules": {
@@ -146,7 +146,7 @@
       "display_name": "Enable Submodules",
       "required": "optional",
       "recipes": [
-
+        "repo::do_pull_git"
       ]
     },
     "repo\/svn\/password": {
@@ -159,7 +159,7 @@
       "display_name": "Subversion Password",
       "required": "optional",
       "recipes": [
-
+        "repo::do_pull_svn"
       ]
     }
   },

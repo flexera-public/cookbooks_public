@@ -37,17 +37,20 @@ grouping "repo/svn",
 attribute "repo/svn/username",
   :display_name => "Subversion User Name",
   :description => "",
-  :required => false
+  :required => false,
+  :recipes => ['repo::do_pull_svn']
 
 attribute "repo/svn/password",
   :display_name => "Subversion Password",
   :description => "",
-  :required => false 
+  :required => false,
+  :recipes => ['repo::do_pull_svn'] 
 
 attribute "repo/svn/arguments",
   :display_name => "Subversion Arguments",
   :description => "",
-  :required => false
+  :required => false,
+  :recipes => ['repo::do_pull_svn']
 
 grouping "repo/git",
   :display_name => "Git"
@@ -56,23 +59,27 @@ attribute "repo/git/depth",
   :display_name => "Git Depth",
   :description => "",
   :default => nil,
-  :required => false
+  :required => false,
+  :recipes => ['repo::do_pull_git']
 
 attribute "repo/git/enable_submodules",
   :display_name => "Enable Submodules",
   :description => "",
   :default => "false",
-  :required => false
+  :required => false,
+  :recipes => ['repo::do_pull_git']
 
 attribute "repo/git/remote",
   :display_name => "Git Remote",
   :description => "",
   :default => "origin",
-  :required => false
+  :required => false,
+  :recipes => ['repo::do_pull_git']
 
 attribute "repo/git/ssh_key",
   :display_name => "Git SSH Key",
   :description => "",
   :default => nil,
-  :required => false
+  :required => false,
+  :recipes => ['repo::do_pull_git']
   
