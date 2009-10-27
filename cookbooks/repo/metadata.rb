@@ -2,7 +2,7 @@ maintainer       "RightScale, Inc."
 maintainer_email "support@rightscale.com"
 license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'LICENSE')))
 description      "Pulls code from remote SCM repository"
-version          "0.0.1"
+version          "0.0.2"
 
 depends "git"
 depends "subversion"

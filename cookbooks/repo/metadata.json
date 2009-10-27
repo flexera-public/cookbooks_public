@@ -178,7 +178,7 @@
   "replacing": {
 
   },
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Pulls code from remote SCM repository",
   "groupings": {
     "repo": {
