@@ -8,7 +8,7 @@ depends "web_apache"
 depends "rails"
 depends "passenger_apache2::mod_rails"
 depends "mysql::client"
-depends "repo_git"
+depends "repo"
 depends "db_mysql"
 
 depends "repo_git_pull(url, branch, user, dest, cred)"
@@ -46,15 +46,6 @@ attribute "rails/db_dns_name",
   :description => "The fully qualified domain name of the database server to which the application server(s) will connect.  Ex: master.mydatabase.com",
   :required => true
 
-attribute "rails/code",
-  :display_name => "Rails Application Code",
-  :type => "hash"
-  
-attribute "rails/code/url",
-  :display_name => "Repository URL",
-  :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
-  :required => true
-
 
 #
 # recommended attributes
@@ -82,9 +73,6 @@ attribute "rails/db_mysqldump_file_path",
 #
 # optional attributes
 #
-attribute "rails/code/credentials",
-  :display_name => "Repository Credentials",
-  :description => "The private SSH key of the git repository."
   
 attribute "rails/version",
   :display_name => "Rails Version",
@@ -95,11 +83,6 @@ attribute "rails/max_pool_size",
   :display_name => "Rails Max Pool Size",
   :description => "Specify the MaxPoolSize in the Apache vhost.  Sets the number of desired mongrel processes on the Rails server.  Specify a value between 4-8 for a small instance.",
   :default => "4"
-  
-attribute "rails/code/branch",
-  :display_name => "Repository Branch",
-  :description => "The name of the branch within the git repository where the application code should be pulled from.",
-  :default => "master"
   
 attribute "rails/application_port",
   :display_name => "Application Port",

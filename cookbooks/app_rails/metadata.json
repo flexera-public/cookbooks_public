@@ -19,6 +19,9 @@
     "repo_git_pull(url, branch, user, dest, cred)": [
 
     ],
+    "repo": [
+
+    ],
     "db_mysql": [
 
     ],
@@ -29,9 +32,6 @@
 
     ],
     "web_apache": [
-
-    ],
-    "repo_git": [
 
     ],
     "passenger_apache2::mod_rails": [
@@ -61,16 +61,6 @@
       "description": "This input is normally set to 8000 if this server is a combined HAProxy and application server. If this is an application server (w\/o HAproxy), set it to 80.  When setting this in a deployment, you should use 80 at the deployment level since you want all of your servers in the array to use this value.  If the server is a FE+APP server, you can set it to 8000 at the server level so that it overrides the deployment level input.",
       "multiple_values": false,
       "display_name": "Application Port",
-      "required": false,
-      "recipes": [
-
-      ]
-    },
-    "rails\/code\/credentials": {
-      "type": "string",
-      "description": "The private SSH key of the git repository.",
-      "multiple_values": false,
-      "display_name": "Repository Credentials",
       "required": false,
       "recipes": [
 
@@ -111,17 +101,6 @@
       "description": "An optional list of gems that's required by your application.",
       "multiple_values": false,
       "display_name": "Gems List",
-      "required": false,
-      "recipes": [
-
-      ]
-    },
-    "rails\/code\/branch": {
-      "default": "master",
-      "type": "string",
-      "description": "The name of the branch within the git repository where the application code should be pulled from.",
-      "multiple_values": false,
-      "display_name": "Repository Branch",
       "required": false,
       "recipes": [
 
@@ -186,25 +165,6 @@
       "description": "The Rails Environment of the current workspace.",
       "multiple_values": false,
       "display_name": "Rails Environment",
-      "required": false,
-      "recipes": [
-
-      ]
-    },
-    "rails\/code\/url": {
-      "type": "string",
-      "description": "Specify the URL location of the repository that contains the application code. Ex: git:\/\/github.com\/mysite\/myapp.git",
-      "multiple_values": false,
-      "display_name": "Repository URL",
-      "required": true,
-      "recipes": [
-
-      ]
-    },
-    "rails\/code": {
-      "type": "hash",
-      "multiple_values": false,
-      "display_name": "Rails Application Code",
       "required": false,
       "recipes": [
 
