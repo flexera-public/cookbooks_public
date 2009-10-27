@@ -45,8 +45,7 @@
       "calculated": false,
       "type": "string",
       "choice": [
-        "Git",
-        "Subversion"
+
       ],
       "description": "",
       "display_name": "Repository Type",
@@ -77,7 +76,7 @@
       ],
       "description": "",
       "display_name": "Revision\/Branch\/Tag",
-      "required": "recommended",
+      "required": "optional",
       "recipes": [
 
       ]

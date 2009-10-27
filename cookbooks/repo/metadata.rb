@@ -18,18 +18,18 @@ grouping "repo",
 attribute "repo/type",
   :display_name => "Repository Type",
   :description => "",
-  :choice => [ "Git", "Subversion" ],
-  :required => "required"
+#  :choice => [ "Git", "Subversion" ],
+  :required => true
   
 attribute "repo/repository",
   :display_name => "Repository Url",
   :description => "",
-  :required => "required"
+  :required => true
   
 attribute "repo/revision",
   :display_name => "Revision/Branch/Tag",
   :description => "",
-  :required => "recommended"
+  :required => false
 
 grouping "repo/svn",
   :display_name => "Subversion"
@@ -37,17 +37,17 @@ grouping "repo/svn",
 attribute "repo/svn/username",
   :display_name => "Subversion User Name",
   :description => "",
-  :required => "optional"
+  :required => false
 
 attribute "repo/svn/password",
   :display_name => "Subversion Password",
   :description => "",
-  :required => "optional"  
+  :required => false 
 
 attribute "repo/svn/arguments",
   :display_name => "Subversion Arguments",
   :description => "",
-  :required => "optional"
+  :required => false
 
 grouping "repo/git",
   :display_name => "Git"
@@ -56,23 +56,23 @@ attribute "repo/git/depth",
   :display_name => "Git Depth",
   :description => "",
   :default => nil,
-  :required => "optional"
+  :required => false
 
 attribute "repo/git/enable_submodules",
   :display_name => "Enable Submodules",
   :description => "",
   :default => "false",
-  :required => "optional"
+  :required => false
 
 attribute "repo/git/remote",
   :display_name => "Git Remote",
   :description => "",
   :default => "origin",
-  :required => "optional"
+  :required => false
 
 attribute "repo/git/ssh_key",
   :display_name => "Git SSH Key",
   :description => "",
   :default => nil,
-  :required => "optional"
+  :required => false
   
