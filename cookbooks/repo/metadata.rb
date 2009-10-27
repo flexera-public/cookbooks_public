@@ -12,8 +12,8 @@ provides "repo_pull(repo_type, destination)"
 recipe  "repo::do_pull_git", "Pulls from a GIT repository."
 recipe  "repo::do_pull_svn", "Pulls from a Subversion repository."
 
-grouping "repo",
-  :display_name => "Source Repository Settings"
+# grouping "repo",
+#   :display_name => "Source Repository Settings"
   
 attribute "repo/type",
   :display_name => "Repository Type",
@@ -31,8 +31,8 @@ attribute "repo/revision",
   :description => "",
   :required => false
 
-grouping "repo/svn",
-  :display_name => "Subversion"
+# grouping "repo/svn",
+#   :display_name => "Subversion"
 
 attribute "repo/svn/username",
   :display_name => "Subversion User Name",
@@ -52,8 +52,8 @@ attribute "repo/svn/arguments",
   :required => false,
   :recipes => ['repo::do_pull_svn']
 
-grouping "repo/git",
-  :display_name => "Git"
+# grouping "repo/git",
+#   :display_name => "Git"
 
 attribute "repo/git/depth",
   :display_name => "Git Depth",

@@ -1,10 +1,6 @@
 {
-  "recommendations": {
-
-  },
   "maintainer": "RightScale, Inc.",
-  "long_description": "",
-  "suggestions": {
+  "recommendations": {
 
   },
   "maintainer_email": "support@rightscale.com",
@@ -12,7 +8,7 @@
     "repo::do_pull_git": "Pulls from a GIT repository.",
     "repo::do_pull_svn": "Pulls from a Subversion repository."
   },
-  "conflicting": {
+  "suggestions": {
 
   },
   "dependencies": {
@@ -26,144 +22,117 @@
   "platforms": {
 
   },
+  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
   "name": "repo",
   "attributes": {
     "repo\/repository": {
-      "calculated": false,
       "type": "string",
-      "choice": [
-
-      ],
       "description": "",
+      "multiple_values": false,
       "display_name": "Repository Url",
-      "required": "required",
+      "required": true,
       "recipes": [
 
       ]
     },
     "repo\/type": {
-      "calculated": false,
       "type": "string",
-      "choice": [
-
-      ],
       "description": "",
+      "multiple_values": false,
       "display_name": "Repository Type",
-      "required": "required",
+      "required": true,
       "recipes": [
 
       ]
     },
     "repo\/git\/depth": {
-      "calculated": false,
       "default": null,
       "type": "string",
-      "choice": [
-
-      ],
       "description": "",
+      "multiple_values": false,
       "display_name": "Git Depth",
-      "required": "optional",
+      "required": false,
       "recipes": [
         "repo::do_pull_git"
       ]
     },
     "repo\/revision": {
-      "calculated": false,
       "type": "string",
-      "choice": [
-
-      ],
       "description": "",
+      "multiple_values": false,
       "display_name": "Revision\/Branch\/Tag",
-      "required": "optional",
+      "required": false,
       "recipes": [
 
       ]
     },
     "repo\/svn\/arguments": {
-      "calculated": false,
       "type": "string",
-      "choice": [
-
-      ],
       "description": "",
+      "multiple_values": false,
       "display_name": "Subversion Arguments",
-      "required": "optional",
+      "required": false,
       "recipes": [
         "repo::do_pull_svn"
       ]
     },
     "repo\/git\/remote": {
-      "calculated": false,
       "default": "origin",
       "type": "string",
-      "choice": [
-
-      ],
       "description": "",
+      "multiple_values": false,
       "display_name": "Git Remote",
-      "required": "optional",
+      "required": false,
       "recipes": [
         "repo::do_pull_git"
       ]
     },
     "repo\/svn\/username": {
-      "calculated": false,
       "type": "string",
-      "choice": [
-
-      ],
       "description": "",
+      "multiple_values": false,
       "display_name": "Subversion User Name",
-      "required": "optional",
+      "required": false,
       "recipes": [
         "repo::do_pull_svn"
       ]
     },
     "repo\/git\/ssh_key": {
-      "calculated": false,
       "default": null,
       "type": "string",
-      "choice": [
-
-      ],
       "description": "",
+      "multiple_values": false,
       "display_name": "Git SSH Key",
-      "required": "optional",
+      "required": false,
       "recipes": [
         "repo::do_pull_git"
       ]
     },
     "repo\/git\/enable_submodules": {
-      "calculated": false,
       "default": "false",
       "type": "string",
-      "choice": [
-
-      ],
       "description": "",
+      "multiple_values": false,
       "display_name": "Enable Submodules",
-      "required": "optional",
+      "required": false,
       "recipes": [
         "repo::do_pull_git"
       ]
     },
     "repo\/svn\/password": {
-      "calculated": false,
       "type": "string",
-      "choice": [
-
-      ],
       "description": "",
+      "multiple_values": false,
       "display_name": "Subversion Password",
-      "required": "optional",
+      "required": false,
       "recipes": [
         "repo::do_pull_svn"
       ]
     }
   },
-  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "conflicting": {
+
+  },
   "providing": {
     "repo_pull(repo_type, destination)": [
 
@@ -175,20 +144,10 @@
 
     ]
   },
+  "version": "0.0.2",
   "replacing": {
 
   },
-  "version": "0.0.2",
-  "description": "Pulls code from remote SCM repository",
-  "groupings": {
-    "repo": {
-      "display_name": "Source Repository Settings"
-    },
-    "repo\/svn": {
-      "display_name": "Subversion"
-    },
-    "repo\/git": {
-      "display_name": "Git"
-    }
-  }
+  "long_description": "",
+  "description": "Pulls code from remote SCM repository"
 }
