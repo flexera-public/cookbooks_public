@@ -8,10 +8,6 @@
 #
 # Required attributes
 #
-set_unless[:rails][:code][:url] = ""
-set_unless[:rails][:code][:user] =  ""
-set_unless[:rails][:code][:credentials] = ""
-
 set_unless[:rails][:db_app_user] = ""   	     
 set_unless[:rails][:db_app_passwd] = ""       
 set_unless[:rails][:db_schema_name] = ""      

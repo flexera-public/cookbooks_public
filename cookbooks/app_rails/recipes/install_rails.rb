@@ -31,7 +31,7 @@ include_recipe "mysql::client"
 @node[:rails][:gems_list].each { |gem| gem_package gem } unless "#{@node[:rails][:gems_list]}" == ""
 
 # grab application source from remote repository
-include_recipe "app_rails::do_update_code"
+repo_pull(@node[:rails][:code][:destination])
 
 # reconfigure existing database.yml, or create from scratch
 include_recipe "app_rails::setup_db_config"

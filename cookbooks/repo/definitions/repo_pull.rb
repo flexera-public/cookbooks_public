@@ -23,7 +23,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-define :repo_pull, type => :git, dest => "~" do
+define :repo_pull, dest => "~" do
   @node[:repo][:destination] = params[:dest]
-  include_recipe "sync_#{type}"
+  include_recipe "sync_#{@node[:repo][:type]}"
 end

@@ -1,3 +1,5 @@
+default[:repo][:type] = "Git"
+
 case repo[:type]
 when "Git"
   set[:repo][:type] = :git

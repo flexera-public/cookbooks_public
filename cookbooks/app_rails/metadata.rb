@@ -11,11 +11,8 @@ depends "mysql::client"
 depends "repo"
 depends "db_mysql"
 
-depends "repo_git_pull(url, branch, user, dest, cred)"
- 
 recipe  "app_rails::default", "Runs app_rails::install_rails."
 recipe  "app_rails::do_db_restore", "Restore the application database schema from a remote location."
-recipe  "app_rails::do_update_code", "Update application source files from the remote repository."
 recipe  "app_rails::install_rails", "Installs the rails application server."
 recipe  "app_rails::setup_db_config", "Configures the rails database.yml file."
 
