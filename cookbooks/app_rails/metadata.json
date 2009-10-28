@@ -8,7 +8,7 @@
     "app_rails::do_db_restore": "Restore the application database schema from a remote location.",
     "app_rails::setup_db_config": "Configures the rails database.yml file.",
     "app_rails::install_rails": "Installs the rails application server.",
-    "app_rails::do_update_code": "Update application source files from the remote repository.",
+    "app_rails::do_update_code": "",
     "app_rails::default": "Runs app_rails::install_rails.",
     "app_rails": ""
   },
@@ -16,9 +16,6 @@
 
   },
   "dependencies": {
-    "repo_git_pull(url, branch, user, dest, cred)": [
-
-    ],
     "repo": [
 
     ],

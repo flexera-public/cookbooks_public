@@ -26,6 +26,10 @@ attribute "repo/repository",
   :description => "",
   :required => true
   
+attribute "repo/destination",
+  :display_name => "Repository Destination",
+  :description => "Where should I put the files?"
+  
 attribute "repo/revision",
   :display_name => "Revision/Branch/Tag",
   :description => "",

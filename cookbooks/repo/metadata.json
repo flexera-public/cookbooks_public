@@ -97,6 +97,16 @@
         "repo::do_pull_svn"
       ]
     },
+    "repo\/destination": {
+      "type": "string",
+      "description": "Where should I put the files?",
+      "multiple_values": false,
+      "display_name": "Repository Destination",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
     "repo\/git\/ssh_key": {
       "default": null,
       "type": "string",
