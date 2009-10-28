@@ -15,18 +15,45 @@ if "#{@node[:repo][:git][:ssh_key]}" != ""
   end
 end 
 
-scm "pull git repository" do
-  destination @node[:repo][:destination]
-  repository @node[:repo][:repository]
-  revision @node[:repo][:revision]
-  
-  depth @node[:repo][:git][:depth] 	  
-  enable_submodules @node[:repo][:git][:enable_submodules] 
-  remote @node[:repo][:git][:remote] 	   
-   
-  ssh_wrapper "#{keyfile}.sh" if keyfile  	
-  
-  provider Chef::Provider::Git
+# scm "pull git repository" do
+#   destination @node[:repo][:destination]
+#   repository @node[:repo][:repository]
+#   revision @node[:repo][:revision]
+#   
+#   depth @node[:repo][:git][:depth]    
+#   enable_submodules @node[:repo][:git][:enable_submodules] 
+#   remote @node[:repo][:git][:remote]     
+#    
+#   ssh_wrapper "#{keyfile}.sh" if keyfile    
+#   
+#   provider Chef::Provider::Git
+# end
+
+# pull repo (if exist)
+ruby "pull-exsiting-local-repo" do
+  cwd @node[:repo][:destination]
+  only_if do File.directory?(@node[:repo][:destination]) end
+  code <<-EOH
+    puts "Updateing existing repo at #{@node[:repo][:destination]}"
+    ENV["GIT_SSH"] = "#{keyfile}.sh" unless ("#{keyfile}" == "")
+    puts `git pull` 
+  EOH
+end
+
+# clone repo (if not exist)
+ruby "create-new-local-repo" do
+  not_if do File.directory?(@node[:repo][:destination]) end
+  code <<-EOH
+    puts "Creating new repo at #{@node[:repo][:destination]}"
+    ENV["GIT_SSH"] = "#{keyfile}.sh" unless ("#{keyfile}" == "")
+    puts `git clone #{@node[:repo][:repositiory]} -- #{@node[:repo][:destination]}`
+
+    if "#{@node[:repo][:revision]}" != "master" 
+      dir = "#{@node[:repo][:destination]}"
+      Dir.chdir(dir) 
+      puts `git checkout --track -b #{@node[:repo][:revision]} origin/#{params[:revision]}`
+    end
+  EOH
 end
 
 # delete SSH key & clear GIT_SSH
