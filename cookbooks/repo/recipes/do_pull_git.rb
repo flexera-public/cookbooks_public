@@ -51,7 +51,7 @@ ruby "create-new-local-repo" do
     if "#{@node[:repo][:revision]}" != "master" 
       dir = "#{@node[:repo][:destination]}"
       Dir.chdir(dir) 
-      puts `git checkout --track -b #{@node[:repo][:revision]} origin/#{params[:repo][:revision]}`
+      puts `git checkout --track -b #{@node[:repo][:revision]} origin/#{@node[:repo][:revision]}`
     end
   EOH
 end
