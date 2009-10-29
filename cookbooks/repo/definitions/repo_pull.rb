@@ -29,5 +29,5 @@ define :repo_pull, destination => "~" do
   raise "You must provide a destination." if ("#{params[:destination]}" == "") 
   
   @node[:repo][:destination] = params[:destination]
-  include_recipe "do_pull_#{@node[:repo][:type]}"
+  include_recipe "repo::do_pull_#{@node[:repo][:type]}"
 end
