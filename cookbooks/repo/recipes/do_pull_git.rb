@@ -46,12 +46,12 @@ ruby "create-new-local-repo" do
   code <<-EOH
     puts "Creating new repo at #{@node[:repo][:destination]}"
     ENV["GIT_SSH"] = "#{keyfile}.sh" unless ("#{keyfile}" == "")
-    puts `git clone #{@node[:repo][:repositiory]} -- #{@node[:repo][:destination]}`
+    puts `git clone #{@node[:repo][:repository]} -- #{@node[:repo][:destination]}`
 
     if "#{@node[:repo][:revision]}" != "master" 
       dir = "#{@node[:repo][:destination]}"
       Dir.chdir(dir) 
-      puts `git checkout --track -b #{@node[:repo][:revision]} origin/#{params[:revision]}`
+      puts `git checkout --track -b #{@node[:repo][:revision]} origin/#{params[:repo][:revision]}`
     end
   EOH
 end
