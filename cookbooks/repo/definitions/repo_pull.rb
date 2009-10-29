@@ -28,6 +28,13 @@ define :repo_pull, destination => "~" do
   # Check that we have the required attributes set
   raise "You must provide a destination." if ("#{params[:destination]}" == "") 
   
+  # make sure dir exists
+  bash "ensure destination dir exists" do
+    not_if do ::File.directory?("#{@node[:repo][:destination]}") end
+    code "mkdir -p #{@node[:repo][:destination]}"
+  end
+  
+  # switch to requested repo implementation
   @node[:repo][:destination] = params[:destination]
   include_recipe "repo::do_pull_#{@node[:repo][:type]}"
 end
