@@ -27,6 +27,7 @@ define :repo_pull, destination => "~" do
   
   # Check that we have the required attributes set
   raise "You must provide a destination." if ("#{params[:destination]}" == "") 
+  @node[:repo][:destination] = params[:destination]
   
   # make sure dir exists
   bash "ensure destination dir exists" do
