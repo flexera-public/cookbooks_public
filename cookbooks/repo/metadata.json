@@ -50,7 +50,7 @@
       "type": "string",
       "description": "",
       "multiple_values": false,
-      "display_name": "Git Depth",
+      "display_name": "Depth (Git only)",
       "required": false,
       "recipes": [
         "repo::do_pull_git"
@@ -70,7 +70,7 @@
       "type": "string",
       "description": "",
       "multiple_values": false,
-      "display_name": "Subversion Arguments",
+      "display_name": "Arguments  (Subversion only)",
       "required": false,
       "recipes": [
         "repo::do_pull_svn"
@@ -81,7 +81,7 @@
       "type": "string",
       "description": "",
       "multiple_values": false,
-      "display_name": "Git Remote",
+      "display_name": "Remote  (Git only)",
       "required": false,
       "recipes": [
         "repo::do_pull_git"
@@ -91,7 +91,7 @@
       "type": "string",
       "description": "",
       "multiple_values": false,
-      "display_name": "Subversion User Name",
+      "display_name": "User Name (Subversion only)",
       "required": false,
       "recipes": [
         "repo::do_pull_svn"
@@ -112,7 +112,7 @@
       "type": "string",
       "description": "",
       "multiple_values": false,
-      "display_name": "Git SSH Key",
+      "display_name": "SSH Key  (Git only)",
       "required": false,
       "recipes": [
         "repo::do_pull_git"
@@ -123,7 +123,7 @@
       "type": "string",
       "description": "",
       "multiple_values": false,
-      "display_name": "Enable Submodules",
+      "display_name": "Enable Submodules  (Git only)",
       "required": false,
       "recipes": [
         "repo::do_pull_git"
@@ -133,7 +133,7 @@
       "type": "string",
       "description": "",
       "multiple_values": false,
-      "display_name": "Subversion Password",
+      "display_name": "Password (Subversion only)",
       "required": false,
       "recipes": [
         "repo::do_pull_svn"

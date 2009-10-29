@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: repo_git
+# Cookbook Name:: repo
 # Definition:: repo_pull
 #
 # Copyright (c) 2009 RightScale Inc
@@ -23,7 +23,11 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-define :repo_pull, dest => "~" do
-  @node[:repo][:destination] = params[:dest]
+define :repo_pull, destination => "~" do  
+  
+  # Check that we have the required attributes set
+  raise "You must provide a destination." if ("#{params[:destination]}" == "") 
+  
+  @node[:repo][:destination] = params[:destination]
   include_recipe "sync_#{@node[:repo][:type]}"
 end
