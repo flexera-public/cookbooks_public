@@ -9,7 +9,7 @@ depends "repo_git"
 depends "repo_git_pull(url, branch, user, dest, cred)"
  
 recipe  "app_php::default", "Runs app_php::install_php."
-recipe  "app_php::do_update_code", "Update application source files from remote repository."
+recipe  "app_php::do_update_code", "Update application source files from the remote repository."
 recipe  "app_php::install_php", "Installs the php application server."
 
 attribute "php",
@@ -20,23 +20,23 @@ attribute "php",
 # required attributes
 #
 attribute "php/db_app_user",
-  :display_name => "database user",
-  :description => "username for database access",
+  :display_name => "Database User",
+  :description => "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Username'.  The application server will then have unrestricted access to the database.",
   :required => true
 
 attribute "php/db_app_passwd",
-  :display_name => "database password",
-  :description => "password for database access",
+  :display_name => "Database Password",
+  :description => "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Password'.  The application server will then have unrestricted access to the database.",
   :required => true
 
 attribute "php/db_schema_name",
-  :display_name => "database schema name",
-  :description => "database schema to use",
+  :display_name => "Database Schema Name",
+  :description => "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
   :required => true
 
 attribute "php/db_dns_name",
-  :display_name => "database dns name",
-  :description => "FQDN of the database server",
+  :display_name => "Database Dns Name",
+  :description => "The fully qualified domain name of the database server to which the application server(s) will connect.  Ex: master.mydatabase.com",
   :required => true
 
 attribute "php/code",
@@ -44,19 +44,19 @@ attribute "php/code",
   :type => "hash"
   
 attribute "php/code/url",
-  :display_name => "repository url",
-  :description => "location of application code repository",
+  :display_name => "Repository URL",
+  :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
   :required => true
 
 attribute "php/code/user",
-  :display_name => "repository username",
-  :description => "username for code repository",
+  :display_name => "Repository Username",
+  :description => "The username to access the code repository.",
   :required => false,
   :default => ""  
 
 attribute "php/code/credentials",
-  :display_name => "repository credentials",
-  :description => "credentials for code repository",
+  :display_name => "Repository Credentials",
+  :description => "The private SSH key of the git repository.",
   :required => false,
   :default => ""  
 
@@ -64,13 +64,13 @@ attribute "php/code/credentials",
 # recommended attributes
 #
 attribute "php/server_name",
-  :display_name => "server name",
-  :description => "FQDN for the server",
+  :display_name => "Server Name",
+  :description => "The fully qualified domain name of the application server used to define your virtual host.",
   :required => true
 
 attribute "php/application_name",
-  :display_name => "application name",
-  :description => "give a name to your application",
+  :display_name => "Application Name",
+  :description => "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name.",
   :default => "myapp"
   
 #
@@ -78,11 +78,11 @@ attribute "php/application_name",
 #
 
 attribute "php/code/branch",
-  :display_name => "repository branch",
-  :description => "branch to pull source from",
+  :display_name => "Repository Branch",
+  :description => "The name of the branch within the git repository where the application code should be pulled from.",
   :default => "master"
   
 attribute "php/application_port",
-  :display_name => "application port",
-  :description => "the port your php application will listen on",
+  :display_name => "Application Port",
+  :description => "This input is normally set to 8000 if this server is a combined HAProxy and application server. If this is an application server (w/o HAproxy), set it to 80.  When setting this in a deployment, you should use 80 at the deployment level since you want all of your servers in the array to use this value.  If the server is a FE+APP server, you can set it to 8000 at the server level so that it overrides the deployment level input.",
   :default => "8000"
