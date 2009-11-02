@@ -91,17 +91,9 @@ template @node[:rs_utils][:collectd_config] do
   source "collectd.config.erb"
 end
 
-bash "configure_process_monitoring" do 
-  code <<-EOH
-    echo "LoadPlugin Processes" > #{@node[:rs_utils][:collectd_plugin_dir]}/processes.conf
-    echo "<Plugin processes>" >> #{@node[:rs_utils][:collectd_plugin_dir]}/processes.conf
-    echo '  process "collectd"' >> #{@node[:rs_utils][:collectd_plugin_dir]}/processes.conf
-    #TODO: make this work!
-    #for p in "#{@node[:rs_utils][:process_list]}" ; do
-      #echo "  process \"$p\"" >> #{@node[:rs_utils][:collectd_plugin_dir]}/processes.conf
-    #done
-    echo "</Plugin>" >> #{@node[:rs_utils][:collectd_plugin_dir]}/processes.conf
-  EOH
+# configure process monitoring
+template File.join(@node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
+  source "processes.conf.erb"
 end
 
 right_link_tag "rs_monitoring:state=active"
