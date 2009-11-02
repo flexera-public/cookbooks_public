@@ -45,5 +45,5 @@ set[:php][:code][:destination] = "/home/webapp/#{php[:application_name]}"
 set_unless[:apache][:mpm] = "prefork" 
 
 if php.has_key?(:application_port) 
-  apache[:listen_ports] = php[:application_port]
+  set[:apache][:listen_ports] = php[:application_port]
 end
