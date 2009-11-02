@@ -44,6 +44,7 @@ define :db_mysql_restore,  url => nil, branch => 'master', user => nil, credenti
   end
 
   bash "unpack mysqldump file: #{dumpfile}" do
+    not_if "echo \"show databases\" | mysql | grep -q  \"^#{schema_name}$\""
     user "root"
     cwd dir
     code <<-EOH
