@@ -9,7 +9,6 @@
 # Required attributes
 #
 set_unless[:php][:code][:url] = ""
-set_unless[:php][:code][:user] =  ""
 set_unless[:php][:code][:credentials] = ""
 
 set_unless[:php][:db_app_user] = ""   	     

@@ -27,7 +27,6 @@
 db_mysql_restore "do database restore" do
   url @node[:rails][:code][:url]
   branch @node[:rails][:code][:branch] 
-  user @node[:rails][:code][:user]
   credentials @node[:rails][:code][:credentials]
   file_path @node[:rails][:db_mysqldump_file_path]
   schema_name @node[:rails][:db_schema_name]

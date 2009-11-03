@@ -35,7 +35,6 @@ Chef::Log.info("You did not provide branch informaiton -- setting to default.") 
 repo_git_pull "Get Repository" do
   url @node[:php][:code][:url]
   branch @node[:php][:code][:branch] 
-  user @node[:php][:code][:user]
   dest @node[:php][:code][:destination]
   cred @node[:php][:code][:credentials]
 end

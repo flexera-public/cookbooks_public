@@ -6,7 +6,7 @@ version          "0.0.1"
 
 depends "web_apache"
 depends "repo_git"
-depends "repo_git_pull(url, branch, user, dest, cred)"
+depends "repo_git_pull(url, branch, dest, cred)"
  
 recipe  "app_php::default", "Runs app_php::install_php."
 recipe  "app_php::do_update_code", "Update application source files from the remote repository."
@@ -47,12 +47,6 @@ attribute "php/code/url",
   :display_name => "Repository URL",
   :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
   :required => true
-
-attribute "php/code/user",
-  :display_name => "Repository Username",
-  :description => "The username to access the code repository.",
-  :required => false,
-  :default => ""  
 
 attribute "php/code/credentials",
   :display_name => "Repository Credentials",
