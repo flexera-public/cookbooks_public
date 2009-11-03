@@ -77,7 +77,8 @@ attribute "php/code/branch",
   :description => "The name of the branch within the git repository where the application code should be pulled from.",
   :default => "master"
   
-attribute "php/application_port",
-  :display_name => "Application Port",
+attribute "apache/listen_ports",
+  :display_name => "Apache Listen Port",
   :description => "This input is normally set to 8000 if this server is a combined HAProxy and application server. If this is an application server (w/o HAproxy), set it to 80.  When setting this in a deployment, you should use 80 at the deployment level since you want all of your servers in the array to use this value.  If the server is a FE+APP server, you can set it to 8000 at the server level so that it overrides the deployment level input.",
-  :default => "8000"
+  :type => "array",
+  :default => [ "8000" ]

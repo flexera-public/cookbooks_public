@@ -30,7 +30,6 @@ set_unless[:rails][:env] = "production"
 # Optional attributes
 #
 set_unless[:rails][:code][:branch] = "master" 
-set_unless[:rails][:application_port] = "8000"    
 set_unless[:rails][:spawn_method] = "conservative"
 set_unless[:rails][:gems_list] = ""
 set_unless[:rails][:db_adapter] = "mysql"
@@ -45,7 +44,5 @@ set[:rails][:code][:destination] = "/home/webapp/#{rails[:application_name]}"
 #
 # default apache is worker model -- use prefork for single thread
 set_unless[:apache][:mpm] = "prefork" 
+set_unless[:appache][:listen_ports] = "8000"  
 
-if rails.has_key?(:application_port) 
-  set[:apache][:listen_ports] = rails[:application_port]
-end

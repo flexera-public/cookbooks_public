@@ -27,8 +27,7 @@ set_unless[:php][:application_name] = "myapp"
 #
 # Optional attributes
 #
-set_unless[:php][:code][:branch] = "master" 
-set_unless[:php][:application_port] = "8000"    
+set_unless[:php][:code][:branch] = "master"   
 set_unless[:php][:modules_list] = ""
 set_unless[:php][:db_adapter] = "mysql"
 
@@ -42,7 +41,4 @@ set[:php][:code][:destination] = "/home/webapp/#{php[:application_name]}"
 #
 # default apache is worker model -- use prefork for single thread
 set_unless[:apache][:mpm] = "prefork" 
-
-if php.has_key?(:application_port) 
-  set[:apache][:listen_ports] = php[:application_port]
-end
+set_unless[:appache][:listen_ports] = "8000"  
