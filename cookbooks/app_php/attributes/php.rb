@@ -41,4 +41,4 @@ set[:php][:code][:destination] = "/home/webapp/#{php[:application_name]}"
 #
 # default apache is worker model -- use prefork for single thread
 set_unless[:apache][:mpm] = "prefork" 
-set_unless[:apache][:listen_ports] = "8000"  
+set_unless[:appache][:listen_ports] = "8000"  
