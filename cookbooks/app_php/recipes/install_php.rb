@@ -42,7 +42,7 @@ end
 include_recipe "app_php::do_update_code"
 
 # if port 80, disable default vhost
-if "#{@node[:apache][:listen_ports]}" == "80" 
+if "#{@node[:php][:application_port]}" == "80" 
   apache_site "000-default" do
     enable false
   end
@@ -51,7 +51,7 @@ end
 web_app @node[:php][:application_name] do
   template "php_web_app.conf.erb"
   docroot @node[:php][:code][:destination]
-  vhost_port @node[:apache][:listen_ports]
+  vhost_port @node[:php][:application_port]
   server_name @node[:php][:server_name]
 end
 

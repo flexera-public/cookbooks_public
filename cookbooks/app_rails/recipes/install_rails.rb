@@ -54,7 +54,7 @@ bash "chown_home" do
 end
 
 # if port 80, disable default vhost
-if "#{@node[:apache][:listen_ports]}" == "80" 
+if "#{@node[:rails][:application_port]}" == "80" 
   apache_site "000-default" do
     enable false
   end
@@ -64,7 +64,7 @@ end
 web_app @node[:rails][:application_name] do
   template "passenger_web_app.conf.erb"
   docroot @node[:rails][:code][:destination]
-  vhost_port @node[:apache][:listen_ports]
+  vhost_port @node[:rails][:application_port]
   server_name @node[:rails][:server_name]
   rails_env @node[:rails][:env]
 end
