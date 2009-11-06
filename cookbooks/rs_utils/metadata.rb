@@ -3,42 +3,6 @@ maintainer_email "support@rightscale.com"
 license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'LICENSE')))
 description      "Installs common utilities used by RightScale instances."
 version          "0.0.1"
-#
-# Required
-#
-#attribute "hack/cloud",
-#  :display_name => "General Cloud Attributes",
-#  :type => "hash"
-
-#attribute "hack/rightscale/instance_uuid",
-#  :display_name => "Instance UUID",
-#  :description => "Instance universally unique ID",
-#  :required => true,
-#  :default => nil
-
-#attribute "hack/rightscale",
-#  :display_name => "RightScale Attributes",
-#  :type => "hash"
-
-#attribute "hack/rightscale/server",
-#  :display_name => "RightScale Server Attributes",
-#  :type => "hash"
-#
-#attribute "hack/rightscale/server/sketchy",
-#  :display_name => "Sketchy Server",
-#  :description => "RightScale sketchy server",
-#  :required => true,
-#  :default => nil
-#
-#attribute "hack/rightscale/server/lumberjack",
-##  :display_name => "Lumberjack Server",
-#  :description => "RightScale lumberjack server",
-#  :required => true,
-#  :default => nil
-
-#
-# Recommended
-#
 
 #
 # optional
