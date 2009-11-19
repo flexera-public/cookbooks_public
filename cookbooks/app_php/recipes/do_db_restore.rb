@@ -1,5 +1,5 @@
-# Cookbook Name:: app_rails
-# Recipe:: setup_db_config
+# Cookbook Name:: app_php
+# Recipe:: do_db_restore
 #
 # Copyright (c) 2009 RightScale Inc
 #
@@ -22,6 +22,18 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-template "#{@node[:rails][:code][:destination]}/config/database.yml"   do
-  source "database.yaml.erb"
+
+# restore application database schema from remote location
+db_mysql_restore "do database restore" do
+  url @node[:php][:code][:url]
+  branch @node[:php][:code][:branch] 
+  credentials @node[:php][:code][:credentials]
+  file_path @node[:php][:db_mysqldump_file_path]
+  schema_name @node[:php][:db_schema_name]
+end
+
+db_mysql_set_privileges "setup user privileges" do
+  preset 'user'
+  username @node[:php][:db_app_user]
+  password @node[:php][:db_app_passwd]
 end

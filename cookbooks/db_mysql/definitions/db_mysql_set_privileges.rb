@@ -34,7 +34,7 @@ define :db_mysql_set_privileges, preset => "administrator", username => nil, pas
       require 'rubygems'
       require 'mysql'
 
-      con = Mysql.new("", "root" )
+      con = Mysql.new("", "root",nil,nil,nil,"#{@node[:db_mysql][:socket]}")
     
       case '#{priv_preset}'
       when 'administrator'

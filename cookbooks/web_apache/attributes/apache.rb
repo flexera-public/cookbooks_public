@@ -37,7 +37,7 @@ set_unless[:apache][:keepalive] = "Off"
 set_unless[:apache][:extended_status] = "On"
 #  worker = multithreaded
 #  prefork = single-threaded (use for php)
-set_unless[:apache][:mpm] = "worker"
+set_unless[:apache][:mpm] = "prefork"
 # Security: Configuring Server Signature
 set_unless[:apache][:serversignature] = "Off "
 

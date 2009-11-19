@@ -46,12 +46,11 @@ set_unless[:db_mysql][:bind_address] = ipaddress
 #
 case platform
 when "redhat","centos","fedora","suse"
-	set_unless[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
-  set_unless[:db_mysql][:basedir] = "/var/lib"
+  set_unless[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
+  set_unless[:db_mysql][:basedir] = "/usr"
   set_unless[:db_mysql][:packages_uninstall] = ""
   set_unless[:db_mysql][:packages_install] = [
     "perl-DBD-MySQL", "mysql-server", "mysql-devel", "mysql-connector-odbc", 
-    "mysqlclient14-devel", "mysqlclient14", "mysqlclient10-devel", "mysqlclient10", 
     "krb5-libs"
 	]
   set_unless[:db_mysql][:log] = ""

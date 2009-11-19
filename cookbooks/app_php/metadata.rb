@@ -10,6 +10,7 @@ depends "repo_git"
 depends "repo_git_pull(url, branch, dest, cred)"
  
 recipe  "app_php::default", "Runs app_php::install_php."
+recipe  "app_php::do_db_restore", "Restore the application database schema from a remote location."
 recipe  "app_php::do_update_code", "Update application source files from the remote repository."
 recipe  "app_php::install_php", "Installs the php application server."
 
@@ -68,6 +69,10 @@ attribute "php/application_name",
   :description => "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name.",
   :default => "myapp"
   
+attribute "php/db_mysqldump_file_path",
+  :display_name => "Mysqldump File Path",
+  :description => "This input allows you to restore your database by choosing a specific MySQL database backup file.  You will need to specify a full path and/or filename.  Ex: branch/mydb-200910300402.gz"
+
 #
 # optional attributes
 #
@@ -81,3 +86,9 @@ attribute "php/application_port",
   :display_name => "Application Port",
   :description => "This input is normally set to 8000 if this server is a combined HAProxy and application server. If this is an application server (w/o HAproxy), set it to 80.  When setting this in a deployment, you should use 80 at the deployment level since you want all of your servers in the array to use this value.  If the server is a FE+APP server, you can set it to 8000 at the server level so that it overrides the deployment level input.",
   :default => "8000"
+
+attribute "php/modules_list",
+  :display_name => "PHP modules",
+  :discription => "An optional list of php modules to install",
+  :type => "array" 
+

@@ -29,7 +29,7 @@ set_unless[:php][:application_name] = "myapp"
 #
 set_unless[:php][:code][:branch] = "master" 
 set_unless[:php][:application_port] = "8000"    
-set_unless[:php][:modules_list] = ""
+set_unless[:php][:modules_list] = [] 
 set_unless[:php][:db_adapter] = "mysql"
 
 #
@@ -37,12 +37,15 @@ set_unless[:php][:db_adapter] = "mysql"
 #
 set[:php][:code][:destination] = "/home/webapp/#{php[:application_name]}"
 
-#
-# Override attributes
-#
-# default apache is worker model -- use prefork for single thread
-set_unless[:apache][:mpm] = "prefork" 
-
-if php.has_key?(:application_port) 
-  set[:apache][:listen_ports] = php[:application_port]
+case platform
+when "ubuntu", "debian"
+  set[:php][:package_dependencies] = ["php5", "php5-mysql", "php-pear", "libapache2-mod-php5"] 
+  set[:php][:module_dependencies] = [ "proxy_http", "php5"]
+  set_unless[:php][:app_user] = "www-data"
+when "centos","fedora","suse"
+  set[:php][:package_dependencies] = ["php", "php-mysql", "php-pear"]
+  set[:php][:module_dependencies] = []
+  set_unless[:php][:app_user] = "apache"
 end
+
+

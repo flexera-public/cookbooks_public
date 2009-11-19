@@ -24,28 +24,35 @@
 
 include_recipe "web_apache"
 
-# UBUNTU ONLY
-if @node[:platform] == "ubuntu"
-  ["php5", "php5-mysql", "php-pear", "libapache2-mod-php5", *@node[:php][:modules_list]].each do |p|
-    package p
-  end
-else
-  raise "FATAL: only Ubuntu platform is supported at this time, aborting!"
+[ @node[:php][:package_dependencies] | @node[:php][:modules_list] ].flatten.each do |p|
+  package p
 end
 
-# does a2enmod
-["proxy_http", "php5"].each do |mod|
+@node[:php][:module_dependencies].each do |mod|
   apache_module mod
 end
 
 # grab application source from remote repository
 include_recipe "app_php::do_update_code"
 
+php_port =  @node[:php][:application_port]
+
 # if port 80, disable default vhost
-if "#{@node[:php][:application_port]}" == "80" 
+if php_port == "80" 
   apache_site "000-default" do
     enable false
   end
+end
+
+ports = @node[:apache][:listen_ports].include?(php_port) \
+    ? @node[:apache][:listen_ports] \
+    : [@node[:apache][:listen_ports], php_port].flatten
+
+template "#{@node[:apache][:dir]}/ports.conf" do
+  cookbook "apache2"
+  source "ports.conf.erb"
+  variables :apache_listen_ports => ports
+  notifies :restart, resources(:service => "apache2")
 end
 
 web_app @node[:php][:application_name] do
@@ -61,10 +68,13 @@ end
 
 template File.join(@node[:php][:code][:destination], "config", "db.php") do
   source "config_db.php.erb"
+  variables({
+   :db_handle => "#{@node[:php][:db_dns_name]}:#{@node[:db_mysql][:socket]}"
+  })
 end
 
 bash "chown_home" do
   code <<-EOH
-    chown -R www-data:www-data #{@node[:php][:code][:destination]}
+    chown -R #{@node[:php][:app_user]}:#{@node[:php][:app_user]} #{@node[:php][:code][:destination]}
   EOH
 end

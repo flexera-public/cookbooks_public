@@ -1,7 +1,59 @@
 {
+  "providing": {
+    "web_apache::install_apache": [
+
+    ],
+    "web_apache": [
+
+    ]
+  },
+  "long_description": "",
+  "description": "Installs/configures the apache2 webserver",
+  "replacing": {
+
+  },
+  "platforms": {
+
+  },
+  "version": "0.0.1",
   "maintainer": "RightScale, Inc.",
+  "name": "web_apache",
   "recommendations": {
 
+  },
+  "attributes": {
+    "web_apache/mpm": {
+      "default": "worker",
+      "type": "string",
+      "multiple_values": false,
+      "description": "Can be set to 'worker' or 'prefork' and defines the setting in httpd.conf.  Use 'worker' for Rails/Tomcat/Standalone frontends and 'prefork' for PHP.",
+      "display_name": "Multi-Processing Module",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "web_apache/contact": {
+      "default": "root@localhost",
+      "type": "string",
+      "multiple_values": false,
+      "description": "The email address that Apache uses to send administrative mail (set in /etc/httpd/conf/httpd.conf).  By setting it to root@localhost.com emails are saved on the server.  You can use your own email address, but your spam filters might block them because reverse DNS lookup will show a mismatch between EC2 and your domain.",
+      "display_name": "Contact Email",
+      "required": false,
+      "recipes": [
+
+      ]
+    },
+    "web_apache": {
+      "type": "hash",
+      "multiple_values": false,
+      "description": "Apache Web Server",
+      "display_name": "apache hash",
+      "required": false,
+      "recipes": [
+
+      ]
+    }
   },
   "maintainer_email": "support@rightscale.com",
   "recipes": {
@@ -11,65 +63,13 @@
   "suggestions": {
 
   },
+  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "conflicting": {
+
+  },
   "dependencies": {
     "apache2": [
 
     ]
-  },
-  "platforms": {
-
-  },
-  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
-  "name": "web_apache",
-  "attributes": {
-    "web_apache\/mpm": {
-      "default": "worker",
-      "type": "string",
-      "description": "Can be set to 'worker' or 'prefork' and defines the setting in httpd.conf.  Use 'worker' for Rails\/Tomcat\/Standalone frontends and 'prefork' for PHP.",
-      "multiple_values": false,
-      "display_name": "Multi-Processing Module",
-      "required": false,
-      "recipes": [
-
-      ]
-    },
-    "web_apache\/contact": {
-      "default": "root@localhost",
-      "type": "string",
-      "description": "The email address that Apache uses to send administrative mail (set in \/etc\/httpd\/conf\/httpd.conf).  By setting it to root@localhost.com emails are saved on the server.  You can use your own email address, but your spam filters might block them because reverse DNS lookup will show a mismatch between EC2 and your domain.",
-      "multiple_values": false,
-      "display_name": "Contact Email",
-      "required": false,
-      "recipes": [
-
-      ]
-    },
-    "web_apache": {
-      "type": "hash",
-      "description": "Apache Web Server",
-      "multiple_values": false,
-      "display_name": "apache hash",
-      "required": false,
-      "recipes": [
-
-      ]
-    }
-  },
-  "conflicting": {
-
-  },
-  "providing": {
-    "web_apache::install_apache": [
-
-    ],
-    "web_apache": [
-
-    ]
-  },
-  "version": "0.0.1",
-  "replacing": {
-
-  },
-  "long_description": "",
-  "description": "Installs\/configures the apache2 webserver"
+  }
 }

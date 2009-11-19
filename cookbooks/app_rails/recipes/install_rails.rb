@@ -22,6 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
 include_recipe "web_apache"
 include_recipe "rails"
 include_recipe "passenger_apache2::mod_rails"
@@ -49,15 +50,29 @@ include_recipe "app_rails::setup_db_config"
 #chown application directory 
 bash "chown_home" do
   code <<-EOH
-    chown -R www-data:www-data #{@node[:rails][:code][:destination]}
+    echo "chown -R #{@node[:rails][:app_user]}:#{@node[:rails][:app_user]} #{@node[:rails][:code][:destination]}" >> /tmp/bash
+    chown -R #{@node[:rails][:app_user]}:#{@node[:rails][:app_user]} #{@node[:rails][:code][:destination]}
   EOH
 end
 
+passenger_port = @node[:rails][:application_port]
+
 # if port 80, disable default vhost
-if "#{@node[:rails][:application_port]}" == "80" 
+if passenger_port == "80" 
   apache_site "000-default" do
     enable false
   end
+end
+
+ports = @node[:apache][:listen_ports].include?(passenger_port) \
+    ? @node[:apache][:listen_ports] \
+    : [@node[:apache][:listen_ports], passenger_port].flatten
+
+template "#{@node[:apache][:dir]}/ports.conf" do
+  cookbook "apache2"
+  source "ports.conf.erb"
+  variables :apache_listen_ports => ports
+  notifies :restart, resources(:service => "apache2")
 end
 
 # setup the passenger vhost

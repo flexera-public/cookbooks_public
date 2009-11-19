@@ -54,8 +54,8 @@ define :db_mysql_restore,  url => nil, branch => 'master', user => nil, credenti
         echo "ERROR: MySQL dumpfile not found! File: '#{dumpfile}'" 
         exit 1
       fi 
-      mysqladmin -u root create #{schema_name}
-      gunzip < #{dumpfile} | mysql -u root #{schema_name}
+      mysqladmin -u root create #{schema_name} 
+      gunzip < #{dumpfile} | mysql -u root -b #{schema_name}
     EOH
   end
 

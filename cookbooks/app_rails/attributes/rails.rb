@@ -41,11 +41,14 @@ set_unless[:rails][:db_adapter] = "mysql"
 set[:rails][:code][:destination] = "/home/webapp/#{rails[:application_name]}"
 
 #
-# Override attributes
+# Platform specific attributes
 #
-# default apache is worker model -- use prefork for single thread
-set_unless[:apache][:mpm] = "prefork" 
-
-if rails.has_key?(:application_port) 
-  set[:apache][:listen_ports] = rails[:application_port]
+case platform 
+when "redhat","centos","fedora","suse"
+  set_unless[:rails][:app_user] = "apache"
+when "debian","ubuntu"
+  set_unless[:rails][:app_user] = "www-data"
+else 
+  set_unless[:rails][:app_user] = "www-data"
 end
+
