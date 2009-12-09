@@ -23,11 +23,12 @@
 
 set_unless[:db_mysql][:tunable][:thread_cache_size] = "50"
 set_unless[:db_mysql][:tunable][:max_connections]     = "800" 
+set_unless[:db_mysql][:tunable][:wait_timeout] = "28800"
 set_unless[:db_mysql][:tunable][:net_read_timeout]    = "30" 
 set_unless[:db_mysql][:tunable][:net_write_timeout]   = "30" 
 set_unless[:db_mysql][:tunable][:back_log]            = "128" 
 set_unless[:db_mysql][:tunable][:max_heap_table_size] = "32M" 
-set_unless[:db_mysql][:tunable][:wait_timeout] = "28800"
+set_unless[:db_mysql][:tunable][:expire_logs_days] = "10" 
 
 if !attribute?("ec2")
   set_unless[:db_mysql][:init_timeout] = 1200

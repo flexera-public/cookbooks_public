@@ -1,4 +1,5 @@
-# Cookbook Name:: rs_utils
+# Cookbook Name:: db_mysql
+# Recipe:: setup_my_cnf
 #
 # Copyright (c) 2009 RightScale Inc
 #
@@ -22,37 +23,16 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #
-# RightScale Enviroment Attributes.
-# These are needed by all RightScale Cookbooks.  Rs_utils should be included in all server templates
-# so these attributes are declared here.
+# Note! This does NOT restart mysql, only update the my.cnf
+# 
 
-#
-# Optional attributes
-#
-set_unless[:rs_utils][:timezone] = "UTC"    
-set_unless[:rs_utils][:process_list] = ""   
-set_unless[:rs_utils][:hostname] = ""
-set_unless[:rs_utils][:private_ssh_key] = ""
-
-set_unless[:rs_utils][:mysql_binary_backup_file] = "/var/run/mysql-binary-backup"
-
-#
-# Platform specific attributes
-#
-case platform
-when "redhat","centos","fedora","suse"
-  rs_utils[:logrotate_config] = "/etc/logrotate.d/syslog"
-  rs_utils[:collectd_config] = "/etc/collectd.conf"
-  rs_utils[:collectd_plugin_dir] = "/etc/collectd.d"
-when "debian","ubuntu"
-  rs_utils[:logrotate_config] = "/etc/logrotate.d/syslog-ng"
-  rs_utils[:collectd_config] = "/etc/collectd/collectd.conf"
-  rs_utils[:collectd_plugin_dir] = "/etc/collectd/conf"
+template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
+  source "my.cnf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables(
+    :server_id => @node[:db_mysql][:server_id]
+  )
 end
 
-case kernel[:machine]
-when "i686"
-  rs_utils[:collectd_lib] = "/usr/lib/collectd"
-else 
-  rs_utils[:collectd_lib] = "/usr/lib64/collectd"
-end

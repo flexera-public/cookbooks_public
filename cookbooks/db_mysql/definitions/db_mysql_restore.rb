@@ -31,9 +31,6 @@ define :db_mysql_restore,  url => nil, branch => 'master', user => nil, credenti
   dumpfile = "#{dir}/#{params[:file_path]}"
   schema_name = params[:schema_name]
 
-  log "dir: #{dir}"
-  log "tmp_dir: #{params[:tmp_dir]}"
-
   # grab mysqldump file from remote repository
   repo_git_pull "Get mysqldump from git repository" do
     url repo_params[:url]

@@ -25,6 +25,6 @@
 
 db_mysql_set_privileges "setup admin privileges" do
   preset "administrator"
-  username @node[:db_mysql][:admin_user]
-  password @node[:db_mysql][:admin_password]
+  username @node[:db][:admin][:user]
+  password @node[:db][:admin][:password]
 end

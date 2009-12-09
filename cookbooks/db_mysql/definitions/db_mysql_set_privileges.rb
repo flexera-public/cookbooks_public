@@ -29,14 +29,14 @@ define :db_mysql_set_privileges, preset => "administrator", username => nil, pas
   username = params[:username]
   password = params[:password]
   
-  ruby "set admin credentials" do
-    code <<-EOH
+  ruby_block "set admin credentials" do
+    block do
       require 'rubygems'
       require 'mysql'
 
       con = Mysql.new("", "root",nil,nil,nil,"#{@node[:db_mysql][:socket]}")
     
-      case '#{priv_preset}'
+      case priv_preset
       when 'administrator'
         con.query("GRANT ALL PRIVILEGES on *.* TO '#{username}'@'%' IDENTIFIED BY '#{password}' WITH GRANT OPTION")
         con.query("GRANT ALL PRIVILEGES on *.* TO '#{username}'@'localhost' IDENTIFIED BY '#{password}' WITH GRANT OPTION")
@@ -51,7 +51,7 @@ define :db_mysql_set_privileges, preset => "administrator", username => nil, pas
       
       con.query("FLUSH PRIVILEGES")
       con.close
-    EOH
+    end
   end
 
 end

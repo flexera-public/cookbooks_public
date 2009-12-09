@@ -161,10 +161,6 @@
       "required": false
     }
   },
-  "conflicting": {
-
-  },
-  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
   "providing": {
     "app_php::do_update_code": [
 
@@ -180,6 +176,10 @@
     ]
   },
   "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "replacing": {
+
+  },
   "dependencies": {
     "repo_git_pull(url, branch, dest, cred)": [
 
@@ -191,28 +191,28 @@
 
     ]
   },
-  "replacing": {
+  "maintainer": "RightScale, Inc.",
+  "name": "app_php",
+  "recommendations": {
 
   },
-  "name": "app_php",
   "description": "Installs the php application server.",
-  "maintainer": "RightScale, Inc.",
-  "recommendations": {
+  "recipes": {
+    "app_php": "",
+    "app_php::do_update_code": "Update application source files from the remote repository.",
+    "app_php::default": "Runs app_php::install_php.",
+    "app_php::do_db_restore": "Restore the application database schema from a remote location.",
+    "app_php::install_php": "Installs the php application server."
+  },
+  "maintainer_email": "support@rightscale.com",
+  "suggestions": {
 
   },
   "platforms": {
 
   },
-  "maintainer_email": "support@rightscale.com",
   "version": "0.0.1",
-  "suggestions": {
+  "conflicting": {
 
-  },
-  "recipes": {
-    "app_php::do_update_code": "Update application source files from the remote repository.",
-    "app_php": "",
-    "app_php::default": "Runs app_php::install_php.",
-    "app_php::do_db_restore": "Restore the application database schema from a remote location.",
-    "app_php::install_php": "Installs the php application server."
   }
 }

@@ -22,9 +22,9 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+include_recipe "db_mysql::client"
 
-include_recipe "mysql::client"
-
+# Log resource submitted to opscode. http://tickets.opscode.com/browse/CHEF-923
 log "EC2 Instance type detected: #{@node[:db_mysql][:server_usage]}-#{@node[:ec2][:instance_type]}" if @node[:ec2] == "true"
 
 # preseeding is only required for ubuntu and debian
@@ -72,10 +72,21 @@ end unless @node[:db_mysql][:packages_install] == ""
    end
 end unless @node[:db_mysql][:packages_uninstall] == ""
 
-service "mysql" do
-  service_name value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "mysqld"}, "default" => "mysql")  
-  supports :status => true, :restart => true, :reload => true
-  action :enable
+# Drop in best practice replacement for mysqld startup.  Timeouts enabled.
+template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/init.d/mysqld"}, "default" => "/etc/init.d/mysql") do
+  source "init-mysql.erb"
+  mode "0755"  
+end
+
+# Setup my.cnf 
+include_recipe "db_mysql::setup_my_cnf"
+
+# Initialize the binlog dir
+binlog = ::File.dirname(@node[:db_mysql][:log_bin])
+directory binlog do
+  owner "mysql"
+  group "mysql"
+  recursive true
 end
 
 # Create it so mysql can use it if configured
@@ -84,74 +95,104 @@ file "/var/log/mysqlslow.log" do
   group "mysql"
 end
 
-# Initialize the binlog dir
-binlog = `dirname #{@node[:db_mysql][:log_bin]}`.strip
-directory binlog do
-  owner "mysql"
-  group "mysql"
-  recursive true
+
+#execute "mysql_install_db" do
+#  not_if do 
+#    ::File.exists?(::File.join(@node[:db_mysql][:datadir], "mysql")) 
+#  end
+#  only_if do
+#    ["centos", "redhat", "suse"].include?(@node[:platform])
+#  end
+#  command "/usr/bin/mysql_install_db"
+#end
+
+service "mysql" do
+  service_name value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "mysqld"}, "default" => "mysql")  
+  supports :status => true, :restart => true, :reload => true
+  action [:enable, :start]
 end
 
 # Disable the "check_for_crashed_tables" for ubuntu
+# And setup Debian maintenance user
 case node[:platform]
 when "debian","ubuntu"
   execute "sed -i 's/^.*check_for_crashed_tables.*/  #check_for_crashed_tables;/g' /etc/mysql/debian-start"
+  execute "sed -i 's/user.*/user = #{@node[:db_mysql][:admin_user]}/g' /etc/mysql/debian.cnf"
+  execute "sed -i 's/password.*/password = #{@node[:db_mysql][:admin_user]}/g' /etc/mysql/debian.cnf"
 end
 
-# Drop in best practice replacement for mysqld startup.  Timeouts enabled.
-template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/init.d/mysqld"}, "default" => "/etc/init.d/mysql") do
-  source "init-mysql.erb"
-  mode "0755"  
-end
-
-template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
-  source "my.cnf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables(
-    :server_id => "#{Time.now.to_i}"
-  )
-  notifies :restart, resources(:service => "mysql"), :immediately
-end
-
-# safe_mysqld is bogusly runaway here, we should only need to kill it once after the install happens.
+# safe_mysqld is bogusly runaway here (ubuntu hardy, intrepid), we should only need to kill it once after the install happens.
 service "mysql" do
+  only_if do
+    right_platform = node[:platform] == "ubuntu" && 
+                    (node[:platform_version] == "8.04" || 
+                     node[:platform_version] == "8.10")
+
+    right_platform && node[:db_mysql][:kill_bug_mysqld_safe]
+  end
+
   action :stop
 end
-ruby_block "fix buggy safe_mysqld" do
+
+ruby_block "fix buggy mysqld_safe" do
+  only_if do
+    right_platform = node[:platform] == "ubuntu" && 
+                    (node[:platform_version] == "8.04" || 
+                     node[:platform_version] == "8.10")
+
+    right_platform && node[:db_mysql][:kill_bug_mysqld_safe]
+  end
   block do
-    bug = `pgrep mysqld_safe`.chomp.to_i
+    Chef::Log.info("Found buggy mysqld_safe on first boot..")
+    output = ""
+    status = Chef::Mixin::Command.popen4("pgrep mysqld_safe") do |pid, stdin, stdout, stderr|
+      stdout.each do |line|
+        output << line.strip
+      end
+    end
+    bug = output.to_i
     unless bug == 0
-      Chef::Log.info("found buggy mysqld_save, killing")
+      Chef::Log.info("Buggy mysql_safe PID: #{bug}, killing..")
       Process.kill(15, bug) unless bug == 0
     end
+    node[:db_mysql][:kill_bug_mysqld_safe] = false
   end
-end
-
-if (! FileTest.directory?(node[:db_mysql][:datadir_relocate]))
-  
-  execute "install-mysql" do
-    command "mv #{node[:db_mysql][:datadir]} #{node[:db_mysql][:datadir_relocate]}"
-  end
-  
-  link node[:db_mysql][:datadir] do
-   to node[:db_mysql][:datadir_relocate]
-  end
-  
-  directory @node[:db_mysql][:datadir_relocate] do
-    owner "mysql"
-    group "mysql"
-    mode "0775"
-    recursive true
-  end 
 end
 
 service "mysql" do
+  # override this back to the default for future copies of the resource
+  only_if do true end
+  not_if do ::File.symlink?(node[:db_mysql][:datadir]) end
+  action :stop
+end
+
+# moves mysql default db to storage location, removes ib_logfiles for re-config of innodb_log_file_size
+ruby_block "clean innodb logfiles, relocate default datafiles to storage drive, symlink storage to default datadir" do
+  not_if do ::File.symlink?(node[:db_mysql][:datadir]) end
+  block do
+    require 'fileutils'
+    remove_files = ::Dir.glob(::File.join(node[:db_mysql][:datadir], 'ib_logfile*')) + ::Dir.glob(::File.join(node[:db_mysql][:datadir], 'ibdata*'))
+    Chef::Log.info("Prep for innodb config changes on pristine install, removing files: #{remove_files.join(',')} ")
+    FileUtils.rm_rf(remove_files)
+    Chef::Log.info("Relocating default mysql datafiles to #{node[:db_mysql][:datadir_relocate]}")
+    FileUtils.cp_r(node[:db_mysql][:datadir], node[:db_mysql][:datadir_relocate])
+    FileUtils.rm_rf(node[:db_mysql][:datadir])
+    File.symlink(node[:db_mysql][:datadir_relocate], node[:db_mysql][:datadir])
+  end
+end
+
+ruby_block "chown mysql datadir" do
+  block do
+    FileUtils.chown_R("mysql", "mysql", node[:db_mysql][:datadir_relocate])
+  end
+end
+
+service "mysql" do
+  # override this back to the default for future copies of the resource
+  not_if do false end
+  Chef::Log.info "Attempting to start mysql service"
   action :start
 end
  
 ## Fix Privileges 4.0+
 execute "/usr/bin/mysql_fix_privilege_tables"
-
-

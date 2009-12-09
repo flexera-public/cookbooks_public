@@ -1,4 +1,6 @@
+
 # Cookbook Name:: rs_utils
+# Recipe:: install_mysql_collectd_plugin
 #
 # Copyright (c) 2009 RightScale Inc
 #
@@ -21,38 +23,19 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#
-# RightScale Enviroment Attributes.
-# These are needed by all RightScale Cookbooks.  Rs_utils should be included in all server templates
-# so these attributes are declared here.
+Chef::Log.info "Installing MySQL collectd plugin"
 
-#
-# Optional attributes
-#
-set_unless[:rs_utils][:timezone] = "UTC"    
-set_unless[:rs_utils][:process_list] = ""   
-set_unless[:rs_utils][:hostname] = ""
-set_unless[:rs_utils][:private_ssh_key] = ""
-
-set_unless[:rs_utils][:mysql_binary_backup_file] = "/var/run/mysql-binary-backup"
-
-#
-# Platform specific attributes
-#
-case platform
-when "redhat","centos","fedora","suse"
-  rs_utils[:logrotate_config] = "/etc/logrotate.d/syslog"
-  rs_utils[:collectd_config] = "/etc/collectd.conf"
-  rs_utils[:collectd_plugin_dir] = "/etc/collectd.d"
-when "debian","ubuntu"
-  rs_utils[:logrotate_config] = "/etc/logrotate.d/syslog-ng"
-  rs_utils[:collectd_config] = "/etc/collectd/collectd.conf"
-  rs_utils[:collectd_plugin_dir] = "/etc/collectd/conf"
+package "collectd-mysql" do
+  only_if {  @node[:platform] == "centos" }
 end
 
-case kernel[:machine]
-when "i686"
-  rs_utils[:collectd_lib] = "/usr/lib/collectd"
-else 
-  rs_utils[:collectd_lib] = "/usr/lib64/collectd"
+remote_file "#{@node[:rs_utils][:collectd_plugin_dir]}/mysql.conf" do
+  source "collectd.mysql.conf"
+  notifies :restart, resources(:service => "collectd")
+end
+
+node[:rs_utils][:process_list] += " mysqld"
+template File.join(@node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
+  source "processes.conf.erb"
+  notifies :restart, resources(:service => "collectd")
 end

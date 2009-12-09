@@ -107,9 +107,12 @@ log-queries-not-using-indexes
 # The following can be used as easy to replay backup logs or for replication.
 # note: if you are setting up a replication slave, see README.Debian about
 #       other settings you may need to change.
+<%= "read_only = 1" unless @node[:db_mysql][:tunable][:read_only] == nil %>
 server-id               = <%= @server_id %>
-log_bin                 = <%= @node[:db_mysql][:log_bin] %>
-expire_logs_days        = 10
+<% if @node[:db_mysql][:log_bin_enabled] %>
+  <%= "log_bin = #{@node[:db_mysql][:log_bin]}" %>
+  <%= "expire_logs_days        = #{@node[:expire_logs_days]}" %>
+<% end %>
 max_binlog_size         = 100M
 #binlog_do_db           = include_database_name
 #binlog_ignore_db       = include_database_name

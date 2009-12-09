@@ -22,16 +22,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-log "WHAT ARE THE ATTRIBUTES SET TO"
-log "UUID: #{@node[:rightscale][:instance_uuid]}"
-log "LUMBERJACK: #{@node[:rightscale][:servers][:lumberjack][:hostname]}"
-log "SKETCHY: #{@node[:rightscale][:servers][:sketchy][:hostname]}"
-log "DONE WITH ATTRIBUTES"
-
+#TODO: this compat package should no longer be necessary, chef service resource does not
+# require this and it was only used for legacy templates afaik.
 #install rs_utils command for ubuntu
-package "sysvconfig" do
-  only_if { @node[:platform] == "ubuntu" }
-end
+#package "sysvconfig" do
+#  only_if { @node[:platform] == "ubuntu" }
+#end
 
 #setup timezone
 link "/usr/share/zoneinfo/#{@node[:rs_utils][:timezone]}" do 
@@ -47,13 +43,14 @@ if "#{@node[:rightscale][:servers][:lumberjack][:hostname]}" != ""
     command "mknod /dev/null.syslog-ng c 1 3"
   end
 
-  template "/etc/syslog-ng/syslog-ng.conf" do
-    source "syslog.erb"
-  end
-
   service "syslog-ng" do
     supports :start => true, :stop => true, :restart => true
-    action [ :enable, :restart ]
+    action [ :enable ]
+  end
+
+  template "/etc/syslog-ng/syslog-ng.conf" do
+    source "syslog.erb"
+    notifies :restart, resources(:service => "syslog-ng")
   end
 
   bash "configure_logrotate_for_syslog" do 
@@ -79,6 +76,10 @@ end
 #configure collectd
 package "collectd" 
 
+service "collectd" do 
+  action :enable
+end
+
 package "liboping0" do
   only_if { @node[:platform] == "ubuntu" }
 end
@@ -89,11 +90,13 @@ end
 
 template @node[:rs_utils][:collectd_config] do 
   source "collectd.config.erb"
+  notifies :restart, resources(:service => "collectd")
 end
 
 # configure process monitoring
 template File.join(@node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
   source "processes.conf.erb"
+  notifies :restart, resources(:service => "collectd")
 end
 
 right_link_tag "rs_monitoring:state=active"
@@ -104,14 +107,10 @@ cron "collectd_restart" do
   command "service collectd restart"
 end
 
-service "cron" do 
-  service_name "crond" if @node[:platform] == "centos" 
-  action :restart
-end
-
-service "collectd" do 
-  action :restart
-end
+#service "cron" do 
+#  service_name "crond" if @node[:platform] == "centos" 
+#  action :restart
+#end
 
 #install private key
 if "#{@node[:rs_utils][:private_ssh_key]}" != ""
@@ -119,6 +118,7 @@ if "#{@node[:rs_utils][:private_ssh_key]}" != ""
     recursive true
   end 
   execute "add_ssh_key" do 
+    creates "/root/.ssh/id_rsa"
     command "echo '#{@node[:rs_utils][:private_ssh_key]}' >> /root/.ssh/id_rsa && chmod 700 /root/.ssh/id_rsa"
   end
 end

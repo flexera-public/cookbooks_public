@@ -96,5 +96,6 @@ case node[:platform]
     package "apache2-mpm-#{node[:apache][:mpm]}"
 end
 
+# Log resource submitted to opscode. http://tickets.opscode.com/browse/CHEF-923
 log "Started the apache server."
 

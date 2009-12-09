@@ -21,16 +21,17 @@ attribute "db_mysql",
   :display_name => "General Database Options",
   :type => "hash"
   
-attribute "db_mysql/admin_user",
+attribute "db/admin/user",
   :display_name => "Database Admin Username",
   :description => "The username of the database user that has 'admin' privileges.",
-  :required => true
+  :required => true,
+  :recipes => [ "db_mysql::setup_admin_privileges" ]
 
-attribute "db_mysql/admin_password",
+attribute "db/admin/password",
   :display_name => "Database Admin Password",
   :description => "The password of the database user that has 'admin' privileges.",
   :required => true,
-  :user_data => "rs_input:DBADMIN_PASSWORD" 
+  :recipes => [ "db_mysql::setup_admin_privileges" ]
 
 #
 # recommended attributes
