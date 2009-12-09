@@ -22,6 +22,28 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+package "apache2" do
+  case node[:platform]
+  when "centos","redhat","fedora","suse"
+    package_name "httpd"
+  when "debian","ubuntu"
+    package_name "apache2"
+  end
+  action :install
+end
+
+service "apache2" do
+  case node[:platform]
+  when "debian","ubuntu"
+    # If restarted/reloaded too quickly httpd has a habit of failing
+    # This may happen with multiple recipes notifying apache to restart - like
+    # during the initial bootstrap.
+    restart_command "/usr/bin/service apache2 restart && sleep 1"
+    reload_command "/usr/bin/service apache2 reload && sleep 1"
+  end
+  action :nothing
+end
+
 # include the public recipe for basic installation
 include_recipe "apache2"
 
@@ -70,3 +92,4 @@ case node[:platform]
 end
 
 log "Started the apache server."
+
