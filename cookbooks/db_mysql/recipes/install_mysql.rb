@@ -115,6 +115,17 @@ template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/et
   notifies :restart, resources(:service => "mysql"), :immediately
 end
 
+# safe_mysqld is bogusly runaway here, we should only need to kill it once after the install happens.
+ruby_block "fix buggy safe_mysqld" do
+  block do
+    bug = `pgrep mysqld_safe`.chomp.to_i
+    unless bug == 0
+      Chef::Log.info("found buggy mysqld_save, killing")
+      Process.kill(15, bug) unless bug == 0
+    end
+  end
+end
+
 if (! FileTest.directory?(node[:db_mysql][:datadir_relocate]))
   
   service "mysql" do
