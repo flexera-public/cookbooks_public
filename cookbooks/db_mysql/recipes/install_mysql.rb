@@ -116,6 +116,9 @@ template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/et
 end
 
 # safe_mysqld is bogusly runaway here, we should only need to kill it once after the install happens.
+service "mysql" do
+  action :stop
+end
 ruby_block "fix buggy safe_mysqld" do
   block do
     bug = `pgrep mysqld_safe`.chomp.to_i
