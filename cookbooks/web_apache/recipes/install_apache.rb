@@ -33,13 +33,18 @@ package "apache2" do
 end
 
 service "apache2" do
+  # If restarted/reloaded too quickly apache has a habit of failing
+  # This may happen with multiple recipes notifying apache to restart - like
+  # during the initial bootstrap.
   case node[:platform]
+  when "centos","redhat","fedora","suse"
+    service_name "httpd"
+    restart_command "/sbin/service httpd restart && sleep 1"
+    reload_command "/sbin/service httpd reload && sleep 1"
   when "debian","ubuntu"
-    # If restarted/reloaded too quickly httpd has a habit of failing
-    # This may happen with multiple recipes notifying apache to restart - like
-    # during the initial bootstrap.
-    restart_command "/usr/bin/service apache2 restart && sleep 1"
-    reload_command "/usr/bin/service apache2 reload && sleep 1"
+    service_name "apache2"
+    restart_command "/usr/sbin/service apache2 restart && sleep 1"
+    reload_command "/usr/sbin/service apache2 reload && sleep 1"
   end
   action :nothing
 end
