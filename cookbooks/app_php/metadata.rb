@@ -69,7 +69,7 @@ attribute "php/server_name",
   :display_name => "Server Name",
   :description => "The fully qualified domain name of the application server used to define your virtual host.",
   :required => true,
-  :recipes => [ "app_php::do_update_code", "app_php::do_db_restore", "app_php::install_php" ]
+  :recipes => [ "app_php::install_php" ]
 
 attribute "php/application_name",
   :display_name => "Application Name",
@@ -102,5 +102,5 @@ attribute "php/modules_list",
   :display_name => "PHP modules",
   :discription => "An optional list of php modules to install",
   :type => "array",
-  :recipes => [ "app_php::do_update_code", "app_php::do_db_restore", "app_php::install_php" ] 
+  :recipes => [ "app_php::install_php" ] 
 

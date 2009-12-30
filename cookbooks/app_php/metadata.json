@@ -62,8 +62,6 @@
       "multiple_values": false,
       "display_name": "PHP modules",
       "recipes": [
-        "app_php::do_update_code",
-        "app_php::do_db_restore",
         "app_php::install_php"
       ],
       "required": false
@@ -133,8 +131,6 @@
       "description": "The fully qualified domain name of the application server used to define your virtual host.",
       "display_name": "Server Name",
       "recipes": [
-        "app_php::do_update_code",
-        "app_php::do_db_restore",
         "app_php::install_php"
       ],
       "required": true
