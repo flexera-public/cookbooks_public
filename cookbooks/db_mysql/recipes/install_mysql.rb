@@ -131,10 +131,6 @@ end
 
 if (! FileTest.directory?(node[:db_mysql][:datadir_relocate]))
   
-  service "mysql" do
-    action :stop
-  end
-  
   execute "install-mysql" do
     command "mv #{node[:db_mysql][:datadir]} #{node[:db_mysql][:datadir_relocate]}"
   end
@@ -148,11 +144,11 @@ if (! FileTest.directory?(node[:db_mysql][:datadir_relocate]))
     group "mysql"
     mode "0775"
     recursive true
-  end
-  
-  service "mysql" do
-    action :start
-  end
+  end 
+end
+
+service "mysql" do
+  action :start
 end
  
 ## Fix Privileges 4.0+
