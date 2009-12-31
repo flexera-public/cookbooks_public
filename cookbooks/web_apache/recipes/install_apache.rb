@@ -43,8 +43,8 @@ service "apache2" do
     reload_command "/sbin/service httpd reload && sleep 1"
   when "debian","ubuntu"
     service_name "apache2"
-    restart_command "/usr/sbin/service apache2 restart && sleep 1"
-    reload_command "/usr/sbin/service apache2 reload && sleep 1"
+    restart_command "service apache2 restart && sleep 1"
+    reload_command "service apache2 reload && sleep 1"
   end
   action :nothing
 end
