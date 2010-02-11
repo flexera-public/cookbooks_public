@@ -92,17 +92,6 @@ file "/var/log/mysqlslow.log" do
   group "mysql"
 end
 
-
-#execute "mysql_install_db" do
-#  not_if do 
-#    ::File.exists?(::File.join(@node[:db_mysql][:datadir], "mysql")) 
-#  end
-#  only_if do
-#    ["centos", "redhat", "suse"].include?(@node[:platform])
-#  end
-#  command "/usr/bin/mysql_install_db"
-#end
-
 service "mysql" do
   service_name value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "mysqld"}, "default" => "mysql")  
   supports :status => true, :restart => true, :reload => true
@@ -118,7 +107,8 @@ when "debian","ubuntu"
   execute "sed -i 's/password.*/password = #{@node[:db_mysql][:admin_user]}/g' /etc/mysql/debian.cnf"
 end
 
-# safe_mysqld is bogusly runaway here (ubuntu hardy, intrepid), we should only need to kill it once after the install happens.
+# bugfix: mysqd_safe high cpu usage
+# https://bugs.launchpad.net/ubuntu/+source/mysql-dfsg-5.0/+bug/105457
 service "mysql" do
   only_if do
     right_platform = node[:platform] == "ubuntu" && 
@@ -157,8 +147,7 @@ ruby_block "fix buggy mysqld_safe" do
 end
 
 service "mysql" do
-  # override this back to the default for future copies of the resource
-  only_if do true end
+  only_if do true end # http://tickets.opscode.com/browse/CHEF-894
   not_if do ::File.symlink?(node[:db_mysql][:datadir]) end
   action :stop
 end
@@ -185,8 +174,7 @@ ruby_block "chown mysql datadir" do
 end
 
 service "mysql" do
-  # override this back to the default for future copies of the resource
-  not_if do false end
+  not_if do false end # http://tickets.opscode.com/browse/CHEF-894
   Chef::Log.info "Attempting to start mysql service"
   action :start
 end
