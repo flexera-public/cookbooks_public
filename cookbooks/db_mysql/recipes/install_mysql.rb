@@ -56,11 +56,8 @@ when "debian","ubuntu"
   end
 end
 
-package "mysql-server" do
-  action :install
-end
-
-# install other packages we require
+# THIS INSTALLS PLATFORM EQUIVALENT OF the mysql-server package; see attributes. 
+# ALSO install other packages we require.
 @node[:db_mysql][:packages_install].each do |p| 
   package p 
 end unless @node[:db_mysql][:packages_install] == ""

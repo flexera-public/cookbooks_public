@@ -11,13 +11,14 @@ attribute "web_apache",
   :description => "Apache Web Server",
   :type => "hash"
   
-attribute "web_apache/contact",
-  :display_name => "Contact Email",
-  :description => "The email address that Apache uses to send administrative mail (set in /etc/httpd/conf/httpd.conf).  By setting it to root@localhost.com emails are saved on the server.  You can use your own email address, but your spam filters might block them because reverse DNS lookup will show a mismatch between EC2 and your domain.",
-  :default => "root@localhost"
+#attribute "web_apache/contact",
+#  :display_name => "Contact Email",
+#  :description => "The email address that Apache uses to send administrative mail (set in /etc/httpd/conf/httpd.conf).  By setting it to root@localhost.com emails are saved on the server.  You can use your own email address, but your spam filters might block them because reverse DNS lookup will show a mismatch between EC2 and your domain.",
+#  :default => "root@localhost"
 
 attribute "web_apache/mpm",
   :display_name => "Multi-Processing Module",
   :description => "Can be set to 'worker' or 'prefork' and defines the setting in httpd.conf.  Use 'worker' for Rails/Tomcat/Standalone frontends and 'prefork' for PHP.",
+  :recipesv=> [ "web_apache::install_apache", "web_apache::default" ],
   :default =>  "worker"
 

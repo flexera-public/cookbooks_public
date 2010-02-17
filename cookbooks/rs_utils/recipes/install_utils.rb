@@ -76,8 +76,25 @@ end
 #configure collectd
 package "collectd" 
 
+# use collectdmon
+if node[:platform] == 'centos'
+  remote_file "/etc/init.d/collectd" do
+    source "collectd-init-centos-with-monitor"
+    mode 0755
+  end
+end
+
 service "collectd" do 
   action :enable
+end
+
+# create collectd types.db file unless it already exists
+unless ::File.exists?(::File.join(node[:rs_utils][:collectd_lib], 'types.db'))
+  if node[:platform] == "ubuntu" && node[:platform_version] == "9.10"
+    remote_file ::File.join(node[:rs_utils][:collectd_lib], 'types.db') do 
+      source "karmic_types.db"
+    end
+  end
 end
 
 package "liboping0" do
@@ -101,15 +118,11 @@ end
 
 right_link_tag "rs_monitoring:state=active"
 
+# TODO: remove, this is legacy
 #configure cron
-cron "collectd_restart" do 
-  day "4"
-  command "service collectd restart"
-end
-
-#service "cron" do 
-#  service_name "crond" if @node[:platform] == "centos" 
-#  action :restart
+#cron "collectd_restart" do 
+#  day "4"
+#  command "service collectd restart"
 #end
 
 #install private key
@@ -117,9 +130,9 @@ if "#{@node[:rs_utils][:private_ssh_key]}" != ""
   directory "/root/.ssh" do
     recursive true
   end 
-  execute "add_ssh_key" do 
-    creates "/root/.ssh/id_rsa"
-    command "echo '#{@node[:rs_utils][:private_ssh_key]}' >> /root/.ssh/id_rsa && chmod 700 /root/.ssh/id_rsa"
+  template "/root/.ssh/id_rsa" do
+    source "id_rsa.erb"
+    mode 0600
   end
 end
 

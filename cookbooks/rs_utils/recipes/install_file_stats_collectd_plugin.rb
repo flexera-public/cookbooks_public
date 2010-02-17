@@ -50,16 +50,15 @@ file node[:rs_utils][:mysql_binary_backup_file] do
   group value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "nobody"}, "default" => "nogroup")
 end
 
-bash "add collectd gauges" do
-  user "root"
-  code <<-EOH
-    [ -z "$(egrep "^gauge-age" #{node[:rs_utils][:collectd_lib]}/types.db)" ] &&
-    echo "gauge-age          seconds:GAUGE:0:200000000" >> #{node[:rs_utils][:collectd_lib]}/types.db
-
-    [ -z "$(egrep "^gauge-size" #{node[:rs_utils][:collectd_lib]}/types.db)" ] &&
-    echo "gauge-size          bytes:GAUGE:0:200000000" >>  #{node[:rs_utils][:collectd_lib]}/types.db
-    exit 0
-  EOH
+ruby_block "add_collectd_gauges" do
+  block do
+    types_file = ::File.join(node[:rs_utils][:collectd_lib], 'types.db')
+    typesdb = IO.read(types_file)
+    unless typesdb.include?('gague-age') && typesdb.include?('gague-size')
+      typesdb += "\ngauge-age          seconds:GAUGE:0:200000000\ngauge-size          bytes:GAUGE:0:200000000\n"
+      File.open(types_file, "w") { |f| f.write(typesdb) }
+    end
+  end
 end
 
 Chef::Log.info "Installed collectd file_stats plugin."
