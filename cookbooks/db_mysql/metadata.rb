@@ -32,6 +32,18 @@ attribute "db/admin/password",
   :description => "The password of the database user that has 'admin' privileges.",
   :required => true,
   :recipes => [ "db_mysql::setup_admin_privileges" ]
+  
+attribute "db/application/user",
+  :display_name => "Database Application Username",
+  :description => "The username of the database user that has 'user' privileges.",
+  :required => true,
+  :recipes => [ "db_mysql::setup_application_privileges" ]
+
+attribute "db/application/password",
+  :display_name => "Database Application Password",
+  :description => "The password of the database user that has 'user' privileges.",
+  :required => true,
+  :recipes => [ "db_mysql::setup_application_privileges" ]
 
 #
 # recommended attributes
