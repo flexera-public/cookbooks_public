@@ -34,13 +34,11 @@
   "attributes": {
     "web_apache\/mpm": {
       "calculated": false,
-      "default": [
-        "worker",
-        "prefork"
-      ],
+      "default": "worker",
       "type": "string",
       "choice": [
-
+        "worker",
+        "prefork"
       ],
       "multiple_values": true,
       "description": "setting for MPM, ",
