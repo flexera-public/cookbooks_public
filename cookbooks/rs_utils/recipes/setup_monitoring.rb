@@ -1,6 +1,5 @@
-.
 # Cookbook Name:: rs_utils
-# Recipe:: install_mysql_collectd_plugin
+# Recipe:: monitoring
 #
 # Copyright (c) 2010 RightScale Inc
 #
@@ -23,19 +22,55 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-log "Installing MySQL collectd plugin"
 
-package "collectd-mysql" do
-  only_if {  node.platform == "centos" }
+log "Configure collectd"
+
+package "collectd"
+
+# Use collectdmon for CentOS
+if node.platform == 'centos'
+  remote_file "/etc/init.d/collectd" do
+    source "collectd-init-centos-with-monitor"
+    mode 0755
+  end
 end
 
-remote_file "#{node.rs_utils.collectd_plugin_dir}/mysql.conf" do
-  source "collectd.mysql.conf"
+service "collectd" do
+  action :enable
+end
+
+if node.platform == "ubuntu"
+  log "Perform Ubuntu Specific collectd install..."
+  package "liboping0" 
+
+  if node.platform_version != "8.04"
+    # Symlink if in the share dir
+    link ::File.join(node.rs_utils.collectd_lib, 'types.db') do
+      to "/usr/share/collectd/types.db"
+      notifies :restart, resources(:service => "collectd")
+    end
+    
+    # Otherwise add it from cookbook
+    remote_file ::File.join(node.rs_utils.collectd_lib, 'types.db') do 
+      not_if { ::File.exists?(::File.join(node.rs_utils.collectd_lib, 'types.db')) }
+      source "karmic_types.db"
+    end
+  end  
+end
+
+directory node.rs_utils.collectd_plugin_dir do
+  recursive true
+end
+
+template node.rs_utils.collectd_config do
+  source "collectd.config.erb"
   notifies :restart, resources(:service => "collectd")
 end
 
-node.rs_utils.process_list += " mysqld"
+# Configure process monitoring
 template File.join(node.rs_utils.collectd_plugin_dir, 'processes.conf') do
   source "processes.conf.erb"
   notifies :restart, resources(:service => "collectd")
 end
+
+right_link_tag "rs_monitoring:state=active"

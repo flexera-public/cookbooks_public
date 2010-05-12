@@ -2,16 +2,16 @@
 # Config file for collectd, version 4.
 # Prepared by RightScale for EC2 instances.
 #
-Hostname  "<%= @node[:rightscale][:instance_uuid]  %>"
+Hostname  "<%= node[:rightscale][:instance_uuid]  %>"
 BaseDir   "/var/lib/collectd"
 PIDFile   "/var/run/collectd.pid"
-PluginDir "<%= @node[:rs_utils][:collectd_lib] %>"
-TypesDB   "<%= @node[:rs_utils][:collectd_lib] %>/types.db"
+PluginDir "<%= node[:rs_utils][:collectd_lib] %>"
+TypesDB   "<%= node[:rs_utils][:collectd_lib] %>/types.db"
 Interval  10
 ReadThreads 5
 LoadPlugin network
 <Plugin network>
-  Server "<%= @node[:rightscale][:servers][:sketchy][:hostname] %>" "3011"
+  Server "<%= node[:rightscale][:servers][:sketchy][:hostname] %>" "3011"
 </Plugin>
 LoadPlugin cpu
 LoadPlugin df
@@ -34,5 +34,5 @@ LoadPlugin ping
 </Plugin>
 #this is where other configs go (e.g. mysql.conf)
 
-Include "<%= @node[:rs_utils][:collectd_plugin_dir] %>/*"
+Include "<%= node[:rs_utils][:collectd_plugin_dir] %>/*"
 

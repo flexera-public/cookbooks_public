@@ -1,5 +1,5 @@
 # Cookbook Name:: rs_utils
-# Recipe:: default
+# Recipe:: ssh
 #
 # Copyright (c) 2010 RightScale Inc
 #
@@ -22,11 +22,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package "debian-helper-scripts" if node[:platform] == 'ubuntu' && node[:lsb][:codename] == 'hardy'
+if "#{node.rs_utils.private_ssh_key}" != ""
 
-include_recipe "rs_utils::setup_timezone"
-include_recipe "rs_utils::setup_logging"
-include_recipe "rs_utils::setup_mail"
-include_recipe "rs_utils::setup_monitoring"
-include_recipe "rs_utils::setup_ssh"
-include_recipe "rs_utils::setup_hostname"
+  log "Install private key"
+
+  directory "/root/.ssh" do
+    recursive true
+  end
+  template "/root/.ssh/id_rsa" do
+    source "id_rsa.erb"
+    mode 0600
+  end
+end

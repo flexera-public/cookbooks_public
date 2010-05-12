@@ -1,7 +1,7 @@
 # Cookbook Name:: rs_utils
-# Recipe:: developer_setup
+# Recipe:: logging
 #
-# Copyright (c) 2009 RightScale Inc
+# Copyright (c) 2010 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -22,35 +22,32 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+if "#{node.rightscale.servers.lumberjack.hostname}" != ""
 
-bash "Setup bash shell" do
-  code <<-EOH
-    cat <<-EOF > ~/.bashrc
-    alias pu=pushd
-    alias po=popd
-    alias rd='pushd +1'
-    alias la='ls -aF'
-    alias ll='ls -al'
-    alias ls='ls -F'
-    alias setd="D=`pwd`"
-    alias che='chef-solo -c config/solo.rb -j config/solo.json'
-    export GIT_SSH=~/gitssh
-    alias rs_tail='tailf /var/log/messages | cut -b 57- | egrep -v "^RECV|^SEND| Checking for "'
-    EOF
-  EOH
+  log "Configure syslog logging"
+
+  package "syslog-ng"
+
+  execute "ensure_dev_null" do
+    creates "/dev/null.syslog-ng"
+    command "mknod /dev/null.syslog-ng c 1 3"
+  end
+
+  service "syslog-ng" do
+    supports :start => true, :stop => true, :restart => true
+    action [ :enable ]
+  end
+
+  template "/etc/syslog-ng/syslog-ng.conf" do
+    source "syslog.erb"
+    notifies :restart, resources(:service => "syslog-ng")
+  end
+
+  bash "configure_logrotate_for_syslog" do
+    code <<-EOH
+      perl -p -i -e 's/weekly/daily/; s/rotate\s+\d+/rotate 7/' /etc/logrotate.conf
+      [ -z "$(grep -lir "missingok" #{node.rs_utils.logrotate_config}_file)" ] && sed -i '/sharedscripts/ a\    missingok' #{node.rs_utils.logrotate_config}
+      [ -z "$(grep -lir "notifempty" #{node.rs_utils.logrotate_config}_file)" ] && sed -i '/sharedscripts/ a\    notifempty' #{node.rs_utils.logrotate_config}
+    EOH
+  end
 end
-
-package "vim"
-
-bash "Setup vim config" do
-  code <<-EOH
-    cat << EOF > ~/.vimrc
-    syntax on
-    set autoindent
-    set smartindent
-    set shiftwidth=4
-    set expandtab
-    EOF
-  EOH
-end
-
