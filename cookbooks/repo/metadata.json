@@ -1,5 +1,24 @@
 {
-  "license": "All rights reserved",
+  "recipes": {
+
+  },
+  "groupings": {
+
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+  "recommendations": {
+
+  },
+  "dependencies": {
+
+  },
+  "maintainer": "RightScale, Inc.",
+  "suggestions": {
+
+  },
+  "description": "Abstract Repository Cookbook",
+  "maintainer_email": "support@rightscale.com",
+  "name": "repo",
   "conflicting": {
 
   },
@@ -8,31 +27,15 @@
 
     ]
   },
-  "recipes": {
-
-  },
-  "dependencies": {
-
-  },
   "platforms": {
 
   },
-  "name": "repo",
+  "version": "0.1.0",
   "attributes": {
 
   },
   "replacing": {
 
   },
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
-  "maintainer": "RightScale, Inc.",
-  "recommendations": {
-
-  },
-  "version": "0.1.0",
-  "maintainer_email": "support@rightscale.com",
-  "description": "Abstract Repository Cookbook",
-  "suggestions": {
-
-  }
+  "license": "All rights reserved"
 }

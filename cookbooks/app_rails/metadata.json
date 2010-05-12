@@ -1,32 +1,17 @@
 {
-  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
-  "conflicting": {
-
-  },
-  "providing": {
-    "app_rails::do_db_restore": [
-
-    ],
-    "app_rails::setup_db_config": [
-
-    ],
-    "app_rails": [
-
-    ],
-    "app_rails::install_rails": [
-
-    ],
-    "app_rails::do_update_code": [
-
-    ]
-  },
   "recipes": {
-    "app_rails::do_db_restore": "Restore application database schema from remote location.",
     "app_rails::setup_db_config": "Configures the rails database.yml file",
+    "app_rails::do_db_restore": "Restore application database schema from remote location.",
     "app_rails::install_rails": "Installs the rails application server.",
-    "app_rails": "",
     "app_rails::do_update_code": "Update application source files from remote repository.",
     "app_rails::default": "Runs app_rails::install_rails."
+  },
+  "groupings": {
+
+  },
+  "long_description": "",
+  "recommendations": {
+
   },
   "dependencies": {
     "repo_git_pull(url, branch, user, dest, cred)": [
@@ -51,203 +36,273 @@
 
     ]
   },
+  "maintainer": "RightScale, Inc.",
+  "suggestions": {
+
+  },
+  "description": "Installs the rails application server on apache+passenger.",
+  "maintainer_email": "support@rightscale.com",
+  "name": "app_rails",
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
   "platforms": {
 
   },
-  "name": "app_rails",
+  "version": "0.0.1",
   "attributes": {
     "rails\/spawn_method": {
+      "calculated": false,
       "default": "conservative",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "what spawn method should we use?",
-      "multiple_values": false,
       "display_name": "Spawn Method",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "rails\/application_port": {
+      "calculated": false,
       "default": "8000",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "the port your rails application will listen on",
-      "multiple_values": false,
       "display_name": "Application Port",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "rails\/db_mysqldump_file_path": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "Full path in git repository to mysqldump file to restore",
-      "multiple_values": false,
       "display_name": "Mysqldump File Path",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "rails\/code\/credentials": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "credentials for code repository",
-      "multiple_values": false,
       "display_name": "Repository Credentials",
-      "required": true,
+      "required": "required",
       "recipes": [
 
       ]
     },
     "rails": {
+      "calculated": false,
       "type": "hash",
-      "multiple_values": false,
+      "choice": [
+
+      ],
       "display_name": "Rails Passenger Settings",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "rails\/version": {
+      "calculated": false,
       "default": "false",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "Specify the version of Rails to install",
-      "multiple_values": false,
       "display_name": "Rails Version",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "rails\/gems_list": {
+      "calculated": false,
       "type": "array",
+      "choice": [
+
+      ],
       "description": "list of gems required by your application",
-      "multiple_values": false,
       "display_name": "Gems List",
-      "required": false,
+      "required": "optional",
       "recipes": [
 
       ]
     },
     "rails\/code\/branch": {
+      "calculated": false,
       "default": "master",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "branch to pull source from",
-      "multiple_values": false,
       "display_name": "Repository Branch",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "rails\/db_schema_name": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "database schema to use",
-      "multiple_values": false,
       "display_name": "Database Schema Name",
-      "required": true,
+      "required": "required",
       "recipes": [
 
       ]
     },
     "rails\/db_app_passwd": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "password for database access",
-      "multiple_values": false,
       "display_name": "Database Password",
-      "required": true,
+      "required": "required",
       "recipes": [
 
       ]
     },
     "rails\/max_pool_size": {
+      "calculated": false,
       "default": "4",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "Specify the MaxPoolSize in the Apache vhost",
-      "multiple_values": false,
       "display_name": "Rails Max Pool Size",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "rails\/server_name": {
+      "calculated": false,
       "default": "myserver",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "FQDN for the server",
-      "multiple_values": false,
       "display_name": "Server Name",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "rails\/application_name": {
+      "calculated": false,
       "default": "myapp",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "give a name to your application",
-      "multiple_values": false,
       "display_name": "Application Name",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "rails\/environment": {
+      "calculated": false,
       "default": "production",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "Specify the environment to use for Rails",
-      "multiple_values": false,
       "display_name": "Rails Environment",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "rails\/code\/user": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "username for code repository",
-      "multiple_values": false,
       "display_name": "Repository Username",
-      "required": true,
+      "required": "required",
       "recipes": [
 
       ]
     },
     "rails\/code\/url": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "location of application code repository",
-      "multiple_values": false,
       "display_name": "Repository URL",
-      "required": true,
+      "required": "required",
       "recipes": [
 
       ]
     },
     "rails\/code": {
+      "calculated": false,
       "type": "hash",
-      "multiple_values": false,
+      "choice": [
+
+      ],
       "display_name": "Rails Application Code",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "rails\/db_dns_name": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "FQDN of the database server",
-      "multiple_values": false,
       "display_name": "Database DNS Name",
-      "required": true,
+      "required": "required",
       "recipes": [
 
       ]
     },
     "rails\/db_app_user": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "username for database access",
-      "multiple_values": false,
       "display_name": "Database User",
-      "required": true,
+      "required": "required",
       "recipes": [
 
       ]
@@ -256,15 +311,5 @@
   "replacing": {
 
   },
-  "long_description": "",
-  "maintainer": "RightScale, Inc.",
-  "recommendations": {
-
-  },
-  "version": "0.0.1",
-  "maintainer_email": "support@rightscale.com",
-  "description": "Installs the rails application server on apache+passenger.",
-  "suggestions": {
-
-  }
+  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
 }

@@ -1,111 +1,135 @@
 {
-  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
-  "conflicting": {
-
-  },
-  "providing": {
-    "db_mysql": [
-
-    ],
-    "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)": [
-
-    ],
-    "db_mysql_set_privileges(type, username, password)": [
-
-    ],
-    "db_mysql::install_mysql": [
-
-    ],
-    "db_mysql::setup_admin_privileges": [
-
-    ]
-  },
   "recipes": {
     "db_mysql::default": "Runs the 'install_mysql' recipes.",
     "db_mysql::install_mysql": "Installs packages required for mysql servers w\/o manual intervention.",
-    "db_mysql": "",
     "db_mysql::setup_admin_privileges": "Add username and password for superuser privileges."
+  },
+  "groupings": {
+
+  },
+  "long_description": "= DESCRIPTION:\n\nConfigures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.\n\n= REQUIREMENTS:\n\n* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.\n\n= ATTRIBUTES: \n\nSee metadata.rb \n\n= USAGE:\n\nDesigned to be run within a RightScale server template with the following run order:\n\nBoot Scripts\n  * install_mysql - performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - restores database from mysql dump retrieved from a remote location.\n  * db_mysql_set_privileges - configures a users privileges.  Currently only 'administrator' and 'user' setting are supported.\n",
+  "recommendations": {
+
   },
   "dependencies": {
     "mysql": [
       "= 0.9"
     ]
   },
+  "maintainer": "RightScale, Inc.",
+  "suggestions": {
+
+  },
+  "description": "Installs\/configures a MySQL database server with automated backups",
+  "maintainer_email": "support@rightscale.com",
+  "name": "db_mysql",
+  "conflicting": {
+
+  },
+  "providing": {
+    "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)": [
+
+    ],
+    "db_mysql_set_privileges(type, username, password)": [
+
+    ]
+  },
   "platforms": {
 
   },
-  "name": "db_mysql",
+  "version": "0.0.1",
   "attributes": {
     "db_mysql\/server_usage": {
+      "calculated": false,
       "default": "dedicated",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "* dedicated (where the mysql config allocates all existing resources of the machine)\n* shared (where the mysql is configured to use less resources so that it can be run concurrently with other apps like apache and rails for example)",
-      "multiple_values": false,
       "display_name": "Server Usage",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "db_mysql": {
+      "calculated": false,
       "type": "hash",
-      "multiple_values": false,
+      "choice": [
+
+      ],
       "display_name": "General Database Options",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "db_mysql\/datadir_relocate": {
+      "calculated": false,
       "default": "\/mnt\/mysql",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "This sets final destination of the MySQL data directory. (i.e. an LVM or EBS volume)",
-      "multiple_values": false,
       "display_name": "MySQL Data-Directory Destination",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "db_mysql\/admin_password": {
+      "calculated": false,
       "user_data": "rs_input:DBADMIN_PASSWORD",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "The password of the database user that has 'admin' privilages.",
-      "multiple_values": false,
       "display_name": "Database Admin Password",
-      "required": true,
+      "required": "required",
       "recipes": [
 
       ]
     },
     "db_mysql\/tmpdir": {
+      "calculated": false,
       "default": "\/tmp",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "This sets the tmp variable in MySQL config file.",
-      "multiple_values": false,
       "display_name": "MySQL Tmp Directory",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "db_mysql\/log_bin": {
+      "calculated": false,
       "default": "\/mnt\/mysql-binlogs\/mysql-bin",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory.",
-      "multiple_values": false,
       "display_name": "MySQL Binlog Destination",
       "recipes": [
 
       ],
-      "required": false
+      "required": "optional"
     },
     "db_mysql\/admin_user": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "The username of the database user that has 'admin' privilages.",
-      "multiple_values": false,
       "display_name": "Database Admin Username",
-      "required": true,
+      "required": "required",
       "recipes": [
 
       ]
@@ -114,15 +138,5 @@
   "replacing": {
 
   },
-  "long_description": "= DESCRIPTION:\n\nConfigures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.\n\n= REQUIREMENTS:\n\n* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.\n\n= ATTRIBUTES: \n\nSee metadata.rb \n\n= USAGE:\n\nDesigned to be run within a RightScale server template with the following run order:\n\nBoot Scripts\n  * install_mysql - performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - restores database from mysql dump retrieved from a remote location.\n  * db_mysql_set_privileges - configures a users privileges.  Currently only 'administrator' and 'user' setting are supported.\n",
-  "maintainer": "RightScale, Inc.",
-  "recommendations": {
-
-  },
-  "version": "0.0.1",
-  "maintainer_email": "support@rightscale.com",
-  "description": "Installs\/configures a MySQL database server with automated backups",
-  "suggestions": {
-
-  }
+  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
 }
