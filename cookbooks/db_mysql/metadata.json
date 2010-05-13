@@ -1,6 +1,14 @@
 {
-  "maintainer_email": "support@rightscale.com",
-  "suggestions": {
+  "recipes": {
+    "db_mysql::default": "Runs the 'install_mysql' recipes.",
+    "db_mysql::install_mysql": "Installs packages required for MySQL servers without manual intervention.",
+    "db_mysql::setup_admin_privileges": "Add username and password for superuser privileges."
+  },
+  "groupings": {
+
+  },
+  "long_description": "= DESCRIPTION:\n\nConfigures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.\n\n= REQUIREMENTS:\n\n* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.\n\n= ATTRIBUTES: \n\nSee metadata.rb \n\n= USAGE:\n\nDesigned to be run within a RightScale ServerTemplate with the following run order:\n\nBoot Scripts\n  * install_mysql - Performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.\n  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.\n",
+  "recommendations": {
 
   },
   "dependencies": {
@@ -8,49 +16,23 @@
       "= 0.9"
     ]
   },
-  "recipes": {
-    "db_mysql::setup_my_cnf": "",
-    "db_mysql::client": "",
-    "db_mysql::default": "Runs the 'install_mysql' recipes.",
-    "db_mysql::install_mysql": "Installs packages required for MySQL servers without manual intervention.",
-    "db_mysql::setup_application_privileges": "",
-    "db_mysql": "",
-    "db_mysql::setup_admin_privileges": "Add username and password for superuser privileges."
-  },
-  "conflicting": {
+  "maintainer": "RightScale, Inc.",
+  "suggestions": {
 
   },
   "description": "Installs\/configures a MySQL database server with automated backups.",
+  "maintainer_email": "support@rightscale.com",
   "name": "db_mysql",
+  "conflicting": {
+
+  },
   "providing": {
-    "db_mysql::setup_my_cnf": [
-
-    ],
-    "db_mysql::client": [
-
-    ],
-    "db_mysql": [
-
-    ],
     "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)": [
 
     ],
     "db_mysql_set_privileges(type, username, password)": [
 
-    ],
-    "db_mysql::install_mysql": [
-
-    ],
-    "db_mysql::setup_application_privileges": [
-
-    ],
-    "db_mysql::setup_admin_privileges": [
-
     ]
-  },
-  "long_description": "= DESCRIPTION:\n\nConfigures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.\n\n= REQUIREMENTS:\n\n* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.\n\n= ATTRIBUTES: \n\nSee metadata.rb \n\n= USAGE:\n\nDesigned to be run within a RightScale ServerTemplate with the following run order:\n\nBoot Scripts\n  * install_mysql - Performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.\n  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.\n",
-  "replacing": {
-
   },
   "platforms": {
 
@@ -58,69 +40,86 @@
   "version": "0.0.1",
   "attributes": {
     "db_mysql\/server_usage": {
+      "calculated": false,
       "default": "dedicated",
       "type": "string",
+      "choice": [
+
+      ],
       "description": "* dedicated (where the mysql config file allocates all existing resources of the machine)\n* shared (where the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example)",
-      "multiple_values": false,
       "display_name": "Server Usage",
-      "required": false,
       "recipes": [
         "db_mysql::install_mysql",
         "db_mysql::default"
-      ]
+      ],
+      "required": "optional"
     },
     "db_mysql": {
+      "calculated": false,
       "type": "hash",
-      "multiple_values": false,
+      "choice": [
+
+      ],
       "display_name": "General Database Options",
-      "required": false,
       "recipes": [
 
-      ]
+      ],
+      "required": "optional"
     },
     "db\/application\/password": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "The password of the database user that has 'user' privileges.",
-      "multiple_values": false,
       "display_name": "Database Application Password",
-      "required": true,
+      "required": "required",
       "recipes": [
         "db_mysql::setup_application_privileges"
       ]
     },
     "db\/application\/user": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "The username of the database user that has 'user' privileges.",
-      "multiple_values": false,
       "display_name": "Database Application Username",
-      "required": true,
+      "required": "required",
       "recipes": [
         "db_mysql::setup_application_privileges"
       ]
     },
     "db\/admin\/password": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "The password of the database user that has 'admin' privileges.",
-      "multiple_values": false,
       "display_name": "Database Admin Password",
-      "required": true,
+      "required": "required",
       "recipes": [
         "db_mysql::setup_admin_privileges"
       ]
     },
     "db\/admin\/user": {
+      "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "The username of the database user that has 'admin' privileges.",
-      "multiple_values": false,
       "display_name": "Database Admin Username",
-      "required": true,
+      "required": "required",
       "recipes": [
         "db_mysql::setup_admin_privileges"
       ]
     }
   },
-  "maintainer": "RightScale, Inc.",
-  "recommendations": {
+  "replacing": {
 
   },
   "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"

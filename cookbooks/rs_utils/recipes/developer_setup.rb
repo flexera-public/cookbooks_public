@@ -1,5 +1,5 @@
-# Cookbook Name:: app_rails
-# Recipe:: do_update_code
+# Cookbook Name:: rs_utils
+# Recipe:: developer_setup
 #
 # Copyright (c) 2009 RightScale Inc
 #
@@ -23,20 +23,34 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-# Check that we have the required attributes set
-raise "You must provide a URL to your application code repository" if ("#{@node[:rails][:code][:url]}" == "") 
-raise "You must provide a destination for your application code." if ("#{@node[:rails][:code][:destination]}" == "") 
-
-# Warn about missing optional attributes
-Chef::Log.warn("WARNING: You did not provide credentials for your code repository -- assuming public repository.") if ("#{@node[:rails][:code][:credentials]}" == "") 
-Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{@node[:rails][:code][:branch]}" == "") 
-
-# grab application source from remote repository
-repo "Get Repository" do
-  url @node[:rails][:code][:url]
-  branch @node[:rails][:code][:branch] 
-  dest @node[:rails][:code][:destination]
-  cred @node[:rails][:code][:credentials]
-  action :pull
-  provider "repo_git"
+bash "Setup bash shell" do
+  code <<-EOH
+    cat <<-EOF > ~/.bashrc
+    alias pu=pushd
+    alias po=popd
+    alias rd='pushd +1'
+    alias la='ls -aF'
+    alias ll='ls -al'
+    alias ls='ls -F'
+    alias setd="D=`pwd`"
+    alias che='chef-solo -c config/solo.rb -j config/solo.json'
+    export GIT_SSH=~/gitssh
+    alias rs_tail='tailf /var/log/messages | cut -b 57- | egrep -v "^RECV|^SEND| Checking for "'
+    EOF
+  EOH
 end
+
+package "vim"
+
+bash "Setup vim config" do
+  code <<-EOH
+    cat << EOF > ~/.vimrc
+    syntax on
+    set autoindent
+    set smartindent
+    set shiftwidth=4
+    set expandtab
+    EOF
+  EOH
+end
+
