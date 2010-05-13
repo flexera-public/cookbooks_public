@@ -23,7 +23,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-define :db_mysql_set_privileges, preset => "administrator", username => nil, password => nil do
+define :db_mysql_set_privileges, :preset => "administrator", :username => nil, :password => nil do
 
   priv_preset = params[:preset]
   username = params[:username]

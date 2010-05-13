@@ -23,7 +23,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-define :db_mysql_restore,  url => nil, branch => 'master', user => nil, credentials => nil, file_path => nil, schema_name => nil, tmp_dir => '/tmp' do
+define :db_mysql_restore,  :url => nil, :branch => 'master', :user => nil, :credentials => nil, :file_path => nil, :schema_name => nil, :tmp_dir => '/tmp' do
 
   repo_params = params # see http://tickets.opscode.com/browse/CHEF-422
   

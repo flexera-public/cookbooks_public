@@ -25,7 +25,7 @@
 
 require 'uri'
 
-define :repo_git_pull, url => "", branch => "master", dest => "", cred => "" do
+define :repo_git_pull, :url => "", :branch => "master", :dest => "", :cred => "" do
   
   # include the public recipe to install git
   include_recipe "git"
