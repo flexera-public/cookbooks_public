@@ -99,8 +99,9 @@ if node.platform == "ubuntu"
       source "karmic_types.db"
     end
 
-    log "Adding symlink to collectd types.db"
-    execute "ln -s /usr/share/collectd/types.db /usr/lib/collectd/types.db"     
+    link "/usr/lib/collectd/types.db"  do
+      to "/usr/share/collectd/types.db"
+    end   
   end  
 end
 
