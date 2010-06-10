@@ -89,17 +89,17 @@ service "collectd" do
 end
 
 # create collectd types.db file unless it already exists
-
-
 if node.platform == "ubuntu"
+  log "Perform Ubuntu Specific collectd install..."
   package "liboping0" 
 
-  if node..platform_version != "8.04"
+  if node.platform_version != "8.04"
     remote_file ::File.join(node[:rs_utils][:collectd_lib], 'types.db') do 
       not_if { ::File.exists?(::File.join(node[:rs_utils][:collectd_lib], 'types.db')) }
       source "karmic_types.db"
     end
 
+    log "Adding symlink to collectd types.db"
     execute "ln -s /usr/share/collectd/types.db /usr/lib/collectd/types.db"     
   end  
 end
