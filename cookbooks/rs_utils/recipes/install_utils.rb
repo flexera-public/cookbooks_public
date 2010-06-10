@@ -94,14 +94,18 @@ if node.platform == "ubuntu"
   package "liboping0" 
 
   if node.platform_version != "8.04"
+
+    # Symlink if in the share dir
+    link ::File.join(node[:rs_utils][:collectd_lib], 'types.db') do
+      to "/usr/share/collectd/types.db"
+      notifies :restart, resources(:service => "collectd")
+    end
+    
+    # Otherwise add it from cookbook
     remote_file ::File.join(node[:rs_utils][:collectd_lib], 'types.db') do 
       not_if { ::File.exists?(::File.join(node[:rs_utils][:collectd_lib], 'types.db')) }
       source "karmic_types.db"
     end
-
-    link "/usr/lib/collectd/types.db"  do
-      to "/usr/share/collectd/types.db"
-    end   
   end  
 end
 
