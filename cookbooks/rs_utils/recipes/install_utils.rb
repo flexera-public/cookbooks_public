@@ -89,16 +89,19 @@ service "collectd" do
 end
 
 # create collectd types.db file unless it already exists
-unless ::File.exists?(::File.join(node[:rs_utils][:collectd_lib], 'types.db'))
-  if node[:platform] == "ubuntu" && node[:platform_version] == "9.10"
+
+
+if node.platform == "ubuntu"
+  package "liboping0" 
+
+  if node..platform_version != "8.04"
     remote_file ::File.join(node[:rs_utils][:collectd_lib], 'types.db') do 
+      not_if { ::File.exists?(::File.join(node[:rs_utils][:collectd_lib], 'types.db')) }
       source "karmic_types.db"
     end
-  end
-end
 
-package "liboping0" do
-  only_if { @node[:platform] == "ubuntu" }
+    execute "ln -s /usr/share/collectd/types.db /usr/lib/collectd/types.db"     
+  end  
 end
 
 directory @node[:rs_utils][:collectd_plugin_dir] do
