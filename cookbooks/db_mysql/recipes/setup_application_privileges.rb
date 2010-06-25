@@ -23,7 +23,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-db_mysql_set_privileges "setup admin privileges" do
+db_mysql_set_privileges "setup application privileges" do
   preset "user"
   username @node[:db][:application][:user]
   password @node[:db][:application][:password]

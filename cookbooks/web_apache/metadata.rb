@@ -4,6 +4,9 @@ license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..'
 description      "Installs/configures the apache2 webserver"
 version          "0.0.1"
 
+recipe "web_apache::default", "Runs web_apache::install_apache."
+recipe "web_apache::install_apache", "Install and configure Apache2 webserver."
+
 depends "apache2"
 
 attribute "web_apache",

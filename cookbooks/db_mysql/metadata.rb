@@ -13,6 +13,7 @@ provides "db_mysql_set_privileges(type, username, password)"
 recipe  "db_mysql::default", "Runs the 'install_mysql' recipes."
 recipe  "db_mysql::install_mysql", "Installs packages required for MySQL servers without manual intervention."
 recipe  "db_mysql::setup_admin_privileges", "Add username and password for superuser privileges."
+recipe  "db_mysql::setup_application_privileges", "Add username and password for application privileges."
 
 #
 # required attributes
