@@ -50,4 +50,7 @@ if "#{node.rightscale.servers.lumberjack.hostname}" != ""
       [ -z "$(grep -lir "notifempty" #{node.rs_utils.logrotate_config}_file)" ] && sed -i '/sharedscripts/ a\    notifempty' #{node.rs_utils.logrotate_config}
     EOH
   end
+  
+  right_link_tag "rs_logging:state=active"
+  
 end
