@@ -41,13 +41,13 @@ attribute "rs_utils/hostname",
   :description => "The hostname that you would like this machine to have.",
   :required => "optional",
   :default => "",
-  :recipies => [ "rs_utils::hostname" , "rs_utils::default" ]
+  :recipes => [ "rs_utils::hostname" , "rs_utils::default" ]
 
 attribute "rs_utils/mysql_binary_backup_file",
   :display_name => "MySQL binary file",
   :description => "An optionally specified file path for the mysql binary backup",
   :required => "optional",
   :default => "/var/run/mysql-binary-backup",
-  :recipies => [ "rs_utils::install_file_stats_collectd_plugin"  ]
+  :recipes => [ "rs_utils::install_file_stats_collectd_plugin"  ]
 
 

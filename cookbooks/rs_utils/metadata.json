@@ -1,4 +1,27 @@
 {
+  "replacing": {
+
+  },
+  "dependencies": {
+
+  },
+  "groupings": {
+
+  },
+  "long_description": "== Usage\nRun the rs_utils::default recipe to enable monitoring and logging \non the RightScale Dashboard for any RightLink enable image.",
+  "recommendations": {
+
+  },
+  "description": "Enable instance Monitoring and logging in the RightScale dashboard.",
+  "maintainer": "RightScale, Inc.",
+  "name": "rs_utils",
+  "suggestions": {
+
+  },
+  "maintainer_email": "support@rightscale.com",
+  "conflicting": {
+
+  },
   "recipes": {
     "rs_utils::setup_monitoring": "Install and configure RightScale dashboard monitoring.",
     "rs_utils::setup_timezone": "Sets system timezone.",
@@ -10,117 +33,88 @@
     "rs_utils::setup_hostname": "Set system hostname.",
     "rs_utils::setup_ssh": "Installs private ssh key."
   },
-  "groupings": {
-
-  },
-  "long_description": "== Usage\nRun the rs_utils::default recipe to enable monitoring and logging \non the RightScale Dashboard for any RightLink enable image.",
-  "recommendations": {
-
-  },
-  "dependencies": {
-
-  },
-  "maintainer": "RightScale, Inc.",
-  "suggestions": {
-
-  },
-  "description": "Enable instance Monitoring and logging in the RightScale dashboard.",
-  "maintainer_email": "support@rightscale.com",
-  "name": "rs_utils",
-  "conflicting": {
-
-  },
-  "providing": {
-
-  },
   "platforms": {
 
   },
   "version": "0.0.1",
   "attributes": {
     "rs_utils\/process_list": {
-      "calculated": false,
       "default": "",
+      "calculated": false,
       "type": "string",
       "choice": [
 
       ],
       "description": "A optional list of additional processes to monitor in the RightScale Dashboard.  Ex: sshd crond",
       "display_name": "Process List",
-      "required": "optional",
       "recipes": [
         "rs_utils::install_mysql_collectd_plugin",
         "rs_utils::monitoring",
         "rs_utils::default"
-      ]
+      ],
+      "required": "optional"
     },
     "rs_utils\/private_ssh_key": {
-      "calculated": false,
       "default": "",
+      "calculated": false,
       "type": "string",
       "choice": [
 
       ],
       "description": "The private SSH key of another instance that gets installed on this instance.  It allows this instance to SSH into another instance to update the configuration files. Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key",
       "display_name": "Private SSH Key",
-      "required": "optional",
       "recipes": [
         "rs_utils::ssh",
         "rs_utils::default"
-      ]
+      ],
+      "required": "optional"
     },
     "rs_utils\/hostname": {
-      "recipies": [
-        "rs_utils::hostname",
-        "rs_utils::default"
-      ],
-      "calculated": false,
       "default": "",
+      "calculated": false,
       "type": "string",
       "choice": [
 
       ],
       "description": "The hostname that you would like this machine to have.",
       "display_name": "Hostname",
-      "required": "optional",
       "recipes": [
-
-      ]
+        "rs_utils::hostname",
+        "rs_utils::default"
+      ],
+      "required": "optional"
     },
     "rs_utils\/mysql_binary_backup_file": {
-      "recipies": [
-        "rs_utils::install_file_stats_collectd_plugin"
-      ],
-      "calculated": false,
       "default": "\/var\/run\/mysql-binary-backup",
+      "calculated": false,
       "type": "string",
       "choice": [
 
       ],
       "description": "An optionally specified file path for the mysql binary backup",
       "display_name": "MySQL binary file",
-      "required": "optional",
       "recipes": [
-
-      ]
+        "rs_utils::install_file_stats_collectd_plugin"
+      ],
+      "required": "optional"
     },
     "rs_utils\/timezone": {
-      "calculated": false,
       "default": "UTC",
+      "calculated": false,
       "type": "string",
       "choice": [
 
       ],
       "description": "Sets the system time to the timezone of the specified input, which must be a valid zoneinfo\/tz database entry.  If the input is 'unset' the timezone will use the 'localtime' that's defined in your RightScale account under Settings -> User -> Preferences tab.  You can find a list of valid examples from the timezone pulldown bar in the Preferences tab. The server will not be updated for daylight savings time.  Ex: US\/Pacific, US\/Eastern",
       "display_name": "Timezone",
-      "required": "optional",
       "recipes": [
         "rs_utils::timezone",
         "rs_utils::default"
-      ]
+      ],
+      "required": "optional"
     }
   },
-  "replacing": {
+  "providing": {
 
   },
   "license": "Copyright (c) 2010 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
