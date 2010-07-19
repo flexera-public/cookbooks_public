@@ -1,4 +1,3 @@
-.
 # Cookbook Name:: rs_utils
 # Recipe:: install_mysql_collectd_plugin
 #
