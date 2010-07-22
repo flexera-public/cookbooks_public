@@ -39,7 +39,7 @@ attribute "rs_utils/private_ssh_key",
 attribute "rs_utils/hostname",
   :display_name => "Hostname",
   :description => "The hostname that you would like this machine to have.",
-  :required => "required",
+  :required => "optional",
   :default => "",
   :recipes => [ "rs_utils::setup_hostname" , "rs_utils::default" ]
 
