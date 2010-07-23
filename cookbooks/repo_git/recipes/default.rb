@@ -47,7 +47,7 @@ node[:repo].each do |resource_name, entry|
     raise "ERROR: You did not specify a repository for repo resource named #{resource_name}." unless url
     branch = (entry[:branch]) ? entry[:branch] : "master"
     key = (entry[:ssh_key]) ? entry[:ssh_key] : ""
-    submodule = (entry[:enable_submodules]) ? entry[:enable_submodules] : false
+    submodule = (entry[:enable_submodules] == "true") ? true : false
 
     # Setup git client
     repo resource_name do
