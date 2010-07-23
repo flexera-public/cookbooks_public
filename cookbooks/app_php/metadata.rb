@@ -44,24 +44,7 @@ attribute "php/db_dns_name",
   :description => "The fully qualified domain name of the database server to which the application server(s) will connect.  Ex: master.mydatabase.com",
   :required => true,
   :recipes => [ "app_php::install_php", "app_php::default" ]
-
-attribute "php/code",
-  :display_name => "PHP Application Code",
-  :type => "hash"
   
-attribute "php/code/url",
-  :display_name => "Repository URL",
-  :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
-  :required => true,
-  :recipes => [ "app_php::do_update_code", "app_php::do_db_restore", "app_php::install_php", "app_php::default" ]
-
-attribute "php/code/credentials",
-  :display_name => "Repository Credentials",
-  :description => "The private SSH key of the git repository.",
-  :required => false,
-  :default => "",
-  :recipes => [ "app_php::do_update_code", "app_php::do_db_restore", "app_php::install_php", "app_php::default" ]
-
 #
 # recommended attributes
 #
@@ -85,13 +68,6 @@ attribute "php/db_mysqldump_file_path",
 #
 # optional attributes
 #
-
-attribute "php/code/branch",
-  :display_name => "Repository Branch",
-  :description => "The name of the branch within the git repository where the application code should be pulled from.",
-  :default => "master",
-  :recipes => [ "app_php::do_update_code", "app_php::do_db_restore", "app_php::install_php", "app_php::default" ]
-  
 attribute "php/application_port",
   :display_name => "Application Port",
   :description => "This input is normally set to 8000 if this server is a combined HAProxy and application server. If this is an application server (w/o HAproxy), set it to 80.  When setting this in a deployment, you should use 80 at the deployment level since you want all of your servers in the array to use this value.  If the server is a FE+APP server, you can set it to 8000 at the server level so that it overrides the deployment level input.",

@@ -66,23 +66,6 @@
       ],
       "required": "optional"
     },
-    "rails\/code\/credentials": {
-      "calculated": false,
-      "type": "string",
-      "choice": [
-
-      ],
-      "description": "The private SSH key of the git repository.",
-      "display_name": "Repository Credentials",
-      "recipes": [
-        "app_rails::do_db_restore",
-        "app_rails::do_update_code",
-        "app_rails::install_rails",
-        "app_rails::default",
-        "app_rails::default"
-      ],
-      "required": "optional"
-    },
     "rails\/db_mysqldump_file_path": {
       "calculated": false,
       "type": "string",
@@ -117,23 +100,6 @@
       "description": "An optional list of gems that's required by your application.",
       "display_name": "Gems List",
       "recipes": [
-        "app_rails::install_rails",
-        "app_rails::default"
-      ],
-      "required": "optional"
-    },
-    "rails\/code\/branch": {
-      "default": "master",
-      "calculated": false,
-      "type": "string",
-      "choice": [
-
-      ],
-      "description": "The name of the branch within the git repository where the application code should be pulled from.",
-      "display_name": "Repository Branch",
-      "recipes": [
-        "app_rails::do_db_restore",
-        "app_rails::do_update_code",
         "app_rails::install_rails",
         "app_rails::default"
       ],
@@ -194,35 +160,6 @@
       "recipes": [
         "app_rails::install_rails",
         "app_rails::default"
-      ],
-      "required": "optional"
-    },
-    "rails\/code\/url": {
-      "calculated": false,
-      "type": "string",
-      "choice": [
-
-      ],
-      "description": "Specify the URL location of the repository that contains the application code. Ex: git:\/\/github.com\/mysite\/myapp.git",
-      "display_name": "Repository URL",
-      "recipes": [
-        "app_rails::do_db_restore",
-        "app_rails::do_update_code",
-        "app_rails::install_rails",
-        "app_rails::default",
-        "app_rails::default"
-      ],
-      "required": "required"
-    },
-    "rails\/code": {
-      "calculated": false,
-      "type": "hash",
-      "choice": [
-
-      ],
-      "display_name": "Rails Application Code",
-      "recipes": [
-
       ],
       "required": "optional"
     },
