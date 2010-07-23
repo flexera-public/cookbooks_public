@@ -36,3 +36,4 @@ attribute :svn_password, :kind_of => String
 
 # Git only
 attribute :ssh_key, :kind_of => String
+attribute :enable_submodules, :kind_of => String
