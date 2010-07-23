@@ -8,9 +8,6 @@
 #
 # Required attributes
 #
-set_unless[:php][:code][:url] = ""
-set_unless[:php][:code][:credentials] = ""
-
 set_unless[:php][:db_app_user] = ""   	     
 set_unless[:php][:db_app_passwd] = ""       
 set_unless[:php][:db_schema_name] = ""      
@@ -27,7 +24,6 @@ set_unless[:php][:application_name] = "myapp"
 #
 # Optional attributes
 #
-set_unless[:php][:code][:branch] = "master" 
 set_unless[:php][:application_port] = "8000"    
 set_unless[:php][:modules_list] = [] 
 set_unless[:php][:db_adapter] = "mysql"

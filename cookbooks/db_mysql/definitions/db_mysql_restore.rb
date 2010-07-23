@@ -23,7 +23,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-define :db_mysql_restore,  :url => nil, :branch => 'master', :user => nil, :credentials => nil, :file_path => nil, :schema_name => nil, :tmp_dir => '/tmp' do
+define :db_mysql_restore,  :file_path => nil, :schema_name => nil, :tmp_dir => '/tmp' do
 
   repo_params = params # see http://tickets.opscode.com/browse/CHEF-422
   
@@ -31,12 +31,8 @@ define :db_mysql_restore,  :url => nil, :branch => 'master', :user => nil, :cred
   dumpfile = "#{dir}/#{params[:file_path]}"
   schema_name = params[:schema_name]
   
-  repo "Get mysqldump from git repository" do
-    repository repo_params[:url]
-    revision repo_params[:branch]  
+  repo "default" do
     destination dir
-    ssh_key repo_params[:credentials]
-    provider_type "repo_git"
     action :pull
   end
 

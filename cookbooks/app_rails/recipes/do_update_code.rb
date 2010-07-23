@@ -22,21 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-# Check that we have the required attributes set
-raise "You must provide a URL to your application code repository" if ("#{@node[:rails][:code][:url]}" == "") 
-raise "You must provide a destination for your application code." if ("#{@node[:rails][:code][:destination]}" == "") 
-
-# Warn about missing optional attributes
-Chef::Log.warn("WARNING: You did not provide credentials for your code repository -- assuming public repository.") if ("#{@node[:rails][:code][:credentials]}" == "") 
-Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{@node[:rails][:code][:branch]}" == "") 
-
 # grab application source from remote repository
-repo "Get Repository" do
-  repository @node[:rails][:code][:url]
-  revision @node[:rails][:code][:branch] 
+repo "default" do
   destination @node[:rails][:code][:destination]
-  ssh_key @node[:rails][:code][:credentials]
-  provider_type "repo_git"
   action :pull
 end

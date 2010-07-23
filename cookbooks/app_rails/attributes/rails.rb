@@ -8,10 +8,6 @@
 #
 # Required attributes
 #
-set_unless[:rails][:code][:url] = ""
-set_unless[:rails][:code][:user] =  ""
-set_unless[:rails][:code][:credentials] = ""
-
 set_unless[:rails][:db_app_user] = ""   	     
 set_unless[:rails][:db_app_passwd] = ""       
 set_unless[:rails][:db_schema_name] = ""      
@@ -29,7 +25,6 @@ set_unless[:rails][:env] = "production"
 #
 # Optional attributes
 #
-set_unless[:rails][:code][:branch] = "master" 
 set_unless[:rails][:application_port] = "8000"    
 set_unless[:rails][:spawn_method] = "conservative"
 set_unless[:rails][:gems_list] = ""
