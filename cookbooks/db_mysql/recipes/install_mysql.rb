@@ -34,7 +34,7 @@ when "debian","ubuntu"
   directory "/var/cache/local/preseeding" do
     owner "root"
     group "root"
-    mode "755"
+    mode 0755
     recursive true
   end
   
@@ -93,7 +93,12 @@ file "/var/log/mysqlslow.log" do
 end
 
 service "mysql" do
-  service_name value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "mysqld"}, "default" => "mysql")  
+  service_name value_for_platform([ "centos", "redhat", "suse", "fedora" ] => {"default" => "mysqld"}, "default" => "mysql")
+  if (platform?("ubuntu") && node.platform_version.to_f >= 10.04)
+    restart_command "restart mysql"
+    stop_command "stop mysql"
+    start_command "start mysql"
+  end
   supports :status => true, :restart => true, :reload => true
   action [:enable, :start]
 end
