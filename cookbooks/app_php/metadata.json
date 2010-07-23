@@ -1,9 +1,14 @@
 {
-  "recipes": {
-    "app_php::do_update_code": "Update application source files from the remote repository.",
-    "app_php::do_db_restore": "Restore the application database schema from a remote location.",
-    "app_php::default": "Runs app_php::install_php.",
-    "app_php::install_php": "Installs the php application server."
+  "replacing": {
+
+  },
+  "dependencies": {
+    "resource:repo['default']": [
+
+    ],
+    "web_apache": [
+
+    ]
   },
   "groupings": {
 
@@ -12,29 +17,21 @@
   "recommendations": {
 
   },
-  "dependencies": {
-    "repo_git_pull(url, branch, dest, cred)": [
-
-    ],
-    "web_apache": [
-
-    ],
-    "repo_git": [
-
-    ]
-  },
+  "description": "Installs the php application server.",
   "maintainer": "RightScale, Inc.",
+  "name": "app_php",
   "suggestions": {
 
   },
-  "description": "Installs the php application server.",
   "maintainer_email": "support@rightscale.com",
-  "name": "app_php",
   "conflicting": {
 
   },
-  "providing": {
-
+  "recipes": {
+    "app_php::do_update_code": "Update application source files from the remote repository.",
+    "app_php::do_db_restore": "Restore the application database schema from a remote location.",
+    "app_php::default": "Runs app_php::install_php.",
+    "app_php::install_php": "Installs the php application server."
   },
   "platforms": {
 
@@ -49,11 +46,11 @@
       ],
       "description": "The fully qualified domain name of the database server to which the application server(s) will connect.  Ex: master.mydatabase.com",
       "display_name": "Database Dns Name",
-      "required": "required",
       "recipes": [
         "app_php::install_php",
         "app_php::default"
-      ]
+      ],
+      "required": "required"
     },
     "php\/db_app_user": {
       "calculated": false,
@@ -63,14 +60,14 @@
       ],
       "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Username'.  The application server will then have unrestricted access to the database.",
       "display_name": "Database User",
-      "required": "required",
       "recipes": [
         "app_php::do_db_restore"
-      ]
+      ],
+      "required": "required"
     },
     "php\/code\/branch": {
-      "calculated": false,
       "default": "master",
+      "calculated": false,
       "type": "string",
       "choice": [
 
@@ -111,21 +108,21 @@
       "required": "optional"
     },
     "php\/code\/credentials": {
-      "calculated": false,
       "default": "",
+      "calculated": false,
       "type": "string",
       "choice": [
 
       ],
       "description": "The private SSH key of the git repository.",
       "display_name": "Repository Credentials",
-      "required": "optional",
       "recipes": [
         "app_php::do_update_code",
         "app_php::do_db_restore",
         "app_php::install_php",
         "app_php::default"
-      ]
+      ],
+      "required": "optional"
     },
     "php\/db_app_passwd": {
       "calculated": false,
@@ -135,14 +132,14 @@
       ],
       "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Password'.  The application server will then have unrestricted access to the database.",
       "display_name": "Database Password",
-      "required": "required",
       "recipes": [
         "app_php::do_db_restore"
-      ]
+      ],
+      "required": "required"
     },
     "php\/application_port": {
-      "calculated": false,
       "default": "8000",
+      "calculated": false,
       "type": "string",
       "choice": [
 
@@ -163,13 +160,13 @@
       ],
       "description": "Specify the URL location of the repository that contains the application code. Ex: git:\/\/github.com\/mysite\/myapp.git",
       "display_name": "Repository URL",
-      "required": "required",
       "recipes": [
         "app_php::do_update_code",
         "app_php::do_db_restore",
         "app_php::install_php",
         "app_php::default"
-      ]
+      ],
+      "required": "required"
     },
     "php\/code": {
       "calculated": false,
@@ -191,11 +188,11 @@
       ],
       "description": "The fully qualified domain name of the application server used to define your virtual host.",
       "display_name": "Server Name",
-      "required": "required",
       "recipes": [
         "app_php::install_php",
         "app_php::default"
-      ]
+      ],
+      "required": "required"
     },
     "php\/db_schema_name": {
       "calculated": false,
@@ -205,14 +202,14 @@
       ],
       "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
       "display_name": "Database Schema Name",
-      "required": "required",
       "recipes": [
         "app_php::do_db_restore"
-      ]
+      ],
+      "required": "required"
     },
     "php\/application_name": {
-      "calculated": false,
       "default": "myapp",
+      "calculated": false,
       "type": "string",
       "choice": [
 
@@ -226,8 +223,8 @@
       "required": "optional"
     }
   },
-  "replacing": {
+  "providing": {
 
   },
-  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
+  "license": "Copyright (c) 2010 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
 }

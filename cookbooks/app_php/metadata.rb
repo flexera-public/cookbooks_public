@@ -6,8 +6,8 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
 
 depends "web_apache"
-depends "repo_git"
-depends "repo_git_pull(url, branch, dest, cred)"
+
+depends "resource:repo['default']" # not really in metadata spec yet. Format TBD.
  
 recipe  "app_php::default", "Runs app_php::install_php."
 recipe  "app_php::do_db_restore", "Restore the application database schema from a remote location."

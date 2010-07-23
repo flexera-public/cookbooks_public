@@ -1,12 +1,12 @@
 {
   "recipes": {
-    "repo_git::default": "Default pattern of loading packages and resources provided"
+    "repo_svn::default": "Default pattern of loading packages and resources provided"
   },
   "groupings": {
     "repo\/default": {
       "databag": true,
-      "description": "Settings for managing a Git source repository",
-      "display_name": "Git Client Default Settings"
+      "description": "Settings for managing a Subversion source repository",
+      "display_name": "Subversion Client Default Settings"
     }
   },
   "long_description": "",
@@ -20,9 +20,9 @@
   "suggestions": {
 
   },
-  "description": "Manages the Git fast version control system",
+  "description": "Manages the Subversion version control system",
   "maintainer_email": "support@rightscale.com",
-  "name": "repo_git",
+  "name": "repo_svn",
   "conflicting": {
 
   },
@@ -36,11 +36,28 @@
   },
   "version": "0.0.1",
   "attributes": {
+    "repo\/default\/username": {
+      "calculated": false,
+      "default": "",
+      "type": "string",
+      "choice": [
+
+      ],
+      "description": "",
+      "display_name": "User Name",
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
     "repo\/default\/branch": {
       "calculated": false,
       "type": "string",
+      "choice": [
+
+      ],
       "description": "",
-      "display_name": "Branch\/Tag",
+      "display_name": "Revision\/Branch\/Tag",
       "required": "optional",
       "recipes": [
 
@@ -52,50 +69,36 @@
       "choice": [
 
       ],
-      "description": "",
+      "description": "The URL to subversion repository. Ex. http:\/\/svn.github.com\/schacon\/cowsay.git",
       "display_name": "Repository Url",
       "required": "required",
       "recipes": [
 
       ]
     },
-    "repo\/default\/remote": {
+    "repo\/default\/arguments": {
       "calculated": false,
-      "default": "origin",
+      "default": "",
       "type": "string",
       "choice": [
 
       ],
       "description": "",
-      "display_name": "Remote",
+      "display_name": "Arguments",
       "required": "optional",
       "recipes": [
 
       ]
     },
-    "repo\/default\/enable_submodules": {
+    "repo\/default\/password": {
       "calculated": false,
-      "default": "false",
+      "default": "",
       "type": "string",
       "choice": [
 
       ],
       "description": "",
-      "display_name": "Enable Submodules",
-      "required": "optional",
-      "recipes": [
-
-      ]
-    },
-    "repo\/default\/depth": {
-      "calculated": false,
-      "default": null,
-      "type": "string",
-      "choice": [
-
-      ],
-      "description": "",
-      "display_name": "Depth",
+      "display_name": "Password",
       "required": "optional",
       "recipes": [
 
@@ -103,7 +106,7 @@
     },
     "repo\/default\/provider": {
       "calculated": false,
-      "default": "repo_git",
+      "default": "repo_svn",
       "type": "string",
       "choice": [
 
@@ -114,20 +117,6 @@
 
       ],
       "required": "optional"
-    },
-    "repo\/default\/ssh_key": {
-      "calculated": false,
-      "default": null,
-      "type": "string",
-      "choice": [
-
-      ],
-      "description": "",
-      "display_name": "SSH Key",
-      "required": "optional",
-      "recipes": [
-
-      ]
     }
   },
   "replacing": {

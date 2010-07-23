@@ -1,26 +1,15 @@
 {
-  "recipes": {
-    "app_rails::setup_db_config": "Configures the rails database.yml file.",
-    "app_rails::do_db_restore": "Restore the application database schema from a remote location.",
-    "app_rails::install_rails": "Installs the rails application server.",
-    "app_rails::do_update_code": "Update application source files from the remote repository.",
-    "app_rails::default": "Runs app_rails::install_rails."
-  },
-  "groupings": {
-
-  },
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
-  "recommendations": {
+  "replacing": {
 
   },
   "dependencies": {
-    "repo_git_pull(url, branch, user, dest, cred)": [
-
-    ],
     "db_mysql": [
 
     ],
     "rails": [
+
+    ],
+    "resource:repo['default']": [
 
     ],
     "mysql::client": [
@@ -29,25 +18,33 @@
     "web_apache": [
 
     ],
-    "repo_git": [
-
-    ],
     "passenger_apache2::mod_rails": [
 
     ]
   },
-  "maintainer": "RightScale, Inc.",
-  "suggestions": {
+  "groupings": {
+
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+  "recommendations": {
 
   },
   "description": "Installs the rails application server on apache+passenger.",
-  "maintainer_email": "support@rightscale.com",
+  "maintainer": "RightScale, Inc.",
   "name": "app_rails",
+  "suggestions": {
+
+  },
+  "maintainer_email": "support@rightscale.com",
   "conflicting": {
 
   },
-  "providing": {
-
+  "recipes": {
+    "app_rails::setup_db_config": "Configures the rails database.yml file.",
+    "app_rails::do_db_restore": "Restore the application database schema from a remote location.",
+    "app_rails::install_rails": "Installs the rails application server.",
+    "app_rails::do_update_code": "Update application source files from the remote repository.",
+    "app_rails::default": "Runs app_rails::install_rails."
   },
   "platforms": {
 
@@ -55,8 +52,8 @@
   "version": "0.0.1",
   "attributes": {
     "rails\/application_port": {
-      "calculated": false,
       "default": "8000",
+      "calculated": false,
       "type": "string",
       "choice": [
 
@@ -119,15 +116,15 @@
       ],
       "description": "An optional list of gems that's required by your application.",
       "display_name": "Gems List",
-      "required": "optional",
       "recipes": [
         "app_rails::install_rails",
         "app_rails::default"
-      ]
+      ],
+      "required": "optional"
     },
     "rails\/code\/branch": {
-      "calculated": false,
       "default": "master",
+      "calculated": false,
       "type": "string",
       "choice": [
 
@@ -150,10 +147,10 @@
       ],
       "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
       "display_name": "Database Schema Name",
-      "required": "required",
       "recipes": [
         "app_rails::do_db_restore"
-      ]
+      ],
+      "required": "required"
     },
     "rails\/db_app_passwd": {
       "calculated": false,
@@ -163,14 +160,14 @@
       ],
       "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Password'.  The application server will then have unrestricted access to the database.",
       "display_name": "Database Password",
-      "required": "required",
       "recipes": [
         "app_rails::do_db_restore"
-      ]
+      ],
+      "required": "required"
     },
     "rails\/server_name": {
-      "calculated": false,
       "default": "myserver",
+      "calculated": false,
       "type": "string",
       "choice": [
 
@@ -186,8 +183,8 @@
       "required": "optional"
     },
     "rails\/application_name": {
-      "calculated": false,
       "default": "myapp",
+      "calculated": false,
       "type": "string",
       "choice": [
 
@@ -208,14 +205,14 @@
       ],
       "description": "Specify the URL location of the repository that contains the application code. Ex: git:\/\/github.com\/mysite\/myapp.git",
       "display_name": "Repository URL",
-      "required": "required",
       "recipes": [
         "app_rails::do_db_restore",
         "app_rails::do_update_code",
         "app_rails::install_rails",
         "app_rails::default",
         "app_rails::default"
-      ]
+      ],
+      "required": "required"
     },
     "rails\/code": {
       "calculated": false,
@@ -237,16 +234,16 @@
       ],
       "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Username'.  The application server will then have unrestricted access to the database.",
       "display_name": "Database User",
-      "required": "required",
       "recipes": [
         "app_rails::do_db_restore",
         "app_rails::install_rails",
         "app_rails::default"
-      ]
+      ],
+      "required": "required"
     }
   },
-  "replacing": {
+  "providing": {
 
   },
-  "license": "Copyright (c) 2009 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
+  "license": "Copyright (c) 2010 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and\/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
 }

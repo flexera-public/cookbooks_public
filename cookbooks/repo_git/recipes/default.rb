@@ -1,7 +1,8 @@
-# Cookbook Name:: app_php
-# Recipe:: do_update_code
 #
-# Copyright (c) 2009 RightScale Inc
+# Cookbook Name:: repo_git
+# Recipe:: default
+#
+# Copyright (c) 2010 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -22,21 +23,39 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+PROVIDER_NAME = "repo_git"  
 
-# Check that we have the required attributes set
-raise "You must provide a URL to your application code repository" if ("#{@node[:php][:code][:url]}" == "") 
-raise "You must provide a destination for your application code." if ("#{@node[:php][:code][:destination]}" == "") 
+unless node[:platform] == "mac_os_x" then
+  # Install git client
+  case node[:platform]
+  when "debian", "ubuntu"
+    package "git-core"
+  else 
+    package "git"
+  end
 
-# Warn about missing optional attributes
-Chef::Log.warn("WARNING: You did not provide credentials for your code repository -- assuming public repository.") if ("#{@node[:php][:code][:credentials]}" == "") 
-Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{@node[:php][:code][:branch]}" == "") 
+  package "gitk"
+  package "git-svn"
+  package "git-email"
+end
 
-# grab application source from remote repository
-repo "Get Repository" do
-  repository @node[:php][:code][:url]
-  revision @node[:php][:code][:branch] 
-  destination @node[:php][:code][:destination]
-  ssh_key @node[:php][:code][:credentials]
-  provider_type "repo_git"
-  action :pull
+# Setup all git resources that have attributes in the node.
+node[:repo].each do |resource_name, entry| 
+  if entry[:provider] == PROVIDER_NAME then
+    
+    url = entry[:repository]
+    raise "ERROR: You did not specify a repository for repo resource named #{resource_name}." unless url
+    branch = (entry[:branch]) ? entry[:branch] : "master"
+    key = (entry[:ssh_key]) ? entry[:ssh_key] : ""
+
+    # Setup git client
+    repo resource_name do
+      provider "repo_git"
+      repository url
+      revision branch
+      ssh_key key
+            
+      # persist true      # developed by RightScale (to contribute)
+    end
+  end
 end

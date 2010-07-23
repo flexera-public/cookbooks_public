@@ -2,7 +2,7 @@
 # Cookbook Name:: repo_git
 # Provider:: repo_git
 #
-# Copyright (c) 2009 RightScale Inc
+# Copyright (c) 2020 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -23,57 +23,52 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'uri'
-
 action :pull do
-  my_resource = new_resource # limitation of current LWRP implementation 
-  
-  # include the public recipe to install git
-  include_recipe "git"
-   
-  # add repository credentials
+ 
+  # add ssh key and exec script
   keyfile = nil
-  if "#{my_resource.cred}" != ""
+  keyname = new_resource.ssh_key
+  if "#{keyname}" != ""
     keyfile = "/tmp/gitkey"
     bash 'create_temp_git_ssh_key' do
       code <<-EOH
-        echo -n '#{my_resource.cred}' > #{keyfile}
-	      chmod 700 #{keyfile}
+        echo -n '#{keyname}' > #{keyfile}
+        chmod 700 #{keyfile}
         echo 'exec ssh -oStrictHostKeyChecking=no -i #{keyfile} "$@"' > #{keyfile}.sh
-	      chmod +x #{keyfile}.sh
+        chmod +x #{keyfile}.sh
       EOH
     end
   end 
 
   # pull repo (if exist)
-  ruby "pull-exsiting-local-repo" do
-    cwd my_resource.dest
-    only_if do File.directory?(my_resource.dest) end
-    code <<-EOH
-      puts "Updateing existing repo at #{my_resource.dest}"
+  ruby_block "Pull existing git repository at #{new_resource.destination}" do
+    only_if do ::File.directory?(new_resource.destination) end
+    block do
+      Dir.chdir new_resource.destination
+      puts "Updating existing repo at #{new_resource.destination}"
       ENV["GIT_SSH"] = "#{keyfile}.sh" unless ("#{keyfile}" == "")
       puts `git pull` 
-    EOH
+    end
   end
-  
-  # clone repo (if not exist)
-  ruby "create-new-local-repo" do
-    not_if do File.directory?(my_resource.dest) end
-    code <<-EOH
-      puts "Creating new repo at #{my_resource.dest}"
-      ENV["GIT_SSH"] = "#{keyfile}.sh" unless ("#{keyfile}" == "")
-      puts `git clone #{my_resource.url} -- #{my_resource.dest}`
 
-      if "#{my_resource.branch}" != "master" 
-	      dir = "#{my_resource.dest}"
+  # clone repo (if not exist)
+  ruby_block "Clone new git repository at #{new_resource.destination}" do
+    not_if do ::File.directory?(new_resource.destination) end
+    block do
+      puts "Creating new repo at #{new_resource.destination}"
+      ENV["GIT_SSH"] = "#{keyfile}.sh" unless ("#{keyfile}" == "")
+      puts `git clone #{new_resource.repository} -- #{new_resource.destination}`
+      branch = new_resource.revision
+      if "#{branch}" != "master" 
+        dir = "#{new_resource.destination}"
         Dir.chdir(dir) 
-        puts `git checkout --track -b #{my_resource.branch} origin/#{my_resource.branch}`
+        puts `git checkout --track -b #{branch} origin/#{branch}`
       end
-    EOH
+    end
   end
 
   # delete SSH key & clear GIT_SSH
-  if my_resource.cred != nil
+  if keyfile != nil
      bash 'delete_temp_git_ssh_key' do
        code <<-EOH
          rm -f #{keyfile}
@@ -81,5 +76,5 @@ action :pull do
        EOH
      end
   end
-
+ 
 end

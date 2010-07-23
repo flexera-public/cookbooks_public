@@ -30,14 +30,14 @@ define :db_mysql_restore,  :url => nil, :branch => 'master', :user => nil, :cred
   dir = "#{params[:tmp_dir]}/db_mysql_restore"
   dumpfile = "#{dir}/#{params[:file_path]}"
   schema_name = params[:schema_name]
-
-  # grab mysqldump file from remote repository
-  repo_git_pull "Get mysqldump from git repository" do
-    url repo_params[:url]
-    branch repo_params[:branch] 
-    user repo_params[:user]
-    dest dir
-    cred repo_params[:credentials]
+  
+  repo "Get mysqldump from git repository" do
+    repository repo_params[:url]
+    revision repo_params[:branch]  
+    destination dir
+    ssh_key repo_params[:credentials]
+    provider_type "repo_git"
+    action :pull
   end
 
   bash "unpack mysqldump file: #{dumpfile}" do

@@ -33,10 +33,10 @@ Chef::Log.info("You did not provide branch informaiton -- setting to default.") 
 
 # grab application source from remote repository
 repo "Get Repository" do
-  url @node[:rails][:code][:url]
-  branch @node[:rails][:code][:branch] 
-  dest @node[:rails][:code][:destination]
-  cred @node[:rails][:code][:credentials]
+  repository @node[:rails][:code][:url]
+  revision @node[:rails][:code][:branch] 
+  destination @node[:rails][:code][:destination]
+  ssh_key @node[:rails][:code][:credentials]
+  provider_type "repo_git"
   action :pull
-  provider "repo_git"
 end
