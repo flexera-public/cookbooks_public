@@ -31,6 +31,8 @@ define :db_mysql_restore,  :file_path => nil, :schema_name => nil, :tmp_dir => '
   dumpfile = "#{dir}/#{params[:file_path]}"
   schema_name = params[:schema_name]
   
+  include_recipe "repo_git::default"  # this must run in the same converge until persistent resources are supported
+  
   repo "default" do
     destination dir
     action :pull

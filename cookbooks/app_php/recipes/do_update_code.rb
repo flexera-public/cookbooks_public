@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+include_recipe "repo_git::default"  # this must run in the same converge until persistent resources are supported
+
 # grab application source from remote repository
 repo "default" do
   destination @node[:php][:code][:destination]
