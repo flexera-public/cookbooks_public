@@ -28,7 +28,7 @@ action :pull do
   # add ssh key and exec script
   keyfile = nil
   keyname = new_resource.ssh_key
-  ssh_wrapper = keyname + ".sh"
+  ssh_wrapper = "#{keyfile}.sh"
   if "#{keyname}" != ""
     keyfile = "/tmp/gitkey"
     bash 'create_temp_git_ssh_key' do
@@ -36,7 +36,7 @@ action :pull do
         echo -n '#{keyname}' > #{keyfile}
         chmod 700 #{keyfile}
         echo 'exec ssh -oStrictHostKeyChecking=no -i #{keyfile} "$@"' > #{ssh_wrapper}
-        chmod +x #{keyfile}.sh
+        chmod +x #{ssh_wrapper}
       EOH
     end
   end 
