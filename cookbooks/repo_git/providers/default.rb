@@ -24,40 +24,35 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 action :pull do
- 
-  # add ssh key and exec script
-  keyfile = nil
-  keyname = new_resource.ssh_key
-  ssh_wrapper = "#{keyfile}.sh"
-  if "#{keyname}" != ""
-    keyfile = "/tmp/gitkey"
-    bash 'create_temp_git_ssh_key' do
-      code <<-EOH
-        echo -n '#{keyname}' > #{keyfile}
-        chmod 700 #{keyfile}
-        echo 'exec ssh -oStrictHostKeyChecking=no -i #{keyfile} "$@"' > #{ssh_wrapper}
-        chmod +x #{ssh_wrapper}
-      EOH
+
+  ssh_key = "#{new_resource.ssh_key}"
+  ssh_keyfile = "/tmp/gitkey"
+  ssh_wrapper = ssh_key.empty? ? nil : "#{ssh_keyfile}.sh"
+
+  ruby_block "add ssh key and ssh wrapper script" do
+    not_if { ssh_key.empty? }
+    block do
+      ::File.open(ssh_keyfile, "w") { |f| f.write(ssh_key) }
+      ::File.open(ssh_wrapper, "w") { |f| f.write("exec ssh -oStrictHostKeyChecking=no -i #{ssh_keyfile} \"$@\"") }
+      system("chmod 600 #{ssh_keyfile}")
+      system("chmod 700 #{ssh_wrapper}")
     end
-  end 
+  end
 
   git "sync repo"  do
     destination new_resource.destination
     repository new_resource.repository
     reference new_resource.revision
-    ssh_wrapper keyfile
+    ssh_wrapper ssh_wrapper
     enable_submodules new_resource.enable_submodules
     action :sync
   end
- 
-  # delete SSH key & clear GIT_SSH
-  if keyfile != nil
-     bash 'delete_temp_git_ssh_key' do
-       code <<-EOH
-         rm -f #{keyfile}
-         rm -f #{ssh_wrapper}
-       EOH
-     end
+
+  ruby_block "clean up ssh key" do
+    not_if { ssh_key.empty? }
+    block do
+      ::FileUtils.rm(ssh_keyfile, :force => true)
+      ::FileUtils.rm(ssh_wrapper, :force => true)
+    end
   end
- 
 end
