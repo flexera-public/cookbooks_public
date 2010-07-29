@@ -25,19 +25,19 @@ attribute "php/db_app_user",
   :display_name => "Database User",
   :description => "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Username'.  The application server will then have unrestricted access to the database.",
   :required => true,
-  :recipes => [ "app_php::do_db_restore" ]
+  :recipes => [ "app_php::do_db_restore", "app_php::install_php" ]
 
 attribute "php/db_app_passwd",
   :display_name => "Database Password",
   :description => "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Password'.  The application server will then have unrestricted access to the database.",
   :required => true,
-  :recipes => [ "app_php::do_db_restore" ]
+  :recipes => [ "app_php::do_db_restore", "app_php::install_php"  ]
 
 attribute "php/db_schema_name",
   :display_name => "Database Schema Name",
   :description => "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
   :required => true,
-  :recipes => [ "app_php::do_db_restore" ]
+  :recipes => [ "app_php::do_db_restore", "app_php::install_php"  ]
 
 attribute "php/db_dns_name",
   :display_name => "Database Dns Name",
@@ -98,9 +98,9 @@ attribute "php/application_port",
   :default => "8000",
   :recipes => [ "app_php::install_php", "app_php::default" ]
 
-#attribute "php/modules_list",
-#  :display_name => "PHP modules",
-#  :discription => "An optional list of php modules to install",
-#  :type => "array",
-#  :recipes => [ "app_php::install_php" ] 
+attribute "php/modules_list",
+  :display_name => "PHP modules",
+  :discription => "An optional list of php modules to install",
+  :type => "array",
+  :recipes => [ "app_php::install_php", "app_php::default" ] 
 

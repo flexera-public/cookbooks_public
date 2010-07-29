@@ -29,4 +29,5 @@ include_recipe "rs_utils::setup_logging"
 include_recipe "rs_utils::setup_mail"
 include_recipe "rs_utils::setup_monitoring"
 include_recipe "rs_utils::setup_ssh"
-include_recipe "rs_utils::setup_hostname"
+# Deprication: setup_hostname is no longer required in right_link 5.5
+#include_recipe "rs_utils::setup_hostname"

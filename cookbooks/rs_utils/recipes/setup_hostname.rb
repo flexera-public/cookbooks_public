@@ -25,12 +25,14 @@
 if "#{node.rs_utils.hostname}" != ""
   
   log "Set system hostname"
-  
+
+# TODO this script is dangerous and could break your hosts file.
+# Chef requires an FQDN to operate.  hostname --fqdn
   bash "set_hostname" do
     code <<-EOH
       hostname #{node.rs_utils.hostname}
       echo #{node.rs_utils.hostname} >> /etc/hostname
-      echo 127.0.0.1 #{node.rs_utils.hostname} > /etc/hosts
+      echo 127.0.0.1 localhost #{node.rs_utils.hostname}.localdomain >> /etc/hosts
     EOH
   end
 end
