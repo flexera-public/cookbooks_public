@@ -41,7 +41,7 @@ attribute "rs_utils/hostname",
   :description => "The hostname that you would like this machine to have.",
   :required => "optional",
   :default => "",
-  :recipes => [ "rs_utils::setup_hostname" , "rs_utils::default" ]
+  :recipes => [ "rs_utils::setup_hostname" ]
 
 attribute "rs_utils/mysql_binary_backup_file",
   :display_name => "MySQL binary file",
