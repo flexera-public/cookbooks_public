@@ -28,6 +28,14 @@ package "collectd-mysql" do
   only_if {  node.platform == "centos" }
 end
 
+# This recipe assumes that it's being run in a run list with rs_utils::setup_monitoring, and that therefore
+# the "collectd" service resource will be available.  This may not always be the case.  We could either
+# include_recipe "rs_utils::setup_monitoring" or define the resource here.  I'm going with the easy
+# way out.
+service "collectd" do
+  action :nothing
+end
+
 remote_file "#{node.rs_utils.collectd_plugin_dir}/mysql.conf" do
   source "collectd.mysql.conf"
   notifies :restart, resources(:service => "collectd")
