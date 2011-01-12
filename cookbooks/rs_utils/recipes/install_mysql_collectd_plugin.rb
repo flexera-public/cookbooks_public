@@ -33,7 +33,12 @@ remote_file "#{node.rs_utils.collectd_plugin_dir}/mysql.conf" do
   notifies :restart, resources(:service => "collectd")
 end
 
-node.rs_utils.process_list += " mysqld"
+# When using the dot notation the following error is thrown
+#
+# You tried to set a nested key, where the parent is not a hash-like object: rs_utils/process_list/process_list
+#
+# The only related issue I could find was for Chef 0.9.8 - http://tickets.opscode.com/browse/CHEF-1680
+node[:rs_utils][:process_list] += " mysqld"
 template File.join(node.rs_utils.collectd_plugin_dir, 'processes.conf') do
   source "processes.conf.erb"
   notifies :restart, resources(:service => "collectd")
