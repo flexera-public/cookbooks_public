@@ -24,10 +24,14 @@
 
 #
 # Note! This does NOT restart mysql, only update the my.cnf
-# 
+#
+
+template_source = "my.cnf.erb"
+# The innodb log file and log buffer size need to be drastically reduced for a t1.micro
+template_source = "my.cnf-t1.micro.erb" if node[:ec2] && node[:ec2][:instance_type] == "t1.micro"
 
 template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
-  source "my.cnf.erb"
+  source template_source
   owner "root"
   group "root"
   mode "0644"
