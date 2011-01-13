@@ -43,8 +43,11 @@ when "debian","ubuntu"
     action :nothing
   end
 
+  preseed_to_use = "mysql-server.seed.erb"
+  preseed_to_use = "mysql-server-5.1.seed.erb" if node[:platform_version] == "10.10" || node[:platform_version] == "10.04"
+
   template "/var/cache/local/preseeding/mysql-server.seed" do
-    source "mysql-server.seed.erb"
+    source preseed_to_use
     owner "root"
     group "root"
     mode "0600"
@@ -91,6 +94,11 @@ file "/var/log/mysqlslow.log" do
   owner "mysql"
   group "mysql"
 end
+
+# Before we get carried away here, we need to stop the running upstart job if were on >= Ubuntu 10.04
+bash "Killing the running upstart job in Ubuntu 10.x" do
+  code "service mysql stop"
+end if node[:platform] == "ubuntu" && (node[:platform_version] == "10.10" || node[:platform_version] == "10.04")
 
 service "mysql" do
   service_name value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "mysqld"}, "default" => "mysql")  
