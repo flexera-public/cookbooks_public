@@ -8,7 +8,9 @@ version          "0.0.1"
 depends "mysql", "= 0.9"
 
 provides "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)"
-provides "db_mysql_set_privileges(type, username, password)"
+provides "db_mysql_set_privileges(type, username, password, db_name)"
+provides "db_mysql_gzipfile_backup(db_name, file_path)"
+provides "db_mysql_gzipfile_restore(db_name, file_path)"
 
 recipe  "db_mysql::default", "Runs the 'install_mysql' recipes."
 recipe  "db_mysql::install_mysql", "Installs packages required for MySQL servers without manual intervention."
@@ -53,6 +55,7 @@ attribute "db_mysql/server_usage",
   :display_name => "Server Usage",
   :description => "* dedicated (where the mysql config file allocates all existing resources of the machine)\n* shared (where the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example)",
   :recipes => [ "db_mysql::install_mysql", "db_mysql::default" ],
+  :choice => ["shared", "dedicated"],
   :default => "dedicated"
 
 #
