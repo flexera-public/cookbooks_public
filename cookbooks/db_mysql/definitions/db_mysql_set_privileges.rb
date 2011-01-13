@@ -23,32 +23,34 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-define :db_mysql_set_privileges, :preset => "administrator", :username => nil, :password => nil do
+define :db_mysql_set_privileges, :preset => "administrator", :username => nil, :password => nil, :db_name => nil do
 
   priv_preset = params[:preset]
   username = params[:username]
   password = params[:password]
-  
+  db_name = "*.*"
+  db_name = "#{params[:db_name]}.*" if params[:db_name]
+
   ruby_block "set admin credentials" do
     block do
       require 'rubygems'
       require 'mysql'
 
       con = Mysql.new("", "root",nil,nil,nil,"#{@node[:db_mysql][:socket]}")
-    
+
       case priv_preset
       when 'administrator'
         con.query("GRANT ALL PRIVILEGES on *.* TO '#{username}'@'%' IDENTIFIED BY '#{password}' WITH GRANT OPTION")
         con.query("GRANT ALL PRIVILEGES on *.* TO '#{username}'@'localhost' IDENTIFIED BY '#{password}' WITH GRANT OPTION")
       when 'user'
-        con.query("GRANT ALL PRIVILEGES on *.* TO '#{username}'@'%' IDENTIFIED BY '#{password}'")
-        con.query("GRANT ALL PRIVILEGES on *.* TO '#{username}'@'localhost' IDENTIFIED BY '#{password}'")
+        con.query("GRANT ALL PRIVILEGES on #{db_name} TO '#{username}'@'%' IDENTIFIED BY '#{password}'")
+        con.query("GRANT ALL PRIVILEGES on #{db_name} TO '#{username}'@'localhost' IDENTIFIED BY '#{password}'")
         con.query("REVOKE SUPER on *.* FROM '#{username}'@'%' IDENTIFIED BY '#{password}'")
         con.query("REVOKE SUPER on *.* FROM '#{username}'@'localhost' IDENTIFIED BY '#{password}'")
       else
         raise "only 'administrator' and 'user' type presets are supported!"
       end
-      
+
       con.query("FLUSH PRIVILEGES")
       con.close
     end
