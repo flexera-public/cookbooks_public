@@ -36,6 +36,11 @@ set_unless[:rs_utils][:private_ssh_key] = ""
 
 set_unless[:rs_utils][:mysql_binary_backup_file] = "/var/run/mysql-binary-backup"
 
+default[:rs_utils][:plugin_list] = "network cpu df disk load memory processes swap syslog users interface ping"
+
+# Changed from /var/lib/collectd which does not appear to be the standard
+default[:rs_utils][:collectd_basedir] = "/var/lib/collectd/rrd"
+
 #
 # Platform specific attributes
 #

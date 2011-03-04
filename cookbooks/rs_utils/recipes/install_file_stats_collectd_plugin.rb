@@ -23,6 +23,9 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# Load the exec plugin in the main config file
+node[:rs_utils][:plugin_list] += " exec" unless node[:rs_utils][:plugin_list] =~ /exec/
+
 require 'fileutils'
 
 log "Installing file_stats collectd plugin.."
