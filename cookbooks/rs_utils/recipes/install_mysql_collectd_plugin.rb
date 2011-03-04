@@ -34,6 +34,7 @@ package "collectd-mysql" do
 end
 
 remote_file "#{node.rs_utils.collectd_plugin_dir}/mysql.conf" do
+  backup false
   source "collectd.mysql.conf"
   notifies :restart, resources(:service => "collectd")
 end
@@ -45,6 +46,7 @@ end
 # The only related issue I could find was for Chef 0.9.8 - http://tickets.opscode.com/browse/CHEF-1680
 node[:rs_utils][:process_list] += " mysqld"
 template File.join(node.rs_utils.collectd_plugin_dir, 'processes.conf') do
+  backup false
   source "processes.conf.erb"
   notifies :restart, resources(:service => "collectd")
 end
