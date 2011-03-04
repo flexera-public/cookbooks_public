@@ -26,6 +26,8 @@
 # Load the exec plugin in the main config file
 node[:rs_utils][:plugin_list] += " exec" unless node[:rs_utils][:plugin_list] =~ /exec/
 
+include_recipe "rs_utils::setup_monitoring"
+
 require 'fileutils'
 
 log "Installing file_stats collectd plugin.."
