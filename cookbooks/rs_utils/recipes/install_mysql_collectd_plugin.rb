@@ -22,6 +22,9 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# Load the mysql plugin in the main config file
+node[:rs_utils][:plugin_list] += " mysql" unless node[:rs_utils][:plugin_list] =~ /mysql/
+
 log "Installing MySQL collectd plugin"
 
 package "collectd-mysql" do

@@ -50,4 +50,12 @@ attribute "rs_utils/mysql_binary_backup_file",
   :default => "/var/run/mysql-binary-backup",
   :recipes => [ "rs_utils::install_file_stats_collectd_plugin"  ]
 
-
+# This is usually only set in recipes which need a particular plugin enabled because it's required by a configuration
+# added under node[:rs_utils][:collectd_plugin_dir].  This prevents duplication of LoadPlugin directives and makes sure
+# the plugins are loaded before any config which requires them
+#attribute "rs_utils/plugin_list",
+#  :display_name => "Plugin List",
+#  :description => "A optional list of additional collectd plugins to enable.  Ex: mysql tail nginx",
+#  :required => "optional",
+#  :default => "",
+#  :recipes => [ "rs_utils::setup_monitoring", "rs_utils::default" ]

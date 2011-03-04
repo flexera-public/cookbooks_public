@@ -3,30 +3,25 @@
 # Prepared by RightScale for EC2 instances.
 #
 Hostname  "<%= node[:rightscale][:instance_uuid]  %>"
-BaseDir   "/var/lib/collectd"
+BaseDir   "<%= node[:rs_utils][:collectd_basedir] %>"
 PIDFile   "/var/run/collectd.pid"
 PluginDir "<%= node[:rs_utils][:collectd_lib] %>"
 TypesDB   "<%= node[:rs_utils][:collectd_lib] %>/types.db"
 Interval  10
 ReadThreads 5
-LoadPlugin network
+
+<% node[:rs_utils][:plugin_list].split.each do |plugin| -%>
+LoadPlugin <%= plugin %>
+<% end %>
+
 <Plugin network>
   Server "<%= node[:rightscale][:servers][:sketchy][:hostname] %>" "3011"
 </Plugin>
-LoadPlugin cpu
-LoadPlugin df
-LoadPlugin disk
-LoadPlugin load
-LoadPlugin memory
-LoadPlugin processes
-LoadPlugin swap
-LoadPlugin syslog
-LoadPlugin users
-LoadPlugin interface
+
 <Plugin interface>
   Interface "eth0"
 </Plugin>
-LoadPlugin ping
+
 <Plugin ping>
   Host "www.rightscale.com"
   Host "s3.amazonaws.com"
