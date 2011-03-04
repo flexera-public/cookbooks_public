@@ -33,6 +33,7 @@ require 'fileutils'
 log "Installing file_stats collectd plugin.."
 
 template(::File.join(node.rs_utils.collectd_plugin_dir, "file-stats.conf")) do
+  backup false
   source "file-stats.conf.erb"
   notifies :restart, resources(:service => "collectd")
 end
