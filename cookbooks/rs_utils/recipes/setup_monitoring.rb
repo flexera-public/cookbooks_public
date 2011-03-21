@@ -57,6 +57,7 @@ if node.platform == "ubuntu"
     end
   end  
 else node.platform == "debian"
+  log "Debian detected; installing types.db for /usr/share."
   # Symlink if in the share dir
   link ::File.join(node.rs_utils.collectd_lib, 'types.db') do
     to "/usr/share/collectd/types.db"
