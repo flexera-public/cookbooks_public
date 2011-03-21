@@ -56,6 +56,13 @@ if node.platform == "ubuntu"
       source "karmic_types.db"
     end
   end  
+elsif node.platform == "debian"
+  log "Debian detected; installing types.db from /usr/share."
+  # Symlink if in the share dir
+  link ::File.join(node.rs_utils.collectd_lib, 'types.db') do
+    to "/usr/share/collectd/types.db"
+    notifies :restart, resources(:service => "collectd")
+  end
 end
 
 directory node.rs_utils.collectd_plugin_dir do
