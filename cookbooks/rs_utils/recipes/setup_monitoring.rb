@@ -70,12 +70,14 @@ directory node.rs_utils.collectd_plugin_dir do
 end
 
 template node.rs_utils.collectd_config do
+  backup false
   source "collectd.config.erb"
   notifies :restart, resources(:service => "collectd")
 end
 
 # Configure process monitoring
 template File.join(node.rs_utils.collectd_plugin_dir, 'processes.conf') do
+  backup false
   source "processes.conf.erb"
   notifies :restart, resources(:service => "collectd")
 end

@@ -120,7 +120,7 @@ max_binlog_size         = 100M
 # * BerkeleyDB
 #
 # Using BerkeleyDB is now discouraged as its support will cease in 5.1.12.
-skip-bdb
+<%= "skip-bdb" unless node[:db_mysql][:packages_install].include?('mysql-server-5.1') %>
 #
 # * InnoDB
 #
@@ -131,15 +131,15 @@ skip-bdb
 innodb_data_home_dir = /var/lib/mysql/
 innodb_data_file_path = ibdata1:10M:autoextend
 innodb_log_group_home_dir = /var/lib/mysql
-innodb_log_arch_dir = /var/lib/mysql
+<%= "innodb_log_arch_dir = /var/lib/mysql" unless node[:db_mysql][:packages_install].include?('mysql-server-5.1') %>
 innodb_file_per_table
 # You can set .._buffer_pool_size up to 50 - 80 %
 # of RAM but beware of setting memory usage too high
 innodb_buffer_pool_size = <%= @node[:db_mysql][:tunable][:innodb_buffer_pool_size] %>
 innodb_additional_mem_pool_size = <%= @node[:db_mysql][:tunable][:innodb_additional_mem_pool_size] %>
 # Set .._log_file_size to 25 % of buffer pool size
-innodb_log_file_size = 64M
-innodb_log_buffer_size = 8M
+innodb_log_file_size = <%= node[:db_mysql][:tunable][:innodb_log_file_size] %>
+innodb_log_buffer_size = <%= node[:db_mysql][:tunable][:innodb_log_buffer_size] %>
 # Write to log but don't flush on commit (it will be flushed every "second")
 innodb_flush_log_at_trx_commit = 2
 innodb_lock_wait_timeout = 50

@@ -28,7 +28,12 @@ set_unless[:db_mysql][:tunable][:net_read_timeout]    = "30"
 set_unless[:db_mysql][:tunable][:net_write_timeout]   = "30" 
 set_unless[:db_mysql][:tunable][:back_log]            = "128" 
 set_unless[:db_mysql][:tunable][:max_heap_table_size] = "32M" 
-set_unless[:db_mysql][:tunable][:expire_logs_days] = "10" 
+set_unless[:db_mysql][:tunable][:expire_logs_days] = "10"
+
+# These were the hardcoded defaults in my.cnf for all instance sizes. They're a bit inflated for a t1.micro though
+# and are set lower only for t1.micro instances
+set_unless[:db_mysql][:tunable][:innodb_log_file_size]   = "64M"
+set_unless[:db_mysql][:tunable][:innodb_log_buffer_size] = "8M"
 
 if !attribute?("ec2")
   set_unless[:db_mysql][:init_timeout] = 1200
@@ -71,7 +76,9 @@ else
   # tune the database for dedicated vs. shared and instance type
   case ec2[:instance_type]
   # TODO: The settings for t1.micro may be excessively conservative, but we're going to be okay with it for now
-  when "t1.micro"
+    when "t1.micro"
+      set_unless[:db_mysql][:tunable][:innodb_log_file_size]   = "2M"
+      set_unless[:db_mysql][:tunable][:innodb_log_buffer_size] = "2M"
      if(db_mysql[:server_usage] == :dedicated)
       set_unless[:db_mysql][:tunable][:key_buffer] = "48M"
       set_unless[:db_mysql][:tunable][:table_cache] = "80"
