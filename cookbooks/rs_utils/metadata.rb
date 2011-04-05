@@ -59,3 +59,31 @@ attribute "rs_utils/mysql_binary_backup_file",
 #  :required => "optional",
 #  :default => "",
 #  :recipes => [ "rs_utils::setup_monitoring", "rs_utils::default" ]
+
+attribute "rs_utils/short_hostname",
+  :display_name => "Short Hostname",
+  :description => "The short hostname that you would like this node to have, e.g. kryten",
+  :required => "required",
+  :default => nil,
+  :recipes => [ "rs_utils::hostname" ]
+
+attribute "rs_utils/domain_name",
+  :display_name => "Domain Name",
+  :description => "The domain name that you would like this node to have, e.g. domain.suf",
+  :required => "optional",
+  :default => "" ,
+  :recipes => [ "rs_utils::hostname" ]
+
+attribute "rs_utils/search_suffix",
+  :display_name => "Domain Search Suffix",
+  :description => "The domain search suffix you would like this node to have, e.g. domain.suf.",
+  :required => "optional",
+  :default => "",
+  :recipes => [ "rs_utils::hostname" ]
+
+attribute "rs_utils/timezone",
+  :display_name => "System Time Zone",
+  :description => "The time zone to set the system to. See zones in /usr/share/zoneinfo e.g. America/Los_Angeles or UTC",
+  :required => "optional",
+  :default => "localtime",
+  :recipes => [ "rs_utils::timezone" ]

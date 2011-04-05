@@ -61,3 +61,7 @@ when "i686"
 else 
   rs_utils[:collectd_lib] = "/usr/lib64/collectd"
 end
+
+default[:rs_utils][:short_hostname]        = nil
+default[:rs_utils][:domain_name]           = ""
+default[:rs_utils][:search_suffix]         = ""
