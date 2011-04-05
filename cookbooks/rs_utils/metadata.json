@@ -1,8 +1,12 @@
 {
-  "conflicting": {
+  "providing": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "replacing": {
   },
   "license": "Copyright (c) 2010 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
-  "providing": {
+  "maintainer_email": "support@rightscale.com",
+  "groupings": {
   },
   "recipes": {
     "rs_utils::setup_monitoring": "Install and configure RightScale dashboard monitoring.",
@@ -15,29 +19,48 @@
     "rs_utils::setup_hostname": "Set system hostname.",
     "rs_utils::setup_ssh": "Installs private ssh key."
   },
-  "maintainer": "RightScale, Inc.",
-  "replacing": {
-  },
-  "maintainer_email": "support@rightscale.com",
-  "description": "Enable instance Monitoring and logging in the RightScale dashboard.",
-  "version": "0.0.1",
-  "groupings": {
-  },
   "attributes": {
+    "rs_utils/search_suffix": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "rs_utils::hostname"
+      ],
+      "display_name": "Domain Search Suffix",
+      "description": "The domain search suffix you would like this node to have, e.g. domain.suf."
+    },
     "rs_utils/timezone": {
       "required": "optional",
       "calculated": false,
       "choice": [
 
       ],
-      "default": "UTC",
+      "default": "localtime",
       "type": "string",
       "recipes": [
-        "rs_utils::setup_timezone",
-        "rs_utils::default"
+        "rs_utils::timezone"
       ],
-      "description": "Sets the system time to the timezone of the specified input, which must be a valid zoneinfo/tz database entry.  If the input is 'unset' the timezone will use the 'localtime' that's defined in your RightScale account under Settings -> User -> Preferences tab.  You can find a list of valid examples from the timezone pulldown bar in the Preferences tab. The server will not be updated for daylight savings time.  Ex: US/Pacific, US/Eastern",
-      "display_name": "Timezone"
+      "display_name": "System Time Zone",
+      "description": "The time zone to set the system to. See zones in /usr/share/zoneinfo e.g. America/Los_Angeles or UTC"
+    },
+    "rs_utils/domain_name": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "rs_utils::hostname"
+      ],
+      "display_name": "Domain Name",
+      "description": "The domain name that you would like this node to have, e.g. domain.suf"
     },
     "rs_utils/process_list": {
       "required": "optional",
@@ -52,8 +75,22 @@
         "rs_utils::setup_monitoring",
         "rs_utils::default"
       ],
-      "description": "A optional list of additional processes to monitor in the RightScale Dashboard.  Ex: sshd crond",
-      "display_name": "Process List"
+      "display_name": "Process List",
+      "description": "A optional list of additional processes to monitor in the RightScale Dashboard.  Ex: sshd crond"
+    },
+    "rs_utils/short_hostname": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": null,
+      "type": "string",
+      "recipes": [
+        "rs_utils::hostname"
+      ],
+      "display_name": "Short Hostname",
+      "description": "The short hostname that you would like this node to have, e.g. kryten"
     },
     "rs_utils/private_ssh_key": {
       "required": "optional",
@@ -67,8 +104,8 @@
         "rs_utils::setup_ssh",
         "rs_utils::default"
       ],
-      "description": "The private SSH key of another instance that gets installed on this instance.  It allows this instance to SSH into another instance to update the configuration files. Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key",
-      "display_name": "Private SSH Key"
+      "display_name": "Private SSH Key",
+      "description": "The private SSH key of another instance that gets installed on this instance.  It allows this instance to SSH into another instance to update the configuration files. Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key"
     },
     "rs_utils/hostname": {
       "required": "optional",
@@ -81,8 +118,8 @@
       "recipes": [
         "rs_utils::setup_hostname"
       ],
-      "description": "The hostname that you would like this machine to have.",
-      "display_name": "Hostname"
+      "display_name": "Hostname",
+      "description": "The hostname that you would like this machine to have."
     },
     "rs_utils/mysql_binary_backup_file": {
       "required": "optional",
@@ -95,18 +132,22 @@
       "recipes": [
         "rs_utils::install_file_stats_collectd_plugin"
       ],
-      "description": "An optionally specified file path for the mysql binary backup",
-      "display_name": "MySQL binary file"
+      "display_name": "MySQL binary file",
+      "description": "An optionally specified file path for the mysql binary backup"
     }
   },
   "recommendations": {
   },
-  "dependencies": {
-  },
   "platforms": {
   },
-  "name": "rs_utils",
+  "version": "0.0.1",
   "suggestions": {
   },
-  "long_description": "== Usage\nRun the rs_utils::default recipe to enable monitoring and logging \non the RightScale Dashboard for any RightLink enable image."
+  "description": "Enable instance Monitoring and logging in the RightScale dashboard.",
+  "dependencies": {
+  },
+  "long_description": "== Usage\nRun the rs_utils::default recipe to enable monitoring and logging \non the RightScale Dashboard for any RightLink enable image.",
+  "name": "rs_utils",
+  "conflicting": {
+  }
 }
