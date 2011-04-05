@@ -29,7 +29,7 @@
       "default": "",
       "type": "string",
       "recipes": [
-        "rs_utils::hostname"
+        "rs_utils::setup_hostname"
       ],
       "display_name": "Domain Search Suffix",
       "description": "The domain search suffix you would like this node to have, e.g. domain.suf."
@@ -40,13 +40,14 @@
       "choice": [
 
       ],
-      "default": "localtime",
+      "default": "UTC",
       "type": "string",
       "recipes": [
-        "rs_utils::timezone"
+        "rs_utils::setup_timezone",
+        "rs_utils::default"
       ],
-      "display_name": "System Time Zone",
-      "description": "The time zone to set the system to. See zones in /usr/share/zoneinfo e.g. America/Los_Angeles or UTC"
+      "display_name": "Timezone",
+      "description": "Sets the system time to the timezone of the specified input, which must be a valid zoneinfo/tz database entry.  If the input is 'unset' the timezone will use the 'localtime' that's defined in your RightScale account under Settings -> User -> Preferences tab.  You can find a list of valid examples from the timezone pulldown bar in the Preferences tab. The server will not be updated for daylight savings time.  Ex: US/Pacific, US/Eastern"
     },
     "rs_utils/domain_name": {
       "required": "optional",
@@ -57,7 +58,7 @@
       "default": "",
       "type": "string",
       "recipes": [
-        "rs_utils::hostname"
+        "rs_utils::setup_hostname"
       ],
       "display_name": "Domain Name",
       "description": "The domain name that you would like this node to have, e.g. domain.suf"
@@ -87,7 +88,7 @@
       "default": null,
       "type": "string",
       "recipes": [
-        "rs_utils::hostname"
+        "rs_utils::setup_hostname"
       ],
       "display_name": "Short Hostname",
       "description": "The short hostname that you would like this node to have, e.g. kryten"
@@ -106,20 +107,6 @@
       ],
       "display_name": "Private SSH Key",
       "description": "The private SSH key of another instance that gets installed on this instance.  It allows this instance to SSH into another instance to update the configuration files. Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key"
-    },
-    "rs_utils/hostname": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "default": "",
-      "type": "string",
-      "recipes": [
-        "rs_utils::setup_hostname"
-      ],
-      "display_name": "Hostname",
-      "description": "The hostname that you would like this machine to have."
     },
     "rs_utils/mysql_binary_backup_file": {
       "required": "optional",
