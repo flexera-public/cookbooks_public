@@ -31,7 +31,6 @@
 #
 set_unless[:rs_utils][:timezone] = "UTC"    
 set_unless[:rs_utils][:process_list] = ""   
-set_unless[:rs_utils][:hostname] = ""
 set_unless[:rs_utils][:private_ssh_key] = ""
 
 set_unless[:rs_utils][:mysql_binary_backup_file] = "/var/run/mysql-binary-backup"
