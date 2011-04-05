@@ -46,7 +46,7 @@ end
 
 # set hostname from short or long (when domain_name set)
 if "#{node.rs_utils.domain_name}" != "" then
-  hostname = "#{node.rs_utils.short_hostname}.#{node.rs_utls.domain_name}"
+  hostname = "#{node.rs_utils.short_hostname}.#{node.rs_utils.domain_name}"
   hosts_list = "#{node.rs_utils.short_hostname}.#{node.rs_utils.domain_name} #{node.rs_utils.short_hostname}"
 else
   hostname = "#{node.rs_utils.short_hostname}"
