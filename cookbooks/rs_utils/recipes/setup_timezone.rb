@@ -25,6 +25,6 @@
 
 log "Setup timezone"
 
-link "/usr/share/zoneinfo/#{node.rs_utils.timezone}" do
-  to "/etc/localtime"
+link "/etc/localtime" do
+  to "/usr/share/zoneinfo/#{node.rs_utils.timezone}"
 end
