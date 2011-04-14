@@ -1,39 +1,42 @@
 # Cookbook Name:: app_php
 #
-# Copyright 2009, RightScale, Inc.
+# Copyright (c) 2011 RightScale Inc
 #
-# All rights reserved - Do Not Redistribute
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
 #
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#
-# Required attributes
-#
-set_unless[:php][:code][:url] = ""
-set_unless[:php][:code][:credentials] = ""
-
-set_unless[:php][:db_app_user] = ""   	     
-set_unless[:php][:db_app_passwd] = ""       
-set_unless[:php][:db_schema_name] = ""      
-set_unless[:php][:db_dns_name] = "" 
-
-set_unless[:php][:db_dumpfile_path] = ""         
-
-#
-# Recommended attributes
+# == Recommended attributes
 #
 set_unless[:php][:server_name] = "myserver"  
 set_unless[:php][:application_name] = "myapp"
 
+# == Optional attributes
 #
-# Optional attributes
-#
-set_unless[:php][:code][:branch] = "master" 
-set_unless[:php][:application_port] = "8000"    
+set_unless[:php][:db_schema_name] = ""     
+
+set_unless[:php][:code][:url] = ""
+set_unless[:php][:code][:credentials] = ""
+set_unless[:php][:code][:branch] = "master"  
 set_unless[:php][:modules_list] = [] 
 set_unless[:php][:db_adapter] = "mysql"
 
-#
-# Calculated attributes
+# == Calculated attributes
 #
 set[:php][:code][:destination] = "/home/webapp/#{php[:application_name]}"
 
@@ -47,5 +50,4 @@ when "centos","fedora","suse"
   set[:php][:module_dependencies] = []
   set_unless[:php][:app_user] = "apache"
 end
-
 

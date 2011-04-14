@@ -1,7 +1,7 @@
 # Cookbook Name:: app_php
 # Recipe:: default
 #
-# Copyright (c) 2009 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -22,4 +22,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-include_recipe "app_php::install_php"
+# == Install user-specified Packages and Modules
+#
+[ node[:php][:package_dependencies] | node[:php][:modules_list] ].flatten.each do |p|
+  package p
+end
+
+node[:php][:module_dependencies].each do |mod|
+  apache_module mod
+end

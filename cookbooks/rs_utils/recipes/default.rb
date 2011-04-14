@@ -1,7 +1,7 @@
 # Cookbook Name:: rs_utils
 # Recipe:: default
 #
-# Copyright (c) 2010 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -28,6 +28,3 @@ include_recipe "rs_utils::setup_timezone"
 include_recipe "rs_utils::setup_logging"
 include_recipe "rs_utils::setup_mail"
 include_recipe "rs_utils::setup_monitoring"
-include_recipe "rs_utils::setup_ssh"
-# Deprication: setup_hostname is no longer required in right_link 5.5
-#include_recipe "rs_utils::setup_hostname"

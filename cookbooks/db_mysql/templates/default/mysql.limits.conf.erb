@@ -1,0 +1,6 @@
+mysql soft nofile <%= @ulimit %>
+mysql hard nofile <%= @ulimit %>
+root soft nofile <%= @ulimit %>
+root hard nofile <%= @ulimit %>
+mysql soft nproc unlimited
+mysql hard nproc unlimited

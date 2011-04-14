@@ -1,7 +1,7 @@
 # Cookbook Name:: db_mysql
 # Recipe:: setup_admin_privileges
 #
-# Copyright (c) 2009 RightScale Inc
+# Copyright (c) 2009-2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -25,6 +25,6 @@
 
 db_mysql_set_privileges "setup application privileges" do
   preset "user"
-  username @node[:db][:application][:user]
-  password @node[:db][:application][:password]
+  username @node[:db_mysql][:application][:user]
+  password @node[:db_mysql][:application][:password]
 end

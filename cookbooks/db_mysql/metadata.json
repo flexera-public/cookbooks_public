@@ -1,7 +1,221 @@
 {
+  "suggestions": {
+  },
+  "attributes": {
+    "db_mysql/dump/prefix": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "prefix",
+      "description": ""
+    },
+    "db_mysql/dump/container": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "container",
+      "description": ""
+    },
+    "db_mysql/dump/storage_account_provider": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "storage_account_provider",
+      "description": ""
+    },
+    "db_mysql/admin/password": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_admin_privileges"
+      ],
+      "display_name": "Database Admin Password",
+      "description": "The password of the database user that has 'admin' privileges."
+    },
+    "db_mysql/application/password": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_application_privileges"
+      ],
+      "display_name": "Database Application Password",
+      "description": "The password of the database user that has 'user' privileges."
+    },
+    "db_mysql": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "hash",
+      "recipes": [
+
+      ],
+      "display_name": "General Database Options"
+    },
+    "db_mysql/dump/storage_account_id": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "storage_account_id",
+      "description": ""
+    },
+    "db_mysql/dump": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "hash",
+      "recipes": [
+
+      ],
+      "display_name": "Import/Export settings for MySQL dump file management."
+    },
+    "db_mysql/application/user": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+
+      ],
+      "display_name": "Database Application Username",
+      "description": "The username of the database user that has 'user' privileges."
+    },
+    "db_mysql/admin/user": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_admin_privileges"
+      ],
+      "display_name": "Database Admin Username",
+      "description": "The username of the database user that has 'admin' privileges."
+    },
+    "db_mysql/fqdn": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+
+      ],
+      "display_name": "Database Master FQDN",
+      "description": "The fully qualified hostname for the MySQL Master Database."
+    },
+    "db_mysql/log_bin": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "/mnt/mysql-binlogs/mysql-bin",
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_mysql"
+      ],
+      "display_name": "MySQL Binlog Destination",
+      "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory."
+    },
+    "db_mysql/server_usage": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+        "shared",
+        "dedicated"
+      ],
+      "default": "dedicated",
+      "type": "string",
+      "recipes": [
+        "db_mysql::default"
+      ],
+      "display_name": "Server Usage",
+      "description": "* dedicated (where the mysql config file allocates all existing resources of the machine)\n* shared (where the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example)"
+    },
+    "db_mysql/dump/storage_account_secret": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "storage_account_secret",
+      "description": ""
+    },
+    "db_mysql/dump/schema_name": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "Schema Name",
+      "description": ""
+    }
+  },
   "conflicting": {
   },
-  "license": "Copyright (c) 2010 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "description": "Installs/configures a MySQL database server with automated backups.",
+  "dependencies": {
+  },
   "providing": {
     "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)": [
 
@@ -16,142 +230,31 @@
 
     ]
   },
-  "recipes": {
-    "db_mysql::setup_application_privileges": "Add username and password for application privileges.",
-    "db_mysql::default": "Runs the 'install_mysql' recipes.",
-    "db_mysql::install_mysql": "Installs packages required for MySQL servers without manual intervention.",
-    "db_mysql::setup_admin_privileges": "Add username and password for superuser privileges."
-  },
   "maintainer": "RightScale, Inc.",
   "replacing": {
   },
-  "maintainer_email": "support@rightscale.com",
-  "description": "Installs/configures a MySQL database server with automated backups.",
   "version": "0.0.1",
+  "maintainer_email": "support@rightscale.com",
+  "name": "db_mysql",
+  "recipes": {
+    "db_mysql::do_dump_import": "Initialize MySQL with dumpfile from cloud object store (i.e. S3, cloudfiles)",
+    "db_mysql::setup_application_privileges": "Add username and password for application privileges.",
+    "db_mysql::setup_my_cnf": "Creates the my.cnf configuration file",
+    "db_mysql::setup_mysql": "Configures server",
+    "db_mysql::default": "Runs the 'install_mysql' recipes.",
+    "db_mysql::do_dump_export": "Upload MySQL dumpfile archive to cloud object store (i.e. S3, cloudfiles)",
+    "db_mysql::install_mysql": "Installs packages required for MySQL servers without manual intervention.",
+    "db_mysql::setup_continuous_export": "Schedule daily run of do_dump_export.",
+    "db_mysql::install_client": "Installs the MySQL client packages and gem.",
+    "db_mysql::do_move_datadir": "Move the datadir to /mnt/mysql",
+    "db_mysql::setup_admin_privileges": "Add username and password for superuser privileges."
+  },
   "groupings": {
   },
-  "attributes": {
-    "db_mysql": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "hash",
-      "recipes": [
-
-      ],
-      "display_name": "General Database Options"
-    },
-    "db/application/password": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_application_privileges"
-      ],
-      "description": "The password of the database user that has 'user' privileges.",
-      "display_name": "Database Application Password"
-    },
-    "db/admin/password": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_admin_privileges"
-      ],
-      "description": "The password of the database user that has 'admin' privileges.",
-      "display_name": "Database Admin Password"
-    },
-    "db_mysql/datadir_relocate": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "default": "/mnt/mysql",
-      "type": "string",
-      "recipes": [
-
-      ],
-      "description": "Sets the final destination of the MySQL data directory. (i.e. an LVM or EBS volume)",
-      "display_name": "MySQL Data-Directory Destination"
-    },
-    "db/application/user": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_application_privileges"
-      ],
-      "description": "The username of the database user that has 'user' privileges.",
-      "display_name": "Database Application Username"
-    },
-    "db/admin/user": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_admin_privileges"
-      ],
-      "description": "The username of the database user that has 'admin' privileges.",
-      "display_name": "Database Admin Username"
-    },
-    "db_mysql/log_bin": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "default": "/mnt/mysql-binlogs/mysql-bin",
-      "type": "string",
-      "recipes": [
-        "db_mysql::install_mysql",
-        "db_mysql::default"
-      ],
-      "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory.",
-      "display_name": "MySQL Binlog Destination"
-    },
-    "db_mysql/server_usage": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-        "shared",
-        "dedicated"
-      ],
-      "default": "dedicated",
-      "type": "string",
-      "recipes": [
-        "db_mysql::install_mysql",
-        "db_mysql::default"
-      ],
-      "description": "* dedicated (where the mysql config file allocates all existing resources of the machine)\n* shared (where the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example)",
-      "display_name": "Server Usage"
-    }
-  },
+  "long_description": "= DESCRIPTION:\n\nConfigures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.\n\n= REQUIREMENTS:\n\n* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.\n\n= ATTRIBUTES: \n\nSee metadata.rb \n\n= USAGE:\n\nDesigned to be run within a RightScale ServerTemplate with the following run order:\n\nBoot Scripts\n  * install_mysql - Performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.\n  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.\n",
   "recommendations": {
-  },
-  "dependencies": {
-    "mysql": [
-      "= 0.9"
-    ]
   },
   "platforms": {
   },
-  "name": "db_mysql",
-  "suggestions": {
-  },
-  "long_description": "= DESCRIPTION:\n\nConfigures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.\n\n= REQUIREMENTS:\n\n* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.\n\n= ATTRIBUTES: \n\nSee metadata.rb \n\n= USAGE:\n\nDesigned to be run within a RightScale ServerTemplate with the following run order:\n\nBoot Scripts\n  * install_mysql - Performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.\n  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.\n"
+  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
 }

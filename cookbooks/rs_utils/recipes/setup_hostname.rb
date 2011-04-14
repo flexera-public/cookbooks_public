@@ -1,7 +1,7 @@
 # Cookbook Name:: rs_utils
 # Recipe:: hostname
 #
-# Copyright (c) 2010 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the

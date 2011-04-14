@@ -1,7 +1,7 @@
 # Cookbook Name:: rs_utils
 # Recipe:: logging
 #
-# Copyright (c) 2010 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -22,35 +22,78 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-if "#{node.rightscale.servers.lumberjack.hostname}" != ""
+# == Only setup remote logging for ec2 clouds.  
+#
+# Can not setup other clouds until they have access to our lumberjack servers.
+# All non-ec2 clouds will use default syslog-ng configuration
+#
+if "#{node[:rightscale][:servers][:lumberjack][:hostname]}" != "" && node[:rs_utils][:enable_remote_logging] == true
 
-  log "Configure syslog logging"
+  log "Configure remote syslog logging"
 
+  # == Make sure syslog-ng is installed.
+  #
   package "syslog-ng"
-
-  execute "ensure_dev_null" do
-    creates "/dev/null.syslog-ng"
-    command "mknod /dev/null.syslog-ng c 1 3"
-  end
 
   service "syslog-ng" do
     supports :start => true, :stop => true, :restart => true
     action [ :enable ]
   end
 
+  # == Create a new /dev/null for syslog-ng to use
+  #
+  execute "ensure_dev_null" do
+    creates "/dev/null.syslog-ng"
+    command "mknod /dev/null.syslog-ng c 1 3"
+  end
+
+  # == Configure syslog
+  #
   template "/etc/syslog-ng/syslog-ng.conf" do
     source "syslog.erb"
+    variables ({
+      :apache_log_dir => (node[:platform] == "centos") ? "httpd" : "apache2"
+    })
     notifies :restart, resources(:service => "syslog-ng")
   end
 
-  bash "configure_logrotate_for_syslog" do
-    code <<-EOH
-      perl -p -i -e 's/weekly/daily/; s/rotate\s+\d+/rotate 7/' /etc/logrotate.conf
-      [ -z "$(grep -lir "missingok" #{node.rs_utils.logrotate_config}_file)" ] && sed -i '/sharedscripts/ a\    missingok' #{node.rs_utils.logrotate_config}
-      [ -z "$(grep -lir "notifempty" #{node.rs_utils.logrotate_config}_file)" ] && sed -i '/sharedscripts/ a\    notifempty' #{node.rs_utils.logrotate_config}
-    EOH
+  # == Ensure everything in /var/log is owned by root, not syslog.
+  #
+  Dir.glob("/var/log/*").each do |f|
+    if ::File.directory?(f)
+      
+      directory f do 
+        owner "root" 
+        notifies :restart, resources(:service => "syslog-ng")
+      end
+      
+    else
+      
+      file f do 
+        owner "root" 
+        notifies :restart, resources(:service => "syslog-ng")
+      end
+    
+    end
+  end
+
+  # == Set up log file rotation
+  #
+  remote_file "/etc/logrotate.conf" do
+    source "logrotate.conf"
   end
   
-  right_link_tag "rs_logging:state=active"
+  remote_file node[:rs_utils][:logrotate_config] do
+    source "logrotate.d.syslog"
+  end
   
+  # == Fix /var/log/boot.log issue
+  #
+  file "/var/log/boot.log" 
+
+  # == Tag required to activate logging
+  #
+  right_link_tag "rs_logging:state=active"
+  log "Setting logging active tag"
+
 end

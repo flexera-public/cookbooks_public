@@ -1,13 +1,13 @@
 #!/bin/bash
 #
 # mysqld	This shell script takes care of starting and stopping
-#		    the MySQL subsystem (mysqld).
+#		the MySQL subsystem (mysqld).
 #
 # chkconfig: - 64 36
 # description:	MySQL database server.
 # processname: mysqld
 # config: /etc/my.cnf
-# pidfile: /var/run/mysqld/mysqld.pid
+# pidfile: /var/lib/mysql/mysqld.pid
 
 # Source function library.
 . /etc/rc.d/init.d/functions
@@ -46,7 +46,7 @@ get_mysql_option mysqld socket "$datadir/mysql.sock"
 socketfile="$result"
 get_mysql_option mysqld_safe log-error "/var/log/mysqld.log"
 errlogfile="$result"
-get_mysql_option mysqld_safe pid-file "/var/run/mysqld/mysqld.pid"
+get_mysql_option mysqld_safe pid-file "/var/lib/mysql/mysqld.pid"
 mypidfile="$result"
 
 start(){
@@ -153,6 +153,14 @@ start_failed() {
 start_success() {
   action $"Starting $prog: " /bin/true
   touch /var/lock/subsys/mysqld
+
+  #if we are running collectd, restart it so the MySQL plugin will reconnect quickly.
+  pgrep collectd > /dev/null
+  if [ $? =  0 ] ; then
+    echo "Restarting collectd for MySQL plugin"
+    service collectd restart
+  fi
+
   return 0
 }
 

@@ -12,6 +12,7 @@ recipe "rs_utils::setup_mail", "Basic mail setup."
 recipe "rs_utils::setup_ssh", "Installs private ssh key."
 recipe "rs_utils::setup_hostname", "Set system hostname."
 recipe "rs_utils::setup_timezone", "Sets system timezone."
+recipe "rs_utils::install_tools", "Install RightScale instance tools"
 recipe "rs_utils::install_mysql_collectd_plugin", "Install mysql collectd plugin"
 recipe "rs_utils::install_file_stats_collectd_plugin", "Install file-stats.rb collectd plugin.  This is used for mysql binary backup alerting."
 
@@ -24,17 +25,24 @@ attribute "rs_utils/timezone",
   
 attribute "rs_utils/process_list",
   :display_name => "Process List",
-  :description => "A optional list of additional processes to monitor in the RightScale Dashboard.  Ex: sshd crond",
+  :description => "A space-separated list of additional processes to monitor in the RightScale Dashboard.  Ex: sshd crond",
+  :required => "optional",
+  :default => "",
+  :recipes => [ "rs_utils::install_mysql_collectd_plugin", "rs_utils::setup_monitoring", "rs_utils::default" ]
+
+attribute "rs_utils/process_match_list",
+  :display_name => "Process Match List",
+  :description => "A space-separated list of pairs used to match the name(s) of additional processes to monitor in the RightScale Dashboard.  Pair arguments are passed in using the syntax 'name/regex'. Ex: ssh/ssh* cron/cron*",
   :required => "optional",
   :default => "",
   :recipes => [ "rs_utils::install_mysql_collectd_plugin", "rs_utils::setup_monitoring", "rs_utils::default" ]
 
 attribute "rs_utils/private_ssh_key",
-  :display_name => "Private SSH Key",
-  :description => "The private SSH key of another instance that gets installed on this instance.  It allows this instance to SSH into another instance to update the configuration files. Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key",
-  :required => "optional",
-  :default => "",
-  :recipes => [ "rs_utils::setup_ssh", "rs_utils::default" ]
+ :display_name => "Private SSH Key",
+ :description => "The private SSH key of another instance that gets installed on this instance.  It allows this instance to SSH into another instance to update the configuration files. Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key",
+ :required => "optional",
+ :default => "",
+ :recipes => [ "rs_utils::setup_ssh" ]
 
 attribute "rs_utils/mysql_binary_backup_file",
   :display_name => "MySQL binary file",
@@ -42,16 +50,6 @@ attribute "rs_utils/mysql_binary_backup_file",
   :required => "optional",
   :default => "/var/run/mysql-binary-backup",
   :recipes => [ "rs_utils::install_file_stats_collectd_plugin"  ]
-
-# This is usually only set in recipes which need a particular plugin enabled because it's required by a configuration
-# added under node[:rs_utils][:collectd_plugin_dir].  This prevents duplication of LoadPlugin directives and makes sure
-# the plugins are loaded before any config which requires them
-#attribute "rs_utils/plugin_list",
-#  :display_name => "Plugin List",
-#  :description => "A optional list of additional collectd plugins to enable.  Ex: mysql tail nginx",
-#  :required => "optional",
-#  :default => "",
-#  :recipes => [ "rs_utils::setup_monitoring", "rs_utils::default" ]
 
 attribute "rs_utils/short_hostname",
   :display_name => "Short Hostname",

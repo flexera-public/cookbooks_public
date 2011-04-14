@@ -5,17 +5,22 @@ description      "Installs/configures a MySQL database server with automated bac
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
 
-depends "mysql", "= 0.9"
-
 provides "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)"
 provides "db_mysql_set_privileges(type, username, password, db_name)"
 provides "db_mysql_gzipfile_backup(db_name, file_path)"
 provides "db_mysql_gzipfile_restore(db_name, file_path)"
 
 recipe  "db_mysql::default", "Runs the 'install_mysql' recipes."
+recipe  "db_mysql::install_client", "Installs the MySQL client packages and gem."
 recipe  "db_mysql::install_mysql", "Installs packages required for MySQL servers without manual intervention."
+recipe  "db_mysql::do_move_datadir", "Move the datadir to /mnt/mysql"
+recipe  "db_mysql::setup_mysql", "Configures server"
 recipe  "db_mysql::setup_admin_privileges", "Add username and password for superuser privileges."
 recipe  "db_mysql::setup_application_privileges", "Add username and password for application privileges."
+recipe  "db_mysql::setup_my_cnf", "Creates the my.cnf configuration file"
+recipe  "db_mysql::do_dump_import", "Initialize MySQL with dumpfile from cloud object store (i.e. S3, cloudfiles)"
+recipe  "db_mysql::do_dump_export", "Upload MySQL dumpfile archive to cloud object store (i.e. S3, cloudfiles)"
+recipe  "db_mysql::setup_continuous_export", "Schedule daily run of do_dump_export."
 
 #
 # required attributes
@@ -24,29 +29,76 @@ attribute "db_mysql",
   :display_name => "General Database Options",
   :type => "hash"
   
-attribute "db/admin/user",
+attribute "db_mysql/fqdn",
+  :display_name => "Database Master FQDN",
+  :description => "The fully qualified hostname for the MySQL Master Database.",
+  :required => true
+
+attribute "db_mysql/admin/user",
   :display_name => "Database Admin Username",
   :description => "The username of the database user that has 'admin' privileges.",
   :required => true,
   :recipes => [ "db_mysql::setup_admin_privileges" ]
 
-attribute "db/admin/password",
+attribute "db_mysql/admin/password",
   :display_name => "Database Admin Password",
   :description => "The password of the database user that has 'admin' privileges.",
   :required => true,
   :recipes => [ "db_mysql::setup_admin_privileges" ]
   
-attribute "db/application/user",
+attribute "db_mysql/application/user",
   :display_name => "Database Application Username",
   :description => "The username of the database user that has 'user' privileges.",
-  :required => true,
-  :recipes => [ "db_mysql::setup_application_privileges" ]
+  :required => true
 
-attribute "db/application/password",
+attribute "db_mysql/application/password",
   :display_name => "Database Application Password",
   :description => "The password of the database user that has 'user' privileges.",
   :required => true,
   :recipes => [ "db_mysql::setup_application_privileges" ]
+  
+# == Import/export Attributes
+#
+attribute "db_mysql/dump",
+  :display_name => "Import/Export settings for MySQL dump file management.",
+  :type => "hash"
+
+attribute "db_mysql/dump/schema_name",
+  :display_name => "Schema Name",
+  :description => "",
+  :required => true,
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
+
+attribute "db_mysql/dump/storage_account_provider",
+  :display_name => "storage_account_provider",
+  :description => "",
+  :required => true,
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
+
+attribute "db_mysql/dump/storage_account_id",
+  :display_name => "storage_account_id",
+  :description => "",
+  :required => true,
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
+
+attribute "db_mysql/dump/storage_account_secret",
+  :display_name => "storage_account_secret",
+  :description => "",
+  :required => true,
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
+
+attribute "db_mysql/dump/container",
+  :display_name => "container",
+  :description => "",
+  :required => true,
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
+
+attribute "db_mysql/dump/prefix",
+  :display_name => "prefix",
+  :description => "",
+  :required => true,
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]  
+
 
 #
 # recommended attributes
@@ -54,7 +106,7 @@ attribute "db/application/password",
 attribute "db_mysql/server_usage",
   :display_name => "Server Usage",
   :description => "* dedicated (where the mysql config file allocates all existing resources of the machine)\n* shared (where the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example)",
-  :recipes => [ "db_mysql::install_mysql", "db_mysql::default" ],
+  :recipes => [ "db_mysql::default" ],
   :choice => ["shared", "dedicated"],
   :default => "dedicated"
 
@@ -64,16 +116,6 @@ attribute "db_mysql/server_usage",
 attribute "db_mysql/log_bin",
   :display_name => "MySQL Binlog Destination",
   :description => "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory.",
-  :recipes => [ "db_mysql::install_mysql", "db_mysql::default" ],
+  :recipes => [ "db_mysql::setup_mysql" ],
   :default => "/mnt/mysql-binlogs/mysql-bin"
-  
-attribute "db_mysql/datadir_relocate",
-  :display_name => "MySQL Data-Directory Destination",
-  :description => "Sets the final destination of the MySQL data directory. (i.e. an LVM or EBS volume)",
-  :default => "/mnt/mysql"
-
-#attribute "db_mysql/tmpdir",
-#  :display_name => "MySQL Tmp Directory",
-#  :description => "Sets the tmp variable in the MySQL config file.",
-#  :default => "/tmp"
   

@@ -1,7 +1,7 @@
 # Cookbook Name:: rs_utils
 # Recipe:: timezone
 #
-# Copyright (c) 2010 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -23,8 +23,20 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-log "Setup timezone"
+# == Set the Timezone
+#
+if node[:rs_utils][:timezone]
 
-link "/etc/localtime" do
-  to "/usr/share/zoneinfo/#{node.rs_utils.timezone}"
+  link "/etc/localtime" do
+    to "/usr/share/zoneinfo/#{node[:rs_utils][:timezone]}"
+  end
+
+  log "Timezone set to #{node[:rs_utils][:timezone]}"
+
+else 
+
+  # If this attribute is not set leave unchanged and use localtime
+  log "rs_utils/timezone set to localtime.  Not changing /etc/localtime..."
+  
 end
+
