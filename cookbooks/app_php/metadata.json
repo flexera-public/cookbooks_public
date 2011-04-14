@@ -1,243 +1,243 @@
 {
-    "version": "0.0.1",
-    "providing": {
-    },
-    "attributes": {
-      "php/db_dns_name": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "display_name": "Database Dns Name",
-        "description": "The fully qualified domain name of the database server to which the application server(s) will connect.  Ex: master.mydatabase.com"
-      },
-      "php/db_schema_name": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::do_db_restore",
-          "app_php::install_php"
-        ],
-        "display_name": "Database Schema Name",
-        "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema"
-      },
-      "php/db_app_user": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::do_db_restore",
-          "app_php::install_php"
-        ],
-        "display_name": "Database User",
-        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Username'.  The application server will then have unrestricted access to the database."
-      },
-      "php/code/branch": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "default": "master",
-        "type": "string",
-        "recipes": [
-          "app_php::do_update_code",
-          "app_php::do_db_restore",
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "display_name": "Repository Branch",
-        "description": "The name of the branch within the git repository where the application code should be pulled from."
-      },
-      "php": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "hash",
-        "recipes": [
-
-        ],
-        "display_name": "PHP Application Settings"
-      },
-      "php/db_mysqldump_file_path": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::do_db_restore"
-        ],
-        "display_name": "Mysqldump File Path",
-        "description": "This input allows you to restore your database by choosing a specific MySQL database backup file.  You will need to specify a full path and/or filename.  Ex: branch/mydb-200910300402.gz"
-      },
-      "php/modules_list": {
-        "required": "optional",
-        "calculated": false,
-        "discription": "An optional list of php modules to install",
-        "choice": [
-
-        ],
-        "type": "array",
-        "recipes": [
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "display_name": "PHP modules"
-      },
-      "php/code/credentials": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "default": "",
-        "type": "string",
-        "recipes": [
-          "app_php::do_update_code",
-          "app_php::do_db_restore",
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "display_name": "Repository Credentials",
-        "description": "The private SSH key of the git repository."
-      },
-      "php/code": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "hash",
-        "recipes": [
-
-        ],
-        "display_name": "PHP Application Code"
-      },
-      "php/application_port": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "default": "8000",
-        "type": "string",
-        "recipes": [
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "display_name": "Application Port",
-        "description": "This input is normally set to 8000 if this server is a combined HAProxy and application server. If this is an application server (w/o HAproxy), set it to 80.  When setting this in a deployment, you should use 80 at the deployment level since you want all of your servers in the array to use this value.  If the server is a FE+APP server, you can set it to 8000 at the server level so that it overrides the deployment level input."
-      },
-      "php/server_name": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "display_name": "Server Name",
-        "description": "The fully qualified domain name of the application server used to define your virtual host."
-      },
-      "php/application_name": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "default": "myapp",
-        "type": "string",
-        "recipes": [
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "display_name": "Application Name",
-        "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name."
-      },
-      "php/code/url": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::do_update_code",
-          "app_php::do_db_restore",
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "display_name": "Repository URL",
-        "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git"
-      },
-      "php/db_app_passwd": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::do_db_restore",
-          "app_php::install_php"
-        ],
-        "display_name": "Database Password",
-        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Password'.  The application server will then have unrestricted access to the database."
-      }
-    },
-    "replacing": {
+    "name": "app_php",
+    "description": "Installs the php application server.",
+    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+    "maintainer": "RightScale, Inc.",
+    "maintainer_email": "support@rightscale.com",
+    "license": "Copyright (c) 2010 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+    "platforms": {
     },
     "dependencies": {
-      "repo_git_pull(url, branch, dest, cred)": [
-
-      ],
       "web_apache": [
 
       ],
       "repo_git": [
 
+      ],
+      "repo_git_pull(url, branch, dest, cred)": [
+
       ]
     },
-    "groupings": {
-    },
-    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
     "recommendations": {
     },
-    "license": "Copyright (c) 2010 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
-    "maintainer": "RightScale, Inc.",
     "suggestions": {
-    },
-    "name": "app_php",
-    "maintainer_email": "support@rightscale.com",
-    "recipes": {
-      "app_php::do_update_code": "Update application source files from the remote repository.",
-      "app_php::default": "Runs app_php::install_php.",
-      "app_php::install_php": "Installs the php application server.",
-      "app_php::do_db_restore": "Restore the application database schema from a remote location."
     },
     "conflicting": {
     },
-    "platforms": {
+    "providing": {
     },
-    "description": "Installs the php application server."
+    "replacing": {
+    },
+    "attributes": {
+      "php": {
+        "display_name": "PHP Application Settings",
+        "type": "hash",
+        "choice": [
+
+        ],
+        "calculated": false,
+        "required": "optional",
+        "recipes": [
+
+        ]
+      },
+      "php/db_app_user": {
+        "display_name": "Database User",
+        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Username'.  The application server will then have unrestricted access to the database.",
+        "required": "required",
+        "recipes": [
+          "app_php::do_db_restore",
+          "app_php::install_php"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "type": "string"
+      },
+      "php/db_app_passwd": {
+        "display_name": "Database Password",
+        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Password'.  The application server will then have unrestricted access to the database.",
+        "required": "required",
+        "recipes": [
+          "app_php::do_db_restore",
+          "app_php::install_php"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "type": "string"
+      },
+      "php/db_schema_name": {
+        "display_name": "Database Schema Name",
+        "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
+        "required": "required",
+        "recipes": [
+          "app_php::do_db_restore",
+          "app_php::install_php"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "type": "string"
+      },
+      "php/db_dns_name": {
+        "display_name": "Database Dns Name",
+        "description": "The fully qualified domain name of the database server to which the application server(s) will connect.  Ex: master.mydatabase.com",
+        "required": "required",
+        "recipes": [
+          "app_php::install_php",
+          "app_php::default"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "type": "string"
+      },
+      "php/code": {
+        "display_name": "PHP Application Code",
+        "type": "hash",
+        "choice": [
+
+        ],
+        "calculated": false,
+        "required": "optional",
+        "recipes": [
+
+        ]
+      },
+      "php/code/url": {
+        "display_name": "Repository URL",
+        "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
+        "required": "required",
+        "recipes": [
+          "app_php::do_update_code",
+          "app_php::do_db_restore",
+          "app_php::install_php",
+          "app_php::default"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "type": "string"
+      },
+      "php/code/credentials": {
+        "display_name": "Repository Credentials",
+        "description": "The private SSH key of the git repository.",
+        "required": "optional",
+        "default": "",
+        "recipes": [
+          "app_php::do_update_code",
+          "app_php::do_db_restore",
+          "app_php::install_php",
+          "app_php::default"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "type": "string"
+      },
+      "php/server_name": {
+        "display_name": "Server Name",
+        "description": "The fully qualified domain name of the application server used to define your virtual host.",
+        "required": "required",
+        "recipes": [
+          "app_php::install_php",
+          "app_php::default"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "type": "string"
+      },
+      "php/application_name": {
+        "display_name": "Application Name",
+        "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name.",
+        "default": "myapp",
+        "recipes": [
+          "app_php::install_php",
+          "app_php::default"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "type": "string",
+        "required": "optional"
+      },
+      "php/db_mysqldump_file_path": {
+        "display_name": "Mysqldump File Path",
+        "description": "This input allows you to restore your database by choosing a specific MySQL database backup file.  You will need to specify a full path and/or filename.  Ex: branch/mydb-200910300402.gz",
+        "recipes": [
+          "app_php::do_db_restore"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "type": "string",
+        "required": "optional"
+      },
+      "php/code/branch": {
+        "display_name": "Repository Branch",
+        "description": "The name of the branch within the git repository where the application code should be pulled from.",
+        "default": "master",
+        "recipes": [
+          "app_php::do_update_code",
+          "app_php::do_db_restore",
+          "app_php::install_php",
+          "app_php::default"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "type": "string",
+        "required": "optional"
+      },
+      "php/application_port": {
+        "display_name": "Application Port",
+        "description": "This input is normally set to 8000 if this server is a combined HAProxy and application server. If this is an application server (w/o HAproxy), set it to 80.  When setting this in a deployment, you should use 80 at the deployment level since you want all of your servers in the array to use this value.  If the server is a FE+APP server, you can set it to 8000 at the server level so that it overrides the deployment level input.",
+        "default": "8000",
+        "recipes": [
+          "app_php::install_php",
+          "app_php::default"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "type": "string",
+        "required": "optional"
+      },
+      "php/modules_list": {
+        "display_name": "PHP modules",
+        "discription": "An optional list of php modules to install",
+        "type": "array",
+        "recipes": [
+          "app_php::install_php",
+          "app_php::default"
+        ],
+        "choice": [
+
+        ],
+        "calculated": false,
+        "required": "optional"
+      }
+    },
+    "groupings": {
+    },
+    "recipes": {
+      "app_php::default": "Runs app_php::install_php.",
+      "app_php::do_db_restore": "Restore the application database schema from a remote location.",
+      "app_php::do_update_code": "Update application source files from the remote repository.",
+      "app_php::install_php": "Installs the php application server."
+    },
+    "version": "0.0.1"
   }
