@@ -1,7 +1,472 @@
 {
+  "suggestions": {
+  },
+  "attributes": {
+    "db_mysql/dump/prefix": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "Prefix",
+      "description": "Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp."
+    },
+    "db_mysql/dump/container": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "Container",
+      "description": "The bucket or container where the MySQL database dump files will be stored to or restored from."
+    },
+    "db_mysql/dump/storage_account_provider": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "Storage Account Provider",
+      "description": "For Amazon S3 use ec2.  For Cloud Files use rackspace"
+    },
+    "db_mysql/backup/rackspace_secret": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup",
+        "db_mysql::do_restore",
+        "db_mysql::do_restore_cloud_files",
+        "db_mysql::do_backup_cloud_files"
+      ],
+      "display_name": "Rackspace Secret",
+      "description": "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key."
+    },
+    "db_mysql/admin/password": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_admin_privileges",
+        "db_mysql::do_backup"
+      ],
+      "display_name": "Database Admin Password",
+      "description": "The password of the database user that has 'admin' privileges."
+    },
+    "db_mysql/backup/storage_container": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_restore_s3",
+        "db_mysql::do_restore_ebs",
+        "db_mysql::do_restore",
+        "db_mysql::do_restore_cloud_files",
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
+      ],
+      "display_name": "Backup Storage Container",
+      "description": "TODO (for backup to S3 or CloudFiles Remote Object Store)"
+    },
+    "db_mysql/backup/aws_access_key_id": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup",
+        "db_mysql::do_restore",
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_restore_s3"
+      ],
+      "display_name": "AWS access key id",
+      "description": "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username."
+    },
+    "db_mysql/application/password": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_application_privileges"
+      ],
+      "display_name": "Database Application Password",
+      "description": "The password of the database user that has 'user' privileges."
+    },
+    "db_mysql": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "hash",
+      "recipes": [
+
+      ],
+      "display_name": "General Database Options"
+    },
+    "db_mysql/dump/storage_account_id": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "Storage Account Id",
+      "description": "Cloud Account ID. This cloud-specific credential is used to retrieve private objects from cloud storage.  For AWS, use your AWS_ACCESS_KEY_ID credential.  For Rackspace, use your user name."
+    },
+    "db_mysql/backup/lineage": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_restore_s3",
+        "db_mysql::do_restore_ebs",
+        "db_mysql::do_restore",
+        "db_mysql::do_restore_cloud_files",
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
+      ],
+      "display_name": "Backup Lineage",
+      "description": "The prefix that will be used to name/locate the backup of a particular MySQL database."
+    },
+    "db_mysql/dump": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "hash",
+      "recipes": [
+
+      ],
+      "display_name": "Import/Export settings for MySQL dump file management."
+    },
+    "db_mysql/application/user": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_application_privileges"
+      ],
+      "display_name": "Database Application Username",
+      "description": "The username of the database user that has 'user' privileges."
+    },
+    "db_mysql/backup/keep_yearly": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "2",
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
+      ],
+      "display_name": "Backups Keep Yearly",
+      "description": "The number of yearly backups to keep (i.e. rotation size)."
+    },
+    "db_mysql/admin/user": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_admin_privileges",
+        "db_mysql::do_backup"
+      ],
+      "display_name": "Database Admin Username",
+      "description": "The username of the database user that has 'admin' privileges."
+    },
+    "db_mysql/fqdn": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+
+      ],
+      "display_name": "Database Master FQDN",
+      "description": "The fully qualified hostname for the MySQL Master Database."
+    },
+    "db_mysql/backup/rackspace_user": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup",
+        "db_mysql::do_restore",
+        "db_mysql::do_restore_cloud_files",
+        "db_mysql::do_backup_cloud_files"
+      ],
+      "display_name": "Rackspace User",
+      "description": "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username."
+    },
+    "db_mysql/backup/volume_size": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "5",
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_block_device"
+      ],
+      "display_name": "Volume Size",
+      "description": "Total volume size"
+    },
+    "db_mysql/backup/aws_secret_access_key": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup",
+        "db_mysql::do_restore",
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_restore_s3"
+      ],
+      "display_name": "aws secret access key",
+      "description": "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key."
+    },
+    "db_mysql/log_bin": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "/mnt/mysql-binlogs/mysql-bin",
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_mysql"
+      ],
+      "display_name": "MySQL Binlog Destination",
+      "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory."
+    },
+    "db_mysql/backup/keep_weekly": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "6",
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
+      ],
+      "display_name": "Backups Keep Weekly",
+      "description": "The number of weekly backups to keep (i.e. rotation size)."
+    },
+    "db_mysql/backup/max_snapshots": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "60",
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
+      ],
+      "display_name": "Backups Maximum",
+      "description": "The number of backups to keep in addition to those being rotated"
+    },
+    "db_mysql/backup/keep_monthly": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "12",
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
+      ],
+      "display_name": "Backups Keep Monthly",
+      "description": "The number of monthly backups to keep (i.e. rotation size)."
+    },
+    "db_mysql/backup/storage_type": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+        "ros",
+        "volume"
+      ],
+      "default": "ros",
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_restore_s3",
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_restore",
+        "db_mysql::do_restore_ebs",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_restore_cloud_files",
+        "db_mysql::do_backup_cloud_files",
+        "db_mysql::setup_continuous_backups_s3",
+        "db_mysql::setup_continuous_backups_ebs",
+        "db_mysql::setup_continuous_backups_cloud_files",
+        "db_mysql::do_disable_continuous_backups_s3",
+        "db_mysql::do_disable_continuous_backups_ebs",
+        "db_mysql::do_disable_continuous_backups_cloud_files",
+        "db_mysql::do_force_reset",
+        "db_mysql::default",
+        "db_mysql::setup_block_device"
+      ],
+      "display_name": "Backup Storage Type",
+      "description": "The type of backup storage"
+    },
+    "db_mysql/server_usage": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+        "shared",
+        "dedicated"
+      ],
+      "default": "dedicated",
+      "type": "string",
+      "recipes": [
+        "db_mysql::default"
+      ],
+      "display_name": "Server Usage",
+      "description": "* dedicated (where the mysql config file allocates all existing resources of the machine)\n* shared (where the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example)"
+    },
+    "db_mysql/backup/stripe_count": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "1",
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_block_device"
+      ],
+      "display_name": "Stripe Count",
+      "description": "Number of EBS volumes in a stripe"
+    },
+    "db_mysql/dump/storage_account_secret": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "Storage Account Secret",
+      "description": "Cloud storage account secret. This cloud-specific credential is used to retrieve private objects from cloud storage.  For AWS, use your AWS_SECRET_ACCESS_KEY credential.   For Rackspace, use your authentication key."
+    },
+    "db_mysql/dump/schema_name": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_dump_import",
+        "db_mysql::do_dump_export",
+        "db_mysql::setup_continuous_export"
+      ],
+      "display_name": "Schema Name",
+      "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema"
+    },
+    "db_mysql/backup/keep_daily": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "14",
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
+      ],
+      "display_name": "Backups Keep Daily",
+      "description": "The number of daily backups to keep (i.e. rotation size)."
+    }
+  },
   "conflicting": {
   },
-  "license": "Copyright (c) 2010 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "description": "Installs/configures a MySQL database server with automated backups.",
+  "dependencies": {
+  },
   "providing": {
     "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)": [
 
@@ -16,142 +481,46 @@
 
     ]
   },
-  "recipes": {
-    "db_mysql::setup_application_privileges": "Add username and password for application privileges.",
-    "db_mysql::default": "Runs the 'install_mysql' recipes.",
-    "db_mysql::install_mysql": "Installs packages required for MySQL servers without manual intervention.",
-    "db_mysql::setup_admin_privileges": "Add username and password for superuser privileges."
-  },
   "maintainer": "RightScale, Inc.",
   "replacing": {
   },
-  "maintainer_email": "support@rightscale.com",
-  "description": "Installs/configures a MySQL database server with automated backups.",
   "version": "0.0.1",
+  "maintainer_email": "support@rightscale.com",
+  "name": "db_mysql",
+  "recipes": {
+    "db_mysql::setup_continuous_backups_cloud_files": "CRON backup setup",
+    "db_mysql::do_restore_cloud_files": "backup cloud_files storage",
+    "db_mysql::do_restore_ebs": "restore EBS storage",
+    "db_mysql::do_dump_import": "Initialize MySQL with dumpfile from cloud object store (i.e. S3, cloudfiles)",
+    "db_mysql::setup_application_privileges": "Add username and password for application privileges.",
+    "db_mysql::do_force_reset": "Reset the DB back to a pristine state.",
+    "db_mysql::do_disable_continuous_backups_ebs": "disable CRON backups",
+    "db_mysql::setup_block_device": "create, format and mount block_device",
+    "db_mysql::setup_my_cnf": "Creates the my.cnf configuration file",
+    "db_mysql::setup_mysql": "Configures server",
+    "db_mysql::default": "Runs the 'install_mysql' recipes.",
+    "db_mysql::do_disable_continuous_backups_cloud_files": "disable CRON backups",
+    "db_mysql::do_backup_s3": "backup S3 storage",
+    "db_mysql::do_backup_ebs": "backup EBS storage",
+    "db_mysql::do_backup": "Snapshot MySQL data to selected cloud storage. (Premium Account Only) ",
+    "db_mysql::do_dump_export": "Upload MySQL dumpfile archive to cloud object store (i.e. S3, cloudfiles)",
+    "db_mysql::do_backup_cloud_files": "backup cloud_files storage",
+    "db_mysql::install_mysql": "Installs packages required for MySQL servers without manual intervention.",
+    "db_mysql::do_restore_s3": "backup S3 storage",
+    "db_mysql::setup_continuous_backups_ebs": "CRON backup setup",
+    "db_mysql::setup_continuous_backups_s3": "CRON backup setup",
+    "db_mysql::do_restore": "Restore MySQL data snapshot from selected cloud storage. (Premium Account Only) ",
+    "db_mysql::setup_continuous_export": "Schedule daily run of do_dump_export.",
+    "db_mysql::install_client": "Installs the MySQL client packages and gem.",
+    "db_mysql::do_disable_continuous_backups_s3": "disable CRON backups",
+    "db_mysql::setup_admin_privileges": "Add username and password for superuser privileges."
+  },
   "groupings": {
   },
-  "attributes": {
-    "db_mysql": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "hash",
-      "recipes": [
-
-      ],
-      "display_name": "General Database Options"
-    },
-    "db/application/password": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_application_privileges"
-      ],
-      "description": "The password of the database user that has 'user' privileges.",
-      "display_name": "Database Application Password"
-    },
-    "db/admin/password": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_admin_privileges"
-      ],
-      "description": "The password of the database user that has 'admin' privileges.",
-      "display_name": "Database Admin Password"
-    },
-    "db_mysql/datadir_relocate": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "default": "/mnt/mysql",
-      "type": "string",
-      "recipes": [
-
-      ],
-      "description": "Sets the final destination of the MySQL data directory. (i.e. an LVM or EBS volume)",
-      "display_name": "MySQL Data-Directory Destination"
-    },
-    "db/application/user": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_application_privileges"
-      ],
-      "description": "The username of the database user that has 'user' privileges.",
-      "display_name": "Database Application Username"
-    },
-    "db/admin/user": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_admin_privileges"
-      ],
-      "description": "The username of the database user that has 'admin' privileges.",
-      "display_name": "Database Admin Username"
-    },
-    "db_mysql/log_bin": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "default": "/mnt/mysql-binlogs/mysql-bin",
-      "type": "string",
-      "recipes": [
-        "db_mysql::install_mysql",
-        "db_mysql::default"
-      ],
-      "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory.",
-      "display_name": "MySQL Binlog Destination"
-    },
-    "db_mysql/server_usage": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-        "shared",
-        "dedicated"
-      ],
-      "default": "dedicated",
-      "type": "string",
-      "recipes": [
-        "db_mysql::install_mysql",
-        "db_mysql::default"
-      ],
-      "description": "* dedicated (where the mysql config file allocates all existing resources of the machine)\n* shared (where the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example)",
-      "display_name": "Server Usage"
-    }
-  },
+  "long_description": "= DESCRIPTION:\n\nConfigures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.\n\n= REQUIREMENTS:\n\n* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.\n\n= ATTRIBUTES: \n\nSee metadata.rb \n\n= USAGE:\n\nDesigned to be run within a RightScale ServerTemplate with the following run order:\n\nBoot Scripts\n  * install_mysql - Performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.\n  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.\n",
   "recommendations": {
-  },
-  "dependencies": {
-    "mysql": [
-      "= 0.9"
-    ]
   },
   "platforms": {
   },
-  "name": "db_mysql",
-  "suggestions": {
-  },
-  "long_description": "= DESCRIPTION:\n\nConfigures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.\n\n= REQUIREMENTS:\n\n* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.\n\n= ATTRIBUTES: \n\nSee metadata.rb \n\n= USAGE:\n\nDesigned to be run within a RightScale ServerTemplate with the following run order:\n\nBoot Scripts\n  * install_mysql - Performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.\n  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.\n"
+  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
 }

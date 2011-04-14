@@ -2,7 +2,7 @@
 # Cookbook Name:: db_mysql
 # Definition:: db_mysql_set_privileges
 #
-# Copyright (c) 2009 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -36,7 +36,7 @@ define :db_mysql_set_privileges, :preset => "administrator", :username => nil, :
       require 'rubygems'
       require 'mysql'
 
-      con = Mysql.new("", "root",nil,nil,nil,"#{@node[:db_mysql][:socket]}")
+      con = Mysql.new("", "root",nil,nil,nil,"#{node[:db_mysql][:socket]}")
 
       # Now that we have a Mysql object, let's santize our inputs
       username = con.escape_string(username)

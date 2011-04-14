@@ -1,0 +1,11 @@
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
+/var/spool/mail/* {
+   daily
+   compress
+   notifempty
+   missingok
+   olddir /var/spool/oldmail
+}

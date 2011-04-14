@@ -2,7 +2,7 @@
 # Cookbook Name:: rs_utils
 # Recipe:: install_file_stats_collectd_plugin
 #
-# Copyright (c) 2010 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -33,25 +33,25 @@ require 'fileutils'
 
 log "Installing file_stats collectd plugin.."
 
-template(::File.join(node.rs_utils.collectd_plugin_dir, "file-stats.conf")) do
+template(::File.join(node[:rs_utils][:collectd_plugin_dir], "file-stats.conf")) do
   backup false
   source "file-stats.conf.erb"
   notifies :restart, resources(:service => "collectd")
 end
 
-directory ::File.join(node.rs_utils.collectd_lib, "plugins") do
+directory ::File.join(node[:rs_utils][:collectd_lib], "plugins") do
   action :create
   recursive true
 end
 
-remote_file(::File.join(node.rs_utils.collectd_lib, "plugins", 'file-stats.rb')) do
+remote_file(::File.join(node[:rs_utils][:collectd_lib], "plugins", 'file-stats.rb')) do
   source "file-stats.rb"
   mode "0755"
   notifies :restart, resources(:service => "collectd")
 end
 
 # Used in db_mysql::do_backup in cookbooks_premium for backups
-file node.rs_utils.mysql_binary_backup_file do
+file node[:rs_utils][:mysql_binary_backup_file] do
   action :touch
   owner "nobody"
   group value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "nobody"}, "default" => "nogroup")
@@ -59,7 +59,7 @@ end
 
 ruby_block "add_collectd_gauges" do
   block do
-    types_file = ::File.join(node.rs_utils.collectd_lib, 'types.db')
+    types_file = ::File.join(node[:rs_utils][:collectd_lib], 'types.db')
     typesdb = IO.read(types_file)
     unless typesdb.include?('gague-age') && typesdb.include?('gague-size')
       typesdb += "\ngauge-age          seconds:GAUGE:0:200000000\ngauge-size          bytes:GAUGE:0:200000000\n"

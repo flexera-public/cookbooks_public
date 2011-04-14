@@ -1,9 +1,16 @@
-# The processes plugin is already loaded in the collectd.config file.  Specifying it again here results in
-# collectd sending the processes information to the Syslog server twice, and lots of thrash in /var/log/messages
-#LoadPlugin Processes
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
 <Plugin processes>
   process "collectd"
 <% node[:rs_utils][:process_list_ary].each do |process| %>
   process "<%= process %>"
 <% end %>
+
+<% node[:rs_utils][:process_match_list].split.each do |process| %>
+<% p_name, p_regex = split(process, "/") %>
+  processmatch "<%= p_name %>" "<%= p_regex %>"
+<% end %>
+
 </Plugin>

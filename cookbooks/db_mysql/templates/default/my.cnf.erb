@@ -81,28 +81,24 @@ read_rnd_buffer_size    = <%= @node[:db_mysql][:tunable][:read_rnd_buffer_size] 
 myisam_sort_buffer_size = <%= @node[:db_mysql][:tunable][:myisam_sort_buffer_size] %>
 net_buffer_length       = <%= @node[:db_mysql][:tunable][:net_buffer_length] %>
 
-<%= @node[:db_mysql][:tunable][:log_slow_queries] %>
-<%= @node[:db_mysql][:tunable][:long_query_time] %>
-
 #
 # * Query Cache Configuration
 #
 query_cache_limit       = 1M
 query_cache_size        = <%= @node[:db_mysql][:tunable][:query_cache_size] %>
+
 #
 # * Logging and Replication
 #
 # Both location gets rotated by the cronjob.
 # Be aware that this log type is a performance killer.
+
 <%= @node[:db_mysql][:log] %>
 <%= @node[:db_mysql][:log_error] %>
-#
-# Error logging goes to syslog. This is a Debian improvement :)
-#
-# Here you can see queries with especially long duration
-log_slow_queries       = /var/log/mysql/mysql-slow.log
-long_query_time = 2
+<%= @node[:db_mysql][:tunable][:log_slow_queries] %>
+<%= @node[:db_mysql][:tunable][:long_query_time] %>
 log-queries-not-using-indexes
+
 #
 # The following can be used as easy to replay backup logs or for replication.
 # note: if you are setting up a replication slave, see README.Debian about
@@ -110,17 +106,12 @@ log-queries-not-using-indexes
 <%= "read_only = 1" unless @node[:db_mysql][:tunable][:read_only] == nil %>
 server-id               = <%= @server_id %>
 <% if @node[:db_mysql][:log_bin_enabled] %>
-  <%= "log_bin = #{@node[:db_mysql][:log_bin]}" %>
-  <%= "expire_logs_days        = #{@node[:expire_logs_days]}" %>
+<%= "log_bin = #{@node[:db_mysql][:log_bin]}" %>
+<%= "expire_logs_days        = #{@node[:expire_logs_days]}" %>
 <% end %>
 max_binlog_size         = 100M
 #binlog_do_db           = include_database_name
 #binlog_ignore_db       = include_database_name
-#
-# * BerkeleyDB
-#
-# Using BerkeleyDB is now discouraged as its support will cease in 5.1.12.
-<%= "skip-bdb" unless node[:db_mysql][:packages_install].include?('mysql-server-5.1') %>
 #
 # * InnoDB
 #
@@ -128,10 +119,21 @@ max_binlog_size         = 100M
 # Read the manual for more InnoDB related options. There are many!
 # You might want to disable InnoDB to shrink the mysqld process by circa 100MB.
 #skip-innodb
+
+<% if @node[:db_mysql][:packages_install].include?('mysql-server-5.1') %>
+  # On MySQL 5.1, load the innodb plugin
+  ignore-builtin-innodb
+  plugin-load=innodb=ha_innodb_plugin.so
+<% end %>
+
 innodb_data_home_dir = /var/lib/mysql/
 innodb_data_file_path = ibdata1:10M:autoextend
 innodb_log_group_home_dir = /var/lib/mysql
-<%= "innodb_log_arch_dir = /var/lib/mysql" unless node[:db_mysql][:packages_install].include?('mysql-server-5.1') %>
+
+<% if @node[:db_mysql][:packages_install].include?('mysql-server-5.0') %>
+innodb_log_arch_dir = /var/lib/mysql
+<% end %>
+
 innodb_file_per_table
 # You can set .._buffer_pool_size up to 50 - 80 %
 # of RAM but beware of setting memory usage too high
@@ -145,7 +147,22 @@ innodb_flush_log_at_trx_commit = 2
 innodb_lock_wait_timeout = 50
 innodb_support_xa = 1
 # innodb_doublewrite
+innodb_flush_method=O_DIRECT
 innodb_fast_shutdown = 1
+
+#
+# Binary logs are required for replication on masters
+# and slaves which may be promoted to master in the future.
+#
+log-bin=<%=@node[:db_mysql][:log_bin] %>
+
+#
+# Configure the binary and relay log names
+# This is essential under systems using upstart, as the hostname may not be 
+# consistently set during daemon start.
+#
+relay-log-index=/mnt/mysql/<%= @node[:hostname] %>-relay-log.index
+relay-log=/mnt/mysql/<%= @node[:hostname] %>-relay-bin
 
 #
 # * Security Features

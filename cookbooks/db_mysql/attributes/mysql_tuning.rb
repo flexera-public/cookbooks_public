@@ -1,6 +1,6 @@
 # Cookbook Name:: db_mysql
 #
-# Copyright (c) 2009 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -47,7 +47,7 @@ if !attribute?("ec2")
   set_unless[:db_mysql][:tunable][:read_rnd_buffer_size] = "4M"
   set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size] = "64M"
   set_unless[:db_mysql][:tunable][:query_cache_size] = "24M"
-  set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size] = "1G"
+  set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size] = "128M"
   set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = "24M"
   set_unless[:db_mysql][:tunable][:log_slow_queries] = "log_slow_queries = /var/log/mysqlslow.log"
   set_unless[:db_mysql][:tunable][:long_query_time] = "long_query_time = 5"

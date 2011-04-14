@@ -1,0 +1,17 @@
+<% @path.each do |p| -%>
+<%= p %> {
+  <%= @frequency %>
+  missingok
+  rotate <%= @rotate %>
+  nocompress
+  delaycompress
+  copytruncate
+  notifempty
+  create <%= @create %>
+  sharedscripts
+  postrotate
+       test -x /usr/bin/mysqladmin || exit 0
+       /usr/bin/mysqladmin flush-logs
+  endscript
+}
+<% end -%>

@@ -19,7 +19,6 @@
     "conflicting": {
     },
     "recipes": {
-      "database::do_query": "Run a test query to see if things are working."
     },
     "name": "database",
     "providing": {

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 #
 ### BEGIN INIT INFO
 # Provides:          mysql
@@ -27,6 +27,15 @@ MYADMIN="/usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf"
 
 # priority can be overriden and "-s" adds output to stderr
 ERR_LOGGER="logger -p daemon.err -t /etc/init.d/mysql -i"
+
+# *** Wait for process to be alive, connected, and innodb ready.  
+# on startup: timeout results in failure status even if mysql is half up (and connection is available).
+# innodb *must be enabled
+START_TIMEOUT=<%= @node[:db_mysql][:init_timeout] %>
+
+# *** Wait for process to exit
+# on shutdown: timeout results in forced shutdown, do not set this too low!
+STOP_TIMEOUT=<%= @node[:db_mysql][:init_timeout] %>
 
 # Safeguard (relative paths, core dumps..)
 cd /
@@ -89,6 +98,28 @@ mysqld_status () {
     fi
 }
 
+# Check for innodb engine status
+check_innodb() {
+  INNODB_ALIVE=1
+  $MYADMIN variables 2> /dev/null | egrep -q have_innodb.*YES 
+  if [ $? -eq 0 ]; then INNODB_ALIVE=0; fi
+}
+
+# wait N seconds for mysqld to be ready
+wait_for_startup() {
+  STARTTIMEOUT=$START_TIMEOUT
+  set +e
+  while [ 1 ]; do
+    check_innodb
+    if [ $INNODB_ALIVE -eq 0 ]; then STARTED=0; break; fi
+    if [ $STARTTIMEOUT -eq 0 ]; then STARTED=1; break; fi
+    let STARTTIMEOUT=${STARTTIMEOUT}-1
+    log_progress_msg "."
+    sleep 1
+  done
+  set -e
+}
+
 #
 # main()
 #
@@ -104,11 +135,14 @@ case "${1:-''}" in
 	else
   	    /usr/bin/mysqld_safe > /dev/null 2>&1 &
 	    # 6s was reported in #352070 to be too few when using ndbcluster
-	    for i in `seq 1 <%= @node[:db_mysql][:init_timeout] %>`; do
-                sleep 1
-	        if mysqld_status check_alive nowarn ; then break; fi
-		log_progress_msg "."
-	    done
+	    if [ $? -eq 0 ]; then
+		wait_for_startup;
+		if [ $STARTED -ne 0 ]; then
+		    log_end_msg 1
+		    log_failure_msg "Failed to wait for INNODB startup"
+		    break
+		fi
+	    fi
 	    if mysqld_status check_alive warn; then
                 log_end_msg 0
 	        # Now start mysqlcheck or whatever the admin wants.
@@ -145,9 +179,11 @@ case "${1:-''}" in
 	    log_daemon_msg "Killing MySQL database server by signal" "mysqld"
 	    killall -15 mysqld
             server_down=
-	    for i in `seq 1 <%= @node[:db_mysql][:init_timeout] %>`; do
+	    STOPTIMEOUT=$STOP_TIMEOUT
+	    while [ $STOPTIMEOUT -gt 0 ]; do
               sleep 1
               if mysqld_status check_dead nowarn; then server_down=1; break; fi
+	      let STOPTIMEOUT=${STOPTIMEOUT}-1
             done
           if test -z "$server_down"; then killall -9 mysqld; fi
 	  fi

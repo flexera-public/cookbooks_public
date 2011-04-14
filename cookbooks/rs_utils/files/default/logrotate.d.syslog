@@ -1,0 +1,12 @@
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
+/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler /var/log/boot.log /var/log/cron {
+    sharedscripts
+    missingok
+    notifempty
+    postrotate
+	/bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}

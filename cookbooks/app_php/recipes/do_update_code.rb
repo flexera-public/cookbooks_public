@@ -1,7 +1,7 @@
 # Cookbook Name:: app_php
 # Recipe:: do_update_code
 #
-# Copyright (c) 2009 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -24,17 +24,24 @@
 
 
 # Check that we have the required attributes set
-raise "You must provide a URL to your application code repository" if ("#{@node[:php][:code][:url]}" == "") 
-raise "You must provide a destination for your application code." if ("#{@node[:php][:code][:destination]}" == "") 
+raise "You must provide a URL to your application code repository" if ("#{node[:php][:code][:url]}" == "") 
+raise "You must provide a destination for your application code." if ("#{node[:php][:code][:destination]}" == "") 
 
 # Warn about missing optional attributes
-Chef::Log.warn("WARNING: You did not provide credentials for your code repository -- assuming public repository.") if ("#{@node[:php][:code][:credentials]}" == "") 
-Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{@node[:php][:code][:branch]}" == "") 
+Chef::Log.warn("WARNING: You did not provide credentials for your code repository -- assuming public repository.") if ("#{node[:php][:code][:credentials]}" == "") 
+Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{node[:php][:code][:branch]}" == "") 
 
 # grab application source from remote repository
 repo_git_pull "Get Repository" do
-  url @node[:php][:code][:url]
-  branch @node[:php][:code][:branch] 
-  dest @node[:php][:code][:destination]
-  cred @node[:php][:code][:credentials]
+  url node[:php][:code][:url]
+  branch node[:php][:code][:branch] 
+  dest node[:php][:code][:destination]
+  cred node[:php][:code][:credentials]
+end
+
+# == Set code ownership 
+bash "chown_home" do
+  code <<-EOH
+    chown -R #{node[:php][:app_user]}:#{node[:php][:app_user]} #{node[:php][:code][:destination]}
+  EOH
 end

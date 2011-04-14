@@ -1,6 +1,6 @@
 # Cookbook Name:: rs_utils
 #
-# Copyright (c) 2010 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -29,14 +29,15 @@
 #
 # Optional attributes
 #
-set_unless[:rs_utils][:timezone] = "UTC"
+set_unless[:rs_utils][:timezone] = "UTC"    
+set_unless[:rs_utils][:process_list] = ""
+set_unless[:rs_utils][:process_match_list] = ""   
 set_unless[:rs_utils][:private_ssh_key] = ""
 
 set_unless[:rs_utils][:mysql_binary_backup_file] = "/var/run/mysql-binary-backup"
 
 default[:rs_utils][:plugin_list] = ""
 default[:rs_utils][:plugin_list_ary] = [
-  "network",
   "cpu",
   "df",
   "disk",
@@ -44,20 +45,15 @@ default[:rs_utils][:plugin_list_ary] = [
   "memory",
   "processes",
   "swap",
-  "syslog",
   "users",
-  "interface",
   "ping"
 ]
 
 default[:rs_utils][:process_list] = ""
 default[:rs_utils][:process_list_ary] = []
 
-# Changed from /var/lib/collectd which does not appear to be the standard
-default[:rs_utils][:collectd_basedir] = "/var/lib/collectd/rrd"
-
 #
-# Platform specific attributes
+# Setup Distro dependent variables
 #
 case platform
 when "redhat","centos","fedora","suse"
@@ -70,13 +66,18 @@ when "debian","ubuntu"
   rs_utils[:collectd_plugin_dir] = "/etc/collectd/conf"
 end
 
-case kernel[:machine]
-when "i686"
-  rs_utils[:collectd_lib] = "/usr/lib/collectd"
-else 
-  rs_utils[:collectd_lib] = "/usr/lib64/collectd"
-end
-
 default[:rs_utils][:short_hostname]        = nil
 default[:rs_utils][:domain_name]           = ""
 default[:rs_utils][:search_suffix]         = ""
+
+#
+# Cloud specific attributes
+#
+rs_utils[:enable_remote_logging] = false
+if cloud
+  case cloud[:provider]
+  when "ec2"
+    rs_utils[:enable_remote_logging] = true
+  end
+end
+

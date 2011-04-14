@@ -1,7 +1,7 @@
 # Cookbook Name:: db_mysql
 # Recipe:: setup_my_cnf
 #
-# Copyright (c) 2009 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the

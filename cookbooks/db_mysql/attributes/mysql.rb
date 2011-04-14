@@ -1,6 +1,6 @@
 # Cookbook Name:: db_mysql
 #
-# Copyright (c) 2009 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -28,41 +28,63 @@ set_unless[:db_mysql][:admin_user] = nil
 set_unless[:db_mysql][:admin_password] = nil
 set_unless[:db_mysql][:server_id] = Time.now.to_i
 
+set_unless[:db_mysql][:fqdn] = nil
+set_unless[:db_mysql][:application][:user] = nil
+set_unless[:db_mysql][:application][:password] = nil
 #
 # Recommended attributes
 #
 set_unless[:db_mysql][:server_usage] = "dedicated"  # or "shared"
 
-#
+
 # Optional attributes
 #
-set_unless[:db_mysql][:datadir_relocate] = "/mnt/mysql"
 set_unless[:db_mysql][:log_bin_enabled] = true
 set_unless[:db_mysql][:log_bin] = "/mnt/mysql-binlogs/mysql-bin"
 set_unless[:db_mysql][:tmpdir] = "/tmp"
 set_unless[:db_mysql][:datadir] = "/var/lib/mysql"
+set_unless[:db_mysql][:datadir_relocate] = "/mnt/storage"
 set_unless[:db_mysql][:bind_address] = ipaddress
 
-#
-# Platform specific attributes
+set_unless[:db_mysql][:dump][:schema_name] = ""
+set_unless[:db_mysql][:dump][:storage_account_provider] = ""
+set_unless[:db_mysql][:dump][:storage_account_id] = ""
+set_unless[:db_mysql][:dump][:storage_account_secret] = ""
+set_unless[:db_mysql][:dump][:container] = ""
+set_unless[:db_mysql][:dump][:prefix] = ""
 
+
+# Backup/Restore arguments
+#
+set_unless[:db_mysql][:backup][:lineage] = ""
+set_unless[:db_mysql][:backup][:storage_type] = ""
+set_unless[:db_mysql][:backup][:max_snapshots] = ""
+set_unless[:db_mysql][:backup][:keep_daily] = ""
+set_unless[:db_mysql][:backup][:keep_weekly] = ""
+set_unless[:db_mysql][:backup][:keep_monthly] = ""
+set_unless[:db_mysql][:backup][:keep_yearly] = ""
+
+# Remote Object Storage account info (S3, CloudFiles)
+set_unless[:db_mysql][:backup][:storage_account_id] = ""
+set_unless[:db_mysql][:backup][:storage_account_secret] = ""
+set_unless[:db_mysql][:backup][:storage_container] = ""
+
+
+# Platform specific attributes
+#
 set_unless[:db_mysql][:kill_bug_mysqld_safe] = true
 
 case platform
 when "redhat","centos","fedora","suse"
-	set_unless[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
-  set_unless[:db_mysql][:basedir] = "/usr"
+	set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
+  set_unless[:db_mysql][:basedir] = "/var/lib"
   set_unless[:db_mysql][:packages_uninstall] = ""
-  set_unless[:db_mysql][:packages_install] = [
-    "perl-DBD-MySQL", "mysql-server", "mysql-devel", "mysql-connector-odbc", 
-#    not available on CentOS 5.4?
-#    "mysqlclient14-devel", "mysqlclient14", "mysqlclient10-devel", "mysqlclient10", 
-    "krb5-libs"
-	]
+  set_unless[:db_mysql][:packages_install] = ""
+ # set_unless[:db_mysql][:packages_install] = [ "unixODBC.#{kernel[:machine] }", "krb5-libs" ]
   set_unless[:db_mysql][:log] = ""
   set_unless[:db_mysql][:log_error] = "" 
 when "debian","ubuntu"
-  set_unless[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
+  set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
   set_unless[:db_mysql][:basedir] = "/usr"
   set_unless[:db_mysql][:packages_uninstall] = "apparmor"
   if(platform_version == "10.10" || platform_version == "10.04")
@@ -73,10 +95,11 @@ when "debian","ubuntu"
   set_unless[:db_mysql][:log] = "log = /var/log/mysql.log"
   set_unless[:db_mysql][:log_error] = "log_error = /var/log/mysql.err" 
 else
-  set_unless[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
+  set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
   set_unless[:db_mysql][:basedir] = "/usr"
   set_unless[:db_mysql][:packages_uninstall] = ""
   set_unless[:db_mysql][:packages_install] = ["mysql-server-5.0"]
   set_unless[:db_mysql][:log] = "log = /var/log/mysql.log"
   set_unless[:db_mysql][:log_error] = "log_error = /var/log/mysql.err"
 end
+

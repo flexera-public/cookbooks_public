@@ -1,7 +1,7 @@
 # Cookbook Name:: rs_utils
 # Recipe:: install_mysql_collectd_plugin
 #
-# Copyright (c) 2010 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -31,10 +31,10 @@ include_recipe "rs_utils::setup_monitoring"
 log "Installing MySQL collectd plugin"
 
 package "collectd-mysql" do
-  only_if {  node.platform == "centos" }
+  only_if {  node[:platform] == "centos" }
 end
 
-remote_file "#{node.rs_utils.collectd_plugin_dir}/mysql.conf" do
+remote_file "#{node[:rs_utils][:collectd_plugin_dir]}/mysql.conf" do
   backup false
   source "collectd.mysql.conf"
   notifies :restart, resources(:service => "collectd")
@@ -46,7 +46,7 @@ end
 #
 # The only related issue I could find was for Chef 0.9.8 - http://tickets.opscode.com/browse/CHEF-1680
 node[:rs_utils][:process_list] += " mysqld"
-template File.join(node.rs_utils.collectd_plugin_dir, 'processes.conf') do
+template File.join(node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
   backup false
   source "processes.conf.erb"
   notifies :restart, resources(:service => "collectd")

@@ -1,6 +1,10 @@
 # syslog-ng configuration file.
 #
 # See syslog-ng(8) and syslog-ng.conf(5) for more information.
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
 
 options {
     sync (0);
@@ -31,10 +35,10 @@ destination d_cron { file("/var/log/cron"); };
 destination d_mlal { usertty("*"); };
 destination d_rail { file("/var/log/rails/rails.log"); };
 destination d_daem { file("/var/log/rails/daemons.log"); };
-destination d_hpxy { file("/var/log/httpd/haproxy.log"); };
-#destination d_http { file("/var/log/httpd/http.log"); };
-#destination d_https { file("/var/log/httpd/https.log"); };
-destination d_httperror { file("/var/log/httpd/error_log"); };
+destination d_hpxy { file("/var/log/<%= @apache_log_dir %>/haproxy.log"); };
+#destination d_http { file("/var/log/<%= @apache_log_dir %>/http.log"); };
+#destination d_https { file("/var/log/<%= @apache_log_dir %>/https.log"); };
+destination d_httperror { file("/var/log/<%= @apache_log_dir %>/error_log"); };
 destination d_dhcp { pipe("/dev/null.syslog-ng"); };
 destination d_udp { udp("<%= node[:rightscale][:servers][:lumberjack][:hostname] %>" template("<$PRI>$DATE <%= node[:rightscale][:servers][:lumberjack][:identifier] %>  $MSG")); }; 
 

@@ -1,7 +1,7 @@
 # Cookbook Name:: rs_utils
 # Recipe:: mail
 #
-# Copyright (c) 2010 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -22,8 +22,40 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-log "Setup mail"
+# == Install and setup postfix 
+package "postfix"
 
+service "postfix" do
+  action :enable
+  supports :status => true
+end
+
+# == Update main.cf (if needed)
+#
+# We make the changes needed for centos, but using the default main.cf 
+# config everywhere else
+#
+remote_file "/etc/postfix/main.cf" do
+  only_if { node[:platform] == "centos"}
+  backup 5
+  source "postfix.main.cf"
+#  notifies :restart, resources(:service => "postfix")
+end
+
+# On CentOS 5.4 postfix is not started and chef tries to 'stop' it.  This throws an error.
+# So we'll just start the service here for CentOS.
+if node[:platform] == "centos"
+  service "postfix" do
+    action :start
+  end
+else node[:platform] == "ubuntu"
+  service "postfix" do
+    action :restart
+  end
+end
+
+# == Add mail to logrotate
+#
 directory "/var/spool/oldmail" do
   recursive true
   mode "775"
@@ -34,3 +66,4 @@ end
 remote_file "/etc/logrotate.d/mail" do
   source "mail"
 end
+

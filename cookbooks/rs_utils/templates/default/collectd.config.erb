@@ -1,33 +1,29 @@
 #
 # Config file for collectd, version 4.
-# Prepared by RightScale for EC2 instances.
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
 #
 Hostname  "<%= node[:rightscale][:instance_uuid]  %>"
-BaseDir   "<%= node[:rs_utils][:collectd_basedir] %>"
-PIDFile   "/var/run/collectd.pid"
-PluginDir "<%= node[:rs_utils][:collectd_lib] %>"
-TypesDB   "<%= node[:rs_utils][:collectd_lib] %>/types.db"
-Interval  10
+Interval  20
 ReadThreads 5
+
+LoadPlugin syslog
+<Plugin syslog>
+  LogLevel info
+</Plugin>
+LoadPlugin network
+<Plugin network>
+  Server "<%= node[:rightscale][:servers][:sketchy][:hostname] %>" "3011"
+</Plugin>
+LoadPlugin interface
+<Plugin interface>
+  Interface "eth0"
+</Plugin>
 
 <% node[:rs_utils][:plugin_list_ary].each do |plugin| -%>
 LoadPlugin <%= plugin %>
 <% end %>
 
-<Plugin network>
-  Server "<%= node[:rightscale][:servers][:sketchy][:hostname] %>" "3011"
-</Plugin>
-
-<Plugin interface>
-  Interface "eth0"
-</Plugin>
-
-<Plugin ping>
-  Host "www.rightscale.com"
-  Host "s3.amazonaws.com"
-  Host "ec2.amazonaws.com"
-</Plugin>
 #this is where other configs go (e.g. mysql.conf)
-
 Include "<%= node[:rs_utils][:collectd_plugin_dir] %>/*"
-
