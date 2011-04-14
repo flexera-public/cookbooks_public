@@ -20,7 +20,7 @@
 
 require 'rubygems'
 require 'chef'
-require 'json'
+#require 'json'
 
 # Make sure you have loaded constants first
 require File.join(File.dirname(__FILE__), 'config', 'rake')
