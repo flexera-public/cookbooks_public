@@ -1,5 +1,6 @@
 database "do_backup" do
-
+  provider "database"
+  
   mount_point node[:db_mysql][:mount_point]
   
   # Database settings

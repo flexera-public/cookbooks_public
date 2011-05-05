@@ -39,9 +39,9 @@ module RightScale
         lineage = new_resource.lineage
         raise "ERROR: you must specify a lineage for restore!" unless lineage
         {
-          :lineage => lineage
-          :new_size_gb => new_resource.new_size_gb
-          :from_master => new_resource.from_master
+          :lineage => lineage,
+          :new_size_gb => new_resource.new_size_gb,
+          :from_master => new_resource.from_master,
           :timestamp => new_resource.timestamp
         }
       end
@@ -53,7 +53,7 @@ module RightScale
           :user => new_resource.user,
           :password => new_resource.password,
           :mount_point => new_resource.mount_point,
-          :db_type => new_resource.db_type
+          :db_type => new_resource.db_type,
           :logger => Chef::Log 
         }
       end
