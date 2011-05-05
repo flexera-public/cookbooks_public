@@ -1,0 +1,30 @@
+{
+    "version": "0.1.0",
+    "replacing": {
+    },
+    "groupings": {
+    },
+    "attributes": {
+    },
+    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+    "recommendations": {
+    },
+    "dependencies": {
+    },
+    "maintainer": "RightScale, Inc.",
+    "suggestions": {
+    },
+    "license": "All rights reserved",
+    "maintainer_email": "support@rightscale.com",
+    "conflicting": {
+    },
+    "recipes": {
+      "database::do_query": "Run a test query to see if things are working."
+    },
+    "name": "database",
+    "providing": {
+    },
+    "platforms": {
+    },
+    "description": "Installs/Configures database"
+  }
