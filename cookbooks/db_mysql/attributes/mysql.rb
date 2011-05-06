@@ -43,7 +43,7 @@ set_unless[:db_mysql][:log_bin_enabled] = true
 set_unless[:db_mysql][:log_bin] = "/mnt/mysql-binlogs/mysql-bin"
 set_unless[:db_mysql][:tmpdir] = "/tmp"
 set_unless[:db_mysql][:datadir] = "/var/lib/mysql"
-set_unless[:db_mysql][:datadir_relocate] = "/mnt/mysql"
+set_unless[:db_mysql][:datadir_relocate] = "/mnt/storage"
 set_unless[:db_mysql][:bind_address] = ipaddress
 
 set_unless[:db_mysql][:dump][:schema_name] = ""

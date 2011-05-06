@@ -11,6 +11,7 @@ recipe  "rightscale_tools::force_reset", "umount and delete"
 recipe  "rightscale_tools::create_lvm_device_ec2", "creates ebs storage and mounts"
 recipe  "rightscale_tools::create_lvm_device_ebs", "creates ebs storage and mounts"
 recipe  "rightscale_tools::create_lvm_device_rackspace", "creates cloud_files storage and mounts"
+recipe  "rightscale_tools::create_lvm_device", "creates storage and mounts based on cloud and storage_type"
 
 recipe "rightscale_tools::do_backup_ebs","backup EBS storage"
 recipe "rightscale_tools::do_restore_ebs","restore EBS storage"
@@ -69,6 +70,14 @@ setup_cron_recipes = [
                 "rightscale_tools::setup_continuous_backups_ebs", 
                 "rightscale_tools::setup_continuous_backups_cloud_files"
                 ]
+
+attribute "rightscale_tools/storage_type",
+  :display_name => "Block Device Storage Type",
+  :description => "TODO",
+  :choice => ["ebs", "s3", "cloudfiles"],
+  :type => "string",
+  :default => "ebs",
+  :recipes => [ "rightscale_tools::create_lvm_device" ]
 
 attribute "rightscale_tools/cron_backup_minute",
   :display_name => "Backup cron minute", 
