@@ -69,7 +69,10 @@ attribute "db_mysql/application/password",
 attribute "db_mysql/backup/storage_type",
   :display_name => "Backup Storage Type",
   :description => "TODO",
+  :choice => ["ebs", "s3", "cloudfiles"],
+  :type => "string",
   :required => true,
+  :default => "ebs",
   :recipes => [ "db_mysql::do_backup" ]
   
 attribute "db_mysql/backup/lineage",

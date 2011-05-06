@@ -285,8 +285,11 @@
         "required": "required",
         "calculated": false,
         "choice": [
-
+          "ebs",
+          "s3",
+          "cloudfiles"
         ],
+        "default": "ebs",
         "type": "string",
         "recipes": [
           "db_mysql::do_backup"
