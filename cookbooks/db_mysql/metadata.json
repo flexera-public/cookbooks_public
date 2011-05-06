@@ -282,7 +282,7 @@
         "display_name": "Backups Keep Monthly"
       },
       "db_mysql/backup/storage_type": {
-        "required": "required",
+        "required": "optional",
         "calculated": false,
         "choice": [
           "ebs",
