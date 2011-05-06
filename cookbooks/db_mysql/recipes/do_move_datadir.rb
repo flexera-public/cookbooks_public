@@ -29,12 +29,21 @@ service "mysql" do
   action :nothing
 end
 
+# Create the directory if it doesn't exist.
+directory "/mnt/mysql" do
+  owner "mysql"
+  group "mysql"
+  mode "0755"
+  action :create
+end
+
 # moves mysql default db to storage location
 ruby_block "relocate default datafiles to storage drive, symlink storage to default datadir" do
   not_if do ::File.symlink?(node[:db_mysql][:datadir]) end
   block do
     require 'fileutils'
-    FileUtils.cp_r(node[:db_mysql][:datadir], node[:db_mysql][:datadir_relocate])
+    files = Dir.glob(node[:db_mysql][:datadir]+"/*")
+    FileUtils.cp_r files, node[:db_mysql][:datadir_relocate]+"/."
     FileUtils.chown_R("mysql", "mysql", "#{node[:db_mysql][:datadir_relocate]}")
     FileUtils.rm_rf(node[:db_mysql][:datadir])
     File.symlink(node[:db_mysql][:datadir_relocate], node[:db_mysql][:datadir])
