@@ -61,20 +61,19 @@ module RightScale
       def block_device_args(block_device_type, new_resource)
         case block_device_type
         when :ebs
+          block_device_args = new_resource.mount_point
+        when :cloudfiles, :s3
           block_device_args = {
-        
-          }
-        when :cloudfiles
-          block_device_args = {
-        
-          }
-        when :cloudfiles
-          block_device_args = {
-        
+              # Remote Object Storage account info (S3, CloudFiles)
+              :mount_point => new_resource.mount_point,
+              :storage_account_id => new_resource.storage_account_id,
+              :storage_account_secret new_resource.storage_account_secret,
+              :storage_container new_resource.storage_container
           }
         else
           raise "ERROR: unsupported block_device_type specified! (type: #{block_device_type})"
         end
+        block_device_args
       end
       
     end

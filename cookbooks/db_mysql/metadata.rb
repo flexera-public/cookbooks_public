@@ -22,6 +22,12 @@ recipe  "db_mysql::do_dump_import", "Initialize MySQL with dumpfile from cloud o
 recipe  "db_mysql::do_dump_export", "Upload MySQL dumpfile archive to cloud object store (i.e. S3, cloudfiles)"
 recipe  "db_mysql::setup_continuous_export", "Schedule daily run of do_dump_export."
 
+# == Premium Account Recipes
+#
+# The following recipes require a RightScale Premium ServerTemplate to run
+#
+recipe  "db_mysql::do_backup", "Snapshot MySQL data to selected cloud storage. (Premium Account Only) "
+
 #
 # required attributes
 #
@@ -38,13 +44,13 @@ attribute "db_mysql/admin/user",
   :display_name => "Database Admin Username",
   :description => "The username of the database user that has 'admin' privileges.",
   :required => true,
-  :recipes => [ "db_mysql::setup_admin_privileges" ]
+  :recipes => [ "db_mysql::setup_admin_privileges", "db_mysql::do_backup" ]
 
 attribute "db_mysql/admin/password",
   :display_name => "Database Admin Password",
   :description => "The password of the database user that has 'admin' privileges.",
   :required => true,
-  :recipes => [ "db_mysql::setup_admin_privileges" ]
+  :recipes => [ "db_mysql::setup_admin_privileges", "db_mysql::do_backup" ]
   
 attribute "db_mysql/application/user",
   :display_name => "Database Application Username",
@@ -56,6 +62,71 @@ attribute "db_mysql/application/password",
   :description => "The password of the database user that has 'user' privileges.",
   :required => true,
   :recipes => [ "db_mysql::setup_application_privileges" ]
+
+  
+# == Backup/Restore (Premium Accounts only)
+#
+attribute "db_mysql/backup/storage_type",
+  :display_name => "Backup Storage Type",
+  :description => "TODO",
+  :required => true,
+  :recipes => [ "db_mysql::do_backup" ]
+  
+attribute "db_mysql/backup/lineage",
+  :display_name => "Backup Lineage",
+  :description => "TODO",
+  :required => true,
+  :recipes => [ "db_mysql::do_backup" ]
+
+attribute "db_mysql/backup/max_snapshots",
+  :display_name => "Backups Maximum",
+  :description => "TODO",
+  :default => "60",
+  :recipes => [ "db_mysql::do_backup" ]
+  
+attribute "db_mysql/backup/keep_daily",
+  :display_name => "Backups Keep Daily",
+  :description => "TODO",
+  :default => "14",
+  :recipes => [ "db_mysql::do_backup" ]
+  
+attribute "db_mysql/backup/keep_weekly",
+  :display_name => "Backups Keep Weekly",
+  :description => "TODO",
+  :default => "6",
+  :recipes => [ "db_mysql::do_backup" ]
+  
+attribute "db_mysql/backup/keep_monthly",
+  :display_name => "Backups Keep Monthly",
+  :description => "TODO",
+  :default => "12",
+  :recipes => [ "db_mysql::do_backup" ]
+  
+attribute "db_mysql/backup/keep_yearly",
+  :display_name => "Backups Keep Yearly",
+  :description => "TODO",
+  :default => "2",
+  :recipes => [ "db_mysql::do_backup" ]
+
+# Remote Object Storage account info (S3, CloudFiles)
+attribute "db_mysql/backup/storage_account_id",
+  :display_name => "Backup Storage Account ID",
+  :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
+  :default => "",
+  :recipes => [ "db_mysql::do_backup" ]
+
+attribute "db_mysql/backup/storage_account_secret",
+  :display_name => "Backup Storage Account Secret",
+  :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
+  :default => "",
+  :recipes => [ "db_mysql::do_backup" ]
+
+attribute "db_mysql/backup/storage_container",
+  :display_name => "Backup Storage Container",
+  :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
+  :default => "",
+  :recipes => [ "db_mysql::do_backup" ]
+
   
 # == Import/export Attributes
 #

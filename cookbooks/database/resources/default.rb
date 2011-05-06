@@ -1,5 +1,6 @@
 actions :create, :backup #, :restore
 
+attribute :block_device_type, :kind_of => String, :require => true
 attribute :mount_point, :kind_of => String, :require => true
 
 # Database settigns
