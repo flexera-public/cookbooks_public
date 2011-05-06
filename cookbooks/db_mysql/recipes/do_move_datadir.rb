@@ -34,8 +34,8 @@ ruby_block "relocate default datafiles to storage drive, symlink storage to defa
   not_if do ::File.symlink?(node[:db_mysql][:datadir]) end
   block do
     require 'fileutils'
-#Chef::Log.info "dir: #{node[:db_mysql][:datadir]} -- relocate #{node[:db_mysql][:datadir_relocate]}"
     FileUtils.cp_r(node[:db_mysql][:datadir], node[:db_mysql][:datadir_relocate])
+    FileUtils.chown_R("mysql", "mysql", "#{node[:db_mysql][:datadir_relocate]}")
     FileUtils.rm_rf(node[:db_mysql][:datadir])
     File.symlink(node[:db_mysql][:datadir_relocate], node[:db_mysql][:datadir])
   end
