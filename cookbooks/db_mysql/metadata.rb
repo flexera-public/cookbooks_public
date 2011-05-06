@@ -71,7 +71,6 @@ attribute "db_mysql/backup/storage_type",
   :description => "TODO",
   :choice => ["ebs", "s3", "cloudfiles"],
   :type => "string",
-  :required => true,
   :default => "ebs",
   :recipes => [ "db_mysql::do_backup" ]
   
