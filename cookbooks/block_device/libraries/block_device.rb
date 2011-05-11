@@ -9,29 +9,11 @@ module RightScale
   module BlockDevice
     module Helper
 
-      def init(type, new_resource)
-        args = block_device_args(type)      
+      def init(type, new_resource)      
         mount_point = new_resource.name
-        ::RightScale::BlockDevice.new(mount_point, new_resource.cloud, type, args)
+        ::RightScale::BlockDevice.new(mount_point, new_resource.cloud, type)
       end
       
-    private 
-      
-      def block_device_args(block_device_type, new_resource)
-        case device_type
-        when "volume"
-          block_device_args = nil
-        when "ros"
-          block_device_args = {
-              # Remote Object Storage account info (S3, CloudFiles)
-              :storage_account_id => new_resource.storage_account_id,
-              :storage_account_secret new_resource.storage_account_secret,
-          }
-        else
-          raise "ERROR: unsupported block_device_type specified! (type: #{block_device_type})"
-        end
-        block_device_args
-      end
     end
   end
 end

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: block_device
-# Recipe:: default
+# Recipe:: do_attach
 #
 # Copyright 2011, RightScale, Inc.
 #
@@ -17,11 +17,6 @@ block_device "/mnt/storage" do
   # volume only
   volume_size "1"
   stripe_size "1"
-  
-  # ros only
-  storage_account_type  # "s3"|"cloudfiles" 
-  storage_account_id 
-  storage_account_secret
 
 end
 

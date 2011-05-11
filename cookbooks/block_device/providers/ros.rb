@@ -1,10 +1,7 @@
 
 action :create do
   device = init("ros", new_resource)
-  create_options = {
-    :cloud = new_resource.cloud
-  }
-  device.action_create(create_options)
+  device.action_create
 end
 
 
@@ -17,6 +14,11 @@ action :backup do
     :keep_weeklies => new_resource.keep_weekly,
     :keep_monthlies => new_resource.keep_monthly,
     :keep_yearlies => new_resource.keep_yearly 
+    
+    :storage_account_type => new_resource.storage_account_type  # "s3"|"cloudfiles" 
+    :storage_account_id => new_resource.storage_account_id
+    :storage_account_secret => new_resource.storage_account_secret
+    :storage_account_container => new_resource.storage_account_container
   }
   device.action_backup(backup_options)
 end
@@ -28,6 +30,10 @@ action :restore do
     :lineage => new_resource.lineage 
     # TODO :lineage_override => ""
     # TODO :timestamp_override => "" 
+    :storage_account_type => new_resource.storage_account_type  # "s3"|"cloudfiles" 
+    :storage_account_id => new_resource.storage_account_id
+    :storage_account_secret => new_resource.storage_account_secret
+    :storage_account_container => new_resource.storage_account_container
   }
   device.action_restore(restore_args)
 end

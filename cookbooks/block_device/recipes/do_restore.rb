@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: block_device
-# Recipe:: do_backup
+# Recipe:: do_restore
 #
 # Copyright 2011, RightScale, Inc.
 #
@@ -14,15 +14,11 @@ block_device "/mnt/storage" do
   cloud node[:cloud_provider]
   action :backup
   
-  lineage 
-  max_snapshots 
-  keep_dailies 
-  keep_weeklies 
-  keep_monthlies
-  keep_yearlies 
+  lineage #TODO
+  timestamp_override #TODO
   
   # ros only
-  storage_account_type  #TODO   
+  storage_account_type  #TODO
   storage_account_id  #TODO
   storage_account_secret  #TODO
   storage_account_container #TODO
