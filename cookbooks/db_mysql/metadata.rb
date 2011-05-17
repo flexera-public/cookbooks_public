@@ -68,7 +68,7 @@ attribute "db_mysql/application/password",
 #
 attribute "db_mysql/backup/storage_type",
   :display_name => "Backup Storage Type",
-  :description => "TODO",
+  :description => "The name of the S3 bucket or Cloud Files container where the application tarball (.tgz) can be retrieved.",
   :choice => ["ebs", "s3", "cloudfiles"],
   :type => "string",
   :default => "ebs",
@@ -76,37 +76,37 @@ attribute "db_mysql/backup/storage_type",
   
 attribute "db_mysql/backup/lineage",
   :display_name => "Backup Lineage",
-  :description => "TODO",
+  :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.",
   :required => true,
   :recipes => [ "db_mysql::do_backup" ]
 
 attribute "db_mysql/backup/max_snapshots",
   :display_name => "Backups Maximum",
-  :description => "TODO",
+  :description => "The number of backups to keep in addition to those being rotated",
   :default => "60",
   :recipes => [ "db_mysql::do_backup" ]
   
 attribute "db_mysql/backup/keep_daily",
   :display_name => "Backups Keep Daily",
-  :description => "TODO",
+  :description => "The number of daily backups to keep (i.e. rotation size).",
   :default => "14",
   :recipes => [ "db_mysql::do_backup" ]
   
 attribute "db_mysql/backup/keep_weekly",
   :display_name => "Backups Keep Weekly",
-  :description => "TODO",
+  :description => "The number of weekly backups to keep (i.e. rotation size).",
   :default => "6",
   :recipes => [ "db_mysql::do_backup" ]
   
 attribute "db_mysql/backup/keep_monthly",
   :display_name => "Backups Keep Monthly",
-  :description => "TODO",
+  :description => "The number of monthly backups to keep (i.e. rotation size).",
   :default => "12",
   :recipes => [ "db_mysql::do_backup" ]
   
 attribute "db_mysql/backup/keep_yearly",
   :display_name => "Backups Keep Yearly",
-  :description => "TODO",
+  :description => "The number of yearly backups to keep (i.e. rotation size).",
   :default => "2",
   :recipes => [ "db_mysql::do_backup" ]
 
@@ -138,7 +138,7 @@ attribute "db_mysql/dump",
 
 attribute "db_mysql/dump/schema_name",
   :display_name => "Schema Name",
-  :description => "",
+  :description => "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
@@ -150,25 +150,25 @@ attribute "db_mysql/dump/storage_account_provider",
 
 attribute "db_mysql/dump/storage_account_id",
   :display_name => "storage_account_id",
-  :description => "",
+  :description => "Cloud Account ID. This cloud-specific credential is used to retrieve private objects from cloud storage.  For AWS, use your AWS_ACCESS_KEY_ID credential.  For Rackspace, use your user name.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/storage_account_secret",
   :display_name => "storage_account_secret",
-  :description => "",
+  :description => "Cloud storage account secret. This cloud-specific credential is used to retrieve private objects from cloud storage.  For AWS, use your AWS_SECRET_ACCESS_KEY credential.   For Rackspace, use your authentication key.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/container",
   :display_name => "container",
-  :description => "",
+  :description => "The bucket or container where the MySQL database dump files will be stored to or restored from.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/prefix",
   :display_name => "prefix",
-  :description => "",
+  :description => "Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]  
 
