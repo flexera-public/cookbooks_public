@@ -2,8 +2,8 @@
 action :create do
   device = init("volume", new_resource)
   create_options = {
-    :volume_size = new_resource.volume_size
-    :stripe_count = new_resource.stripe_count
+    :volume_size => new_resource.volume_size
+    :stripe_count => new_resource.stripe_count
   }
   device.action_create(create_options)
 end
