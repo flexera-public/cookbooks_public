@@ -28,6 +28,14 @@ SANDBOX_BIN_DIR = "/opt/rightscale/sandbox/bin"
 RESOURCE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "rightscale_tools-0.1.0.gem")
 RACKSPACE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "right_rackspace-0.0.0.gem")
 
+# Rightscale_tools requires mysql gem, which requires mysql-devel and mysql-libs
+if node[:platform] == "centos"
+  p1 = package "mysql-devel"
+  p2 = package "mysql-libs"
+  p1.run_action(:install)
+  p2.run_action(:install)
+end
+
 r = gem_package RACKSPACE_GEM do
   gem_binary "#{SANDBOX_BIN_DIR}/gem"
   version "0.0.0"

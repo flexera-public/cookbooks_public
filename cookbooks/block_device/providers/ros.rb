@@ -37,7 +37,3 @@ action :restore do
   }
   device.action_restore(restore_args)
 end
-
-
-
-
