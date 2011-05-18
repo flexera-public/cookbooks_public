@@ -27,6 +27,7 @@ package "postfix"
 
 service "postfix" do
   action :enable
+  supports :status => true
 end
 
 # == Update main.cf (if needed)
