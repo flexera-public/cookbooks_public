@@ -27,7 +27,7 @@ end
 action :restore do
   device = init("ros", new_resource)
   restore_args = { 
-    :lineage => new_resource.lineage 
+    :lineage => new_resource.lineage,
     # TODO :lineage_override => ""
     # TODO :timestamp_override => "" 
     :storage_account_type => new_resource.storage_account_type,  # "s3"|"cloudfiles" 
