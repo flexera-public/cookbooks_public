@@ -13,11 +13,11 @@ action :backup do
     :keep_dailies => new_resource.keep_daily,
     :keep_weeklies => new_resource.keep_weekly,
     :keep_monthlies => new_resource.keep_monthly,
-    :keep_yearlies => new_resource.keep_yearly 
+    :keep_yearlies => new_resource.keep_yearly,
     
-    :storage_account_type => new_resource.storage_account_type  # "s3"|"cloudfiles" 
-    :storage_account_id => new_resource.storage_account_id
-    :storage_account_secret => new_resource.storage_account_secret
+    :storage_account_type => new_resource.storage_account_type,  # "s3"|"cloudfiles" 
+    :storage_account_id => new_resource.storage_account_id,
+    :storage_account_secret => new_resource.storage_account_secret,
     :storage_account_container => new_resource.storage_account_container
   }
   device.action_backup(backup_options)
@@ -30,9 +30,9 @@ action :restore do
     :lineage => new_resource.lineage 
     # TODO :lineage_override => ""
     # TODO :timestamp_override => "" 
-    :storage_account_type => new_resource.storage_account_type  # "s3"|"cloudfiles" 
-    :storage_account_id => new_resource.storage_account_id
-    :storage_account_secret => new_resource.storage_account_secret
+    :storage_account_type => new_resource.storage_account_type,  # "s3"|"cloudfiles" 
+    :storage_account_id => new_resource.storage_account_id,
+    :storage_account_secret => new_resource.storage_account_secret,
     :storage_account_container => new_resource.storage_account_container
   }
   device.action_restore(restore_args)
