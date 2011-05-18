@@ -12,10 +12,12 @@ LoadPlugin syslog
 <Plugin syslog>
   LogLevel info
 </Plugin>
+
 LoadPlugin network
 <Plugin network>
   Server "<%= node[:rightscale][:servers][:sketchy][:hostname] %>" "3011"
 </Plugin>
+
 LoadPlugin interface
 <Plugin interface>
   Interface "eth0"
