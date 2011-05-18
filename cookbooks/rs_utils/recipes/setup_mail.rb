@@ -42,9 +42,9 @@ remote_file "/etc/postfix/main.cf" do
   notifies :restart, resources(:service => "postfix")
 end
 
-service "postfix" do
-  action :restart
-end
+#service "postfix" do
+#  action :restart
+#end
 
 # == Add mail to logrotate
 #
