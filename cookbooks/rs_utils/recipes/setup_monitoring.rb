@@ -22,6 +22,9 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# These are not conditional assignments, but array joins..  Maybe a different syntax would be a good idea to avoid confusion?
+node[:rs_utils][:plugin_list_ary] = node[:rs_utils][:plugin_list].split | node[:rs_utils][:plugin_list_ary]
+node[:rs_utils][:process_list_ary] = node[:rs_utils][:process_list].split | node[:rs_utils][:process_list_ary]
 
 log "Configure collectd"
 

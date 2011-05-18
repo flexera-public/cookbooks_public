@@ -10,7 +10,7 @@ TypesDB   "<%= node[:rs_utils][:collectd_lib] %>/types.db"
 Interval  10
 ReadThreads 5
 
-<% node[:rs_utils][:plugin_list].split.each do |plugin| -%>
+<% node[:rs_utils][:plugin_list_ary].each do |plugin| -%>
 LoadPlugin <%= plugin %>
 <% end %>
 
