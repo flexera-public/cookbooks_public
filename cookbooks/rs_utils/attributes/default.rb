@@ -36,7 +36,21 @@ set_unless[:rs_utils][:private_ssh_key] = ""
 
 set_unless[:rs_utils][:mysql_binary_backup_file] = "/var/run/mysql-binary-backup"
 
-default[:rs_utils][:plugin_list] = "network cpu df disk load memory processes swap syslog users interface ping"
+default[:rs_utils][:plugin_list] = ""
+default[:rs_utils][:plugin_list_ary] = [
+  "cpu",
+  "df",
+  "disk",
+  "load",
+  "memory",
+  "processes",
+  "swap",
+  "users",
+  "ping"
+]
+
+default[:rs_utils][:process_list] = ""
+default[:rs_utils][:process_list_ary] = []
 
 #
 # Setup Distro dependent variables

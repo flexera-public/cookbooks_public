@@ -24,7 +24,8 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Load the exec plugin in the main config file
-node[:rs_utils][:plugin_list] += " exec" unless node[:rs_utils][:plugin_list] =~ /exec/
+rs_utils_enable_collectd_plugin "exec"
+#node[:rs_utils][:plugin_list] += " exec" unless node[:rs_utils][:plugin_list] =~ /exec/
 
 include_recipe "rs_utils::setup_monitoring"
 

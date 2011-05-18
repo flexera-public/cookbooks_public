@@ -7,25 +7,25 @@
 Hostname  "<%= node[:rightscale][:instance_uuid]  %>"
 Interval  20
 ReadThreads 5
+
 LoadPlugin syslog
 <Plugin syslog>
   LogLevel info
 </Plugin>
+
 LoadPlugin network
 <Plugin network>
   Server "<%= node[:rightscale][:servers][:sketchy][:hostname] %>" "3011"
 </Plugin>
-LoadPlugin cpu
-LoadPlugin df
-LoadPlugin disk
-LoadPlugin load
-LoadPlugin memory
-LoadPlugin swap
-LoadPlugin users
+
 LoadPlugin interface
 <Plugin interface>
   Interface "eth0"
 </Plugin>
-#this is where other configs go (e.g. mysql.conf)
 
+<% node[:rs_utils][:plugin_list_ary].each do |plugin| -%>
+LoadPlugin <%= plugin %>
+<% end %>
+
+#this is where other configs go (e.g. mysql.conf)
 Include "<%= node[:rs_utils][:collectd_plugin_dir] %>/*"
