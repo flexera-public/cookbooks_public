@@ -27,7 +27,7 @@
 temp_dir = node[:db_mysql][:tmpdir]
 schema_name = node[:db_mysql][:dump][:schema_name]
 
-cloud = node[:db_mysql][:dump][:storage_account_provider] unless node[:db_mysql][:dump][:storage_account_provider] != ""
+cloud = node[:db_mysql][:dump][:storage_account_provider] unless node[:db_mysql][:dump][:storage_account_provider] == ""
 cloud ||= node[:cloud][:provider]
 
 container = node[:db_mysql][:dump][:container]
