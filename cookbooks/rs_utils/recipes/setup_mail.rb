@@ -27,6 +27,7 @@ package "postfix"
 
 service "postfix" do
   action :enable
+  supports :status => true
 end
 
 # == Update main.cf (if needed)
@@ -38,11 +39,19 @@ remote_file "/etc/postfix/main.cf" do
   only_if { node[:platform] == "centos"}
   backup 5
   source "postfix.main.cf"
-  notifies :restart, resources(:service => "postfix")
+#  notifies :restart, resources(:service => "postfix")
 end
 
-service "postfix" do
-  action :restart
+# On CentOS 5.4 postfix is not started and chef tries to 'stop' it.  This throws an error.
+# So we'll just start the service here for CentOS.
+if node[:platform] == "centos"
+  service "postfix" do
+    action :start
+  end
+else node[:platform] == "ubuntu"
+  service "postfix" do
+    action :restart
+  end
 end
 
 # == Add mail to logrotate

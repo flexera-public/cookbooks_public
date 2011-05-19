@@ -25,7 +25,7 @@
 
 
 SANDBOX_BIN_DIR = "/opt/rightscale/sandbox/bin"
-RESOURCE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "rightscale_tools-0.1.0.gem")
+RESOURCE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "rightscale_tools-0.0.0.gem")
 RACKSPACE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "right_rackspace-0.0.0.gem")
 
 r = gem_package RACKSPACE_GEM do
