@@ -143,31 +143,31 @@ attribute "db_mysql/dump/schema_name",
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/storage_account_provider",
-  :display_name => "storage_account_provider",
-  :description => "",
+  :display_name => "Storage Account Provider",
+  :description => "For Amazon S3 use ec2.  For Cloud Files use rackspace",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/storage_account_id",
-  :display_name => "storage_account_id",
+  :display_name => "Storage Account Id",
   :description => "Cloud Account ID. This cloud-specific credential is used to retrieve private objects from cloud storage.  For AWS, use your AWS_ACCESS_KEY_ID credential.  For Rackspace, use your user name.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/storage_account_secret",
-  :display_name => "storage_account_secret",
+  :display_name => "Storage Account Secret",
   :description => "Cloud storage account secret. This cloud-specific credential is used to retrieve private objects from cloud storage.  For AWS, use your AWS_SECRET_ACCESS_KEY credential.   For Rackspace, use your authentication key.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/container",
-  :display_name => "container",
+  :display_name => "Container",
   :description => "The bucket or container where the MySQL database dump files will be stored to or restored from.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/prefix",
-  :display_name => "prefix",
+  :display_name => "Prefix",
   :description => "Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]  
