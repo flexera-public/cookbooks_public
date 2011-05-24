@@ -1,5 +1,8 @@
 block_device "/mnt/storage" do
-  provider "block_device_s3"
+  provider "block_device_ros"
+# cloud is only necessary for create* but something is requiring it
+  cloud "ec2"
+  storage_account_type "s3"
   lineage node[:rightscale_tools][:lineage]
   storage_account_id node[:rightscale_tools][:storage_account_id]
   storage_account_secret node[:rightscale_tools][:storage_account_secret]
@@ -9,6 +12,5 @@ block_device "/mnt/storage" do
   keep_weekly node[:rightscale_tools][:keep_weekly]
   keep_monthly node[:rightscale_tools][:keep_monthly]
   keep_yearly node[:rightscale_tools][:keep_yearly]
-  mount_point "/mnt/storage"
   action :backup
 end

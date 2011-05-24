@@ -20,10 +20,13 @@ r.run_action(:install)
 
 r = gem_package RESOURCE_GEM do
   gem_binary "#{SANDBOX_BIN_DIR}/gem"
-  version "0.0.0"
+  version "0.1.0"
   action :nothing
 end
 r.run_action(:install)
+
+Gem.clear_paths
+require "rightscale_tools"
 
 package "lvm2"
 package "xfsprogs"
@@ -32,6 +35,7 @@ ruby_block "Load kernel modules" do
   block do
     `modprobe dm_mod`
     `modprobe dm_snapshot`
+# TODO: is this even a module? not on ubuntu
     `modprobe xfs`
   end
 end

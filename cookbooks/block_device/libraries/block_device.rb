@@ -6,14 +6,12 @@ end
 
 
 module RightScale
-  module BlockDevice
-    module Helper
+  module BlockDeviceHelper
 
-      def init(type, new_resource)      
-        mount_point = new_resource.name
-        ::RightScale::BlockDevice.new(mount_point, new_resource.cloud, type)
-      end
-      
+    def init(type, new_resource)      
+      mount_point = new_resource.name
+      ::RightScale::BlockDevice.new(mount_point, new_resource.cloud, type)
     end
+      
   end
 end
