@@ -27,6 +27,7 @@ recipe  "db_mysql::setup_continuous_export", "Schedule daily run of do_dump_expo
 # The following recipes require a RightScale Premium ServerTemplate to run
 #
 recipe  "db_mysql::do_backup", "Snapshot MySQL data to selected cloud storage. (Premium Account Only) "
+recipe  "db_mysql::do_restore", "Restore MySQL data snapshot from selected cloud storage. (Premium Account Only) "
 
 #
 # required attributes
