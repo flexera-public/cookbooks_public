@@ -10,6 +10,8 @@ database "/mnt/storage" do
 
   # Backup/Restore arguments
   lineage node[:db_mysql][:backup][:lineage]  
+  timestamp_override #TODO
+
   max_snapshots node[:db_mysql][:backup][:max_snapshots]
   keep_daily node[:db_mysql][:backup][:keep_daily]
   keep_weekly node[:db_mysql][:backup][:keep_weekly]
@@ -21,5 +23,5 @@ database "/mnt/storage" do
   storage_account_secret node[:db_mysql][:backup][:storage_account_secret]
   storage_container node[:db_mysql][:backup][:storage_container]
     
-  action :backup
+  action :restore
 end
