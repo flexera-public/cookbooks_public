@@ -1,44 +1,261 @@
 {
-  "suggestions": {
-  },
-  "attributes": {
-    "block_device/storage_type": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-        "volume",
-        "ros"
-      ],
-      "type": "string",
-      "recipes": [
-        "block_device::do_attach"
-      ],
-      "display_name": "Block Device Storage Type",
-      "description": "Sets storage type to Volume (i.e.EBS) or Remote Object Store (i.e. s3, cloudfiles)"
-    }
-  },
-  "conflicting": {
-  },
-  "description": "Installs/Configures block_device",
-  "dependencies": {
-  },
-  "providing": {
-  },
-  "maintainer": "RightScale, Inc.",
-  "replacing": {
-  },
-  "version": "0.1.0",
-  "maintainer_email": "support@rightscale.com",
-  "name": "block_device",
-  "recipes": {
-    "block_device::do_attach": "creates, format and mount block_device."
-  },
-  "groupings": {
-  },
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
-  "recommendations": {
-  },
-  "platforms": {
-  },
-  "license": "All rights reserved"
-}
+    "conflicting": {
+    },
+    "description": "Installs/Configures block_device",
+    "providing": {
+    },
+    "replacing": {
+    },
+    "recipes": {
+      "block_device::setup_continuous_backups_s3": "CRON backup setup",
+      "block_device::create_lvm_device_rackspace": "creates cloud_files storage and mounts",
+      "block_device::force_reset": "umount and delete",
+      "block_device::disable_continuous_backups_s3": "disable CRON backups",
+      "block_device::disable_continuous_backups_ebs": "disable CRON backups",
+      "block_device::setup_continuous_backups_cloud_files": "CRON backup setup",
+      "block_device::do_restore_ebs": "restore EBS storage",
+      "block_device::setup_continuous_backups_ebs": "CRON backup setup",
+      "block_device::disable_continuous_backups_cloud_files": "disable CRON backups",
+      "block_device::do_backup_ebs": "backup EBS storage",
+      "block_device::default": "create, format and mount block_device",
+      "block_device::create_lvm_device_ebs": "creates ebs storage and mounts",
+      "block_device::do_restore_cloud_files": "backup cloud_files storage",
+      "block_device::do_backup_cloud_files": "backup cloud_files storage",
+      "block_device::do_backup_s3": "backup S3 storage",
+      "block_device::do_restore_s3": "backup S3 storage",
+      "block_device::create_lvm_device_s3": "creates ebs storage and mounts"
+    },
+    "groupings": {
+    },
+    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+    "recommendations": {
+    },
+    "platforms": {
+    },
+    "license": "All rights reserved",
+    "version": "0.1.0",
+    "maintainer": "RightScale, Inc.",
+    "name": "block_device",
+    "attributes": {
+      "block_device/keep_yearly": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::do_restore_s3",
+          "block_device::do_backup_s3",
+          "block_device::do_restore_ebs",
+          "block_device::do_backup_ebs",
+          "block_device::do_restore_cloud_files",
+          "block_device::do_backup_cloud_files"
+        ],
+        "display_name": "Keep Yearly Backups",
+        "description": ""
+      },
+      "block_device/keep_weekly": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::do_restore_s3",
+          "block_device::do_backup_s3",
+          "block_device::do_restore_ebs",
+          "block_device::do_backup_ebs",
+          "block_device::do_restore_cloud_files",
+          "block_device::do_backup_cloud_files"
+        ],
+        "display_name": "Keep Weekly Backups",
+        "description": ""
+      },
+      "block_device/storage_account_id": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::do_restore_s3",
+          "block_device::do_backup_s3",
+          "block_device::do_restore_ebs",
+          "block_device::do_backup_ebs",
+          "block_device::do_restore_cloud_files",
+          "block_device::do_backup_cloud_files",
+          "block_device::create_lvm_device_s3",
+          "block_device::create_lvm_device_ebs",
+          "block_device::create_lvm_device_rackspace"
+        ],
+        "display_name": "Remote Storage Account ID",
+        "description": "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username."
+      },
+      "block_device/cron_backup_hour": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::setup_continuous_backups_s3",
+          "block_device::setup_continuous_backups_ebs",
+          "block_device::setup_continuous_backups_cloud_files"
+        ],
+        "display_name": "Backup cron hour",
+        "description": "Defines the hour when the backup will be taken."
+      },
+      "block_device/storage_container": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::do_restore_s3",
+          "block_device::do_backup_s3",
+          "block_device::do_restore_ebs",
+          "block_device::do_backup_ebs",
+          "block_device::do_restore_cloud_files",
+          "block_device::do_backup_cloud_files",
+          "block_device::create_lvm_device_s3",
+          "block_device::create_lvm_device_ebs",
+          "block_device::create_lvm_device_rackspace"
+        ],
+        "display_name": "Remote Storage Container",
+        "description": "The location, directory, or bucket on the cloud's remote storage service in which files will be stored.  For AWS, enter an S3 bucket name.  For Rackspace, enter the container name."
+      },
+      "block_device/storage_account_secret": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::do_restore_s3",
+          "block_device::do_backup_s3",
+          "block_device::do_restore_ebs",
+          "block_device::do_backup_ebs",
+          "block_device::do_restore_cloud_files",
+          "block_device::do_backup_cloud_files",
+          "block_device::create_lvm_device_s3",
+          "block_device::create_lvm_device_ebs",
+          "block_device::create_lvm_device_rackspace"
+        ],
+        "display_name": "Remote Storage Account Key",
+        "description": "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key."
+      },
+      "block_device/max_snapshots": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::do_restore_s3",
+          "block_device::do_backup_s3",
+          "block_device::do_restore_ebs",
+          "block_device::do_backup_ebs",
+          "block_device::do_restore_cloud_files",
+          "block_device::do_backup_cloud_files"
+        ],
+        "display_name": "Max Snapshots",
+        "description": ""
+      },
+      "block_device/storage_type": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
+          "volume",
+          "ros"
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::default"
+        ],
+        "display_name": "Block Device Storage Type",
+        "description": "Sets storage type to Volume (i.e.EBS) or Remote Object Store (i.e. s3, cloudfiles)"
+      },
+      "block_device/keep_monthly": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::do_restore_s3",
+          "block_device::do_backup_s3",
+          "block_device::do_restore_ebs",
+          "block_device::do_backup_ebs",
+          "block_device::do_restore_cloud_files",
+          "block_device::do_backup_cloud_files"
+        ],
+        "display_name": "Keep Monthly Backups",
+        "description": ""
+      },
+      "block_device/keep_daily": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::do_restore_s3",
+          "block_device::do_backup_s3",
+          "block_device::do_restore_ebs",
+          "block_device::do_backup_ebs",
+          "block_device::do_restore_cloud_files",
+          "block_device::do_backup_cloud_files"
+        ],
+        "display_name": "Keep Daily Backups",
+        "description": ""
+      },
+      "block_device/cron_backup_minute": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::setup_continuous_backups_s3",
+          "block_device::setup_continuous_backups_ebs",
+          "block_device::setup_continuous_backups_cloud_files"
+        ],
+        "display_name": "Backup cron minute",
+        "description": "Defines the minute of the hour when the backup will be taken."
+      },
+      "block_device/lineage": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "block_device::do_restore_s3",
+          "block_device::do_backup_s3",
+          "block_device::do_restore_ebs",
+          "block_device::do_backup_ebs",
+          "block_device::do_restore_cloud_files",
+          "block_device::do_backup_cloud_files"
+        ],
+        "display_name": "Lineage",
+        "description": ""
+      }
+    },
+    "suggestions": {
+    },
+    "dependencies": {
+    },
+    "maintainer_email": "support@rightscale.com"
+  }
