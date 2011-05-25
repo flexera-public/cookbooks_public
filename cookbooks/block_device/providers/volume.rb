@@ -31,4 +31,7 @@ action :restore do
   device.action_restore(new_resource.lineage, restore_args)
 end
 
-
+action :reset do
+  device = init("volume", new_resource)
+  device.action_reset
+end

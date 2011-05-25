@@ -1,6 +1,7 @@
 block_device "/mnt/storage" do
   provider "block_device_volume"
   cloud "ec2"
+  lineage node[:rightscale_tools][:lineage]
   volume_size "1"
   stripe_size "1"
   max_snapshots node[:rightscale_tools][:max_snapshots]
