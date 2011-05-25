@@ -8,7 +8,7 @@ version          "0.1"
 recipe  "rightscale_tools::default", "installs rightscale_tools gem for use with backup/restore"
 recipe  "rightscale_tools::force_reset", "umount and delete"
 
-recipe  "rightscale_tools::create_lvm_device_ec2", "creates ebs storage and mounts"
+recipe  "rightscale_tools::create_lvm_device_s3", "creates ebs storage and mounts"
 recipe  "rightscale_tools::create_lvm_device_ebs", "creates ebs storage and mounts"
 recipe  "rightscale_tools::create_lvm_device_rackspace", "creates cloud_files storage and mounts"
 recipe  "rightscale_tools::create_lvm_device", "creates storage and mounts based on cloud and storage_type"
@@ -36,7 +36,7 @@ all_recipes = [ "rightscale_tools::do_restore_s3",
                 "rightscale_tools::do_backup_ebs", 
                 "rightscale_tools::do_restore_cloud_files", 
                 "rightscale_tools::do_backup_cloud_files", 
-                "rightscale_tools::create_lvm_device_ec2", 
+                "rightscale_tools::create_lvm_device_s3", 
                 "rightscale_tools::create_lvm_device_ebs",
                 "rightscale_tools::create_lvm_device_rackspace",
                 "rightscale_tools::setup_continuous_backups_s3",
@@ -61,7 +61,7 @@ all_recipes_require_storage_cred = ["rightscale_tools::do_restore_s3",
                                     "rightscale_tools::do_backup_ebs", 
                                     "rightscale_tools::do_restore_cloud_files", 
                                     "rightscale_tools::do_backup_cloud_files", 
-                                    "rightscale_tools::create_lvm_device_ec2", 
+                                    "rightscale_tools::create_lvm_device_s3", 
                                     "rightscale_tools::create_lvm_device_ebs",
                                     "rightscale_tools::create_lvm_device_rackspace"]
 

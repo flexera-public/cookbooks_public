@@ -1,9 +1,42 @@
 {
-    "version": "0.1.0",
+    "conflicting": {
+    },
+    "description": "Installs/Configures rightscale_tools",
+    "providing": {
+    },
     "replacing": {
+    },
+    "recipes": {
+      "rightscale_tools::setup_continuous_backups_s3": "CRON backup setup",
+      "rightscale_tools::do_restore_cloud_files": "backup cloud_files storage",
+      "rightscale_tools::create_lvm_device_s3": "creates ebs storage and mounts",
+      "rightscale_tools::create_lvm_device": "creates storage and mounts based on cloud and storage_type",
+      "rightscale_tools::do_backup_s3": "backup S3 storage",
+      "rightscale_tools::default": "installs rightscale_tools gem for use with backup/restore",
+      "rightscale_tools::create_lvm_device_ebs": "creates ebs storage and mounts",
+      "rightscale_tools::disable_continuous_backups_ebs": "disable CRON backups",
+      "rightscale_tools::do_backup_ebs": "backup EBS storage",
+      "rightscale_tools::setup_continuous_backups_ebs": "CRON backup setup",
+      "rightscale_tools::do_backup_cloud_files": "backup cloud_files storage",
+      "rightscale_tools::disable_continuous_backups_cloud_files": "disable CRON backups",
+      "rightscale_tools::setup_continuous_backups_cloud_files": "CRON backup setup",
+      "rightscale_tools::do_restore_s3": "backup S3 storage",
+      "rightscale_tools::do_restore_ebs": "restore EBS storage",
+      "rightscale_tools::create_lvm_device_rackspace": "creates cloud_files storage and mounts",
+      "rightscale_tools::disable_continuous_backups_s3": "disable CRON backups",
+      "rightscale_tools::force_reset": "umount and delete"
     },
     "groupings": {
     },
+    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+    "recommendations": {
+    },
+    "platforms": {
+    },
+    "license": "All rights reserved",
+    "version": "0.1.0",
+    "maintainer": "RightScale, Inc.",
+    "name": "rightscale_tools",
     "attributes": {
       "rightscale_tools/storage_account_secret": {
         "required": "optional",
@@ -19,12 +52,12 @@
           "rightscale_tools::do_backup_ebs",
           "rightscale_tools::do_restore_cloud_files",
           "rightscale_tools::do_backup_cloud_files",
-          "rightscale_tools::create_lvm_device_ec2",
+          "rightscale_tools::create_lvm_device_s3",
           "rightscale_tools::create_lvm_device_ebs",
           "rightscale_tools::create_lvm_device_rackspace"
         ],
-        "description": "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key.",
-        "display_name": "Remote Storage Account Key"
+        "display_name": "Remote Storage Account Key",
+        "description": "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key."
       },
       "rightscale_tools/cron_backup_hour": {
         "required": "optional",
@@ -38,8 +71,8 @@
           "rightscale_tools::setup_continuous_backups_ebs",
           "rightscale_tools::setup_continuous_backups_cloud_files"
         ],
-        "description": "Defines the hour when the backup will be taken.",
-        "display_name": "Backup cron hour"
+        "display_name": "Backup cron hour",
+        "description": "Defines the hour when the backup will be taken."
       },
       "rightscale_tools/storage_type": {
         "required": "optional",
@@ -54,8 +87,8 @@
         "recipes": [
           "rightscale_tools::create_lvm_device"
         ],
-        "description": "TODO",
-        "display_name": "Block Device Storage Type"
+        "display_name": "Block Device Storage Type",
+        "description": "TODO"
       },
       "rightscale_tools/keep_monthly": {
         "required": "optional",
@@ -72,8 +105,8 @@
           "rightscale_tools::do_restore_cloud_files",
           "rightscale_tools::do_backup_cloud_files"
         ],
-        "description": "",
-        "display_name": "Keep Monthly Backups"
+        "display_name": "Keep Monthly Backups",
+        "description": ""
       },
       "rightscale_tools/keep_weekly": {
         "required": "optional",
@@ -90,8 +123,8 @@
           "rightscale_tools::do_restore_cloud_files",
           "rightscale_tools::do_backup_cloud_files"
         ],
-        "description": "",
-        "display_name": "Keep Weekly Backups"
+        "display_name": "Keep Weekly Backups",
+        "description": ""
       },
       "rightscale_tools/lineage": {
         "required": "optional",
@@ -108,8 +141,8 @@
           "rightscale_tools::do_restore_cloud_files",
           "rightscale_tools::do_backup_cloud_files"
         ],
-        "description": "",
-        "display_name": "Lineage"
+        "display_name": "Lineage",
+        "description": ""
       },
       "rightscale_tools/cron_backup_minute": {
         "required": "optional",
@@ -123,8 +156,8 @@
           "rightscale_tools::setup_continuous_backups_ebs",
           "rightscale_tools::setup_continuous_backups_cloud_files"
         ],
-        "description": "Defines the minute of the hour when the backup will be taken.",
-        "display_name": "Backup cron minute"
+        "display_name": "Backup cron minute",
+        "description": "Defines the minute of the hour when the backup will be taken."
       },
       "rightscale_tools/storage_container": {
         "required": "optional",
@@ -140,12 +173,12 @@
           "rightscale_tools::do_backup_ebs",
           "rightscale_tools::do_restore_cloud_files",
           "rightscale_tools::do_backup_cloud_files",
-          "rightscale_tools::create_lvm_device_ec2",
+          "rightscale_tools::create_lvm_device_s3",
           "rightscale_tools::create_lvm_device_ebs",
           "rightscale_tools::create_lvm_device_rackspace"
         ],
-        "description": "The location, directory, or bucket on the cloud's remote storage service in which files will be stored.  For AWS, enter an S3 bucket name.  For Rackspace, enter the container name.",
-        "display_name": "Remote Storage Container"
+        "display_name": "Remote Storage Container",
+        "description": "The location, directory, or bucket on the cloud's remote storage service in which files will be stored.  For AWS, enter an S3 bucket name.  For Rackspace, enter the container name."
       },
       "rightscale_tools/keep_daily": {
         "required": "optional",
@@ -162,8 +195,8 @@
           "rightscale_tools::do_restore_cloud_files",
           "rightscale_tools::do_backup_cloud_files"
         ],
-        "description": "",
-        "display_name": "Keep Daily Backups"
+        "display_name": "Keep Daily Backups",
+        "description": ""
       },
       "rightscale_tools/max_snapshots": {
         "required": "optional",
@@ -180,8 +213,8 @@
           "rightscale_tools::do_restore_cloud_files",
           "rightscale_tools::do_backup_cloud_files"
         ],
-        "description": "",
-        "display_name": "Max Snapshots"
+        "display_name": "Max Snapshots",
+        "description": ""
       },
       "rightscale_tools/keep_yearly": {
         "required": "optional",
@@ -198,8 +231,8 @@
           "rightscale_tools::do_restore_cloud_files",
           "rightscale_tools::do_backup_cloud_files"
         ],
-        "description": "",
-        "display_name": "Keep Yearly Backups"
+        "display_name": "Keep Yearly Backups",
+        "description": ""
       },
       "rightscale_tools/storage_account_id": {
         "required": "optional",
@@ -215,50 +248,17 @@
           "rightscale_tools::do_backup_ebs",
           "rightscale_tools::do_restore_cloud_files",
           "rightscale_tools::do_backup_cloud_files",
-          "rightscale_tools::create_lvm_device_ec2",
+          "rightscale_tools::create_lvm_device_s3",
           "rightscale_tools::create_lvm_device_ebs",
           "rightscale_tools::create_lvm_device_rackspace"
         ],
-        "description": "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username.",
-        "display_name": "Remote Storage Account ID"
+        "display_name": "Remote Storage Account ID",
+        "description": "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username."
       }
     },
-    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
-    "recommendations": {
+    "suggestions": {
     },
     "dependencies": {
     },
-    "maintainer": "RightScale, Inc.",
-    "suggestions": {
-    },
-    "license": "All rights reserved",
-    "maintainer_email": "support@rightscale.com",
-    "conflicting": {
-    },
-    "recipes": {
-      "rightscale_tools::setup_continuous_backups_s3": "CRON backup setup",
-      "rightscale_tools::do_restore_cloud_files": "backup cloud_files storage",
-      "rightscale_tools::create_lvm_device": "creates storage and mounts based on cloud and storage_type",
-      "rightscale_tools::create_lvm_device_ec2": "creates ebs storage and mounts",
-      "rightscale_tools::do_backup_s3": "backup S3 storage",
-      "rightscale_tools::default": "installs rightscale_tools gem for use with backup/restore",
-      "rightscale_tools::create_lvm_device_ebs": "creates ebs storage and mounts",
-      "rightscale_tools::disable_continuous_backups_ebs": "disable CRON backups",
-      "rightscale_tools::do_backup_ebs": "backup EBS storage",
-      "rightscale_tools::setup_continuous_backups_ebs": "CRON backup setup",
-      "rightscale_tools::do_backup_cloud_files": "backup cloud_files storage",
-      "rightscale_tools::disable_continuous_backups_cloud_files": "disable CRON backups",
-      "rightscale_tools::setup_continuous_backups_cloud_files": "CRON backup setup",
-      "rightscale_tools::do_restore_s3": "backup S3 storage",
-      "rightscale_tools::do_restore_ebs": "restore EBS storage",
-      "rightscale_tools::create_lvm_device_rackspace": "creates cloud_files storage and mounts",
-      "rightscale_tools::disable_continuous_backups_s3": "disable CRON backups",
-      "rightscale_tools::force_reset": "umount and delete"
-    },
-    "name": "rightscale_tools",
-    "providing": {
-    },
-    "platforms": {
-    },
-    "description": "Installs/Configures rightscale_tools"
+    "maintainer_email": "support@rightscale.com"
   }
