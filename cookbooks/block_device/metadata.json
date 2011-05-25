@@ -1,29 +1,44 @@
 {
-    "groupings": {
+    "conflicting": {
     },
-    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
     "attributes": {
+      "block_device/storage_type": {
+        "calculated": false,
+        "type": "string",
+        "choice": [
+          "volume",
+          "ros"
+        ],
+        "description": "Sets storage type to Volume (i.e.EBS) or Remote Object Store (i.e. s3, cloudfiles)",
+        "display_name": "Block Device Storage Type",
+        "recipes": [
+          "rightscale_tools::do_attach"
+        ],
+        "required": "required"
+      }
     },
-    "recommendations": {
+    "providing": {
     },
     "dependencies": {
     },
-    "maintainer": "RightScale, Inc.",
-    "recipes": {
-    },
-    "suggestions": {
-    },
-    "maintainer_email": "support@rightscale.com",
-    "conflicting": {
-    },
-    "license": "All rights reserved",
-    "platforms": {
-    },
-    "version": "0.1.0",
-    "providing": {
-    },
-    "name": "block_device",
     "replacing": {
     },
+    "name": "block_device",
+    "groupings": {
+    },
+    "license": "All rights reserved",
+    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+    "recommendations": {
+    },
+    "platforms": {
+    },
+    "maintainer": "RightScale, Inc.",
+    "version": "0.1.0",
+    "suggestions": {
+    },
+    "recipes": {
+      "block_device::do_attach": "creates, format and mount block_device."
+    },
+    "maintainer_email": "support@rightscale.com",
     "description": "Installs/Configures block_device"
   }
