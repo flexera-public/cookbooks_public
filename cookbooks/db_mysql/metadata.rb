@@ -77,7 +77,7 @@ attribute "db_mysql/backup/storage_type",
 attribute "db_mysql/backup/lineage",
   :display_name => "Backup Lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.",
-  :required => true,
+  :required => false,
   :recipes => [ "db_mysql::do_backup" ]
 
 attribute "db_mysql/backup/max_snapshots",
@@ -114,19 +114,19 @@ attribute "db_mysql/backup/keep_yearly",
 attribute "db_mysql/backup/storage_account_id",
   :display_name => "Backup Storage Account ID",
   :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
-  :default => "",
+  :required => false,
   :recipes => [ "db_mysql::do_backup" ]
 
 attribute "db_mysql/backup/storage_account_secret",
   :display_name => "Backup Storage Account Secret",
   :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
-  :default => "",
+  :required => false,
   :recipes => [ "db_mysql::do_backup" ]
 
 attribute "db_mysql/backup/storage_container",
   :display_name => "Backup Storage Container",
   :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
-  :default => "",
+  :required => false,
   :recipes => [ "db_mysql::do_backup" ]
 
   
@@ -146,6 +146,7 @@ attribute "db_mysql/dump/storage_account_provider",
   :display_name => "Storage Account Provider",
   :description => "For Amazon S3 use ec2.  For Cloud Files use rackspace",
   :required => false,
+  :choice => ["ec2", "rackspace"],
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/storage_account_id",
@@ -169,7 +170,7 @@ attribute "db_mysql/dump/container",
 attribute "db_mysql/dump/prefix",
   :display_name => "Prefix",
   :description => "Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp.",
-  :required => true,
+  :required => false,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]  
 
 

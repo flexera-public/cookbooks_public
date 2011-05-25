@@ -3,7 +3,7 @@
   },
   "attributes": {
     "db_mysql/dump/prefix": {
-      "required": "required",
+      "required": "optional",
       "calculated": false,
       "choice": [
 
@@ -18,11 +18,7 @@
       "description": "Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp."
     },
     "db_mysql/dump/container": {
-<<<<<<< Updated upstream
-      "required": "required",
-=======
       "required": "optional",
->>>>>>> Stashed changes
       "calculated": false,
       "choice": [
 
@@ -37,14 +33,11 @@
       "description": "The bucket or container where the MySQL database dump files will be stored to or restored from."
     },
     "db_mysql/dump/storage_account_provider": {
-<<<<<<< Updated upstream
-      "required": "required",
-=======
       "required": "optional",
->>>>>>> Stashed changes
       "calculated": false,
       "choice": [
-
+        "ec2",
+        "rackspace"
       ],
       "type": "string",
       "recipes": [
@@ -75,7 +68,6 @@
       "choice": [
 
       ],
-      "default": "",
       "type": "string",
       "recipes": [
         "db_mysql::do_backup"
@@ -109,11 +101,7 @@
       "display_name": "General Database Options"
     },
     "db_mysql/dump/storage_account_id": {
-<<<<<<< Updated upstream
-      "required": "required",
-=======
       "required": "optional",
->>>>>>> Stashed changes
       "calculated": false,
       "choice": [
 
@@ -128,7 +116,7 @@
       "description": "Cloud Account ID. This cloud-specific credential is used to retrieve private objects from cloud storage.  For AWS, use your AWS_ACCESS_KEY_ID credential.  For Rackspace, use your user name."
     },
     "db_mysql/backup/lineage": {
-      "required": "required",
+      "required": "optional",
       "calculated": false,
       "choice": [
 
@@ -212,7 +200,6 @@
       "choice": [
 
       ],
-      "default": "",
       "type": "string",
       "recipes": [
         "db_mysql::do_backup"
@@ -268,7 +255,6 @@
       "choice": [
 
       ],
-      "default": "",
       "type": "string",
       "recipes": [
         "db_mysql::do_backup"
@@ -322,11 +308,7 @@
       "description": "* dedicated (where the mysql config file allocates all existing resources of the machine)\n* shared (where the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example)"
     },
     "db_mysql/dump/storage_account_secret": {
-<<<<<<< Updated upstream
-      "required": "required",
-=======
       "required": "optional",
->>>>>>> Stashed changes
       "calculated": false,
       "choice": [
 
@@ -341,11 +323,7 @@
       "description": "Cloud storage account secret. This cloud-specific credential is used to retrieve private objects from cloud storage.  For AWS, use your AWS_SECRET_ACCESS_KEY credential.   For Rackspace, use your authentication key."
     },
     "db_mysql/dump/schema_name": {
-<<<<<<< Updated upstream
-      "required": "required",
-=======
       "required": "optional",
->>>>>>> Stashed changes
       "calculated": false,
       "choice": [
 
@@ -408,10 +386,6 @@
     "db_mysql::do_backup": "Snapshot MySQL data to selected cloud storage. (Premium Account Only) ",
     "db_mysql::do_dump_export": "Upload MySQL dumpfile archive to cloud object store (i.e. S3, cloudfiles)",
     "db_mysql::install_mysql": "Installs packages required for MySQL servers without manual intervention.",
-<<<<<<< Updated upstream
-=======
-    "db_mysql::do_restore": "Restore MySQL data snapshot from selected cloud storage. (Premium Account Only) ",
->>>>>>> Stashed changes
     "db_mysql::setup_continuous_export": "Schedule daily run of do_dump_export.",
     "db_mysql::install_client": "Installs the MySQL client packages and gem.",
     "db_mysql::do_move_datadir": "Move the datadir to /mnt/mysql",
