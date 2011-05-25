@@ -30,7 +30,7 @@ service "mysql" do
 end
 
 # Create the directory if it doesn't exist.
-directory "/mnt/mysql" do
+directory "#{node[:db_mysql][:datadir_relocate]}" do
   owner "mysql"
   group "mysql"
   mode "0755"
