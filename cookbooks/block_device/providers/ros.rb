@@ -5,7 +5,6 @@ action :create do
   device.action_create
 end
 
-
 action :backup do
   device = init("ros", new_resource)
   backup_options = { 
