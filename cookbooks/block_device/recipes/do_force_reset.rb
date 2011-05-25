@@ -1,12 +1,7 @@
-block_device "/mnt/storage" do
-  provider "block_device_ros"
-  cloud "ec2"
-  storage_account_type "s3"
-  action :reset
-end
+storage_type = node[:block_device][:storage_type] # "volume" or "ros"
 
 block_device "/mnt/storage" do
-  provider "block_device_volume"
-  cloud "ec2"
+  provider "block_device_#{storage_type}"
+  cloud node[:cloud][:provider]
   action :reset
 end
