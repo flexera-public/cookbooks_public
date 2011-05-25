@@ -8,22 +8,22 @@
     },
     "recipes": {
       "block_device::setup_continuous_backups_s3": "CRON backup setup",
-      "block_device::create_lvm_device_rackspace": "creates cloud_files storage and mounts",
-      "block_device::force_reset": "umount and delete",
-      "block_device::disable_continuous_backups_s3": "disable CRON backups",
-      "block_device::disable_continuous_backups_ebs": "disable CRON backups",
+      "block_device::setup_lvm_device_ebs": "creates ebs storage and mounts",
       "block_device::setup_continuous_backups_cloud_files": "CRON backup setup",
       "block_device::do_restore_ebs": "restore EBS storage",
+      "block_device::setup_lvm_device_rackspace": "creates cloud_files storage and mounts",
       "block_device::setup_continuous_backups_ebs": "CRON backup setup",
-      "block_device::disable_continuous_backups_cloud_files": "disable CRON backups",
       "block_device::do_backup_ebs": "backup EBS storage",
       "block_device::default": "create, format and mount block_device",
-      "block_device::create_lvm_device_ebs": "creates ebs storage and mounts",
+      "block_device::setup_lvm_device_ec2_ephemeral": "creates ebs storage and mounts",
+      "block_device::do_force_reset": "umount and delete",
+      "block_device::do_disable_continuous_backups_ebs": "disable CRON backups",
+      "block_device::do_disable_continuous_backups_s3": "disable CRON backups",
       "block_device::do_restore_cloud_files": "backup cloud_files storage",
       "block_device::do_backup_cloud_files": "backup cloud_files storage",
       "block_device::do_backup_s3": "backup S3 storage",
-      "block_device::do_restore_s3": "backup S3 storage",
-      "block_device::create_lvm_device_s3": "creates ebs storage and mounts"
+      "block_device::do_disable_continuous_backups_cloud_files": "disable CRON backups",
+      "block_device::do_restore_s3": "backup S3 storage"
     },
     "groupings": {
     },
@@ -87,9 +87,9 @@
           "block_device::do_backup_ebs",
           "block_device::do_restore_cloud_files",
           "block_device::do_backup_cloud_files",
-          "block_device::create_lvm_device_s3",
-          "block_device::create_lvm_device_ebs",
-          "block_device::create_lvm_device_rackspace"
+          "block_device::setup_lvm_device_ec2_ephemeral",
+          "block_device::setup_lvm_device_ebs",
+          "block_device::setup_lvm_device_rackspace"
         ],
         "display_name": "Remote Storage Account ID",
         "description": "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username."
@@ -123,9 +123,9 @@
           "block_device::do_backup_ebs",
           "block_device::do_restore_cloud_files",
           "block_device::do_backup_cloud_files",
-          "block_device::create_lvm_device_s3",
-          "block_device::create_lvm_device_ebs",
-          "block_device::create_lvm_device_rackspace"
+          "block_device::setup_lvm_device_ec2_ephemeral",
+          "block_device::setup_lvm_device_ebs",
+          "block_device::setup_lvm_device_rackspace"
         ],
         "display_name": "Remote Storage Container",
         "description": "The location, directory, or bucket on the cloud's remote storage service in which files will be stored.  For AWS, enter an S3 bucket name.  For Rackspace, enter the container name."
@@ -144,9 +144,9 @@
           "block_device::do_backup_ebs",
           "block_device::do_restore_cloud_files",
           "block_device::do_backup_cloud_files",
-          "block_device::create_lvm_device_s3",
-          "block_device::create_lvm_device_ebs",
-          "block_device::create_lvm_device_rackspace"
+          "block_device::setup_lvm_device_ec2_ephemeral",
+          "block_device::setup_lvm_device_ebs",
+          "block_device::setup_lvm_device_rackspace"
         ],
         "display_name": "Remote Storage Account Key",
         "description": "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key."

@@ -6,11 +6,11 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1"
 
 recipe  "block_device::default", "create, format and mount block_device"
-recipe  "block_device::force_reset", "umount and delete"
+recipe  "block_device::do_force_reset", "umount and delete"
 
-recipe  "block_device::create_lvm_device_s3", "creates ebs storage and mounts"
-recipe  "block_device::create_lvm_device_ebs", "creates ebs storage and mounts"
-recipe  "block_device::create_lvm_device_rackspace", "creates cloud_files storage and mounts"
+recipe  "block_device::setup_lvm_device_ec2_ephemeral", "creates ebs storage and mounts"
+recipe  "block_device::setup_lvm_device_ebs", "creates ebs storage and mounts"
+recipe  "block_device::setup_lvm_device_rackspace", "creates cloud_files storage and mounts"
 
 recipe "block_device::do_backup_ebs","backup EBS storage"
 recipe "block_device::do_restore_ebs","restore EBS storage"
@@ -25,9 +25,9 @@ recipe "block_device::setup_continuous_backups_s3", "CRON backup setup"
 recipe "block_device::setup_continuous_backups_ebs", "CRON backup setup"
 recipe "block_device::setup_continuous_backups_cloud_files", "CRON backup setup"
 
-recipe "block_device::disable_continuous_backups_s3", "disable CRON backups"
-recipe "block_device::disable_continuous_backups_ebs", "disable CRON backups"
-recipe "block_device::disable_continuous_backups_cloud_files", "disable CRON backups"
+recipe "block_device::do_disable_continuous_backups_s3", "disable CRON backups"
+recipe "block_device::do_disable_continuous_backups_ebs", "disable CRON backups"
+recipe "block_device::do_disable_continuous_backups_cloud_files", "disable CRON backups"
 
 all_recipes = [ "block_device::do_restore_s3", 
                 "block_device::do_backup_s3", 
@@ -35,15 +35,15 @@ all_recipes = [ "block_device::do_restore_s3",
                 "block_device::do_backup_ebs", 
                 "block_device::do_restore_cloud_files", 
                 "block_device::do_backup_cloud_files", 
-                "block_device::create_lvm_device_s3", 
-                "block_device::create_lvm_device_ebs",
-                "block_device::create_lvm_device_rackspace",
+                "block_device::setup_lvm_device_ec2_ephemeral", 
+                "block_device::setup_lvm_device_ebs",
+                "block_device::setup_lvm_device_rackspace",
                 "block_device::setup_continuous_backups_s3",
                 "block_device::setup_continuous_backups_ebs", 
                 "block_device::setup_continuous_backups_cloud_files", 
-                "block_device::disable_continuous_backups_s3",
-                "block_device::disable_continuous_backups_ebs",
-                "block_device::disable_continuous_backups_cloud_files",
+                "block_device::do_disable_continuous_backups_s3",
+                "block_device::do_disable_continuous_backups_ebs",
+                "block_device::do_disable_continuous_backups_cloud_files",
                 "block_device::default" ]
 
 backup_recipes = [ "block_device::do_restore_s3", 
@@ -60,23 +60,15 @@ all_recipes_require_storage_cred = ["block_device::do_restore_s3",
                                     "block_device::do_backup_ebs", 
                                     "block_device::do_restore_cloud_files", 
                                     "block_device::do_backup_cloud_files", 
-                                    "block_device::create_lvm_device_s3", 
-                                    "block_device::create_lvm_device_ebs",
-                                    "block_device::create_lvm_device_rackspace"]
+                                    "block_device::setup_lvm_device_ec2_ephemeral", 
+                                    "block_device::setup_lvm_device_ebs",
+                                    "block_device::setup_lvm_device_rackspace"]
 
 setup_cron_recipes = [
                 "block_device::setup_continuous_backups_s3",
                 "block_device::setup_continuous_backups_ebs", 
                 "block_device::setup_continuous_backups_cloud_files"
                 ]
-
-attribute "block_device/storage_type",
-  :display_name => "Block Device Storage Type",
-  :description => "TODO",
-  :choice => ["ebs", "s3", "cloudfiles"],
-  :type => "string",
-  :default => "ebs",
-  :recipes => [ "block_device::create_lvm_device" ]
 
 attribute "block_device/cron_backup_minute",
   :display_name => "Backup cron minute", 
