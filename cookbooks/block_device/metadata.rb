@@ -13,5 +13,5 @@ attribute "block_device/storage_type",
   :choice => ["volume", "ros"],
   :type => "string",
   :required => true,
-  :recipes => [ "rightscale_tools::do_attach" ]
+  :recipes => [ "block_device::do_attach" ]
 
