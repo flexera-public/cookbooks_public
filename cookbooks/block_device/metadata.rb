@@ -51,7 +51,8 @@ backup_recipes = [ "block_device::do_restore_s3",
                    "block_device::do_restore_ebs", 
                    "block_device::do_backup_ebs", 
                    "block_device::do_restore_cloud_files", 
-                   "block_device::do_backup_cloud_files"
+                   "block_device::do_backup_cloud_files",
+                   "block_device::storage_type"]
 ]
 
 all_recipes_require_storage_cred = ["block_device::do_restore_s3", 
@@ -62,7 +63,8 @@ all_recipes_require_storage_cred = ["block_device::do_restore_s3",
                                     "block_device::do_backup_cloud_files", 
                                     "block_device::setup_lvm_device_ec2_ephemeral", 
                                     "block_device::setup_lvm_device_ebs",
-                                    "block_device::setup_lvm_device_rackspace"]
+                                    "block_device::setup_lvm_device_rackspace",
+                                    "block_device::storage_type"]
 
 setup_cron_recipes = [
                 "block_device::setup_continuous_backups_s3",

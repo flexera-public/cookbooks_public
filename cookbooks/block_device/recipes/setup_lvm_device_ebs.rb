@@ -3,6 +3,6 @@ block_device "/mnt/storage" do
   cloud "ec2"
   volume_size "1"
   stripe_size "1"
-  lineage node[:rightscale_tools][:lineage]
+  lineage node[:block_device][:lineage]
   action :create
 end

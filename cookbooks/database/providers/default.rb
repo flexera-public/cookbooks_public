@@ -9,7 +9,7 @@ action :do_backup do
     :keep_monthlies => new_resource.keep_monthly,
     :keep_yearlies => new_resource.keep_yearly,
     
-    :storage_account_type => new_resource.storage_account_type,  # "s3"|"cloudfiles" 
+    :storage_type => new_resource.storage_type,  # "s3"|"cloudfiles" 
     :storage_account_id => new_resource.storage_account_id,
     :storage_account_secret => new_resource.storage_account_secret,
     :storage_account_container => new_resource.storage_account_container
@@ -20,7 +20,7 @@ end
 action :do_restore do
   @db = init(new_resource)
   block_device_args = { 
-    :storage_account_type => new_resource.storage_account_type,  # "s3"|"cloudfiles" 
+    :storage_type => new_resource.storage_type,  # "s3"|"cloudfiles" 
     :storage_account_id => new_resource.storage_account_id,
     :storage_account_secret => new_resource.storage_account_secret,
     :storage_account_container => new_resource.storage_account_container

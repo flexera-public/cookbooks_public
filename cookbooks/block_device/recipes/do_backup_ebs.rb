@@ -1,13 +1,13 @@
 block_device "/mnt/storage" do
   provider "block_device_volume"
   cloud "ec2"
-  lineage node[:rightscale_tools][:lineage]
+  lineage node[:block_device][:lineage]
   volume_size "1"
   stripe_size "1"
-  max_snapshots node[:rightscale_tools][:max_snapshots]
-  keep_daily node[:rightscale_tools][:keep_daily]
-  keep_weekly node[:rightscale_tools][:keep_weekly]
-  keep_monthly node[:rightscale_tools][:keep_monthly]
-  keep_yearly node[:rightscale_tools][:keep_yearly]
+  max_snapshots node[:block_device][:max_snapshots]
+  keep_daily node[:block_device][:keep_daily]
+  keep_weekly node[:block_device][:keep_weekly]
+  keep_monthly node[:block_device][:keep_monthly]
+  keep_yearly node[:block_device][:keep_yearly]
   action :backup
 end

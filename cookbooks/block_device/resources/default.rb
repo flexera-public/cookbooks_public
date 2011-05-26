@@ -14,7 +14,7 @@ attribute :volume_size, :kind_of => String
 attribute :stripe_size, :kind_of => String
 
 # Remote Object Store provider only
-attribute :storage_account_type, :equal_to => [ "s3", "cloudfiles" ]
+attribute :storage_type, :equal_to => [ "ros", "volume" ]
 attribute :storage_account_id, :kind_of => String
 attribute :storage_account_secret, :kind_of => String
 attribute :storage_container, :kind_of => String

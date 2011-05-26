@@ -14,7 +14,7 @@ action :backup do
     :keep_monthlies => new_resource.keep_monthly,
     :keep_yearlies => new_resource.keep_yearly,
     
-    :storage_account_type => new_resource.storage_account_type,  # "s3"|"cloudfiles" 
+    :storage_type => new_resource.storage_type,  # "s3"|"cloudfiles" 
     :storage_account_id => new_resource.storage_account_id,
     :storage_account_secret => new_resource.storage_account_secret,
     :storage_container => new_resource.storage_container
@@ -27,7 +27,7 @@ action :restore do
   restore_args = { 
     # TODO :lineage_override => ""
     # TODO :timestamp_override => "" 
-    :storage_account_type => new_resource.storage_account_type,  # "s3"|"cloudfiles" 
+    :storage_type => new_resource.storage_type,  # "s3"|"cloudfiles" 
     :storage_account_id => new_resource.storage_account_id,
     :storage_account_secret => new_resource.storage_account_secret,
     :storage_container => new_resource.storage_container

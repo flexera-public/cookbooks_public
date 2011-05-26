@@ -18,7 +18,7 @@ block_device "/mnt/storage" do
   timestamp_override #TODO
   
   # ros only
-  storage_account_type  #TODO
+  storage_type  #TODO
   storage_account_id  #TODO
   storage_account_secret  #TODO
   storage_account_container #TODO
