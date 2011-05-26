@@ -34,31 +34,35 @@ container = node[:db_mysql][:dump][:container]
 prefix = node[:db_mysql][:dump][:prefix]
 dumpfile = "#{temp_dir}/#{prefix}.gz"
 
-execute "Download MySQL dumpfile from Remote Object Store" do
-  command "/opt/rightscale/sandbox/bin/mc_sync.rb get --cloud #{cloud} " +
-          "--container #{container} --source #{prefix} " +
-          "--latest --dest #{dumpfile}"
-  creates dumpfile
-  environment ({ 
-    'STORAGE_ACCOUNT_ID' => node[:db_mysql][:dump][:storage_account_id],
-    'STORAGE_ACCOUNT_SECRET' => node[:db_mysql][:dump][:storage_account_secret],
-  })
+# Skip download import if inputs are nor provided
+if schema_name == "" || container == "" || prefix == "" 
+  log ("Missing input schema, container or prefix.  Skipping donwload and import")
+else
+  execute "Download MySQL dumpfile from Remote Object Store" do
+    command "/opt/rightscale/sandbox/bin/mc_sync.rb get --cloud #{cloud} " +
+            "--container #{container} --source #{prefix} " +
+            "--latest --dest #{dumpfile}"
+    creates dumpfile
+    environment ({ 
+      'STORAGE_ACCOUNT_ID' => node[:db_mysql][:dump][:storage_account_id],
+      'STORAGE_ACCOUNT_SECRET' => node[:db_mysql][:dump][:storage_account_secret],
+    })
 
+  end
+
+  bash "Import MySQL dump file: #{dumpfile}" do
+    not_if "echo \"show databases\" | mysql | grep -q  \"^#{schema_name}$\""
+    user "root"
+    cwd temp_dir
+    code <<-EOH
+      set -e
+      if [ ! -f #{dumpfile} ] 
+      then 
+        echo "ERROR: MySQL dumpfile not found! File: '#{dumpfile}'" 
+        exit 1
+      fi 
+      mysqladmin -u root create #{schema_name} 
+      gunzip < #{dumpfile} | mysql -u root -b #{schema_name}
+    EOH
+  end
 end
-
-bash "Import MySQL dump file: #{dumpfile}" do
-  not_if "echo \"show databases\" | mysql | grep -q  \"^#{schema_name}$\""
-  user "root"
-  cwd temp_dir
-  code <<-EOH
-    set -e
-    if [ ! -f #{dumpfile} ] 
-    then 
-      echo "ERROR: MySQL dumpfile not found! File: '#{dumpfile}'" 
-      exit 1
-    fi 
-    mysqladmin -u root create #{schema_name} 
-    gunzip < #{dumpfile} | mysql -u root -b #{schema_name}
-  EOH
-end
-
