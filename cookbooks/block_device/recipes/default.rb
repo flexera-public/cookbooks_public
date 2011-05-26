@@ -7,6 +7,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
+Gem.clear_paths
+require "rightscale_tools"
+
 storage_type = node[:block_device][:storage_type] # "volume" or "ros"
 
 block_device "/mnt/storage" do

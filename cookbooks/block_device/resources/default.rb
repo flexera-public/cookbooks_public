@@ -8,10 +8,12 @@ attribute :keep_daily, :kind_of => String
 attribute :keep_weekly, :kind_of => String
 attribute :keep_monthly, :kind_of => String
 attribute :keep_yearly, :kind_of => String
+attribute :timestamp, :kind_of => String
 
 # Volume provider only
 attribute :volume_size, :kind_of => String
 attribute :stripe_size, :kind_of => String
+attribute :new_volume_size_in_gb, :kind_of => String
 
 # Remote Object Store provider only
 attribute :storage_type, :equal_to => [ "ros", "volume" ]
