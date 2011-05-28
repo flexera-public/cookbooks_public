@@ -69,10 +69,10 @@ attribute "db_mysql/application/password",
 #
 attribute "db_mysql/backup/storage_type",
   :display_name => "Backup Storage Type",
-  :description => "The name of the S3 bucket or Cloud Files container where the application tarball (.tgz) can be retrieved.",
-  :choice => ["ebs", "s3", "cloudfiles"],
+  :description => "The type of backup storage",
+  :choice => ["ros", "volume"],
   :type => "string",
-  :default => "ebs",
+  :default => "ros",
   :recipes => [ "db_mysql::do_backup" ]
   
 attribute "db_mysql/backup/lineage",
