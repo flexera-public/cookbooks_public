@@ -1,7 +1,8 @@
 database "/mnt/storage" do
   provider "database"
   
-  block_device_type node[:db_mysql][:backup][:storage_type]
+  storage_type node[:db_mysql][:backup][:storage_type]
+  cloud node[:cloud][:provider]
   
   # Database settings
   host = node[:db_mysql][:fqdn]  
