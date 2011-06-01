@@ -26,8 +26,45 @@ recipe  "db_mysql::setup_continuous_export", "Schedule daily run of do_dump_expo
 #
 # The following recipes require a RightScale Premium ServerTemplate to run
 #
+recipe  "db_mysql::setup_block_device", "create, format and mount block_device"
+
 recipe  "db_mysql::do_backup", "Snapshot MySQL data to selected cloud storage. (Premium Account Only) "
 recipe  "db_mysql::do_restore", "Restore MySQL data snapshot from selected cloud storage. (Premium Account Only) "
+
+recipe "db_mysql::do_backup_ebs","backup EBS storage"
+recipe "db_mysql::do_restore_ebs","restore EBS storage"
+
+recipe "db_mysql::do_backup_s3","backup S3 storage"
+recipe "db_mysql::do_restore_s3","backup S3 storage"
+
+recipe "db_mysql::do_backup_cloud_files", "backup cloud_files storage"
+recipe "db_mysql::do_restore_cloud_files", "backup cloud_files storage"
+
+recipe "block_device::setup_continuous_backups_s3", "CRON backup setup"
+recipe "block_device::setup_continuous_backups_ebs", "CRON backup setup"
+recipe "block_device::setup_continuous_backups_cloud_files", "CRON backup setup"
+
+recipe "db_mysql::do_disable_continuous_backups_s3", "disable CRON backups"
+recipe "db_mysql::do_disable_continuous_backups_ebs", "disable CRON backups"
+recipe "db_mysql::do_disable_continuous_backups_cloud_files", "disable CRON backups"
+
+all_recipes = [ "db_mysql::do_restore_s3", 
+                "db_mysql::do_backup_s3", 
+                "db_mysql::do_backup", 
+                "db_mysql::do_restore", 
+                "db_mysql::do_restore_ebs", 
+                "db_mysql::do_backup_ebs", 
+                "db_mysql::do_restore_cloud_files", 
+                "db_mysql::do_backup_cloud_files", 
+                "db_mysql::setup_continuous_backups_s3",
+                "db_mysql::setup_continuous_backups_ebs", 
+                "db_mysql::setup_continuous_backups_cloud_files", 
+                "db_mysql::do_disable_continuous_backups_s3",
+                "db_mysql::do_disable_continuous_backups_ebs",
+                "db_mysql::do_disable_continuous_backups_cloud_files",
+                "db_mysql::default",
+                "db_mysql::setup_block_device" ]
+
 
 #
 # required attributes
