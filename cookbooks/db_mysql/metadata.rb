@@ -73,13 +73,13 @@ attribute "db_mysql/backup/storage_type",
   :choice => ["ros", "volume"],
   :type => "string",
   :default => "ros",
-  :recipes => [ "db_mysql::do_backup" ]
+  :recipes => [ "db_mysql::do_backup", "db_mysql:;do_restore" ]
   
 attribute "db_mysql/backup/lineage",
   :display_name => "Backup Lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.",
   :required => true,
-  :recipes => [ "db_mysql::do_backup" ]
+  :recipes => [ "db_mysql::do_backup", "db_mysql:;do_restore" ]
 
 attribute "db_mysql/backup/max_snapshots",
   :display_name => "Backups Maximum",
@@ -116,19 +116,19 @@ attribute "db_mysql/backup/storage_account_id",
   :display_name => "Backup Storage Account ID",
   :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
   :default => "",
-  :recipes => [ "db_mysql::do_backup" ]
+  :recipes => [ "db_mysql::do_backup", "db_mysql:;do_restore" ]
 
 attribute "db_mysql/backup/storage_account_secret",
   :display_name => "Backup Storage Account Secret",
   :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
   :default => "",
-  :recipes => [ "db_mysql::do_backup" ]
+  :recipes => [ "db_mysql::do_backup", "db_mysql:;do_restore" ]
 
 attribute "db_mysql/backup/storage_container",
   :display_name => "Backup Storage Container",
   :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
   :default => "",
-  :recipes => [ "db_mysql::do_backup" ]
+  :recipes => [ "db_mysql::do_backup", "db_mysql:;do_restore" ]
 
   
 # == Import/export Attributes
