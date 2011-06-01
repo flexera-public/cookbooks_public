@@ -1,4 +1,4 @@
-actions :backup, :restore
+actions :backup, :restore, :create
 
 # Database settings
 attribute :host, :kind_of => String, :default => "localhost"

@@ -27,3 +27,13 @@ action :restore do
   }
   @db.action_restore(new_resource.lineage, block_device_args, new_resource.timestamp_override, new_resource.from_master, new_resource.force)
 end
+
+action :create do
+  @db = init(new_resource)
+  block_device_args = { 
+    :storage_type => new_resource.storage_type,  # "ros"|"volume" 
+    :volume_size => new_resource.volume_size,
+    :stripe_count => new_resource.stripe_count
+  }
+  @db.action_create(block_device_args)
+end

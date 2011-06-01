@@ -40,9 +40,9 @@ recipe "db_mysql::do_restore_s3","backup S3 storage"
 recipe "db_mysql::do_backup_cloud_files", "backup cloud_files storage"
 recipe "db_mysql::do_restore_cloud_files", "backup cloud_files storage"
 
-recipe "block_device::setup_continuous_backups_s3", "CRON backup setup"
-recipe "block_device::setup_continuous_backups_ebs", "CRON backup setup"
-recipe "block_device::setup_continuous_backups_cloud_files", "CRON backup setup"
+recipe "db_mysql::setup_continuous_backups_s3", "CRON backup setup"
+recipe "db_mysql::setup_continuous_backups_ebs", "CRON backup setup"
+recipe "db_mysql::setup_continuous_backups_cloud_files", "CRON backup setup"
 
 recipe "db_mysql::do_disable_continuous_backups_s3", "disable CRON backups"
 recipe "db_mysql::do_disable_continuous_backups_ebs", "disable CRON backups"
