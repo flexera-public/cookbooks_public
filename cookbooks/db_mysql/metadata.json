@@ -71,7 +71,7 @@
       "type": "string",
       "recipes": [
         "db_mysql::do_backup",
-        "db_mysql:;do_restore"
+        "db_mysql::do_restore"
       ],
       "display_name": "Backup Storage Container",
       "description": "TODO (for backup to S3 or CloudFiles Remote Object Store)"
@@ -125,7 +125,7 @@
       "type": "string",
       "recipes": [
         "db_mysql::do_backup",
-        "db_mysql:;do_restore"
+        "db_mysql::do_restore"
       ],
       "display_name": "Backup Lineage",
       "description": "The prefix that will be used to name/locate the backup of a particular MySQL database."
@@ -206,7 +206,7 @@
       "type": "string",
       "recipes": [
         "db_mysql::do_backup",
-        "db_mysql:;do_restore"
+        "db_mysql::do_restore"
       ],
       "display_name": "Backup Storage Account Secret",
       "description": "TODO (for backup to S3 or CloudFiles Remote Object Store)"
@@ -263,7 +263,7 @@
       "type": "string",
       "recipes": [
         "db_mysql::do_backup",
-        "db_mysql:;do_restore"
+        "db_mysql::do_restore"
       ],
       "display_name": "Backup Storage Account ID",
       "description": "TODO (for backup to S3 or CloudFiles Remote Object Store)"
@@ -293,7 +293,7 @@
       "type": "string",
       "recipes": [
         "db_mysql::do_backup",
-        "db_mysql:;do_restore"
+        "db_mysql::do_restore"
       ],
       "display_name": "Backup Storage Type",
       "description": "The type of backup storage"
