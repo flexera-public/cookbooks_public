@@ -5,8 +5,8 @@ database "/mnt/storage" do
   cloud "rackspace"
 
   lineage node[:db_mysql][:backup][:lineage]
-  storage_account_id node[:db_mysql][:backup][:storage_account_id]
-  storage_account_secret node[:db_mysql][:backup][:storage_account_secret]
+  rackspace_user node[:db_mysql][:backup][:rackspace_user]
+  rackspace_secret node[:db_mysql][:backup][:rackspace_secret]
   storage_container node[:db_mysql][:backup][:storage_container]
   action :backup
 end

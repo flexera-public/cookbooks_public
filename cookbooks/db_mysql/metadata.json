@@ -47,6 +47,22 @@
       "display_name": "Storage Account Provider",
       "description": "For Amazon S3 use ec2.  For Cloud Files use rackspace"
     },
+    "db_mysql/backup/rackspace_secret": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup",
+        "db_mysql::do_restore",
+        "db_mysql::do_restore_cloud_files",
+        "db_mysql::do_backup_cloud_files"
+      ],
+      "display_name": "Rackspace Secret",
+      "description": "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key."
+    },
     "db_mysql/admin/password": {
       "required": "required",
       "calculated": false,
@@ -70,11 +86,33 @@
       "default": "",
       "type": "string",
       "recipes": [
+        "db_mysql::do_restore_s3",
+        "db_mysql::do_restore_ebs",
+        "db_mysql::do_restore",
+        "db_mysql::do_restore_cloud_files",
+        "db_mysql::do_backup_s3",
         "db_mysql::do_backup",
-        "db_mysql::do_restore"
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
       ],
       "display_name": "Backup Storage Container",
       "description": "TODO (for backup to S3 or CloudFiles Remote Object Store)"
+    },
+    "db_mysql/backup/aws_access_key_id": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup",
+        "db_mysql::do_restore",
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_restore_s3"
+      ],
+      "display_name": "AWS access key id",
+      "description": "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username."
     },
     "db_mysql/application/password": {
       "required": "required",
@@ -124,8 +162,14 @@
       ],
       "type": "string",
       "recipes": [
+        "db_mysql::do_restore_s3",
+        "db_mysql::do_restore_ebs",
+        "db_mysql::do_restore",
+        "db_mysql::do_restore_cloud_files",
+        "db_mysql::do_backup_s3",
         "db_mysql::do_backup",
-        "db_mysql::do_restore"
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
       ],
       "display_name": "Backup Lineage",
       "description": "The prefix that will be used to name/locate the backup of a particular MySQL database."
@@ -150,7 +194,7 @@
       ],
       "type": "string",
       "recipes": [
-
+        "db_mysql::setup_application_privileges"
       ],
       "display_name": "Database Application Username",
       "description": "The username of the database user that has 'user' privileges."
@@ -164,7 +208,10 @@
       "default": "2",
       "type": "string",
       "recipes": [
-        "db_mysql::do_backup"
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
       ],
       "display_name": "Backups Keep Yearly",
       "description": "The number of yearly backups to keep (i.e. rotation size)."
@@ -196,20 +243,37 @@
       "display_name": "Database Master FQDN",
       "description": "The fully qualified hostname for the MySQL Master Database."
     },
-    "db_mysql/backup/storage_account_secret": {
+    "db_mysql/backup/rackspace_user": {
       "required": "optional",
       "calculated": false,
       "choice": [
 
       ],
-      "default": "",
       "type": "string",
       "recipes": [
         "db_mysql::do_backup",
-        "db_mysql::do_restore"
+        "db_mysql::do_restore",
+        "db_mysql::do_restore_cloud_files",
+        "db_mysql::do_backup_cloud_files"
       ],
-      "display_name": "Backup Storage Account Secret",
-      "description": "TODO (for backup to S3 or CloudFiles Remote Object Store)"
+      "display_name": "Rackspace User",
+      "description": "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username."
+    },
+    "db_mysql/backup/aws_secret_access_key": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::do_backup",
+        "db_mysql::do_restore",
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_restore_s3"
+      ],
+      "display_name": "aws secret access key",
+      "description": "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key."
     },
     "db_mysql/log_bin": {
       "required": "optional",
@@ -234,7 +298,10 @@
       "default": "6",
       "type": "string",
       "recipes": [
-        "db_mysql::do_backup"
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
       ],
       "display_name": "Backups Keep Weekly",
       "description": "The number of weekly backups to keep (i.e. rotation size)."
@@ -248,25 +315,13 @@
       "default": "60",
       "type": "string",
       "recipes": [
-        "db_mysql::do_backup"
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
       ],
       "display_name": "Backups Maximum",
       "description": "The number of backups to keep in addition to those being rotated"
-    },
-    "db_mysql/backup/storage_account_id": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "default": "",
-      "type": "string",
-      "recipes": [
-        "db_mysql::do_backup",
-        "db_mysql::do_restore"
-      ],
-      "display_name": "Backup Storage Account ID",
-      "description": "TODO (for backup to S3 or CloudFiles Remote Object Store)"
     },
     "db_mysql/backup/keep_monthly": {
       "required": "optional",
@@ -277,7 +332,10 @@
       "default": "12",
       "type": "string",
       "recipes": [
-        "db_mysql::do_backup"
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
       ],
       "display_name": "Backups Keep Monthly",
       "description": "The number of monthly backups to keep (i.e. rotation size)."
@@ -293,7 +351,13 @@
       "type": "string",
       "recipes": [
         "db_mysql::do_backup",
-        "db_mysql::do_restore"
+        "db_mysql::do_restore",
+        "db_mysql::do_restore_cloud_files",
+        "db_mysql::do_backup_cloud_files",
+        "db_mysql::do_backup",
+        "db_mysql::do_restore",
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_restore_s3"
       ],
       "display_name": "Backup Storage Type",
       "description": "The type of backup storage"
@@ -352,7 +416,10 @@
       "default": "14",
       "type": "string",
       "recipes": [
-        "db_mysql::do_backup"
+        "db_mysql::do_backup_s3",
+        "db_mysql::do_backup",
+        "db_mysql::do_backup_ebs",
+        "db_mysql::do_backup_cloud_files"
       ],
       "display_name": "Backups Keep Daily",
       "description": "The number of daily backups to keep (i.e. rotation size)."

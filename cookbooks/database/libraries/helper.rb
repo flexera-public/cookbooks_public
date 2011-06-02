@@ -22,7 +22,7 @@ module RightScale
           :lineage => lineage,
           :new_size_gb => new_resource.new_size_gb,
           :from_master => new_resource.from_master,
-          :timestamp => new_resource.timestamp
+          :timestamp_override => new_resource.timestamp_override
         }
       end
       

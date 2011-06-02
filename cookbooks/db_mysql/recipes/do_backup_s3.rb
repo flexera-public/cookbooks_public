@@ -5,8 +5,8 @@ database "/mnt/storage" do
   cloud "ec2"
 
   lineage node[:db_mysql][:backup][:lineage]
-  storage_account_id node[:db_mysql][:backup][:storage_account_id]
-  storage_account_secret node[:db_mysql][:backup][:storage_account_secret]
+  aws_access_key_id node[:db_mysql][:backup][:aws_access_key_id]
+  aws_secret_access_key node[:db_mysql][:backup][:aws_secret_access_key]
   storage_container node[:db_mysql][:backup][:storage_container]
   max_snapshots node[:db_mysql][:backup][:max_snapshots]
   keep_daily node[:db_mysql][:backup][:keep_daily]

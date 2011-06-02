@@ -18,8 +18,10 @@ database "/mnt/storage" do
   keep_yearly node[:db_mysql][:backup][:keep_yearly]
   
   # Remote Object Storage account info (S3, CloudFiles)
-  storage_account_id node[:db_mysql][:backup][:storage_account_id]
-  storage_account_secret node[:db_mysql][:backup][:storage_account_secret]
+  rackspace_user node[:db_mysql][:backup][:rackspace_user]
+  rackspace_secret node[:db_mysql][:backup][:rackspace_secret]
+  aws_access_key_id node[:db_mysql][:backup][:aws_access_key_id]
+  aws_secret_access_key node[:db_mysql][:backup][:aws_secret_access_key]
   storage_container node[:db_mysql][:backup][:storage_container]
     
   action :backup

@@ -4,8 +4,8 @@ database "/mnt/storage" do
   storage_type "ros"
   cloud "ec2"
 
-  storage_account_id node[:db_mysql][:backup][:storage_account_id]
-  storage_account_secret node[:db_mysql][:backup][:storage_account_secret]
+  aws_access_key_id node[:db_mysql][:backup][:aws_access_key_id]
+  aws_secret_access_key node[:db_mysql][:backup][:aws_secret_access_key]
   storage_container node[:db_mysql][:backup][:storage_container]
   lineage node[:db_mysql][:backup][:lineage]
   action :restore

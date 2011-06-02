@@ -18,12 +18,16 @@ attribute :keep_weekly, :kind_of => String
 attribute :keep_monthly, :kind_of => String
 attribute :keep_yearly, :kind_of => String
 
-# Remote Object Store backup/restore only
+# Volume provider only
+attribute :volume_size, :kind_of => String
+attribute :stripe_count, :kind_of => String
+attribute :new_volume_size_in_gb, :kind_of => String
+
+# Remote Object Store provider only
 attribute :storage_type, :equal_to => [ "ros", "volume" ]
-attribute :storage_account_id, :kind_of => String
-attribute :storage_account_secret, :kind_of => String
+attribute :aws_access_key_id, :kind_of => String
+attribute :aws_secret_access_key, :kind_of => String
+attribute :rackspace_user, :kind_of => String
+attribute :rackspace_secret, :kind_of => String
+
 attribute :storage_container, :kind_of => String
-
-
-
-

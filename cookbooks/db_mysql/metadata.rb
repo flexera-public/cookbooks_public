@@ -65,6 +65,32 @@ all_recipes = [ "db_mysql::do_restore_s3",
                 "db_mysql::default",
                 "db_mysql::setup_block_device" ]
 
+restore_recipes = [ "db_mysql::do_restore_s3", 
+                    "db_mysql::do_restore_ebs", 
+                    "db_mysql::do_restore", 
+                    "db_mysql::do_restore_cloud_files" ]
+
+backup_recipes = [ "db_mysql::do_backup_s3", 
+                   "db_mysql::do_backup", 
+                   "db_mysql::do_backup_ebs", 
+                   "db_mysql::do_backup_cloud_files"
+                    ]
+
+all_recipes_require_rax_cred = [ "db_mysql::do_backup", 
+                                    "db_mysql::do_restore", 
+                                    "db_mysql::do_restore_cloud_files", 
+                                    "db_mysql::do_backup_cloud_files" ]
+
+all_recipes_require_aws_cred = [ "db_mysql::do_backup", 
+                                    "db_mysql::do_restore", 
+                                    "db_mysql::do_backup_s3", 
+                                    "db_mysql::do_restore_s3" ]
+
+setup_cron_recipes = [
+                "db_mysql::setup_continuous_backups_s3",
+                "db_mysql::setup_continuous_backups_ebs", 
+                "db_mysql::setup_continuous_backups_cloud_files"
+                ]
 
 #
 # required attributes
@@ -93,7 +119,8 @@ attribute "db_mysql/admin/password",
 attribute "db_mysql/application/user",
   :display_name => "Database Application Username",
   :description => "The username of the database user that has 'user' privileges.",
-  :required => true
+  :required => true,
+  :recipes => [ "db_mysql::setup_application_privileges" ]
 
 attribute "db_mysql/application/password",
   :display_name => "Database Application Password",
@@ -110,62 +137,73 @@ attribute "db_mysql/backup/storage_type",
   :choice => ["ros", "volume"],
   :type => "string",
   :default => "ros",
-  :recipes => [ "db_mysql::do_backup", "db_mysql::do_restore" ]
+  :recipes => all_recipes_require_rax_cred + all_recipes_require_aws_cred
   
 attribute "db_mysql/backup/lineage",
   :display_name => "Backup Lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.",
   :required => true,
-  :recipes => [ "db_mysql::do_backup", "db_mysql::do_restore" ]
+  :recipes => restore_recipes + backup_recipes
 
 attribute "db_mysql/backup/max_snapshots",
   :display_name => "Backups Maximum",
   :description => "The number of backups to keep in addition to those being rotated",
   :default => "60",
-  :recipes => [ "db_mysql::do_backup" ]
+  :recipes => backup_recipes
   
 attribute "db_mysql/backup/keep_daily",
   :display_name => "Backups Keep Daily",
   :description => "The number of daily backups to keep (i.e. rotation size).",
   :default => "14",
-  :recipes => [ "db_mysql::do_backup" ]
+  :recipes => backup_recipes
   
 attribute "db_mysql/backup/keep_weekly",
   :display_name => "Backups Keep Weekly",
   :description => "The number of weekly backups to keep (i.e. rotation size).",
   :default => "6",
-  :recipes => [ "db_mysql::do_backup" ]
+  :recipes => backup_recipes
   
 attribute "db_mysql/backup/keep_monthly",
   :display_name => "Backups Keep Monthly",
   :description => "The number of monthly backups to keep (i.e. rotation size).",
   :default => "12",
-  :recipes => [ "db_mysql::do_backup" ]
+  :recipes => backup_recipes
   
 attribute "db_mysql/backup/keep_yearly",
   :display_name => "Backups Keep Yearly",
   :description => "The number of yearly backups to keep (i.e. rotation size).",
   :default => "2",
-  :recipes => [ "db_mysql::do_backup" ]
+  :recipes => backup_recipes
 
-# Remote Object Storage account info (S3, CloudFiles)
-attribute "db_mysql/backup/storage_account_id",
-  :display_name => "Backup Storage Account ID",
-  :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
-  :default => "",
-  :recipes => [ "db_mysql::do_backup", "db_mysql::do_restore" ]
+attribute "db_mysql/backup/rackspace_user",
+  :display_name => "Rackspace User",
+  :description => "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username.",
+  :required => false,
+  :recipes => all_recipes_require_rax_cred
 
-attribute "db_mysql/backup/storage_account_secret",
-  :display_name => "Backup Storage Account Secret",
-  :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
-  :default => "",
-  :recipes => [ "db_mysql::do_backup", "db_mysql::do_restore" ]
+attribute "db_mysql/backup/rackspace_secret",
+  :display_name => "Rackspace Secret",
+  :description => "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key.",
+  :required => false,
+  :recipes => all_recipes_require_rax_cred
+
+attribute "db_mysql/backup/aws_access_key_id",
+  :display_name => "AWS access key id",
+  :description => "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username.",
+  :required => false,
+  :recipes => all_recipes_require_aws_cred
+
+attribute "db_mysql/backup/aws_secret_access_key",
+  :display_name => "aws secret access key",
+  :description => "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key.",
+  :required => false,
+  :recipes => all_recipes_require_aws_cred
 
 attribute "db_mysql/backup/storage_container",
   :display_name => "Backup Storage Container",
   :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
   :default => "",
-  :recipes => [ "db_mysql::do_backup", "db_mysql::do_restore" ]
+  :recipes => restore_recipes + backup_recipes
 
   
 # == Import/export Attributes

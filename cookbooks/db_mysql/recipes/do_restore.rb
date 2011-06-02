@@ -11,7 +11,7 @@ database "/mnt/storage" do
 
   # Backup/Restore arguments
   lineage node[:db_mysql][:backup][:lineage]  
-  timestamp_override #TODO
+  timestamp_override node[:db_mysql][:backup][:timestamp_override]
 
   max_snapshots node[:db_mysql][:backup][:max_snapshots]
   keep_daily node[:db_mysql][:backup][:keep_daily]
