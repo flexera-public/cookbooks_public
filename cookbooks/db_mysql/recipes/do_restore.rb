@@ -26,3 +26,6 @@ database "/mnt/storage" do
     
   action :restore
 end
+
+include_recipe "db_mysql::do_symlink_datadir"
+

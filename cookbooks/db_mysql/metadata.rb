@@ -13,7 +13,8 @@ provides "db_mysql_gzipfile_restore(db_name, file_path)"
 recipe  "db_mysql::default", "Runs the 'install_mysql' recipes."
 recipe  "db_mysql::install_client", "Installs the MySQL client packages and gem."
 recipe  "db_mysql::install_mysql", "Installs packages required for MySQL servers without manual intervention."
-recipe  "db_mysql::do_move_datadir", "Move the datadir to /mnt/mysql"
+recipe  "db_mysql::do_symlink_datadir", "Delete default install files and create symlinke to data relocate dir"
+recipe  "db_mysql::do_move_datadir", "Move the datadir to data relocate dir"
 recipe  "db_mysql::setup_mysql", "Configures server"
 recipe  "db_mysql::setup_admin_privileges", "Add username and password for superuser privileges."
 recipe  "db_mysql::setup_application_privileges", "Add username and password for application privileges."
@@ -63,11 +64,14 @@ all_recipes = [ "db_mysql::do_restore_s3",
                 "db_mysql::do_disable_continuous_backups_ebs",
                 "db_mysql::do_disable_continuous_backups_cloud_files",
                 "db_mysql::default",
+                "db_mysql::do_symlink_datadir",
+                "db_mysql::do_move_datadir",
                 "db_mysql::setup_block_device" ]
 
 restore_recipes = [ "db_mysql::do_restore_s3", 
                     "db_mysql::do_restore_ebs", 
                     "db_mysql::do_restore", 
+                    "db_mysql::do_symlink_datadir",
                     "db_mysql::do_restore_cloud_files" ]
 
 backup_recipes = [ "db_mysql::do_backup_s3", 
@@ -137,7 +141,7 @@ attribute "db_mysql/backup/storage_type",
   :choice => ["ros", "volume"],
   :type => "string",
   :default => "ros",
-  :recipes => all_recipes_require_rax_cred + all_recipes_require_aws_cred
+  :recipes => all_recipes
   
 attribute "db_mysql/backup/lineage",
   :display_name => "Backup Lineage",

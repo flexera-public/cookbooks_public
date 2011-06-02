@@ -10,3 +10,5 @@ database "/mnt/storage" do
   lineage node[:db_mysql][:backup][:lineage]
   action :restore
 end 
+
+include_recipe "db_mysql::do_symlink_datadir"
