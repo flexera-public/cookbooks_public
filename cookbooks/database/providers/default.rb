@@ -3,7 +3,7 @@ include RightScale::Database::Helper
 action :create do
   @db = init(new_resource)
   block_device_args = { 
-    :storage_type => new_resource.storage_type,  # "ros"|"volume" 
+    :storage_type => new_resource.storage_type,  # "s3"|"cloudfiles" 
     :volume_size => new_resource.volume_size,
     :stripe_count => new_resource.stripe_count
   }

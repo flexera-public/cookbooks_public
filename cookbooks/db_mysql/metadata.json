@@ -261,6 +261,20 @@
       "display_name": "Rackspace User",
       "description": "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username."
     },
+    "db_mysql/backup/volume_size": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "5",
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_block_device"
+      ],
+      "display_name": "Volume Size",
+      "description": "Total volume size"
+    },
     "db_mysql/backup/aws_secret_access_key": {
       "required": "optional",
       "calculated": false,
@@ -388,6 +402,20 @@
       ],
       "display_name": "Server Usage",
       "description": "* dedicated (where the mysql config file allocates all existing resources of the machine)\n* shared (where the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example)"
+    },
+    "db_mysql/backup/stripe_count": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "1",
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_block_device"
+      ],
+      "display_name": "Stripe Count",
+      "description": "Number of EBS volumes in a stripe"
     },
     "db_mysql/dump/storage_account_secret": {
       "required": "required",

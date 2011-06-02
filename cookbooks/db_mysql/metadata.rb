@@ -252,6 +252,20 @@ attribute "db_mysql/dump/prefix",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]  
 
+attribute "db_mysql/backup/stripe_count",
+  :display_name => "Stripe Count",
+  :description => "Number of EBS volumes in a stripe",
+  :required => false,
+  :default => "1",
+  :recipes => [ "db_mysql::setup_block_device" ]
+
+attribute "db_mysql/backup/volume_size",
+  :display_name => "Volume Size",
+  :description => "Total volume size",
+  :required => false,
+  :default => "5",
+  :recipes => [ "db_mysql::setup_block_device" ]
+
 
 #
 # recommended attributes
