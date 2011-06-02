@@ -20,6 +20,7 @@ recipe  "db_mysql::setup_my_cnf", "Creates the my.cnf configuration file"
 recipe  "db_mysql::do_dump_import", "Initialize MySQL with dumpfile from cloud object store (i.e. S3, cloudfiles)"
 recipe  "db_mysql::do_dump_export", "Upload MySQL dumpfile archive to cloud object store (i.e. S3, cloudfiles)"
 recipe  "db_mysql::setup_continuous_export", "Schedule daily run of do_dump_export."
+recipe  "db_mysql::do_force_reset", "Reset the DB back to a pristine state."
 
 # == Premium Account Recipes
 #
@@ -61,6 +62,7 @@ all_recipes = [ "db_mysql::do_restore_s3",
                 "db_mysql::do_disable_continuous_backups_s3",
                 "db_mysql::do_disable_continuous_backups_ebs",
                 "db_mysql::do_disable_continuous_backups_cloud_files",
+                "db_mysql::do_force_reset",
                 "db_mysql::default",
                 "db_mysql::setup_block_device" ]
 

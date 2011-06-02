@@ -44,3 +44,7 @@ action :restore do
   @db.action_restore(new_resource.lineage, block_device_args, new_resource.timestamp_override, new_resource.from_master, new_resource.force)
 end
 
+action :reset do
+  @db = init(new_resource)
+  @db.action_reset()
+end

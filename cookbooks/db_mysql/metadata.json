@@ -378,6 +378,7 @@
         "db_mysql::do_disable_continuous_backups_s3",
         "db_mysql::do_disable_continuous_backups_ebs",
         "db_mysql::do_disable_continuous_backups_cloud_files",
+        "db_mysql::do_force_reset",
         "db_mysql::default",
         "db_mysql::setup_block_device"
       ],
@@ -492,6 +493,7 @@
     "db_mysql::do_restore_ebs": "restore EBS storage",
     "db_mysql::do_dump_import": "Initialize MySQL with dumpfile from cloud object store (i.e. S3, cloudfiles)",
     "db_mysql::setup_application_privileges": "Add username and password for application privileges.",
+    "db_mysql::do_force_reset": "Reset the DB back to a pristine state.",
     "db_mysql::do_disable_continuous_backups_ebs": "disable CRON backups",
     "db_mysql::setup_block_device": "create, format and mount block_device",
     "db_mysql::setup_my_cnf": "Creates the my.cnf configuration file",
