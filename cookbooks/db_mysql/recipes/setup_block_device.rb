@@ -12,4 +12,3 @@ database "/mnt/storage" do
   action :create
 end
 
-include_recipe "db_mysql::do_move_datadir"
