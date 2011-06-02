@@ -9,6 +9,7 @@ module RightScale
           Chef::Log.warn("This database cookbook requires our premium 'rightscale_tools' gem. Please contact Rightscale to upgrade your account.")
         end
         mount_point = new_resource.name
+puts "using mount point #{mount_point}"
         block_device = RightScale::BlockDevice.new(mount_point, new_resource.cloud, new_resource.storage_type)
         #RightScale::Tools::Database.new(block_device, new_resource.user, new_resource.password, new_resource.db_type, Chef::Log)
         RightScale::Tools::Database.new(block_device, new_resource.user, new_resource.password, :mysql, Chef::Log)
