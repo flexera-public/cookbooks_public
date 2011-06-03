@@ -1,3 +1,5 @@
+include_recipe "db_mysql::setup_block_device"
+
 database "/mnt/storage" do
   provider "database"
   
