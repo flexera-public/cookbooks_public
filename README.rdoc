@@ -15,8 +15,8 @@ to report issues.
 
 == Supported Configuration
 
-These cookbooks have been tested on EC2 and Rackspace clouds using the RightScale 
-platform ServerTemplates.
+These cookbooks have been tested on mutliple clouds and multiple OSs using ServerTemplates
+on the RightScale Cloud Management Platform .
 
 == Work in Progress
 
