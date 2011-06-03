@@ -3,7 +3,7 @@
 #LoadPlugin Processes
 <Plugin processes>
   process "collectd"
-<% node[:rs_utils][:process_list].split.each do |process| %>
+<% node[:rs_utils][:process_list_ary].each do |process| %>
   process "<%= process %>"
 <% end %>
 </Plugin>

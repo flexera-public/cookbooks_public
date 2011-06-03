@@ -23,7 +23,8 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Load the mysql plugin in the main config file
-node[:rs_utils][:plugin_list] += " mysql" unless node[:rs_utils][:plugin_list] =~ /mysql/
+rs_utils_enable_collectd_plugin "mysql"
+#node[:rs_utils][:plugin_list] += " mysql" unless node[:rs_utils][:plugin_list] =~ /mysql/
 
 include_recipe "rs_utils::setup_monitoring"
 
