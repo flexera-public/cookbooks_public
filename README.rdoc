@@ -15,8 +15,8 @@ to report issues.
 
 == Supported Configuration
 
-These cookbooks have been tested on EC2 and Rackspace clouds using the RightScale 
-platform ServerTemplates.
+These cookbooks have been tested on mutliple clouds and multiple OSs using ServerTemplates
+on the RightScale Cloud Management Platform .
 
 == Work in Progress
 
@@ -31,7 +31,7 @@ future.
 
 <b>RightScale Public Cookbooks</b>
 
-Copyright:: Copyright (c) 2009 RightScale, Inc. 
+Copyright:: Copyright (c) 2011 RightScale, Inc. 
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
