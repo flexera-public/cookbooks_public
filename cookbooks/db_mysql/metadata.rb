@@ -12,41 +12,41 @@ provides "db_mysql_gzipfile_restore(db_name, file_path)"
 
 recipe  "db_mysql::default", "Runs the 'install_mysql' recipes."
 recipe  "db_mysql::install_client", "Installs the MySQL client packages and gem."
-recipe  "db_mysql::install_mysql", "Installs packages required for MySQL servers without manual intervention."
-recipe  "db_mysql::setup_mysql", "Configures server"
-recipe  "db_mysql::setup_admin_privileges", "Add username and password for superuser privileges."
-recipe  "db_mysql::setup_application_privileges", "Add username and password for application privileges."
-recipe  "db_mysql::setup_my_cnf", "Creates the my.cnf configuration file"
-recipe  "db_mysql::do_dump_import", "Initialize MySQL with dumpfile from cloud object store (i.e. S3, cloudfiles)"
-recipe  "db_mysql::do_dump_export", "Upload MySQL dumpfile archive to cloud object store (i.e. S3, cloudfiles)"
-recipe  "db_mysql::setup_continuous_export", "Schedule daily run of do_dump_export."
+recipe  "db_mysql::install_mysql", "Installs the packages that are required for MySQL servers."
+recipe  "db_mysql::setup_mysql", "Configures the MySQL server."
+recipe  "db_mysql::setup_admin_privileges", "Adds the username and password for 'superuser' privileges."
+recipe  "db_mysql::setup_application_privileges", "Adds username and password for application privileges."
+recipe  "db_mysql::setup_my_cnf", "Creates the my.cnf configuration file."
+recipe  "db_mysql::do_dump_import", "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)"
+recipe  "db_mysql::do_dump_export", "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)"
+recipe  "db_mysql::setup_continuous_export", "Schedules the daily run of do_dump_export."
 recipe  "db_mysql::do_force_reset", "Reset the DB back to a pristine state."
 
 # == Premium Account Recipes
 #
 # The following recipes require a RightScale Premium ServerTemplate to run
 #
-recipe  "db_mysql::setup_block_device", "create, format and mount block_device"
+recipe  "db_mysql::setup_block_device", "Creates, formats and mounts the block_device (volume) to the instance."
 
-recipe  "db_mysql::do_backup", "Snapshot MySQL data to selected cloud storage. (Premium Account Only) "
-recipe  "db_mysql::do_restore", "Restore MySQL data snapshot from selected cloud storage. (Premium Account Only) "
+recipe  "db_mysql::do_backup", "Creates a backup of the MySQL data to the specified cloud storage location. (Premium Account Only) "
+recipe  "db_mysql::do_restore", "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) "
 
-recipe "db_mysql::do_backup_ebs","backup EBS storage"
+recipe "db_mysql::do_backup_ebs","Creates an EBS backup EBS storage"
 recipe "db_mysql::do_restore_ebs","restore EBS storage"
 
-recipe "db_mysql::do_backup_s3","backup S3 storage"
-recipe "db_mysql::do_restore_s3","backup S3 storage"
+recipe "db_mysql::do_backup_s3","Create a binary backup of the MySQL database and save it in the specified Amazon S3 bucket."
+recipe "db_mysql::do_restore_s3","Restores the MySQL database from a binary backup saved in the specified Amazon S3 bucket."
 
-recipe "db_mysql::do_backup_cloud_files", "backup cloud_files storage"
-recipe "db_mysql::do_restore_cloud_files", "backup cloud_files storage"
+recipe "db_mysql::do_backup_cloud_files", "Create a binary backup of the MySQL database and save it in the specified Rackspace Cloud Files container."
+recipe "db_mysql::do_restore_cloud_files", "Restores the MySQL database from a binary backup saved in the specified Rackspace Cloud Files container."
 
-recipe "db_mysql::setup_continuous_backups_s3", "CRON backup setup"
-recipe "db_mysql::setup_continuous_backups_ebs", "CRON backup setup"
-recipe "db_mysql::setup_continuous_backups_cloud_files", "CRON backup setup"
+recipe "db_mysql::setup_continuous_backups_s3", "Updates the crontab for taking continuous binary backups of the MySQL database. Backups are saved to an Amazon S3 bucket."
+recipe "db_mysql::setup_continuous_backups_ebs", "Updates the crontab for taking continuous backups of an EBS-based database. Backups are saved as EBS snapshots of the attached EBS Volume or EBS (Volume) Stripe."
+recipe "db_mysql::setup_continuous_backups_cloud_files", "Updates the crontab for taking continuous binary backups of the MySQL database. Backups are saved to a Rackspace Cloud Files container."
 
-recipe "db_mysql::do_disable_continuous_backups_s3", "disable CRON backups"
-recipe "db_mysql::do_disable_continuous_backups_ebs", "disable CRON backups"
-recipe "db_mysql::do_disable_continuous_backups_cloud_files", "disable CRON backups"
+recipe "db_mysql::do_disable_continuous_backups_s3", "Disables continuous binary backups of the MySQL database to an Amazon S3 bucket by updating the crontab."
+recipe "db_mysql::do_disable_continuous_backups_ebs", "Disables continuous EBS backup Snapshots of the MySQL database by updating the crontab."
+recipe "db_mysql::do_disable_continuous_backups_cloud_files", "Disables continuous binary backups of the MySQL database to a Rackspace Cloud Files container by updating the crontab."
 
 all_recipes = [ "db_mysql::do_restore_s3", 
                 "db_mysql::do_backup_s3", 
@@ -148,7 +148,7 @@ attribute "db_mysql/backup/lineage",
 
 attribute "db_mysql/backup/max_snapshots",
   :display_name => "Backups Maximum",
-  :description => "The number of backups to keep in addition to those being rotated",
+  :description => "The maximum number of backups to keep in addition to those being rotated.",
   :default => "60",
   :recipes => backup_recipes
   
@@ -178,31 +178,32 @@ attribute "db_mysql/backup/keep_yearly",
 
 attribute "db_mysql/backup/rackspace_user",
   :display_name => "Rackspace User",
-  :description => "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username.",
+  :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Rackspace Cloud Files, use your Rackspace login Username.",
   :required => false,
   :recipes => all_recipes_require_rax_cred
 
 attribute "db_mysql/backup/rackspace_secret",
   :display_name => "Rackspace Secret",
-  :description => "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key.",
+  :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Rackspace Cloud Files, use your Rackspace account API Key.",
   :required => false,
   :recipes => all_recipes_require_rax_cred
 
 attribute "db_mysql/backup/aws_access_key_id",
   :display_name => "AWS access key id",
-  :description => "The account ID that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Access Key ID.  For Rackspace, enter your username.",
+  :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID.",
   :required => false,
   :recipes => all_recipes_require_aws_cred
 
 attribute "db_mysql/backup/aws_secret_access_key",
   :display_name => "aws secret access key",
-  :description => "The account key that will be used to access the 'Remote Storage Container'.  For AWS, enter your AWS Secret Access Key.  For Rackspace, enter your API Key.",
+  :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY.",
+  :default => "",
   :required => false,
   :recipes => all_recipes_require_aws_cred
 
 attribute "db_mysql/backup/storage_container",
   :display_name => "Backup Storage Container",
-  :description => "TODO (for backup to S3 or CloudFiles Remote Object Store)",
+  :description => "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name.",
   :default => "",
   :recipes => restore_recipes + backup_recipes
 
@@ -221,31 +222,31 @@ attribute "db_mysql/dump/schema_name",
 
 attribute "db_mysql/dump/storage_account_provider",
   :display_name => "Storage Account Provider",
-  :description => "For Amazon S3 use ec2.  For Cloud Files use rackspace",
+  :description => "Select the cloud infrastructure where the backup will be saved. For Amazon S3, use ec2.  For Rackspace Cloud Files, use rackspace.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/storage_account_id",
   :display_name => "Storage Account Id",
-  :description => "Cloud Account ID. This cloud-specific credential is used to retrieve private objects from cloud storage.  For AWS, use your AWS_ACCESS_KEY_ID credential.  For Rackspace, use your user name.",
+  :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID. For Rackspace Cloud Files, use your Rackspace login Username.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/storage_account_secret",
   :display_name => "Storage Account Secret",
-  :description => "Cloud storage account secret. This cloud-specific credential is used to retrieve private objects from cloud storage.  For AWS, use your AWS_SECRET_ACCESS_KEY credential.   For Rackspace, use your authentication key.",
+  :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/container",
   :display_name => "Container",
-  :description => "The bucket or container where the MySQL database dump files will be stored to or restored from.",
+  :description => "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/dump/prefix",
   :display_name => "Prefix",
-  :description => "Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp.",
+  :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.  Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp.",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]  
 
@@ -269,7 +270,7 @@ attribute "db_mysql/backup/volume_size",
 #
 attribute "db_mysql/server_usage",
   :display_name => "Server Usage",
-  :description => "* dedicated (where the mysql config file allocates all existing resources of the machine)\n* shared (where the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example)",
+  :description => "Use 'dedicated' if the mysql config file allocates all existing resources of the machine.  Use 'shared' if the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example.",
   :recipes => [ "db_mysql::default" ],
   :choice => ["shared", "dedicated"],
   :default => "dedicated"
