@@ -1,29 +1,29 @@
 {
-    "version": "0.1.0",
+    "conflicting": {
+    },
+    "description": "Installs and configures the MySQL database.",
+    "providing": {
+    },
     "replacing": {
     },
-    "groupings": {
+    "recipes": {
     },
-    "attributes": {
+    "groupings": {
     },
     "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
     "recommendations": {
     },
-    "dependencies": {
-    },
-    "maintainer": "RightScale, Inc.",
-    "suggestions": {
-    },
-    "license": "All rights reserved",
-    "maintainer_email": "support@rightscale.com",
-    "conflicting": {
-    },
-    "recipes": {
-    },
-    "name": "database",
-    "providing": {
-    },
     "platforms": {
     },
-    "description": "Installs/Configures database"
+    "license": "All rights reserved",
+    "version": "0.1.0",
+    "maintainer": "RightScale, Inc.",
+    "name": "database",
+    "attributes": {
+    },
+    "suggestions": {
+    },
+    "dependencies": {
+    },
+    "maintainer_email": "support@rightscale.com"
   }
