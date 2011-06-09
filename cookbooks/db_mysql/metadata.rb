@@ -134,7 +134,7 @@ attribute "db_mysql/application/password",
 #
 attribute "db_mysql/backup/storage_type",
   :display_name => "Backup Storage Type",
-  :description => "The type of backup storage",
+  :description => "The type of cloud storage that will be used to store the backup.  For Amazon S3 or Rackspace Cloud Files, use 'ros' and for Amazon EBS, use 'volume'",
   :choice => ["ros", "volume"],
   :type => "string",
   :default => "ros",
