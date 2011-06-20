@@ -47,7 +47,7 @@ when "ubuntu", "debian"
   set_unless[:php][:app_user] = "www-data"
 when "centos","fedora","suse"
   set[:php][:package_dependencies] = ["php", "php-mysql", "php-pear"]
-  set[:php][:module_dependencies] = []
+  set[:php][:module_dependencies] = [ "proxy" ]
   set_unless[:php][:app_user] = "apache"
 end
 
