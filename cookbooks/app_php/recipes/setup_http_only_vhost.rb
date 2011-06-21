@@ -26,6 +26,11 @@ service "apache2" do
   action :nothing
 end
 
+# disable default vhost
+apache_site "000-default" do
+  enable false
+end
+
 # == Configure apache vhost for PHP
 #
 web_app node[:php][:application_name] do
