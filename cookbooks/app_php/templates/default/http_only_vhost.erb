@@ -1,0 +1,71 @@
+# HTTP-only virtual host template
+
+Listen 8000
+<VirtualHost *:8000>
+
+     ServerName reg-php.test.rightscale.com
+     UseCanonicalName On
+
+     DocumentRoot /home/webapp/myapp
+      <DirectoryMatch  /\.git/|/\.svn/ >
+       Deny from all
+     </DirectoryMatch>
+     <Directory "/home/webapp/myapp">
+      Options FollowSymLinks
+      AllowOverride None
+      Order allow,deny
+      Allow from all
+     </Directory>
+
+     RewriteEngine On
+     # Uncomment for rewrite debugging
+     #RewriteLog /var/log/httpd/http_rewrite_log
+     #RewriteLogLevel 9
+
+     # <CUSTOM RULES BEFORE ANYTHING BEGIN>
+
+     # <CUSTOM RULES BEFORE ANYTHING END>
+
+     # Load (if necessary) and bind the PHP interpreter to handle files with a .php extension.
+     <IfModule !mod_php5.c>
+       LoadModule php5_module modules/libphp5.so
+     </IfModule>
+
+     DirectoryIndex default.php index.php
+     AddHandler php5-script .php
+     AddType text/html .php
+
+     # Enable status page for monitoring purposes 
+     RewriteCond %{REMOTE_ADDR} ^(127.0.0.1)
+     RewriteRule ^(/server-status) $1 [H=server-status,L]
+
+     # Redirects to a maintenance page if the specified file below exists
+     # ...but it still allows images to be served
+     RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+     RewriteCond %{SCRIPT_FILENAME} !/system/maintenance.html
+     RewriteCond %{SCRIPT_FILENAME} !^(.+).(gif|png|jpg|css|js|swf)$
+     RewriteRule ^.*$ /system/maintenance.html [L]
+
+     # <CUSTOM RULES BEFORE FORWARDING BEGIN>
+                                                   # <CUSTOM RULES BEFORE FORWARDING END>
+
+     # Setup the logs in the appropriate directory
+     CustomLog /var/log/httpd/access.log combined
+     #ErrorLog  /var/log/httpd/error.log
+
+     #Remote logging -- handle by syslog
+     ErrorLog "|logger -p local3.info -t httperror"
+     CustomLog "|logger -p local3.info -t http" combined
+
+     LogLevel warn
+
+     # Deflate
+     AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/javascript text/css application/x-javascript
+     BrowserMatch ^Mozilla/4 gzip-only-text/html
+     BrowserMatch ^Mozilla/4.0[678] no-gzip
+     BrowserMatch bMSIE !no-gzip !gzip-only-text/html
+
+     SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
+
+</VirtualHost>
+                                                            

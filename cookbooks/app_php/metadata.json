@@ -1,172 +1,170 @@
 {
-    "version": "0.0.1",
-    "replacing": {
-    },
-    "groupings": {
-    },
-    "attributes": {
-      "php/db_schema_name": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::setup_db_connection"
-        ],
-        "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
-        "display_name": "Database Schema Name"
-      },
-      "php/code/branch": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "default": "master",
-        "type": "string",
-        "recipes": [
-          "app_php::do_update_code",
-          "app_php::do_db_restore",
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "description": "The name of the branch within the git repository where the application code should be pulled from.",
-        "display_name": "Repository Branch"
-      },
-      "php": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "hash",
-        "recipes": [
-
-        ],
-        "display_name": "PHP Application Settings"
-      },
-      "php/modules_list": {
-        "required": "optional",
-        "calculated": false,
-        "discription": "An optional list of php modules to install",
-        "choice": [
-
-        ],
-        "type": "array",
-        "recipes": [
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "display_name": "PHP modules"
-      },
-      "php/code/credentials": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "default": "",
-        "type": "string",
-        "recipes": [
-          "app_php::do_update_code",
-          "app_php::do_db_restore",
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "description": "The private SSH key of the git repository.",
-        "display_name": "Repository Credentials"
-      },
-      "php/code": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "hash",
-        "recipes": [
-
-        ],
-        "display_name": "PHP Application Code"
-      },
-      "php/server_name": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "default": "localhost",
-        "type": "string",
-        "recipes": [
-          "app_php::setup_apache_vhost"
-        ],
-        "description": "The fully qualified domain name of the application server used to define your virtual host.",
-        "display_name": "Server Name"
-      },
-      "php/code/url": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::do_update_code",
-          "app_php::do_db_restore",
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
-        "display_name": "Repository URL"
-      },
-      "php/application_name": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "default": "myapp",
-        "type": "string",
-        "recipes": [
-          "app_php::install_php",
-          "app_php::default"
-        ],
-        "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name.",
-        "display_name": "Application Name"
-      }
-    },
-    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
-    "recommendations": {
-    },
-    "dependencies": {
-      "repo_git_pull(url, branch, dest, cred)": [
+  "suggestions": {
+  },
+  "attributes": {
+    "php/db_schema_name": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
 
       ],
-      "web_apache": [
+      "type": "string",
+      "recipes": [
+        "app_php::setup_db_connection"
+      ],
+      "display_name": "Database Schema Name",
+      "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema"
+    },
+    "php/code/branch": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
 
       ],
-      "repo_git": [
+      "default": "master",
+      "type": "string",
+      "recipes": [
+        "app_php::do_update_code",
+        "app_php::do_db_restore",
+        "app_php::default"
+      ],
+      "display_name": "Repository Branch",
+      "description": "The name of the branch within the git repository where the application code should be pulled from."
+    },
+    "php": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
 
-      ]
+      ],
+      "type": "hash",
+      "recipes": [
+
+      ],
+      "display_name": "PHP Application Settings"
     },
-    "maintainer": "RightScale, Inc.",
-    "suggestions": {
+    "php/modules_list": {
+      "required": "optional",
+      "calculated": false,
+      "discription": "An optional list of php modules to install",
+      "choice": [
+
+      ],
+      "type": "array",
+      "recipes": [
+        "app_php::default"
+      ],
+      "display_name": "PHP modules"
     },
-    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
-    "maintainer_email": "support@rightscale.com",
-    "conflicting": {
+    "php/code/credentials": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "app_php::do_update_code",
+        "app_php::do_db_restore",
+        "app_php::default"
+      ],
+      "display_name": "Repository Credentials",
+      "description": "The private SSH key of the git repository."
     },
-    "recipes": {
-      "app_php::do_update_code": "Update application source files from the remote repository.",
-      "app_php::setup_db_connection": "Setup MySQL database db.php connection file.",
-      "app_php::default": "Installs the php application server.",
-      "app_php::setup_apache_vhost": "Setup PHP Apache vhost."
+    "php/code": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "hash",
+      "recipes": [
+
+      ],
+      "display_name": "PHP Application Code"
     },
-    "name": "app_php",
-    "providing": {
+    "php/server_name": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "localhost",
+      "type": "string",
+      "recipes": [
+        "app_php::setup_apache_vhost",
+        "app_php::setup_http_only_vhost"
+      ],
+      "display_name": "Server Name",
+      "description": "The fully qualified domain name of the application server used to define your virtual host."
     },
-    "platforms": {
+    "php/code/url": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "app_php::do_update_code",
+        "app_php::do_db_restore",
+        "app_php::default"
+      ],
+      "display_name": "Repository URL",
+      "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git"
     },
-    "description": "Installs the php application server."
-  }
+    "php/application_name": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "myapp",
+      "type": "string",
+      "recipes": [
+        "app_php::default",
+        "app_php::setup_http_only_vhost"
+      ],
+      "display_name": "Application Name",
+      "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name."
+    }
+  },
+  "conflicting": {
+  },
+  "description": "Installs the php application server.",
+  "dependencies": {
+    "repo_git_pull(url, branch, dest, cred)": [
+
+    ],
+    "web_apache": [
+
+    ],
+    "repo_git": [
+
+    ]
+  },
+  "providing": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "replacing": {
+  },
+  "version": "0.0.1",
+  "maintainer_email": "support@rightscale.com",
+  "name": "app_php",
+  "recipes": {
+    "app_php::do_update_code": "Update application source files from the remote repository.",
+    "app_php::setup_db_connection": "Setup MySQL database db.php connection file.",
+    "app_php::setup_http_only_vhost": "Setup PHP Apache vhost.",
+    "app_php::default": "Installs the php application server.",
+    "app_php::setup_apache_vhost": "Setup PHP Apache vhost."
+  },
+  "groupings": {
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+  "recommendations": {
+  },
+  "platforms": {
+  },
+  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
+}
