@@ -11,9 +11,10 @@ depends "repo_git_pull(url, branch, dest, cred)"
  
 recipe  "app_php::default", "Installs the php application server."
 recipe  "app_php::setup_apache_vhost", "Setup PHP Apache vhost."
-recipe  "app_php::setup_http_only_vhost", "Setup PHP Apache vhost."
+recipe  "app_php::setup_http_only_vhost", "Setup PHP Apache vhost for the PHP application server."
 recipe  "app_php::do_update_code", "Update application source files from the remote repository."
 recipe  "app_php::setup_db_connection", "Setup MySQL database db.php connection file."
+recipe  "app_php::setup_apache_reverse_proxy", "Apache reverse proxy on port 80 in front of HAProxy"
 
 attribute "php",
   :display_name => "PHP Application Settings",
@@ -26,13 +27,13 @@ attribute "php/server_name",
   :display_name => "Server Name",
   :description => "The fully qualified domain name of the application server used to define your virtual host.",
   :default => "localhost",
-  :recipes => [ "app_php::setup_apache_vhost", "app_php::setup_http_only_vhost" ]
+  :recipes => [ "app_php::setup_apache_vhost", "app_php::setup_http_only_vhost","app_php::setup_apache_reverse_proxy" ]
 
 attribute "php/application_name",
   :display_name => "Application Name",
   :description => "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name.",
   :default => "myapp",
-  :recipes => [  "app_php::default", "app_php::setup_http_only_vhost" ]
+  :recipes => [  "app_php::default", "app_php::setup_http_only_vhost","app_php::setup_apache_reverse_proxy" ]
   
 #
 # optional attributes
