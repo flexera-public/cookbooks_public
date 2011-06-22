@@ -1,5 +1,5 @@
 # Cookbook Name:: db_mysql
-# Recipe:: setup_db_connection
+# Recipe:: install_client_5.0
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,23 +22,48 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# == Setup PHP Database Connection
+
+# == Install MySQL 5.0 package
 #
-# Make sure config dir exists
-directory File.join(node[:php][:code][:destination], "config") do
-  recursive true 
-  owner node[:php][:app_user]
-  group node[:php][:app_user]
+# install client in converge phase
+package "mysql-client" do
+  package_name value_for_platform(
+    [ "centos", "redhat", "suse" ] => { "default" => "mysql" },
+    "default" => "mysql-client"
+  )
+  action :install
 end
 
-# Tell MySQL to fill in our connection template
-db_mysql_connect_app File.join(node[:php][:code][:destination], "config", "db.php") do
-  template "db.php.erb"
-  cookbook "app_php"
-  database node[:php][:db_schema_name]
-  owner node[:php][:app_user]
-  group node[:php][:app_user]
-  mysql_version "5.0"
+if node[:platform] == "ubuntu"
+  # Install development library in compile phase
+  p = package "mysql-dev" do
+    package_name value_for_platform(
+      "ubuntu" => {
+        "8.04" => "libmysqlclient15-dev",
+        "8.10" => "libmysqlclient15-dev",
+        "9.04" => "libmysqlclient15-dev"
+      },
+      "default" => 'libmysqlclient-dev'
+    )
+    action :nothing
+  end
+  p.run_action(:install)
+
 end
 
 
+# == Install MySQL client gem
+#
+# Also installs in compile phase
+#
+r = execute "install mysql gem" do
+  command "/opt/rightscale/sandbox/bin/gem install mysql --no-rdoc --no-ri -v 2.7 -- --build-flags --with-mysql-config"
+end
+r.run_action(:run)
+
+Gem.clear_paths
+log "Gem reload forced with Gem.clear_paths"
+
+# == Install "perl-DBD-MySQL"
+# 
+#TODO

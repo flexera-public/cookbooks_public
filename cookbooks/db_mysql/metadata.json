@@ -495,6 +495,7 @@
     "db_mysql::do_dump_import": "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)",
     "db_mysql::setup_application_privileges": "Adds username and password for application privileges.",
     "db_mysql::do_force_reset": "Reset the DB back to a pristine state.",
+    "db_mysql::install_client_5.0": "Installs the MySQL 5.0 client packages and gem.",
     "db_mysql::do_disable_continuous_backups_ebs": "Disables continuous EBS backup Snapshots of the MySQL database by updating the crontab.",
     "db_mysql::setup_block_device": "Creates, formats and mounts the block_device (volume) to the instance.",
     "db_mysql::setup_my_cnf": "Creates the my.cnf configuration file.",
@@ -512,7 +513,7 @@
     "db_mysql::setup_continuous_backups_s3": "Updates the crontab for taking continuous binary backups of the MySQL database. Backups are saved to an Amazon S3 bucket.",
     "db_mysql::do_restore": "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) ",
     "db_mysql::setup_continuous_export": "Schedules the daily run of do_dump_export.",
-    "db_mysql::install_client": "Installs the MySQL client packages and gem.",
+    "db_mysql::install_client": "Installs the MySQL 5.1 client packages and gem.",
     "db_mysql::do_disable_continuous_backups_s3": "Disables continuous binary backups of the MySQL database to an Amazon S3 bucket by updating the crontab.",
     "db_mysql::setup_admin_privileges": "Adds the username and password for 'superuser' privileges."
   },
