@@ -30,7 +30,7 @@ directory File.join(node[:php][:code][:destination], "config") do
   owner node[:php][:app_user]
   group node[:php][:app_user]
 end
-Chef::Log.info("Setting up db connection to #{node[:db_mysql][:fqdn]}.")
+
 # Tell MySQL to fill in our connection template
 db_mysql_connect_app File.join(node[:php][:code][:destination], "config", "db.php") do
   template "db.php.erb"

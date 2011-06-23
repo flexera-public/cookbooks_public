@@ -122,13 +122,13 @@ attribute "db_mysql/application/user",
   :display_name => "Database Application Username",
   :description => "The username of the database user that has 'user' privileges.",
   :required => true,
-  :recipes => [ "db_mysql::setup_application_privileges" ]
+  :recipes => [ "db_mysql::default", "db_mysql::setup_application_privileges" ]
 
 attribute "db_mysql/application/password",
   :display_name => "Database Application Password",
   :description => "The password of the database user that has 'user' privileges.",
   :required => true,
-  :recipes => [ "db_mysql::setup_application_privileges" ]
+  :recipes => [ "db_mysql::default", "db_mysql::setup_application_privileges" ]
 
   
 # == Backup/Restore (Premium Accounts only)

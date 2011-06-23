@@ -6,6 +6,7 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
 
 depends "web_apache"
+depends "db_mysql"
 depends "repo_git"
 depends "repo_git_pull(url, branch, dest, cred)"
  
@@ -73,23 +74,3 @@ attribute "php/code/branch",
   :default => "master",
   :recipes => [ "app_php::do_update_code", "app_php::do_db_restore",  "app_php::default" ]
   
-
-
-attribute "db_mysql/fqdn",
-  :display_name => "Database Master FQDN",
-  :description => "The fully qualified hostname for the MySQL Master Database.",
-  :required => true,
-  :recipes => [ "app_php::setup_db_connection" ]
-
-attribute "db_mysql/application/user",
-  :display_name => "Database Application Username",
-  :description => "The username of the database user that has 'user' privileges.",
-  :required => true,
-  :recipes => [ "app_php::setup_db_connection" ]
-
-attribute "db_mysql/application/password",
-  :display_name => "Database Application Password",
-  :description => "The password of the database user that has 'user' privileges.",
-  :required => true,
-  :recipes => [ "app_php::setup_db_connection" ]
-
