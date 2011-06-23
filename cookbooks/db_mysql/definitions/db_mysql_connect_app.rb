@@ -24,9 +24,8 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 define :db_mysql_connect_app, :template => "db_connection_example.erb", :cookbook => "db_mysql", :database => nil do
-  if params[:version] == "5.0" do
+  if params[:version] == "5.0" 
     include_recipe "db_mysql::install_client_5.0"
-  end
   else
     include_recipe "db_mysql::install_client"
   end
