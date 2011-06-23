@@ -34,28 +34,24 @@ package "mysql-client" do
   action :install
 end
 
-if node[:platform] == "ubuntu"
-  # Install development library in compile phase
-  p = package "mysql-dev" do
-    package_name value_for_platform(
-      "ubuntu" => {
-        "8.04" => "libmysqlclient15-dev",
-        "8.10" => "libmysqlclient15-dev",
-        "9.04" => "libmysqlclient15-dev"
-      },
-      "default" => 'libmysqlclient-dev'
-    )
-    action :nothing
-  end
-  p.run_action(:install)
-
+p = package "mysql-dev" do
+  package_name value_for_platform(
+    "ubuntu" => {
+      "8.04" => "libmysqlclient15-dev",
+      "8.10" => "libmysqlclient15-dev",
+      "9.04" => "libmysqlclient15-dev"
+    },
+    "centos" => "mysql-devel",
+    "default" => "libmysqlclient-dev"
+  )
+  action :nothing
 end
-
+p.run_action(:install)
 
 # == Install MySQL client gem
 #
 # Also installs in compile phase
-#
+
 r = execute "install mysql gem" do
   command "/opt/rightscale/sandbox/bin/gem install mysql --no-rdoc --no-ri -v 2.7 -- --build-flags --with-mysql-config"
 end
