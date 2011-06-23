@@ -1,4 +1,4 @@
-# Cookbook Name:: db_mysql
+# Cookbook Name:: app_php
 # Recipe:: setup_db_connection
 #
 # Copyright (c) 2011 RightScale Inc
@@ -30,7 +30,7 @@ directory File.join(node[:php][:code][:destination], "config") do
   owner node[:php][:app_user]
   group node[:php][:app_user]
 end
-
+Chef::Log.info("Setting up db connection to #{node[:db_mysql][:fqdn]}.")
 # Tell MySQL to fill in our connection template
 db_mysql_connect_app File.join(node[:php][:code][:destination], "config", "db.php") do
   template "db.php.erb"
@@ -38,7 +38,6 @@ db_mysql_connect_app File.join(node[:php][:code][:destination], "config", "db.ph
   database node[:php][:db_schema_name]
   owner node[:php][:app_user]
   group node[:php][:app_user]
-  mysql_version "5.0"
 end
 
 
