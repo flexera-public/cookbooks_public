@@ -23,7 +23,7 @@
       ],
       "type": "string",
       "recipes": [
-        "db_mysql::setup_application_privileges"
+        "app_php::setup_db_connection"
       ],
       "display_name": "Database Application Password",
       "description": "The password of the database user that has 'user' privileges."
@@ -64,7 +64,7 @@
       ],
       "type": "string",
       "recipes": [
-        "db_mysql::setup_application_privileges"
+        "app_php::setup_db_connection"
       ],
       "display_name": "Database Application Username",
       "description": "The username of the database user that has 'user' privileges."

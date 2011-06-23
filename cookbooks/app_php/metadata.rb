@@ -85,11 +85,11 @@ attribute "db_mysql/application/user",
   :display_name => "Database Application Username",
   :description => "The username of the database user that has 'user' privileges.",
   :required => true,
-  :recipes => [ "db_mysql::setup_application_privileges" ]
+  :recipes => [ "app_php::setup_db_connection" ]
 
 attribute "db_mysql/application/password",
   :display_name => "Database Application Password",
   :description => "The password of the database user that has 'user' privileges.",
   :required => true,
-  :recipes => [ "db_mysql::setup_application_privileges" ]
+  :recipes => [ "app_php::setup_db_connection" ]
 
