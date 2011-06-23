@@ -41,8 +41,7 @@ p = package "mysql-dev" do
       "8.10" => "libmysqlclient15-dev",
       "9.04" => "libmysqlclient15-dev"
     },
-    "centos" => "mysql-devel",
-    "default" => "libmysqlclient-dev"
+    "default" => "mysql-devel"
   )
   action :nothing
 end
