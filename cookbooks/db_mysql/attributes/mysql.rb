@@ -79,7 +79,7 @@ when "redhat","centos","fedora","suse"
 	set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
   set_unless[:db_mysql][:basedir] = "/var/lib"
   set_unless[:db_mysql][:packages_uninstall] = ""
-  set_unless[:db_mysql][:packages_install] = ""
+  set_unless[:db_mysql][:packages_install] = ["MySQL-server-community", "MySQL-shared-compat", "MySQL-devel-community", "MySQL-client-community" ]
  # set_unless[:db_mysql][:packages_install] = [ "unixODBC.#{kernel[:machine] }", "krb5-libs" ]
   set_unless[:db_mysql][:log] = ""
   set_unless[:db_mysql][:log_error] = "" 

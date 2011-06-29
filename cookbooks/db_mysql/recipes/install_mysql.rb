@@ -30,18 +30,6 @@ node[:db_mysql][:packages_install].each do |p|
   package p 
 end unless node[:db_mysql][:packages_install] == ""
 
-# Find and install local packages for centos
-if node[:platform] == "centos"
-  arch = (node[:kernel][:machine] == "i686") ? "i386" : "x86_64" 
-  packages = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "server", "*#{arch}.rpm")
-  Dir.glob(packages).each do |p|
-    package p do
-      source p
-      action :install
-    end
-  end
-end
-
 # Uninstall other packages we don't
 node[:db_mysql][:packages_uninstall].each do |p| 
    package p do
@@ -60,4 +48,3 @@ touchfile = "~/.mysql_installed"
 execute "/usr/bin/mysql_install_db ; touch #{touchfile}" do
   creates touchfile
 end
-

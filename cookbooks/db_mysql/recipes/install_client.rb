@@ -23,24 +23,18 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-# == Install MySQL 5.1 package
-#
-# CentOS 5.4 mirrors do not include 5.1, so they are currently attached
-# Ubuntu 10.04 can just pull from the mirrors
-#
+# == Install MySQL 5.1 package(s)
 if node[:platform] == "centos"
 
   # Install MySQL GPG Key (http://download.oracle.com/docs/cd/E17952_01/refman-5.5-en/checking-gpg-signature.html)
   gpgkey = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "mysql_pubkey.asc")
   `rpm --import #{gpgkey}`
 
-  # Find and install local MySQl 5.1 packages for CentOS
-  arch = (node[:kernel][:machine] == "i686") ? "i386" : "x86_64" 
-  packages = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "client", "*#{arch}.rpm")
-  Chef::Log.info("Packages: #{packages}")
-  Dir.glob(packages).each do |p|
-    r = package p do
-      source p
+  # Packages from rightscale-software repository for MySQL 5.1
+  packages = ["MySQL-shared-compat", "MySQL-devel-community", "MySQL-client-community" ]
+  Chef::Log.info("Packages to install: #{packages.join(",")}")
+  packages.each do |p|
+    package p do
       action :nothing
     end
     r.run_action(:install)
@@ -85,8 +79,3 @@ r.run_action(:run)
 
 Gem.clear_paths
 log "Gem reload forced with Gem.clear_paths"
-
-
-# == Install "perl-DBD-MySQL"
-# 
-#TODO
