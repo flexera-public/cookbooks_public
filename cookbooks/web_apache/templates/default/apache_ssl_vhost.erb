@@ -1,0 +1,68 @@
+Listen <%= @params[:vhost_port] %>
+NameVirtualHost *:<%= @params[:vhost_port] %>
+
+<VirtualHost *:<%= @params[:vhost_port] %>>
+  ServerName <%= @params[:server_name] %>
+  DocumentRoot <%= @params[:docroot] %>
+  <DirectoryMatch  /\.git/|/\.svn/ >
+    Deny from all
+  </DirectoryMatch>
+
+  <Directory <%= @params[:docroot] %>>
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  RewriteEngine On
+  # Uncomment for rewrite debugging
+  #RewriteLog <%= @node[:web_apache][:log_dir] %>/http_rewrite_log
+  #RewriteLogLevel 9
+
+  # Enable status page for monitoring purposes
+  RewriteCond %{REMOTE_ADDR} ^(127.0.0.1)
+  RewriteRule ^(/server-status) $1 [H=server-status,L]
+
+  # Redirects to a maintenance page if the specified file below exists
+  # ...but it still allows images to be served
+  RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+  RewriteCond %{SCRIPT_FILENAME} !/system/maintenance.html
+  RewriteCond %{SCRIPT_FILENAME} !^(.+).(gif|png|jpg|css|js|swf)$
+  RewriteRule ^.*$ /system/maintenance.html [L]
+
+  # Setup the logs in the appropriate directory
+  CustomLog <%= @node[:web_apache][:log_dir] %>/access_log combined
+  ErrorLog  <%= @node[:web_apache][:log_dir] %>/error_log
+
+  #Remote logging -- handle by syslog
+  ErrorLog "|logger -p local3.info -t httperror"
+  CustomLog "|logger -p local3.info -t http" combined
+
+  LogLevel warn
+
+# SSL-specific additions
+  SSLEngine on
+  SSLProtocol all -SSLv2
+  SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
+
+  RequestHeader set X_FORWARDED_PROTO 'https'
+
+  SSLCertificateFile <%= @params[:ssl_certificate_file] %>
+  SSLCertificateKeyFile <%= @params[:ssl_key_file] %>
+  <% if @params[:ssl_certificate_chain_file] %>
+    <%= "SSLCertificateChainFile #{@params[:ssl_certificate_chain_file]}" %>
+  <% end %>
+
+  # Deflate
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/javascript text/css application/x-javascript
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4.0[678] no-gzip
+  BrowserMatch bMSIE !no-gzip !gzip-only-text/html
+
+  SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 
+
+  # Proxy the rest to the load balancer
+  RewriteRule ^/(.*)$ http://127.0.0.1:85%{REQUEST_URI} [P,QSA,L]
+
+</VirtualHost>

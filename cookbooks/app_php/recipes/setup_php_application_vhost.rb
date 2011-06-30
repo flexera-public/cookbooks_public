@@ -22,13 +22,10 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
 service "apache2" do
   action :nothing
 end
-
-# == Setup PHP Apache vhost on port 80
-#
-reverse_port = "80"
 
 # disable default vhost
 apache_site "000-default" do
@@ -38,9 +35,10 @@ end
 # == Configure apache vhost for PHP
 #
 web_app node[:php][:application_name] do
-  template "http-80-lbhost.vhost.erb"
+  template "apache.conf.erb"
   docroot node[:php][:code][:destination]
-  vhost_port reverse_port
+  vhost_port "8000"
   server_name node[:php][:server_name]
+  cookbook "web_apache"
   notifies :restart, resources(:service => "apache2")
 end

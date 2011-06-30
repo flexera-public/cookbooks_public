@@ -38,7 +38,7 @@ set_unless[:php][:db_adapter] = "mysql"
 
 # == Calculated attributes
 #
-set[:php][:code][:destination] = "/home/webapp/#{php[:application_name]}"
+#set[:php][:code][:destination] = "/home/webapp/#{php[:application_name]}"
 
 case platform
 when "ubuntu", "debian"

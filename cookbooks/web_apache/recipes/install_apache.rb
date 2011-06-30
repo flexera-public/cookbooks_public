@@ -80,7 +80,7 @@ case node[:platform]
   when "centos","redhat","fedora","suse"
 
     binary_to_use = @node[:apache][:binary]
-    if @node[:apache][:mpm] != 'prefork'
+    if @node[:web_apache][:mpm] != 'prefork'
       binary_to_use << ".worker"
     end
 
@@ -93,7 +93,7 @@ case node[:platform]
       notifies :reload, resources(:service => "apache2")
     end
   when "debian","ubuntu"
-    package "apache2-mpm-#{node[:apache][:mpm]}"
+    package "apache2-mpm-#{node[:web_apache][:mpm]}"
 end
 
 # Log resource submitted to opscode. http://tickets.opscode.com/browse/CHEF-923

@@ -44,9 +44,9 @@ end
 
 # == Configure apache vhost for PHP
 #
-web_app node[:php][:application_name] do
+web_app node[:web_apache][:application_name] do
   template "apache.conf.erb"
-  docroot node[:php][:code][:destination]
+  docroot node[:web_apache][:docroot] #node[:php][:code][:destination]
   vhost_port php_port
-  server_name node[:php][:server_name]
+  server_name node[:web_apache][:server_name]
 end

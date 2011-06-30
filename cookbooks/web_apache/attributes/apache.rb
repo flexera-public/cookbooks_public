@@ -40,5 +40,19 @@ set_unless[:apache][:extended_status] = "On"
 set_unless[:apache][:mpm] = "prefork"
 # Security: Configuring Server Signature
 set_unless[:apache][:serversignature] = "Off "
+# DISTRO specific config dir
+case platform
+when "ubuntu", "debian"
+  set[:apache][:config_subdir] = "apache2"
+when "centos", "fedora", "suse"
+  set[:apache][:config_subdir] = "httpd"
+end
 
+set_unless[:web_apache][:ssl_enable] = false
+set_unless[:web_apache][:ssl_certificate] = nil
+set_unless[:web_apache][:ssl_certificate_chain] = nil
+set_unless[:web_apache][:ssl_key] = nil
+set_unless[:web_apache][:ssl_passphrase] = nil
 
+# Used to be called php/code/destination
+set[:web_apache][:docroot] = "/home/webapp/#{web_apache[:application_name]}"

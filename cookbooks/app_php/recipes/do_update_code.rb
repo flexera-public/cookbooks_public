@@ -25,7 +25,7 @@
 
 # Check that we have the required attributes set
 raise "You must provide a URL to your application code repository" if ("#{node[:php][:code][:url]}" == "") 
-raise "You must provide a destination for your application code." if ("#{node[:php][:code][:destination]}" == "") 
+raise "You must provide a destination for your application code." if ("#{node[:web_apache][:docroot]}" == "") 
 
 # Warn about missing optional attributes
 Chef::Log.warn("WARNING: You did not provide credentials for your code repository -- assuming public repository.") if ("#{node[:php][:code][:credentials]}" == "") 
@@ -35,13 +35,13 @@ Chef::Log.info("You did not provide branch informaiton -- setting to default.") 
 repo_git_pull "Get Repository" do
   url node[:php][:code][:url]
   branch node[:php][:code][:branch] 
-  dest node[:php][:code][:destination]
+  dest node[:web_apache][:docroot]
   cred node[:php][:code][:credentials]
 end
 
 # == Set code ownership 
 bash "chown_home" do
   code <<-EOH
-    chown -R #{node[:php][:app_user]}:#{node[:php][:app_user]} #{node[:php][:code][:destination]}
+    chown -R #{node[:php][:app_user]}:#{node[:php][:app_user]} #{node[:web_apache][:docroot]}
   EOH
 end
