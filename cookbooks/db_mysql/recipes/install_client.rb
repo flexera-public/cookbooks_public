@@ -34,7 +34,7 @@ if node[:platform] == "centos"
   packages = ["MySQL-shared-compat", "MySQL-devel-community", "MySQL-client-community" ]
   Chef::Log.info("Packages to install: #{packages.join(",")}")
   packages.each do |p|
-    package p do
+    r = package p do
       action :nothing
     end
     r.run_action(:install)
