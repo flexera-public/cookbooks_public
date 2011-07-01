@@ -36,7 +36,7 @@ end
 #
 web_app node[:php][:application_name] do
   template "apache.conf.erb"
-  docroot node[:php][:code][:destination]
+  docroot node[:web_apache][:docroot]
   vhost_port "8000"
   server_name node[:php][:server_name]
   cookbook "web_apache"

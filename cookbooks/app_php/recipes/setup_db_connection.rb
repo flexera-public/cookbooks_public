@@ -25,14 +25,14 @@
 # == Setup PHP Database Connection
 #
 # Make sure config dir exists
-directory File.join(node[:php][:code][:destination], "config") do
+directory File.join(node[:web_apache][:docroot], "config") do
   recursive true 
   owner node[:php][:app_user]
   group node[:php][:app_user]
 end
 
 # Tell MySQL to fill in our connection template
-db_mysql_connect_app File.join(node[:php][:code][:destination], "config", "db.php") do
+db_mysql_connect_app File.join(node[:web_apache][:docroot], "config", "db.php") do
   template "db.php.erb"
   cookbook "app_php"
   database node[:php][:db_schema_name]
