@@ -35,22 +35,22 @@ attribute "web_apache/ssl_enable",
 attribute "web_apache/ssl_certificate",
   :display_name => "cert",
   :description => "cert",
-  :recipes => [ "web_apache::setup_frontend_ssl_vhost" ]
+  :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/ssl_certificate_chain",
   :display_name => "cert",
   :description => "cert",
-  :recipes => [ "web_apache::setup_frontend_ssl_vhost" ]
+  :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/ssl_key",
   :display_name => "key",
   :description => "key",
-  :recipes => [ "web_apache::setup_frontend_ssl_vhost" ]
+  :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/ssl_passphrase",
   :display_name => "passphrase",
   :description => "passphrase",
-  :recipes => [ "web_apache::setup_frontend_ssl_vhost" ]
+  :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/server_name",
   :display_name => "Server Name",
