@@ -53,3 +53,8 @@ when "centos","fedora","suse"
   set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
 end
 
+if web_apache[:ssl_enable]
+  set[:apache][:listen_ports] = ["443","8000"]
+else
+  set[:apache][:listen_ports] = ["80","8000"]
+end
