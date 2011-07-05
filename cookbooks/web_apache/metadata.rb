@@ -23,7 +23,8 @@ attribute "web_apache/mpm",
   :display_name => "Multi-Processing Module",
   :description => "Can be set to 'worker' or 'prefork' and defines the setting in httpd.conf.  Use 'worker' for Rails/Tomcat/Standalone frontends and 'prefork' for PHP.",
   :recipes => all_recipes,
-  :default =>  "worker"
+  :choice => [ "prefork", "worker" ],
+  :default =>  "prefork"
 
 attribute "web_apache/ssl_enable",
   :display_name => "Enable SSL",
