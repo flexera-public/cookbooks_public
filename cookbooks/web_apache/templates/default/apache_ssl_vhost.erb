@@ -1,6 +1,3 @@
-Listen <%= @params[:vhost_port] %>
-NameVirtualHost *:<%= @params[:vhost_port] %>
-
 <VirtualHost *:<%= @params[:vhost_port] %>>
   ServerName <%= @params[:server_name] %>
   DocumentRoot <%= @params[:docroot] %>
@@ -17,7 +14,7 @@ NameVirtualHost *:<%= @params[:vhost_port] %>
 
   RewriteEngine On
   # Uncomment for rewrite debugging
-  #RewriteLog <%= @node[:web_apache][:log_dir] %>/http_rewrite_log
+  #RewriteLog <%= @node[:apache][:log_dir] %>/http_rewrite_log
   #RewriteLogLevel 9
 
   # Enable status page for monitoring purposes
@@ -32,8 +29,8 @@ NameVirtualHost *:<%= @params[:vhost_port] %>
   RewriteRule ^.*$ /system/maintenance.html [L]
 
   # Setup the logs in the appropriate directory
-  CustomLog <%= @node[:web_apache][:log_dir] %>/access_log combined
-  ErrorLog  <%= @node[:web_apache][:log_dir] %>/error_log
+  CustomLog <%= @node[:apache][:log_dir] %>/access_log combined
+  ErrorLog  <%= @node[:apache][:log_dir] %>/error_log
 
   #Remote logging -- handle by syslog
   ErrorLog "|logger -p local3.info -t httperror"

@@ -52,6 +52,10 @@ end
 # include the public recipe for basic installation
 include_recipe "apache2"
 
+if node[:web_apache][:ssl_enable]
+  include_recipe "apache2::mod_ssl"
+end
+
 ## Move Apache
 content_dir = '/mnt/www'
 ruby 'move_apache' do
@@ -66,6 +70,8 @@ end
 
 ## Move Apache Logs
 apache_name = @node[:apache][:dir].split("/").last
+log "apache_name was #{apache_name}"
+log "apache log dir was #{@node[:apache][:log_dir]}"
 ruby 'move_apache_logs' do
   not_if do File.symlink?(@node[:apache][:log_dir]) end
   code <<-EOH

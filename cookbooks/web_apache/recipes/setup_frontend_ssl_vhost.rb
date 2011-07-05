@@ -27,14 +27,21 @@ service "apache2" do
   action :nothing
 end
 
+#TODO:
+# condition for ubuntu
+package "mod_ssl"
+
 # disable default vhost
 apache_site "000-default" do
   enable false
 end
 
-apache_module "ssl"
+
 # TODO:
 # headers and rewrite possible module load
+#apache_module "ssl"
+# TODO:
+# ubuntu module install
 
 ssl_dir =  "/etc/#{@node[:web_apache][:config_subdir]}/rightscale.d/key"
 
@@ -43,8 +50,8 @@ directory ssl_dir do
   recursive true
 end
 
-ssl_certificate_file = ::File.join(ssl_dir, "#{node[:php][:server_name]}.crt"
-ssl_key_file = ::File.join(ssl_dir, "#{node[:php][:server_name]}.key"
+ssl_certificate_file = ::File.join(ssl_dir, "#{node[:php][:server_name]}.crt")
+ssl_key_file = ::File.join(ssl_dir, "#{node[:php][:server_name]}.key")
 
 template ssl_certificate_file do
   mode "0400"
@@ -58,14 +65,14 @@ end
 
 if node[:web_apache][:ssl_passphrase]
   bash "decrypt openssl keyfile" do
-    environment { :OPT_SSL_PASSPHRASE => node[:web_apache][:ssl_passphrase] }
+    environment({ :OPT_SSL_PASSPHRASE => node[:web_apache][:ssl_passphrase] })
     command "openssl rsa -passin env:OPT_SSL_PASSPHRASE -in #{ssl_key_file} -passout env:OPT_SSL_PASSPHRASE -out #{ssl_key_file}"
   end
 end
 
 # Optional certificate chain
 if node[:web_apache][:ssl_certificate_chain]
-  ssl_certificate_chain_file = ::File.join(ssl_dir, "#{node[:web_apache][:server_name]}.sf_crt"
+  ssl_certificate_chain_file = ::File.join(ssl_dir, "#{node[:web_apache][:server_name]}.sf_crt")
   template ssl_certificate_chain_file do
     mode "0400"
     source "ssl_certificate_chain.erb"
@@ -76,7 +83,7 @@ end
 
 # == Configure apache vhost for PHP
 #
-web_app node[:web_apache][:application_name] do
+web_app "#{node[:web_apache][:application_name]}.frontend" do
   template "apache_ssl_vhost.erb"
   docroot node[:web_apache][:docroot]
   vhost_port "443"

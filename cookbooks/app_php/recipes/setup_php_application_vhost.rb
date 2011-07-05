@@ -34,7 +34,8 @@ end
 
 # == Configure apache vhost for PHP
 #
-web_app node[:php][:application_name] do
+#web_app node[:php][:application_name] do
+web_app node[:web_apache][:application_name] do
   template "apache.conf.erb"
   docroot node[:web_apache][:docroot]
   vhost_port "8000"
