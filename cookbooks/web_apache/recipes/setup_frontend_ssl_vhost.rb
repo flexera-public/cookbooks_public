@@ -1,5 +1,5 @@
-# Cookbook Name:: db_mysql
-# Recipe:: setup_apache_vhost
+# Cookbook Name:: web_apache
+# Recipe:: setup_frontend_ssl_vhost
 #
 # Copyright (c) 2011 RightScale Inc
 #

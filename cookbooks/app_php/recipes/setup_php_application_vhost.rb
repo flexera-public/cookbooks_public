@@ -1,5 +1,5 @@
-# Cookbook Name:: db_mysql
-# Recipe:: setup_apache_vhost
+# Cookbook Name:: app_php
+# Recipe:: setup_php_application_vhost
 #
 # Copyright (c) 2011 RightScale Inc
 #
