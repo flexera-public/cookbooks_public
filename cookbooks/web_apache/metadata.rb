@@ -34,18 +34,18 @@ attribute "web_apache/ssl_enable",
   :default =>  "no"
 
 attribute "web_apache/ssl_certificate",
-  :display_name => "cert",
-  :description => "cert",
+  :display_name => "SSL Certificate",
+  :description => "SSL Certificate",
   :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/ssl_certificate_chain",
-  :display_name => "cert",
-  :description => "cert",
+  :display_name => "SSL Certificate Chain",
+  :description => "SSL Certificate Chain",
   :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/ssl_key",
-  :display_name => "key",
-  :description => "key",
+  :display_name => "SSL Certificate Key",
+  :description => "SSL Certificate Key",
   :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/ssl_passphrase",
