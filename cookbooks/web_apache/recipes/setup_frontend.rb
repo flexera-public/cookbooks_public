@@ -1,7 +1,7 @@
 # Cookbook Name:: web_apache
 # Recipe:: setup_frontend
 
-if node[:web_apache][:ssl_enable]
+if node[:web_apache][:ssl_enable] == "true"
   Chef::Log.info "Enabling SSL"
   include_recipe "web_apache::setup_frontend_ssl_vhost"
 else

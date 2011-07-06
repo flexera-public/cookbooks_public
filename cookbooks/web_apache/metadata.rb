@@ -30,8 +30,8 @@ attribute "web_apache/ssl_enable",
   :display_name => "SSL Enable",
   :description => "Enable SSL",
   :recipes => all_recipes,
-  :choice => [ "yes", "no" ],
-  :default =>  "no"
+  :choice => [ "true", "false" ],
+  :default =>  "false"
 
 attribute "web_apache/ssl_certificate",
   :display_name => "SSL Certificate",

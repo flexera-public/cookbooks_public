@@ -40,10 +40,10 @@
         "required": "optional",
         "calculated": false,
         "choice": [
-          "yes",
-          "no"
+          "true",
+          "false"
         ],
-        "default": "no",
+        "default": "false",
         "type": "string",
         "recipes": [
           "web_apache::default",
