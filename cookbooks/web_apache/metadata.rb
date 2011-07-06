@@ -27,7 +27,7 @@ attribute "web_apache/mpm",
   :default =>  "prefork"
 
 attribute "web_apache/ssl_enable",
-  :display_name => "Enable SSL",
+  :display_name => "SSL Enable",
   :description => "Enable SSL",
   :recipes => all_recipes,
   :choice => [ "yes", "no" ],
@@ -49,8 +49,8 @@ attribute "web_apache/ssl_key",
   :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/ssl_passphrase",
-  :display_name => "passphrase",
-  :description => "passphrase",
+  :display_name => "SSL passphrase",
+  :description => "SSL passphrase",
   :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/server_name",

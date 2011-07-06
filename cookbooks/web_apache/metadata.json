@@ -53,7 +53,7 @@
           "web_apache::setup_frontend"
         ],
         "description": "Enable SSL",
-        "display_name": "Enable SSL"
+        "display_name": "SSL Enable"
       },
       "web_apache/ssl_certificate": {
         "required": "optional",
@@ -143,8 +143,8 @@
           "web_apache::setup_frontend_ssl_vhost",
           "web_apache::setup_frontend"
         ],
-        "description": "passphrase",
-        "display_name": "passphrase"
+        "description": "SSL passphrase",
+        "display_name": "SSL passphrase"
       }
     },
     "suggestions": {
