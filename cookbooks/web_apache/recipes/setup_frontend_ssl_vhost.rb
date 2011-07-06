@@ -81,6 +81,16 @@ else
   ssl_certificate_chain_file = nil
 end
 
+node[:apache][:listen_ports].reject!  { |x| x=="80" }
+  
+
+template "#{node[:apache][:dir]}/ports.conf" do
+  cookbook "apache2"
+  source "ports.conf.erb"
+  variables :apache_listen_ports => node[:apache][:listen_ports]
+  notifies :restart, resources(:service => "apache2")
+end
+
 # == Configure apache vhost for PHP
 #
 web_app "#{node[:web_apache][:application_name]}.frontend" do
