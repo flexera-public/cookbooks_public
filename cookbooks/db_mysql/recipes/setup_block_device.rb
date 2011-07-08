@@ -1,8 +1,8 @@
 # Initialize the storage device
 storage_type = node[:db_mysql][:backup][:storage_type] # "volume" or "ros"
 
-database "/mnt/storage" do
-  provider "database"
+db "/mnt/storage" do
+  provider "db"
   storage_type node[:db_mysql][:backup][:storage_type] # "volume" or "ros"
   cloud node[:cloud][:provider]
   # volume only

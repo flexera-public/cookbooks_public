@@ -1,5 +1,5 @@
-database "/mnt/storage" do
-  provider "database"
+db "/mnt/storage" do
+  provider "db"
   
   storage_type node[:db_mysql][:backup][:storage_type]
   cloud node[:cloud][:provider]

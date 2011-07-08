@@ -19,7 +19,7 @@ Setup database data on a blockdevice that supports backup/restore to multiple cl
 
 Example: 
 
-database "/mnt/storage" do
+db "/mnt/storage" do
   provider "database"
   storage_type node[:database][:backup][:storage_type] # "volume" or "ros"
   cloud node[:cloud][:provider]
@@ -35,7 +35,7 @@ end
 
 Here is an example of a backup to the EC2 EBS service:
 
-database "/mnt/storage" do
+db "/mnt/storage" do
   provider "database"
   storage_type "volume"
   cloud "ec2"
@@ -45,7 +45,7 @@ end
 
 Here is an example of a restore from Rackspace CloudFiles service:
 
-database "/mnt/storage" do
+db "/mnt/storage" do
   provider "database"
   storage_type "ros"
   cloud "rackspace"
@@ -65,7 +65,7 @@ WARNING: this will delete any data in your database!
 
 Example:
 
-database "/mnt/storage" do
+db "/mnt/storage" do
   provider "database"
   cloud node[:cloud][:provider]
   storage_type node[:database][:backup][:storage_type] # "volume" or "ros"

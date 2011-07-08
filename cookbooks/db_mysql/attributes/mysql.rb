@@ -39,6 +39,7 @@ set_unless[:db_mysql][:server_usage] = "dedicated"  # or "shared"
 
 # Optional attributes
 #
+set_unless[:db_mysql][:port] = "3306"
 set_unless[:db_mysql][:log_bin_enabled] = true
 set_unless[:db_mysql][:log_bin] = "/mnt/mysql-binlogs/mysql-bin"
 set_unless[:db_mysql][:tmpdir] = "/tmp"
@@ -69,6 +70,7 @@ set_unless[:db_mysql][:backup][:storage_account_id] = ""
 set_unless[:db_mysql][:backup][:storage_account_secret] = ""
 set_unless[:db_mysql][:backup][:storage_container] = ""
 
+set_unless[:db_mysql][:active_tag] = "database:active=true"
 
 # Platform specific attributes
 #

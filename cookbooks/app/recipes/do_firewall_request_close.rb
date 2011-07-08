@@ -1,5 +1,5 @@
-# Cookbook Name:: rs_utils
-# Recipe:: default
+# Cookbook Name:: app
+# Recipe:: do_firewall_request_close
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,14 +22,11 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package "debian-helper-scripts" if node[:platform] == 'ubuntu' && node[:lsb][:codename] == 'hardy'
 
-right_link_tag "server:private_ip=#{@node[:cloud][:private_ips][0]}"
-right_link_tag "server:uuid=#{@node[:rightscale][:instance_uuid]}"
+app "Request all appservers close firewall port to us" do
+  firewall_port_state "closed"
+  firewall_server_tag "loadbalancer:app=#{@node[:app][:listener_name]}"
+  firewall_client_ip @node[:cloud][:private_ips][0]
+  action :firewall_set_request
+end
 
-include_recipe "rs_utils::firewall_enable"
-
-include_recipe "rs_utils::setup_timezone"
-include_recipe "rs_utils::setup_logging"
-include_recipe "rs_utils::setup_mail"
-include_recipe "rs_utils::setup_monitoring"

@@ -1,0 +1,2 @@
+# Opens specified port to the given IP address
+-A FWR <% if @ip_addr -%>--source <%= @ip_addr %> <% end -%>--protocol tcp --dport <%= @port %> -j ACCEPT

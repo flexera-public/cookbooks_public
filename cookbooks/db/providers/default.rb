@@ -48,3 +48,27 @@ action :reset do
   @db = init(new_resource)
   @db.action_reset()
 end
+
+# Request that all DBs open their client port to us.
+action :firewall_set_request do
+  to_enable = (new_resource.firewall_port_state.downcase =~ /open/) ? true : false
+  client_ip = new_resource.firewall_client_ip
+  rs_utils_firewall_request "Request all MySQL Ports open" do
+    machine_tag "database:active=true"
+    port 3306 # mysql only for now
+    enable to_enable
+    ip_addr client_ip
+  end
+end
+
+# Open our client port for all appservers in deployment
+action :firewall_set do
+  to_enable = (new_resource.firewall_port_state.downcase =~ /open/) ? true : false
+  client_tag = new_resource.firewall_client_tag
+  rs_utils_firewall_rules "Open MySQL Ports to all taged servers" do
+    machine_tag client_tag
+    port 3306 # mysql only for now
+    enable to_enable
+  end
+end
+

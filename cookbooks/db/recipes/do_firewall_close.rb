@@ -1,5 +1,5 @@
-# Cookbook Name:: rs_utils
-# Recipe:: default
+# Cookbook Name:: db_mysql
+# Recipe:: do_firewall_close
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,14 +22,9 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package "debian-helper-scripts" if node[:platform] == 'ubuntu' && node[:lsb][:codename] == 'hardy'
 
-right_link_tag "server:private_ip=#{@node[:cloud][:private_ips][0]}"
-right_link_tag "server:uuid=#{@node[:rightscale][:instance_uuid]}"
-
-include_recipe "rs_utils::firewall_enable"
-
-include_recipe "rs_utils::setup_timezone"
-include_recipe "rs_utils::setup_logging"
-include_recipe "rs_utils::setup_mail"
-include_recipe "rs_utils::setup_monitoring"
+db "Close firewall to clients in deployment"do
+  firewall_port_state "closed"
+  firewall_client_tag "loadbalancer:app=*"
+  action :firewall_set
+end
