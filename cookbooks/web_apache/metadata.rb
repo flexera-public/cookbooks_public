@@ -29,7 +29,9 @@ attribute "web_apache/mpm",
 attribute "web_apache/ssl_enable",
   :display_name => "SSL Enable",
   :description => "Enable SSL",
-  :recipes => all_recipes,
+  :recipes => [
+                "web_apache::setup_frontend_ssl_vhost"
+              ],
   :choice => [ "true", "false" ],
   :default =>  "false"
 
