@@ -10,7 +10,7 @@ provides "db_mysql_set_privileges(type, username, password, db_name)"
 provides "db_mysql_gzipfile_backup(db_name, file_path)"
 provides "db_mysql_gzipfile_restore(db_name, file_path)"
 
-recipe  "db_mysql::default", "Runs the 'install_mysql' recipes."
+recipe  "db_mysql::default", "Runs the client 'install_mysql' recipes."
 recipe  "db_mysql::install_client", "Installs the MySQL 5.1 client packages and gem."
 recipe  "db_mysql::install_client_5.0", "Installs the MySQL 5.0 client packages and gem."
 recipe  "db_mysql::install_mysql", "Installs the packages that are required for MySQL servers."
@@ -139,7 +139,7 @@ attribute "db_mysql/backup/storage_type",
   :choice => ["ros", "volume"],
   :type => "string",
   :default => "ros",
-  :recipes => all_recipes
+  :recipes => restore_recipes + backup_recipes
   
 attribute "db_mysql/backup/lineage",
   :display_name => "Backup Lineage",
@@ -272,7 +272,9 @@ attribute "db_mysql/backup/volume_size",
 attribute "db_mysql/server_usage",
   :display_name => "Server Usage",
   :description => "Use 'dedicated' if the mysql config file allocates all existing resources of the machine.  Use 'shared' if the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example.",
-  :recipes => [ "db_mysql::default" ],
+  :recipes => [ 
+                "db_mysql::install_mysql"
+              ],
   :choice => ["shared", "dedicated"],
   :default => "dedicated"
 
