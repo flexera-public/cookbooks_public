@@ -64,6 +64,7 @@ template ssl_key_file do
 end
 
 if node[:web_apache][:ssl_passphrase]
+  Chef::Log.info "Using passphrase"
   bash "decrypt openssl keyfile" do
     environment({ :OPT_SSL_PASSPHRASE => node[:web_apache][:ssl_passphrase] })
     command "openssl rsa -passin env:OPT_SSL_PASSPHRASE -in #{ssl_key_file} -passout env:OPT_SSL_PASSPHRASE -out #{ssl_key_file}"
@@ -72,8 +73,9 @@ end
 
 # Optional certificate chain
 if node[:web_apache][:ssl_certificate_chain]
+  Chef::Log.info "Using SSL certificate chain"
   ssl_certificate_chain_file = ::File.join(ssl_dir, "#{node[:web_apache][:server_name]}.sf_crt")
-  template ssl_certificate_chain_file do
+  template "#{ssl_certificate_chain_file}" do
     mode "0400"
     source "ssl_certificate_chain.erb"
   end
