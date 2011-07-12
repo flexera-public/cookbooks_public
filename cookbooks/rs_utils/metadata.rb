@@ -15,34 +15,34 @@ recipe "rs_utils::setup_timezone", "Sets system timezone."
 recipe "rs_utils::install_tools", "Install RightScale instance tools"
 recipe "rs_utils::install_mysql_collectd_plugin", "Install mysql collectd plugin"
 recipe "rs_utils::install_file_stats_collectd_plugin", "Install file-stats.rb collectd plugin.  This is used for mysql binary backup alerting."
-recipe "rs_utils::firewall_enable", "Enables/Disables iptables firewall."
-recipe "rs_utils::firewall_rule", "Enables/Disables iptables firewall rule (if firewall is enabled)."
+recipe "rs_utils::setup_firewall", "Enables/Disables iptables firewall."
+recipe "rs_utils::setup_firewall_rule", "Enables/Disables iptables firewall rule (if firewall is enabled)."
 
 attribute "rs_utils/firewall/enabled",  
   :display_name => "Enable Firewall",  
   :description => "Enables firewall for this server which only allows port 22 (SSH) external connections.  Use rs_utils::firewall_rule recipe to enable/disable extra ports.",
   :required => "optional",
   :default => "false",
-  :recipes => [ "rs_utils::default", "rs_utils::firewall_enable", "rs_utils::firewall_rule" ]
+  :recipes => [ "rs_utils::default", "rs_utils::setup_firewall", "rs_utils::setup_firewall_rule" ]
 
 attribute "rs_utils/firewall/rule/enable",  
   :display_name => "Enable Firewall Rule",  
   :description => "Enables/Disables a firewall rule.",
   :required => "required",
-  :recipes => [ "rs_utils::firewall_rule" ]
+  :recipes => [ "rs_utils::setup_firewall_rule" ]
 
 attribute "rs_utils/firewall/rule/port",  
   :display_name => "Firewall Port",  
   :description => "Firewall port to Enables/Disable.",
   :required => "required",
-  :recipes => [ "rs_utils::firewall_rule" ]
+  :recipes => [ "rs_utils::setup_firewall_rule" ]
 
 attribute "rs_utils/firewall/rule/ip_address",  
   :display_name => "Firewall IP Address",  
   :description => "Specific IP Address to enable/disable the port for. A value of 'any' allow any IP address",
   :required => "optional",
   :default => "any",
-  :recipes => [ "rs_utils::firewall_rule" ]
+  :recipes => [ "rs_utils::setup_firewall_rule" ]
 
 attribute "rs_utils/timezone",
   :display_name => "Timezone",

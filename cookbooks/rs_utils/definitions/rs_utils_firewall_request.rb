@@ -42,7 +42,7 @@ define :rs_utils_firewall_request, :machine_tag => nil, :enable => true, :ip_add
   
   # Use RightNet to update firewall rules on all tagged servers
   remote_recipe "Request firewall update" do
-    recipe "rs_utils::firewall_rule"
+    recipe "rs_utils::setup_firewall_rule"
     recipients_tags tag
     attributes attrs
   end 
