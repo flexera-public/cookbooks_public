@@ -67,7 +67,7 @@ if node[:web_apache][:ssl_passphrase]
   Chef::Log.info "Using passphrase"
   bash "decrypt openssl keyfile" do
     environment({ :OPT_SSL_PASSPHRASE => node[:web_apache][:ssl_passphrase] })
-    command "openssl rsa -passin env:OPT_SSL_PASSPHRASE -in #{ssl_key_file} -passout env:OPT_SSL_PASSPHRASE -out #{ssl_key_file}"
+    code "openssl rsa -passin env:OPT_SSL_PASSPHRASE -in #{ssl_key_file} -passout env:OPT_SSL_PASSPHRASE -out #{ssl_key_file}"
   end
 end
 
