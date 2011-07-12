@@ -45,7 +45,7 @@
       "default": "false",
       "type": "string",
       "recipes": [
-        "web_apache::setup_frontend_ssl_vhost"
+        "web_apache::install_apache"
       ],
       "display_name": "SSL Enable",
       "description": "Enable SSL"

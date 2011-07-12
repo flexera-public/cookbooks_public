@@ -30,7 +30,7 @@ attribute "web_apache/ssl_enable",
   :display_name => "SSL Enable",
   :description => "Enable SSL",
   :recipes => [
-                "web_apache::setup_frontend_ssl_vhost"
+                "web_apache::install_apache"
               ],
   :choice => [ "true", "false" ],
   :default =>  "false"
