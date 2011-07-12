@@ -12,12 +12,12 @@ recipe "app::do_firewall_close", ""
 recipe "app::do_firewall_request_open", ""
 recipe "app::do_firewall_request_close", ""
 
-attribute "app/listener_name",
-  :display_name => "Applistener Name",
-  :description => "Sets the name of the load balance pool on frontends. Application severs will join this load balance pool by using this name.  Ex: www",
-  :recipes => [ 
-                'app::do_firewall_request_open',
-                'app::do_firewall_request_close'
-                ],
-  :required => true,
-  :default => nil
+#attribute "app/listener_name",
+#  :display_name => "Applistener Name",
+#  :description => "Sets the name of the load balance pool on frontends. Application severs will join this load balance pool by using this name.  Ex: www",
+#  :recipes => [ 
+#                'app::do_firewall_request_open',
+#                'app::do_firewall_request_close'
+#                ],
+#  :required => true,
+#  :default => nil

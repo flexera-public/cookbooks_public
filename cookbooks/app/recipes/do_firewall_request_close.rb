@@ -25,7 +25,7 @@
 
 app "Request all appservers close firewall port to us" do
   firewall_port_state "closed"
-  firewall_server_tag "loadbalancer:app=#{@node[:app][:listener_name]}"
+  firewall_server_tag "loadbalancer:app=#{@node[:lb_haproxy][:applistener_name]}"
   firewall_client_ip @node[:cloud][:private_ips][0]
   action :firewall_set_request
 end
