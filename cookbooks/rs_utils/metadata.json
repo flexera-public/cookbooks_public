@@ -2,6 +2,7 @@
     "version": "0.0.1",
     "recipes": {
       "rs_utils::setup_monitoring": "Install and configure RightScale dashboard monitoring.",
+      "rs_utils::setup_firewall": "Enables/Disables iptables firewall.",
       "rs_utils::setup_logging": "Install and configure RightScale dashboard logging.",
       "rs_utils::install_file_stats_collectd_plugin": "Install file-stats.rb collectd plugin.  This is used for mysql binary backup alerting.",
       "rs_utils::setup_timezone": "Sets system timezone.",
@@ -9,9 +10,8 @@
       "rs_utils::default": "Install utilities",
       "rs_utils::install_mysql_collectd_plugin": "Install mysql collectd plugin",
       "rs_utils::install_tools": "Install RightScale instance tools",
-      "rs_utils::firewall_rule": "Enables/Disables iptables firewall rule (if firewall is enabled).",
-      "rs_utils::firewall_enable": "Enables/Disables iptables firewall.",
       "rs_utils::setup_hostname": "Set system hostname.",
+      "rs_utils::setup_firewall_rule": "Enables/Disables iptables firewall rule (if firewall is enabled).",
       "rs_utils::setup_ssh": "Installs private ssh key."
     },
     "maintainer_email": "support@rightscale.com",
@@ -85,7 +85,7 @@
         ],
         "type": "string",
         "recipes": [
-          "rs_utils::firewall_rule"
+          "rs_utils::setup_firewall_rule"
         ],
         "description": "Firewall port to Enables/Disable.",
         "display_name": "Firewall Port"
@@ -114,7 +114,7 @@
         ],
         "type": "string",
         "recipes": [
-          "rs_utils::firewall_rule"
+          "rs_utils::setup_firewall_rule"
         ],
         "description": "Enables/Disables a firewall rule.",
         "display_name": "Enable Firewall Rule"
@@ -129,8 +129,8 @@
         "type": "string",
         "recipes": [
           "rs_utils::default",
-          "rs_utils::firewall_enable",
-          "rs_utils::firewall_rule"
+          "rs_utils::setup_firewall",
+          "rs_utils::setup_firewall_rule"
         ],
         "description": "Enables firewall for this server which only allows port 22 (SSH) external connections.  Use rs_utils::firewall_rule recipe to enable/disable extra ports.",
         "display_name": "Enable Firewall"
@@ -144,7 +144,7 @@
         "default": "any",
         "type": "string",
         "recipes": [
-          "rs_utils::firewall_rule"
+          "rs_utils::setup_firewall_rule"
         ],
         "description": "Specific IP Address to enable/disable the port for. A value of 'any' allow any IP address",
         "display_name": "Firewall IP Address"
