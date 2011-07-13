@@ -31,6 +31,10 @@ end
 # condition for ubuntu
 package "mod_ssl"
 
+# == Setup PHP Apache vhost on port 80
+#
+php_port = "80"
+
 # disable default vhost
 apache_site "000-default" do
   enable false
@@ -98,7 +102,7 @@ end
 web_app "#{node[:web_apache][:application_name]}.frontend" do
   template "apache_ssl_vhost.erb"
   docroot node[:web_apache][:docroot]
-  vhost_port "443"
+  vhost_port php_port 
   server_name node[:web_apache][:server_name]
   ssl_certificate_chain_file ssl_certificate_chain_file
   ssl_passphrase node[:web_apache][:ssl_passphrase]
