@@ -28,6 +28,9 @@
   RewriteCond %{SCRIPT_FILENAME} !^(.+).(gif|png|jpg|css|js|swf)$
   RewriteRule ^.*$ /system/maintenance.html [L]
 
+  # Next hop is HaProxy
+  RewriteRule ^/(.*)$ http://127.0.0.1:85%{REQUEST_URI} [P,QSA,L]
+
   # Setup the logs in the appropriate directory
   CustomLog <%= @node[:apache][:log_dir] %>/access_log combined
   ErrorLog  <%= @node[:apache][:log_dir] %>/error_log
