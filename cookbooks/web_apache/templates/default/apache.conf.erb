@@ -35,6 +35,19 @@
   CustomLog <%= @node[:apache][:log_dir] %>/access_log combined
   ErrorLog  <%= @node[:apache][:log_dir] %>/error_log
 
+	# Serve any existing local files directly (except actionable ones)
+	RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} -f
+	RewriteCond %{REQUEST_FILENAME} !\.php|\.jsp|\.do|\.action$ [NC]
+	RewriteRule ^/(.*)$ /$1 [QSA,L]
+
+	# Special rule to forward "/" directly to haproxy
+	RewriteCond %{DOCUMENT_ROOT}/$ -d
+	RewriteRule ^/(.*)$ http://127.0.0.1:85%{REQUEST_URI} [P,QSA,L]
+
+	RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} -d
+	RewriteRule ^/(.*)$ /$1 [QSA,L]
+
+
   #Remote logging -- handle by syslog
   ErrorLog "|logger -p local3.info -t httperror"
   CustomLog "|logger -p local3.info -t http" combined
