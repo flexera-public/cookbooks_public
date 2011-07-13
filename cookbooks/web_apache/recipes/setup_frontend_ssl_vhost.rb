@@ -31,9 +31,9 @@ end
 # condition for ubuntu
 package "mod_ssl"
 
-# == Setup PHP Apache vhost on port 80
+# == Setup PHP Apache vhost on port 443
 #
-php_port = "80"
+php_port = "443"
 
 # disable default vhost
 apache_site "000-default" do
