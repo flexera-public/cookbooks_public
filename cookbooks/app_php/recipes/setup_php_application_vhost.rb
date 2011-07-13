@@ -45,7 +45,7 @@ end
 #
 #web_app node[:php][:application_name] do
 web_app node[:web_apache][:application_name] do
-  template "apache.conf.erb"
+  template "app_server.erb"
   docroot node[:web_apache][:docroot]
   vhost_port "8000"
   server_name node[:php][:server_name]
