@@ -88,7 +88,7 @@
           "rs_utils::setup_firewall_rule"
         ],
         "description": "Firewall port to Enables/Disable.",
-        "display_name": "Firewall Port"
+        "display_name": "Firewall Rule Port"
       },
       "rs_utils/process_match_list": {
         "required": "optional",
@@ -118,7 +118,7 @@
           "rs_utils::setup_firewall_rule"
         ],
         "description": "Enables/Disables a firewall rule.",
-        "display_name": "Enable Firewall Rule"
+        "display_name": "Firewall Rule Enable"
       },
       "rs_utils/firewall/enabled": {
         "required": "optional",
@@ -149,7 +149,7 @@
           "rs_utils::setup_firewall_rule"
         ],
         "description": "Specific IP Address to enable/disable the port for. A value of 'any' allow any IP address",
-        "display_name": "Firewall IP Address"
+        "display_name": "Firewall Rule IP Address"
       },
       "rs_utils/short_hostname": {
         "required": "required",

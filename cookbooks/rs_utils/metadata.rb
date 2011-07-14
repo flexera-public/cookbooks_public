@@ -27,20 +27,20 @@ attribute "rs_utils/firewall/enabled",
   :recipes => [ "rs_utils::default", "rs_utils::setup_firewall", "rs_utils::setup_firewall_rule" ]
 
 attribute "rs_utils/firewall/rule/enable",  
-  :display_name => "Enable Firewall Rule",  
+  :display_name => "Firewall Rule Enable",  
   :description => "Enables/Disables a firewall rule.",
   :choice => ["true", "false"],
   :required => "required",
   :recipes => [ "rs_utils::setup_firewall_rule" ]
 
 attribute "rs_utils/firewall/rule/port",  
-  :display_name => "Firewall Port",  
+  :display_name => "Firewall Rule Port",  
   :description => "Firewall port to Enables/Disable.",
   :required => "required",
   :recipes => [ "rs_utils::setup_firewall_rule" ]
 
 attribute "rs_utils/firewall/rule/ip_address",  
-  :display_name => "Firewall IP Address",  
+  :display_name => "Firewall Rule IP Address",  
   :description => "Specific IP Address to enable/disable the port for. A value of 'any' allow any IP address",
   :required => "optional",
   :default => "any",
