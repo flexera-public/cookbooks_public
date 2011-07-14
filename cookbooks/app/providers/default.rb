@@ -18,7 +18,7 @@ action :firewall_set do
   client_tag = new_resource.firewall_client_tag
   rs_utils_firewall_rules "Open AppServer ports to all taged servers" do
     machine_tag client_tag
-    port 80
+    port 8000
     enable to_enable
   end
 end
