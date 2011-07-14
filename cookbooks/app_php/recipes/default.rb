@@ -39,6 +39,12 @@ bash "rpm install of IUS repository" do
 EOF
 end
 
+ruby_block("reload-yum-cache") do
+  block do
+    Chef::Provider::Package::Yum::YumCache.instance.reload
+  end
+end
+
 # == Install user-specified Packages and Modules
 #
 [ node[:php][:package_dependencies] | node[:php][:modules_list] ].flatten.each do |p|
