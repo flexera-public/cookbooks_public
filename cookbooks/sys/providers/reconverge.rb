@@ -22,19 +22,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-class Chef
-  class Resource
-    include RightScale::System::Helper
-  end
-end
-
-
 action :enable do
   recipe = new_resource.recipe_name
-  log "Adding #{recipe} to reconverge via cron"
+  minute_list = RightScale::System::Helper.randomize_reconverge_minutes 
+  log "Adding #{recipe} to reconverge via cron on minutes [#{minute_list}]"
 
   cron "reconverge_#{recipe.gsub("::", "_")}" do
-    minute RightScale::System::Helper.randomize_reconverge_minutes
+    minute minute_list 
     user "root"
     command "rs_run_recipe -n #{recipe} 2>&1 > /var/log/rs_utils_reconverge.log"
     action :create

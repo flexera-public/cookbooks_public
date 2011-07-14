@@ -21,8 +21,10 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-node[:sys][:reconverge_list].split(" ").each |recipe|
-
+node[:sys][:reconverge_list].split(" ").each do |recipe|
+  
+  log "Adding reconverge task for #{recipe}"
+ 
   sys_reconverge "Disable recipe reconverge" do
     recipe_name recipe
     action :disable

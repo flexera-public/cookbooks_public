@@ -31,7 +31,10 @@ module RightScale
       def self.randomize_reconverge_minutes
         shed_string = ""
         s = rand(15) # calc random start minute
-        4.times { |q| shed_string << "#{s + (q*15)} " }
+        4.times do |q| 
+          shed_string << "," unless q == 0
+          shed_string << "#{s + (q*15)}" 
+        end
         shed_string.strip
       end
 
