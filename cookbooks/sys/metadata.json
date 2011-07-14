@@ -1,8 +1,8 @@
 {
     "version": "0.1.0",
     "recipes": {
-      "sys::reconverge_list_enable": "Enable list of recipes to run every 15 minutes.",
-      "sys::reconverge_list_disable": "Disable recipe reconverge list."
+      "sys::do_reconverge_list_disable": "Disable recipe reconverge list.",
+      "sys::do_reconverge_list_enable": "Enable list of recipes to run every 15 minutes."
     },
     "maintainer_email": "support@rightscale.com",
     "conflicting": {
@@ -18,7 +18,8 @@
         "type": "string",
         "recipes": [
           "sys::default",
-          "sys::reconverge_list_enable"
+          "sys::do_reconverge_list_enable",
+          "sys::do_reconverge_list_disable"
         ],
         "description": "A space-separated list of recipes to run every 15 minutes.  This is used to enforce system consistency.  Ex: app::do_firewall_request_open lb_haproxy::do_attach_all",
         "display_name": "Reconverge List"
