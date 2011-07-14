@@ -24,7 +24,7 @@
 
 actions :enable, :disable
 
-attribute :recipe_name, :kind_of => String, :regex => /.*::.*/
+attribute :recipe_name, :kind_of => String, :regex => /[A-Za-z0-9_-]+::[A-Za-z0-9_-]+/
 
 
 # Defines a default action

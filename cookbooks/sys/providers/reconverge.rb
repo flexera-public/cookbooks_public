@@ -30,7 +30,7 @@ action :enable do
   cron "reconverge_#{recipe.gsub("::", "_")}" do
     minute minute_list 
     user "root"
-    command "rs_run_recipe -n #{recipe} 2>&1 > /var/log/rs_utils_reconverge.log"
+    command "rs_run_recipe -n #{recipe} 2>&1 > /var/log/rs_sys_reconverge.log"
     action :create
   end
 
