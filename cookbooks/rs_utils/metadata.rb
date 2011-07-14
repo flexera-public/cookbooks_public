@@ -22,12 +22,14 @@ attribute "rs_utils/firewall/enabled",
   :display_name => "Enable Firewall",  
   :description => "Enables firewall for this server which only allows port 22 (SSH) external connections.  Use rs_utils::firewall_rule recipe to enable/disable extra ports.",
   :required => "optional",
+  :choice => ["true", "false"],
   :default => "false",
   :recipes => [ "rs_utils::default", "rs_utils::setup_firewall", "rs_utils::setup_firewall_rule" ]
 
 attribute "rs_utils/firewall/rule/enable",  
   :display_name => "Enable Firewall Rule",  
   :description => "Enables/Disables a firewall rule.",
+  :choice => ["true", "false"],
   :required => "required",
   :recipes => [ "rs_utils::setup_firewall_rule" ]
 

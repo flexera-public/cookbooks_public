@@ -110,7 +110,8 @@
         "required": "required",
         "calculated": false,
         "choice": [
-
+          "true",
+          "false"
         ],
         "type": "string",
         "recipes": [
@@ -123,7 +124,8 @@
         "required": "optional",
         "calculated": false,
         "choice": [
-
+          "true",
+          "false"
         ],
         "default": "false",
         "type": "string",
