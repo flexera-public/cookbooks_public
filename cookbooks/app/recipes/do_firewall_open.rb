@@ -25,6 +25,6 @@
 
 app "Open firewall to loadbalancers in deployment" do
   firewall_port_state "open"
-  firewall_client_tag "loadbalancer:lb=*"
+  firewall_client_tag "loadbalancer:lb=#{@node[:lb_haproxy][:applistener_name]}"
   action :firewall_set
 end
