@@ -13,4 +13,4 @@ attribute "sys/reconverge_list",
   :description => "A space-separated list of recipes to run every 15 minutes.  This is used to enforce system consistency.  Ex: app::do_firewall_request_open lb_haproxy::do_attach_all",
   :required => "optional",
   :default => "",
-  :recipes => [ "sys::default" ]
+  :recipes => [ "sys::default", "sys::reconverge_list_enable" ]
