@@ -66,7 +66,7 @@ define :repo_git_pull, :url => "", :branch => "master", :dest => "", :cred => ""
       if "#{params[:branch]}" != "master" 
 	      dir = "#{params[:dest]}"
         Dir.chdir(dir) 
-        puts `git checkout --track -b #{params[:branch]} origin/#{params[:branch]}`
+        puts `git checkout #{params[:branch]}`
       end
     EOH
   end

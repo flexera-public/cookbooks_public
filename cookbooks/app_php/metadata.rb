@@ -52,6 +52,6 @@ attribute "php/code/credentials",
 
 attribute "php/code/branch",
   :display_name => "Repository Branch",
-  :description => "The name of the branch within the git repository where the application code should be pulled from.",
-  :default => "master",
+  :description => "The name of the branch/tag/SHA within the git repository where the application code should be pulled from.",
+  :required => true,
   :recipes => [ "app_php::do_update_code", "app_php::do_db_restore",  "app_php::default" ]

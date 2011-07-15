@@ -24,19 +24,18 @@
         "display_name": "Database Schema Name"
       },
       "php/code/branch": {
-        "required": "optional",
+        "required": "required",
         "calculated": false,
         "choice": [
 
         ],
-        "default": "master",
         "type": "string",
         "recipes": [
           "app_php::do_update_code",
           "app_php::do_db_restore",
           "app_php::default"
         ],
-        "description": "The name of the branch within the git repository where the application code should be pulled from.",
+        "description": "The name of the branch/tag/SHA within the git repository where the application code should be pulled from.",
         "display_name": "Repository Branch"
       },
       "php": {
