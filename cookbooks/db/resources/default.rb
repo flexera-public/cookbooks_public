@@ -1,4 +1,4 @@
-actions :backup, :restore, :create, :reset, :firewall_set, :firewall_set_request
+actions :backup, :restore, :create, :reset
 
 # Database settings
 attribute :host, :kind_of => String, :default => "localhost"
@@ -32,7 +32,3 @@ attribute :rackspace_secret, :kind_of => String
 
 attribute :storage_container, :kind_of => String
 
-# Firewall setttings
-attribute :firewall_client_ip, :kind_of => String
-attribute :firewall_client_tag, :kind_of => String
-attribute :firewall_port_state, :equal_to => [ "open", "closed" ]

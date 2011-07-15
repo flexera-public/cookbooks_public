@@ -1,5 +1,4 @@
 # Cookbook Name:: app
-# Recipe:: do_firewall_close
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,9 +21,9 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-app "Close firewall to loadbalancers in deployment" do
-  firewall_port_state "closed"
-  firewall_client_tag "loadbalancer:lb=#{@node[:lb_haproxy][:applistener_name]}"
-  action :firewall_set
+sys_firewall "Open this appserver's ports to all loadbalancers" do
+  machine_tag "loadbalancer:lb=#{@node[:lb_haproxy][:applistener_name]}"
+  port 8000
+  enable false
+  action :update
 end

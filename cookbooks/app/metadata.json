@@ -1,36 +1,36 @@
 {
-  "suggestions": {
-  },
-  "attributes": {
-  },
-  "conflicting": {
-  },
-  "description": "Common utilities for RightScale managed application servers",
-  "dependencies": {
-    "rs_utils": [
+    "version": "0.1.0",
+    "recipes": {
+      "app::request_loadballancer_deny": "Sends request to all application servers to deny connections from the caller's private IP address.  This should be run on a loadbalancer after disconnecting appservers or upon decommissioning.",
+      "app::request_loadballancer_allow": "Sends request to all application servers to allow connections from the caller's private IP address. This should be run on a loadbalancer before attaching application servers.",
+      "app::do_loadballancers_deny": "Deny connections from all loadbalancers in the deployment. This can be run on an appserver to deny connections from all loadbalancers in the deployment.",
+      "app::do_loadballancer_allow": "Allow connections from all loadbalancers in the deployment.  This should be run on an appserver before requesting connection to loadbalancers."
+    },
+    "maintainer_email": "support@rightscale.com",
+    "conflicting": {
+    },
+    "attributes": {
+    },
+    "providing": {
+    },
+    "dependencies": {
+      "sys_firewall": [
 
-    ]
-  },
-  "providing": {
-  },
-  "maintainer": "RightScale, Inc.",
-  "replacing": {
-  },
-  "version": "0.1.0",
-  "maintainer_email": "support@rightscale.com",
-  "name": "app",
-  "recipes": {
-    "app::do_firewall_open": "",
-    "app::do_firewall_close": "",
-    "app::do_firewall_request_close": "",
-    "app::do_firewall_request_open": ""
-  },
-  "groupings": {
-  },
-  "long_description": "= DESCRIPTION:\n\nRightScale Application Server Manager Chef Resource (BETA) \n\nProvides a lightweight resource to manage your application servers across multiple cloud VMs. \n\n\n= REQUIREMENTS:\n\n       \n= USAGE\n\n",
-  "recommendations": {
-  },
-  "platforms": {
-  },
-  "license": "All rights reserved"
-}
+      ]
+    },
+    "replacing": {
+    },
+    "license": "All rights reserved",
+    "groupings": {
+    },
+    "long_description": "= DESCRIPTION:\n\nRightScale application server management cookbook (beta) \n\nThis cookbook contains recipes that generally applicable to all application\nservers.\n\n= REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n       \n= USAGE:\n\nAdd the default recipe to tag your server as an appserver.\n",
+    "recommendations": {
+    },
+    "name": "app",
+    "maintainer": "RightScale, Inc.",
+    "suggestions": {
+    },
+    "platforms": {
+    },
+    "description": "Common utilities for RightScale managed application servers"
+  }

@@ -5,9 +5,9 @@ description      "Installs and configures the MySQL database."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1"
 
-depends "rs_utils"
+depends "sys_firewall"
 
-recipe "db::do_firewall_open", ""
-recipe "db::do_firewall_close", ""
-recipe "db::do_firewall_request_open", ""
-recipe "db::do_firewall_request_close", ""
+recipe "db::do_appservers_allow", "Allow connections from all application servers in the deployment."
+recipe "db::do_appservers_deny", "Deny connections from all application servers in the deployment."
+recipe "db::request_appserver_allow", "Request all DBs allow connections from the calling server's private IP address."
+recipe "db::request_appserver_deny", "Request all DBs deny connections from the calling server's private IP address."

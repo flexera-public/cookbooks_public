@@ -1,0 +1,92 @@
+{
+    "version": "0.1.0",
+    "recipes": {
+      "sys_firewall::default": "Use in conjunction with the node[:sys_firewall][:enabled] \n   input to enable or disable iptables.",
+      "sys_firewall::do_update_rule": "Use for enabling/disabling specific ports."
+    },
+    "maintainer_email": "support@rightscale.com",
+    "conflicting": {
+    },
+    "attributes": {
+      "sys_firewall/rule/ip_address": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "default": "any",
+        "type": "string",
+        "recipes": [
+          "sys_firewall::do_update_rule"
+        ],
+        "description": "Specific IP Address to enable/disable the port for. A value of 'any' allow any IP address",
+        "display_name": "Firewall Rule IP Address"
+      },
+      "sys_firewall/rule/port": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "sys_firewall::do_update_rule"
+        ],
+        "description": "Firewall port to Enable/Disable.",
+        "display_name": "Firewall Rule Port"
+      },
+      "sys_firewall/rule/enable": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+          "enabled",
+          "disabled"
+        ],
+        "default": "enabled",
+        "type": "string",
+        "recipes": [
+          "sys_firewall::do_update_rule"
+        ],
+        "description": "Enables/Disables a firewall rule.",
+        "display_name": "Firewall Rule"
+      },
+      "sys_firewall/enabled": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+          "enabled",
+          "disabled"
+        ],
+        "default": "enabled",
+        "type": "string",
+        "recipes": [
+          "sys_firewall::default",
+          "sys_firewall::do_update_rule"
+        ],
+        "description": "Enables firewall for this server which only allows port 22, 80 and 443 external connections.  Use sys_firewall::do_update_rule recipe to enable/disable extra ports.",
+        "display_name": "IPTables Firewall"
+      }
+    },
+    "providing": {
+    },
+    "dependencies": {
+      "iptables": [
+
+      ]
+    },
+    "replacing": {
+    },
+    "license": "All rights reserved",
+    "groupings": {
+    },
+    "long_description": "= DESCRIPTION:\n\nRightScale firewall cookbook (beta) \n\nBuilt upon the opscode iptables cookbook, this coobook provides a LWRP\nfor managing access to mutliple servers in a deployment using machine \ntags.\n\n= REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n= USAGE:\n\n * Use the default recipe in conjunction with the node[:sys_firewall][:enabled] \n   input to enable or disable iptables.\n\n * Use do_update_rule recipe for enabling/disabling specific ports.\n\n== Updating firewall rules using tags*\n\n=== Update Action\nTo open a local port to all servers with a given tag use:\n\n  sys_firewall \"Open this database's ports to all appservers\" do\n    machine_tag \"appserver:active=true\"\n    port 3306\n    enable true\n    action :update\n  end\n  \nThis can be useful as a server is booting to open up access for multiple \nsystems at once.\n    \n=== Update Request Action\nTo request all servers with a given tag close a port to a given IP address use:\n\n  sys_firewall \"Request all appservers close ports to this loadbalancer\" do\n    machine_tag \"loadbalancer:app=#{@node[:lb_haproxy][:applistener_name]}\"\n    port 8000\n    enable false\n    ip_addr @node[:cloud][:private_ips][0]\n    action :update_request\n  end\n  \nThis can be useful when decommissioning a running server that had previously\nrequested ports opened.\n\n  \n* all tag based actions are scoped to the deployment\n\n",
+    "recommendations": {
+    },
+    "name": "sys_firewall",
+    "maintainer": "RightScale, Inc.",
+    "suggestions": {
+    },
+    "platforms": {
+    },
+    "description": "Installs/Configures firewall"
+  }

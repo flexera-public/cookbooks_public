@@ -1,5 +1,4 @@
-# Cookbook Name:: db_mysql
-# Recipe:: do_firewall_close
+# Cookbook Name:: app 
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,9 +21,10 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-db "Close firewall to clients in deployment"do
-  firewall_port_state "closed"
-  firewall_client_tag "loadbalancer:app=*"
-  action :firewall_set
+sys_firewall "Request all appservers open ports to this loadbalancer" do
+  machine_tag "loadbalancer:app=#{@node[:lb_haproxy][:applistener_name]}"
+  port 8000
+  enable true
+  ip_addr @node[:cloud][:private_ips][0]
+  action :update_request
 end

@@ -1,12 +1,14 @@
 = DESCRIPTION:
 
-RightScale Application Server Manager Chef Resource (BETA) 
+RightScale application server management cookbook (beta) 
 
-Provides a lightweight resource to manage your application servers across multiple cloud VMs. 
-
+This cookbook contains recipes that generally applicable to all application
+servers.
 
 = REQUIREMENTS:
 
+Requires a VM launched from a RightScale managed RightImage 
        
-= USAGE
+= USAGE:
 
+Add the default recipe to tag your server as an appserver.

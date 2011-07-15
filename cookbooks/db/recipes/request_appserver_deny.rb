@@ -1,5 +1,4 @@
-# Cookbook Name:: app
-# Recipe:: do_firewall_request_close
+# Cookbook Name:: db_mysql
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,11 +21,10 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-app "Request all appservers close firewall port to us" do
-  firewall_port_state "closed"
-  firewall_server_tag "loadbalancer:app=#{@node[:lb_haproxy][:applistener_name]}"
-  firewall_client_ip @node[:cloud][:private_ips][0]
-  action :firewall_set_request
+sys_firewall "Request all database close ports to this application server" do
+  machine_tag "database:active=true"
+  port 3306 # mysql only for now
+  enable false
+  ip_addr @node[:cloud][:private_ips][0]
+  action :update_request
 end
-

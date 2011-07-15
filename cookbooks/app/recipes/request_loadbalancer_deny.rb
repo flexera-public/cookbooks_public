@@ -1,5 +1,4 @@
-# Cookbook Name:: app 
-# Recipe:: do_firewall_request_open
+# Cookbook Name:: app
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,9 +21,11 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-app "Request all appserver open firewall port to us" do
-  firewall_port_state "open"
-  firewall_server_tag "loadbalancer:app=#{@node[:lb_haproxy][:applistener_name]}"
-  firewall_client_ip @node[:cloud][:private_ips][0]
-  action :firewall_set_request
+sys_firewall "Request all appservers close ports to this loadbalancer" do
+  machine_tag "loadbalancer:app=#{@node[:lb_haproxy][:applistener_name]}"
+  port 8000
+  enable false
+  ip_addr @node[:cloud][:private_ips][0]
+  action :update_request
 end
+

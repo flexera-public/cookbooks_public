@@ -1,4 +1,4 @@
-if node[:rs_utils][:firewall][:enabled] == "true" 
+if node[:sys_firewall][:enabled] == "enabled" 
   include_recipe "iptables"
   rs_utils_firewall_rule "22" # SSH
   rs_utils_firewall_rule "80" # HTTP

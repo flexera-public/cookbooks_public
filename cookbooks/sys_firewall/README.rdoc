@@ -1,0 +1,51 @@
+= DESCRIPTION:
+
+RightScale firewall cookbook (beta) 
+
+Built upon the opscode iptables cookbook, this coobook provides a LWRP
+for managing access to mutliple servers in a deployment using machine 
+tags.
+
+= REQUIREMENTS:
+
+Requires a VM launched from a RightScale managed RightImage 
+
+= USAGE:
+
+ * Use the default recipe in conjunction with the node[:sys_firewall][:enabled] 
+   input to enable or disable iptables.
+
+ * Use do_update_rule recipe for enabling/disabling specific ports.
+
+== Updating firewall rules using tags*
+
+=== Update Action
+To open a local port to all servers with a given tag use:
+
+  sys_firewall "Open this database's ports to all appservers" do
+    machine_tag "appserver:active=true"
+    port 3306
+    enable true
+    action :update
+  end
+  
+This can be useful as a server is booting to open up access for multiple 
+systems at once.
+    
+=== Update Request Action
+To request all servers with a given tag close a port to a given IP address use:
+
+  sys_firewall "Request all appservers close ports to this loadbalancer" do
+    machine_tag "loadbalancer:app=#{@node[:lb_haproxy][:applistener_name]}"
+    port 8000
+    enable false
+    ip_addr @node[:cloud][:private_ips][0]
+    action :update_request
+  end
+  
+This can be useful when decommissioning a running server that had previously
+requested ports opened.
+
+  
+* all tag based actions are scoped to the deployment
+

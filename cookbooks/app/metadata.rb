@@ -5,19 +5,9 @@ description      "Common utilities for RightScale managed application servers"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1"
 
-depends "rs_utils"
+depends "sys_firewall"
 
-recipe "app::do_firewall_open", ""
-recipe "app::do_firewall_close", ""
-recipe "app::do_firewall_request_open", ""
-recipe "app::do_firewall_request_close", ""
-
-#attribute "app/listener_name",
-#  :display_name => "Applistener Name",
-#  :description => "Sets the name of the load balance pool on frontends. Application severs will join this load balance pool by using this name.  Ex: www",
-#  :recipes => [ 
-#                'app::do_firewall_request_open',
-#                'app::do_firewall_request_close'
-#                ],
-#  :required => true,
-#  :default => nil
+recipe "app::do_loadballancer_allow", "Allow connections from all loadbalancers in the deployment.  This should be run on an appserver before requesting connection to loadbalancers."
+recipe "app::do_loadballancers_deny", "Deny connections from all loadbalancers in the deployment. This can be run on an appserver to deny connections from all loadbalancers in the deployment."
+recipe "app::request_loadballancer_allow", "Sends request to all application servers to allow connections from the caller's private IP address. This should be run on a loadbalancer before attaching application servers."
+recipe "app::request_loadballancer_deny", "Sends request to all application servers to deny connections from the caller's private IP address.  This should be run on a loadbalancer after disconnecting appservers or upon decommissioning."

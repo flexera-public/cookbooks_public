@@ -20,29 +20,13 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-define :rs_utils_firewall_rule, :ip_addr => nil, :enable => true do
-  port = params[:port] ? params[:port] : params[:name]
-  ip_addr = params[:ip_addr] 
-  to_enable = params[:enable]
+actions :update, :update_request
 
-  # Tell user what is going on
-  msg = "#{to_enable ? "Enabling" : "Disabling"} firewall rule for port #{port}"
-  msg << " only for #{ip_addr}" if ip_addr
-  msg << " for everyone!" unless ip_addr
-  log msg
 
-  include_recipe "iptables::default"
-  
-  # Use iptables cookbook with our template to create rule
-  rule = "port_#{port}"
-  rule << "_#{ip_addr}" if ip_addr
-  iptables_rule rule do
-    source "iptables_port.erb"
-    cookbook "rs_utils"
-    variables ({ 
-      :port => port,
-      :ip_addr => ip_addr })
-    enable to_enable
-  end 
-  
-end
+attribute :port, :kind_of => String, :required => true
+attribute :enable, :equal_to => [ true, false ], :required => true
+
+attribute :machine_tag, :kind_of => String, :regex => /^([^:]+):(.+)=.+/
+attribute :collection, :kind_of => String, :default => "firewall"
+attribute :client_ip, :kind_of => String
+attribute :server_ip, :kind_of => String

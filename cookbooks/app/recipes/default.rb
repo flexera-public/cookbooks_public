@@ -1,5 +1,5 @@
-# Cookbook Name:: db_mysql
-# Recipe:: do_firewall_open
+# Cookbook Name:: app
+# Recipe:: default
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,9 +22,4 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-db "Open firewall to clients in deployment"do
-  firewall_port_state "open"
-  firewall_client_tag "loadbalancer:app="
-  action :firewall_set
-end
+right_link_tag "appserver:enabled=true"
