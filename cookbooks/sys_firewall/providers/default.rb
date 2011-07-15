@@ -27,7 +27,9 @@ action :update do
   port = new_resource.port ? new_resource.port : new_resource.name
   to_enable = new_resource.enable
   ip_addr = new_resource.ip_addr
+  allow_any = (ip_addr.downcase =~ /any/) ? true : false
   tag = new_resource.machine_tag
+  ip_addr = nil if allow_any && tag  # use of tags overrides default of 'any'
   collection_name = new_resource.collection
   raise "ERROR: ip_addr param cannot be used with machine_tag param." if tag && ip_addr
 
