@@ -1,11 +1,11 @@
 {
     "version": "0.1.0",
     "recipes": {
-      "app::request_loadballancer_deny": "Sends request to all application servers to deny connections from the caller's private IP address.  This should be run on a loadbalancer after disconnecting appservers or upon decommissioning.",
+      "app::request_loadbalancer_deny": "Sends request to all application servers to deny connections from the caller's private IP address.  This should be run on a loadbalancer after disconnecting appservers or upon decommissioning.",
       "app::default": "Tags your server as an appserver. This is used by servers (like databases) to identify their clients.",
-      "app::request_loadballancer_allow": "Sends request to all application servers to allow connections from the caller's private IP address. This should be run on a loadbalancer before attaching application servers.",
-      "app::do_loadballancers_deny": "Deny connections from all loadbalancers in the deployment. This can be run on an appserver to deny connections from all loadbalancers in the deployment.",
-      "app::do_loadballancer_allow": "Allow connections from all loadbalancers in the deployment.  This should be run on an appserver before requesting connection to loadbalancers."
+      "app::do_loadbalancers_allow": "Allow connections from all loadbalancers in the deployment.  This should be run on an appserver before requesting connection to loadbalancers.",
+      "app::request_loadbalancer_allow": "Sends request to all application servers to allow connections from the caller's private IP address. This should be run on a loadbalancer before attaching application servers.",
+      "app::do_loadbalancers_deny": "Deny connections from all loadbalancers in the deployment. This can be run on an appserver to deny connections from all loadbalancers in the deployment."
     },
     "maintainer_email": "support@rightscale.com",
     "conflicting": {
