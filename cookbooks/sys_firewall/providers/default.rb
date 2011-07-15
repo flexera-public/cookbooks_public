@@ -40,7 +40,7 @@ action :update do
   log msg
 
   # Update rules 
-  unless node[:sys_firewall][:enabled] == "true" 
+  unless node[:sys_firewall][:enabled] == "enabled" 
     log "Firewall not enabled. Not adding rule for #{port}."
   else
     include_recipe "iptables::default"
