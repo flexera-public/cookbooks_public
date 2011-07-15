@@ -106,7 +106,7 @@ action :update_request do
   
   # Use RightNet to update firewall rules on all tagged servers
   remote_recipe "Request firewall update" do
-    recipe "sys_firewall::do_update_rule"
+    recipe "sys_firewall::setup_rule"
     recipients_tags tag
     attributes attrs
   end 

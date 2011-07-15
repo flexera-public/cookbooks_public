@@ -9,32 +9,32 @@ depends "iptables"
 
 recipe "sys_firewall::default", "Use in conjunction with the node[:sys_firewall][:enabled] 
    input to enable or disable iptables."
-recipe "sys_firewall::do_update_rule", "Use for enabling/disabling specific ports."
+recipe "sys_firewall::setup_rule", "Use for enabling/disabling specific ports."
 
 attribute "sys_firewall/enabled",  
   :display_name => "IPTables Firewall",  
-  :description => "Enables firewall for this server which only allows port 22, 80 and 443 external connections.  Use sys_firewall::do_update_rule recipe to enable/disable extra ports.",
+  :description => "Enables firewall for this server which only allows port 22, 80 and 443 external connections.  Use sys_firewall::setup_rule recipe to enable/disable extra ports.",
   :required => "optional",
   :choice => ["enabled", "disabled"],
   :default => "enabled",
-  :recipes => [ "sys_firewall::default", "sys_firewall::do_update_rule" ]
+  :recipes => [ "sys_firewall::default", "sys_firewall::setup_rule" ]
 
 attribute "sys_firewall/rule/enable",  
   :display_name => "Firewall Rule",  
   :description => "Enables/Disables a firewall rule.",
   :choice => ["enabled", "disabled"],
   :default => "enabled",
-  :recipes => [ "sys_firewall::do_update_rule" ]
+  :recipes => [ "sys_firewall::setup_rule" ]
 
 attribute "sys_firewall/rule/port",  
   :display_name => "Firewall Rule Port",  
   :description => "Firewall port to Enable/Disable.",
   :required => "required",
-  :recipes => [ "sys_firewall::do_update_rule" ]
+  :recipes => [ "sys_firewall::setup_rule" ]
 
 attribute "sys_firewall/rule/ip_address",  
   :display_name => "Firewall Rule IP Address",  
   :description => "Specific IP Address to enable/disable the port for. A value of 'any' allow any IP address",
   :required => "optional",
   :default => "any",
-  :recipes => [ "sys_firewall::do_update_rule" ]
+  :recipes => [ "sys_firewall::setup_rule" ]

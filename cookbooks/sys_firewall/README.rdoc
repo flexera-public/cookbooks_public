@@ -15,7 +15,7 @@ Requires a VM launched from a RightScale managed RightImage
  * Use the default recipe in conjunction with the node[:sys_firewall][:enabled] 
    input to enable or disable iptables.
 
- * Use do_update_rule recipe for enabling/disabling specific ports.
+ * Use setup_rule recipe for enabling/disabling specific ports.
 
 == Updating firewall rules using tags*
 
