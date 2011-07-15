@@ -23,14 +23,16 @@
 
 action :update do
   
-  # Deal with attributes
+  # Set local variables from attributes
   port = new_resource.port ? new_resource.port : new_resource.name
   to_enable = new_resource.enable
   ip_addr = new_resource.ip_addr
-  allow_any = (ip_addr.downcase =~ /any/) ? true : false
   tag = new_resource.machine_tag
-  ip_addr = nil if allow_any && tag  # use of tags overrides default of 'any'
   collection_name = new_resource.collection
+  
+  # We only support ip_addr or tags, however, ip_addr defaults to 'any' so reconcile here
+  ip_addr.downcase!
+  ip_addr = nil if (ip_addr == "any") && tag  # tags win, so clear 'any'
   raise "ERROR: ip_addr param cannot be used with machine_tag param." if tag && ip_addr
 
   # Tell user what is going on
@@ -65,7 +67,7 @@ action :update do
         ip_list << client_ip
       end
     end
-    
+
     # Setup iptables rebuild resouce 
     execute "rebuild-iptables" do
       command "/usr/sbin/rebuild-iptables"
@@ -74,14 +76,17 @@ action :update do
     
     # Use iptables cookbook to create open/close port for ip list
     ip_list.each do |ip|
+      
+      log "Adding iptables rule for IP Address: #{ip}"
+      
       rule = "port_#{port}"
-      rule << "_#{ip_addr}" if ip_addr
+      rule << "_#{ip}" 
       iptables_rule rule do
         source "iptables_port.erb"
         cookbook "sys_firewall"
         variables ({ 
           :port => port,
-          :ip_addr => ip_addr })
+          :ip_addr => (ip == "any") ? nil : ip })
         enable to_enable
       end 
     end
