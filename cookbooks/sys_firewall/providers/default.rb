@@ -43,7 +43,6 @@ action :update do
   unless node[:sys_firewall][:enabled] == "enabled" 
     log "Firewall not enabled. Not adding rule for #{port}."
   else
-    include_recipe "iptables::default"
     
     ip_list = [ ]
     
@@ -65,6 +64,12 @@ action :update do
         client_ip = Regexp.last_match[1]
         ip_list << client_ip
       end
+    end
+    
+    # Setup iptables rebuild resouce 
+    execute "rebuild-iptables" do
+      command "/usr/sbin/rebuild-iptables"
+      action :nothing
     end
     
     # Use iptables cookbook to create open/close port for ip list
