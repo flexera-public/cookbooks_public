@@ -36,13 +36,12 @@
         "display_name": "Firewall Rule Port"
       },
       "sys_firewall/rule/enable": {
-        "required": "optional",
+        "required": "required",
         "calculated": false,
         "choice": [
-          "enabled",
-          "disabled"
+          "enable",
+          "disable"
         ],
-        "default": "enabled",
         "type": "string",
         "recipes": [
           "sys_firewall::setup_rule"

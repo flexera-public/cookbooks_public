@@ -2,7 +2,7 @@
 rule_port = node[:sys_firewall][:rule][:port]
 rule_ip = node[:sys_firewall][:rule][:ip_address]
 rule_ip = (rule_ip == "" || rule_ip.downcase =~ /any/ ) ? nil : rule_ip 
-to_enable = (node[:sys_firewall][:rule][:enable] == "true") ? true : false
+to_enable = (node[:sys_firewall][:rule][:enable] == "enable") ? true : false
 
 if node[:sys_firewall][:enabled] == "enabled"
 

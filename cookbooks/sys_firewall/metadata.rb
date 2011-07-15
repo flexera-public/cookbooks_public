@@ -22,8 +22,8 @@ attribute "sys_firewall/enabled",
 attribute "sys_firewall/rule/enable",  
   :display_name => "Firewall Rule",  
   :description => "Enables/Disables a firewall rule.",
-  :choice => ["enabled", "disabled"],
-  :default => "enabled",
+  :choice => ["enable", "disable"],
+  :required => "required",
   :recipes => [ "sys_firewall::setup_rule" ]
 
 attribute "sys_firewall/rule/port",  
