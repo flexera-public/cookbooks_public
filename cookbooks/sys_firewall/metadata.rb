@@ -7,9 +7,8 @@ version          "0.1"
 
 depends "iptables"
 
-recipe "sys_firewall::default", "Use in conjunction with the node[:sys_firewall][:enabled] 
-   input to enable or disable iptables."
-recipe "sys_firewall::setup_rule", "Use for enabling/disabling specific ports."
+recipe "sys_firewall::default", "Use in conjunction with the 'Firewall' input to enable or disable iptables."
+recipe "sys_firewall::setup_rule", "Use for enabling/disabling specific firewall ports."
 
 attribute "sys_firewall/enabled",  
   :display_name => "Firewall",  

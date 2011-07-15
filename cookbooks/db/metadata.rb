@@ -7,8 +7,12 @@ version          "0.1"
 
 depends "sys_firewall"
 
-recipe "db::default", "Tags your server as a database. This is used by clients (like appserver) to identify active datbases."
-recipe "db::do_appservers_allow", "Allow connections from all application servers in the deployment."
-recipe "db::do_appservers_deny", "Deny connections from all application servers in the deployment."
-recipe "db::request_appserver_allow", "Request all DBs allow connections from the calling server's private IP address."
-recipe "db::request_appserver_deny", "Request all DBs deny connections from the calling server's private IP address."
+recipe "db::default", "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases."
+
+recipe "db::do_appservers_allow", "Allow connections from all application servers in the deployment that are tagged with appserver:active=true. This should be run on a database server to allow application servers to connect."
+recipe "db::do_appservers_deny", "Deny connections from all application servers in the deployment that are tagged with appserver:active=true.  This can be run on a database server to deny connections from all application servers in the deployment."
+
+recipe "db::request_appserver_allow", "Sends request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true. This should be run on a application server before attempting a database connection."
+
+recipe "db::request_appserver_deny", "Sends request to deny connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true.  This should be run on a application server upon decommissioning."
+

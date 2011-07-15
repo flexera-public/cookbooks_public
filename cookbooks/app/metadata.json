@@ -1,11 +1,11 @@
 {
     "version": "0.1.0",
     "recipes": {
-      "app::request_loadbalancer_deny": "Sends request to all application servers to deny connections from the caller's private IP address.  This should be run on a loadbalancer after disconnecting appservers or upon decommissioning.",
-      "app::default": "Tags your server as an appserver. This is used by servers (like databases) to identify their clients.",
-      "app::do_loadbalancers_allow": "Allow connections from all loadbalancers in the deployment.  This should be run on an appserver before requesting connection to loadbalancers.",
-      "app::request_loadbalancer_allow": "Sends request to all application servers to allow connections from the caller's private IP address. This should be run on a loadbalancer before attaching application servers.",
-      "app::do_loadbalancers_deny": "Deny connections from all loadbalancers in the deployment. This can be run on an appserver to deny connections from all loadbalancers in the deployment."
+      "app::request_loadbalancer_deny": "Sends request to all application servers tagged with loadbalancer:app=<applistener_name> to deny connections from the caller's private IP address.  This should be run on a load balancer after disconnecting application servers or upon decommissioning.",
+      "app::default": "Adds the appserver:active=true tag to your server which identifies it as an application server. This tag is used by database servers, for example, for opening firewall ports.",
+      "app::do_loadbalancers_allow": "Allow connections from all load balancers within a given listener pool which are tagged with loadbalancer:lb=<applistener_name>.  This should be run on an application server before requesting connection to load balancers.",
+      "app::request_loadbalancer_allow": "Sends request to all application servers tagged with loadbalancer:app=<applistener_name> to allow connections from the caller's private IP address. This should be run on a load balancer before attaching application servers.",
+      "app::do_loadbalancers_deny": "Deny connections from all load balancers which are tagged with loadbalancer:lb=<applistener_name>. This can be run on an application server to deny connections from all load balancers within a given listener pool."
     },
     "maintainer_email": "support@rightscale.com",
     "conflicting": {

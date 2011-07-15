@@ -12,8 +12,8 @@ Requires a VM launched from a RightScale managed RightImage
 
 = USAGE:
 
- * Use the default recipe in conjunction with the node[:sys_firewall][:enabled] 
-   input to enable or disable iptables.
+ * Use the default recipe in conjunction with the 'Firewall' input to 
+   enable or disable iptables.
 
  * Use setup_rule recipe for enabling/disabling specific ports.
 
@@ -36,7 +36,7 @@ systems at once.
 To request all servers with a given tag close a port to a given IP address use:
 
   sys_firewall "Request all appservers close ports to this loadbalancer" do
-    machine_tag "loadbalancer:app=#{@node[:lb_haproxy][:applistener_name]}"
+    machine_tag "loadbalancer:app=www"
     port 8000
     enable false
     ip_addr @node[:cloud][:private_ips][0]
