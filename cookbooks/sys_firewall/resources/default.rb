@@ -23,10 +23,16 @@
 actions :update, :update_request
 
 
-attribute :port, :kind_of => String, :required => true
-attribute :enable, :equal_to => [ true, false ], :required => true
+attribute :port, :kind_of => Integer # Can also be passed as resource name
+attribute :enable, :equal_to => [ true, false ], :default => true
 
+attribute :ip_addr, :kind_of => String, :default => "any"
 attribute :machine_tag, :kind_of => String, :regex => /^([^:]+):(.+)=.+/
-attribute :collection, :kind_of => String, :default => "firewall"
-attribute :client_ip, :kind_of => String
-attribute :server_ip, :kind_of => String
+attribute :collection, :kind_of => String, :default => "sys_firewall"
+
+
+# Defines a default action
+def initialize(*args)
+  super
+  @action = :update  
+end

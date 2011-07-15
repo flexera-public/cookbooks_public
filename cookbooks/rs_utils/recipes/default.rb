@@ -27,7 +27,6 @@ package "debian-helper-scripts" if node[:platform] == 'ubuntu' && node[:lsb][:co
 right_link_tag "server:private_ip=#{@node[:cloud][:private_ips][0]}"
 right_link_tag "server:uuid=#{@node[:rightscale][:instance_uuid]}"
 
-include_recipe "rs_utils::setup_firewall"
 include_recipe "rs_utils::setup_timezone"
 include_recipe "rs_utils::setup_logging"
 include_recipe "rs_utils::setup_mail"

@@ -26,7 +26,7 @@ action :update do
   # Deal with attributes
   port = new_resource.port ? new_resource.port : new_resource.name
   to_enable = new_resource.enable
-  ip_addr = new_resource.client_ip
+  ip_addr = new_resource.ip_addr
   tag = new_resource.machine_tag
   collection_name = new_resource.collection
   raise "ERROR: ip_addr param cannot be used with machine_tag param." if tag && ip_addr
@@ -38,7 +38,7 @@ action :update do
   log msg
 
   # Update rules 
-  unless node[:rs_utils][:firewall][:enabled] == "true" 
+  unless node[:sys_firewall][:enabled] == "true" 
     log "Firewall not enabled. Not adding rule for #{port}."
   else
     include_recipe "iptables::default"
@@ -87,7 +87,7 @@ action :update_request do
   # Deal with attributes
   port = new_resource.port ? new_resource.port : new_resource.name
   to_enable = new_resource.enable
-  ip_addr = new_resource.client_ip
+  ip_addr = new_resource.ip_addr
   raise "ERROR: client_ip must be specified." unless ip_addr
   tag = new_resource.machine_tag
   raise "ERROR: machine_tag must be specified." unless tag

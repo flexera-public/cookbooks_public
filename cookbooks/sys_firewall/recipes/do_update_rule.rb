@@ -9,6 +9,7 @@ if node[:sys_firewall][:enabled] == "enabled"
   sys_firewall rule_port do
     ip_addr rule_ip
     enable to_enable
+    action :update
   end
 
 else 

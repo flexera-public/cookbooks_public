@@ -1,8 +1,8 @@
 if node[:sys_firewall][:enabled] == "enabled" 
   include_recipe "iptables"
-  rs_utils_firewall_rule "22" # SSH
-  rs_utils_firewall_rule "80" # HTTP
-  rs_utils_firewall_rule "443" # HTTPS
+  sys_firewall "22" # SSH
+  sys_firewall "80" # HTTP
+  sys_firewall "443" # HTTPS
 else
   service "iptables" do
     supports :status => true 
