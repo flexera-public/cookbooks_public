@@ -12,8 +12,8 @@ recipe "sys_firewall::default", "Use in conjunction with the node[:sys_firewall]
 recipe "sys_firewall::setup_rule", "Use for enabling/disabling specific ports."
 
 attribute "sys_firewall/enabled",  
-  :display_name => "IPTables Firewall",  
-  :description => "Enables firewall for this server which only allows port 22, 80 and 443 external connections.  Use sys_firewall::setup_rule recipe to enable/disable extra ports.",
+  :display_name => "Firewall",  
+  :description => "Enables iptables firewall for this server which allows port 22, 80 and 443 open by default.  Use sys_firewall::setup_rule recipe to enable/disable extra ports.",
   :required => "optional",
   :choice => ["enabled", "disabled"],
   :default => "enabled",
