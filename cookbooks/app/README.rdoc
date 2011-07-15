@@ -11,4 +11,5 @@ Requires a VM launched from a RightScale managed RightImage
        
 = USAGE:
 
-Add the default recipe to tag your server as an appserver.
+Add the default recipe to tag your server as an appserver. This is used by 
+servers (like databases) to identify their clients.

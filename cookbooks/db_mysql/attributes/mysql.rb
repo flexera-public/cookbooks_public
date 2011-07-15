@@ -70,8 +70,6 @@ set_unless[:db_mysql][:backup][:storage_account_id] = ""
 set_unless[:db_mysql][:backup][:storage_account_secret] = ""
 set_unless[:db_mysql][:backup][:storage_container] = ""
 
-set_unless[:db_mysql][:active_tag] = "database:active=true"
-
 # Platform specific attributes
 #
 set_unless[:db_mysql][:kill_bug_mysqld_safe] = true

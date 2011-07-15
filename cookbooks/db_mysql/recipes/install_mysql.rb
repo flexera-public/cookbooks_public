@@ -49,5 +49,3 @@ execute "/usr/bin/mysql_install_db ; touch #{touchfile}" do
   creates touchfile
 end
 
-# Let others know we are a DB
-tag node[:db_mysql][:active_tag]
