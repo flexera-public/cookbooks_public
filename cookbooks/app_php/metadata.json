@@ -1,17 +1,4 @@
 {
-    "suggestions": {
-    },
-    "description": "Installs the php application server.",
-    "maintainer_email": "support@rightscale.com",
-    "conflicting": {
-    },
-    "providing": {
-    },
-    "replacing": {
-    },
-    "platforms": {
-    },
-    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
     "version": "0.0.1",
     "recipes": {
       "app_php::do_update_code": "Update application source files from the remote repository.",
@@ -19,10 +6,9 @@
       "app_php::setup_db_connection": "Setup MySQL database db.php connection file.",
       "app_php::default": "Installs the php application server."
     },
-    "groupings": {
+    "maintainer_email": "support@rightscale.com",
+    "conflicting": {
     },
-    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
-    "name": "app_php",
     "attributes": {
       "php/db_schema_name": {
         "required": "optional",
@@ -34,8 +20,8 @@
         "recipes": [
           "app_php::setup_db_connection"
         ],
-        "display_name": "Database Schema Name",
-        "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema"
+        "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
+        "display_name": "Database Schema Name"
       },
       "php/code/branch": {
         "required": "optional",
@@ -50,8 +36,8 @@
           "app_php::do_db_restore",
           "app_php::default"
         ],
-        "display_name": "Repository Branch",
-        "description": "The name of the branch within the git repository where the application code should be pulled from."
+        "description": "The name of the branch within the git repository where the application code should be pulled from.",
+        "display_name": "Repository Branch"
       },
       "php": {
         "required": "optional",
@@ -91,8 +77,8 @@
           "app_php::do_db_restore",
           "app_php::default"
         ],
-        "display_name": "Repository Credentials",
-        "description": "The private SSH key of the git repository."
+        "description": "The private SSH key of the git repository.",
+        "display_name": "Repository Credentials"
       },
       "php/code": {
         "required": "optional",
@@ -107,7 +93,7 @@
         "display_name": "PHP Application Code"
       },
       "php/code/url": {
-        "required": "optional",
+        "required": "required",
         "calculated": false,
         "choice": [
 
@@ -118,11 +104,11 @@
           "app_php::do_db_restore",
           "app_php::default"
         ],
-        "display_name": "Repository URL",
-        "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git"
+        "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
+        "display_name": "Repository URL"
       }
     },
-    "recommendations": {
+    "providing": {
     },
     "dependencies": {
       "repo_git_pull(url, branch, dest, cred)": [
@@ -138,5 +124,19 @@
 
       ]
     },
-    "maintainer": "RightScale, Inc."
+    "replacing": {
+    },
+    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+    "groupings": {
+    },
+    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+    "recommendations": {
+    },
+    "name": "app_php",
+    "maintainer": "RightScale, Inc.",
+    "suggestions": {
+    },
+    "platforms": {
+    },
+    "description": "Installs the php application server."
   }

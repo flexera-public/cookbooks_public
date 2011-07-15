@@ -40,7 +40,7 @@ attribute "php/code",
 attribute "php/code/url",
   :display_name => "Repository URL",
   :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
-  :required => false,
+  :required => true,
   :recipes => [ "app_php::do_update_code", "app_php::do_db_restore",  "app_php::default" ]
 
 attribute "php/code/credentials",
