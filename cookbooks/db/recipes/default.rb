@@ -22,4 +22,4 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Let others know we are a DB
-tag "database:active=true"
+right_link_tag "database:active=true"
