@@ -23,7 +23,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Install PHP
-package php
+package "php"
 
 ruby_block("reload-yum-cache") do
   block do
