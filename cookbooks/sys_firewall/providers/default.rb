@@ -82,7 +82,7 @@ action :update do
       log "Adding iptables rule for IP Address: #{ip}"
       
       rule = "port_#{port}"
-      rule << "_#{ip}" 
+      rule << "_#{ip.gsub('/','_')}_#{protocol}" 
       iptables_rule rule do
         source "iptables_port.erb"
         cookbook "sys_firewall"
