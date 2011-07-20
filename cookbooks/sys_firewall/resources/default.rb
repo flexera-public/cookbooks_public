@@ -24,6 +24,7 @@ actions :update, :update_request
 
 
 attribute :port, :kind_of => Integer # Can also be passed as resource name
+attribute :protocol, :equal_to => ["tcp", "udp", "all" ], :default => "tcp"
 attribute :enable, :equal_to => [ true, false ], :default => true
 
 attribute :ip_addr, :kind_of => String, :default => "any"

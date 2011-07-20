@@ -25,6 +25,7 @@ action :update do
   
   # Set local variables from attributes
   port = new_resource.port ? new_resource.port : new_resource.name
+  protocol = new_resource.protocol
   to_enable = new_resource.enable
   ip_addr = new_resource.ip_addr
   tag = new_resource.machine_tag
@@ -37,8 +38,9 @@ action :update do
 
   # Tell user what is going on
   msg = "#{to_enable ? "Enabling" : "Disabling"} firewall rule for port #{port}"
-  msg << " only for address #{ip_addr}." if ip_addr
-  msg << " on servers with tag #{tag}." if tag
+  msg << " only for address #{ip_addr}" if ip_addr
+  msg << " on servers with tag #{tag}" if tag
+  msg << " using protocol #{protocol}." if protocol
   log msg
 
   # Update rules 
@@ -86,6 +88,7 @@ action :update do
         cookbook "sys_firewall"
         variables ({ 
           :port => port,
+          :protocol => protocol,
           :ip_addr => (ip == "any") ? nil : ip })
         enable to_enable
       end 
