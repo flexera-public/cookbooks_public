@@ -23,9 +23,11 @@
 
 node[:sys][:reconverge_list].split(" ").each do |recipe| 
 
-  sys_reconverge "Enable recipe reconverge" do
+  log "Adding re-converge task for #{recipe}"
+
+  sys_reconverge "Enable recipe re-converge" do
     recipe_name recipe
     action :enable
   end
 
-end
+end if node[:sys]
