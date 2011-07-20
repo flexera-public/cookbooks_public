@@ -253,14 +253,14 @@ attribute "db_mysql/dump/prefix",
 
 attribute "db_mysql/backup/stripe_count",
   :display_name => "Stripe Count",
-  :description => "Number of EBS volumes in a stripe",
+  :description => "Number of EBS volumes in a stripe.  This input only applies for EBS volume storage and is ignored otherwise.",
   :required => false,
   :default => "1",
   :recipes => [ "db_mysql::setup_block_device" ]
 
 attribute "db_mysql/backup/volume_size",
-  :display_name => "Volume Size",
-  :description => "Total volume size",
+  :display_name => "Volume Size in GB",
+  :description => "Total volume size in GB.  This input only applies for EBS volume storage and is ignored otherwise.",
   :required => false,
   :default => "5",
   :recipes => [ "db_mysql::setup_block_device" ]

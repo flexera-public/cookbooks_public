@@ -329,8 +329,8 @@
         "recipes": [
           "db_mysql::setup_block_device"
         ],
-        "display_name": "Volume Size",
-        "description": "Total volume size"
+        "display_name": "Volume Size in GB",
+        "description": "Total volume size in GB.  This input only applies for EBS volume storage and is ignored otherwise."
       },
       "db_mysql/backup/aws_secret_access_key": {
         "required": "optional",
@@ -464,7 +464,7 @@
           "db_mysql::setup_block_device"
         ],
         "display_name": "Stripe Count",
-        "description": "Number of EBS volumes in a stripe"
+        "description": "Number of EBS volumes in a stripe.  This input only applies for EBS volume storage and is ignored otherwise."
       },
       "db_mysql/dump/storage_account_secret": {
         "required": "required",
