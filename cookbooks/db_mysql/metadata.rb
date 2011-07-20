@@ -139,7 +139,7 @@ attribute "db_mysql/backup/storage_type",
   :choice => ["ros", "volume"],
   :type => "string",
   :default => "ros",
-  :recipes => restore_recipes + backup_recipes
+  :recipes => restore_recipes + backup_recipes + ["db_mysql::setup_block_device"]
   
 attribute "db_mysql/backup/lineage",
   :display_name => "Backup Lineage",
