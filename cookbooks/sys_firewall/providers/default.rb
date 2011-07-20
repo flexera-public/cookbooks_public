@@ -62,7 +62,7 @@ action :update do
       # Grab private_ip of all tagged servers
       valid_ip_regex = '(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])'
       @node[:server_collection][collection_name].each do |_, tags|
-        tags.detect { |t| t =~ /^server:private_ip=(#{valid_ip_regex})$/ }
+        tags.detect { |t| t =~ /^server:private_ip_0=(#{valid_ip_regex})$/ }
         client_ip = Regexp.last_match[1]
         ip_list << client_ip
       end

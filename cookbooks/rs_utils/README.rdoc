@@ -2,10 +2,14 @@
 
 Base recipes used to setup services used by the RightScale Cloud Management Platform
 
+= REQUIREMENTS:
+
+Requires a VM launched from a RightScale managed RightImage
+
 = USAGE:
 
-Run the rs_utils::default recipe to enable monitoring and logging 
-on the RightScale Dashboard for any RightLink enable image.
+Run the rs_utils::default recipe to perform common server configuration steps  
+such as enabling monitoring and logging on the RightScale Dashboard.
 
 = DEFINITIONS
 
