@@ -19,8 +19,24 @@
         "recipes": [
           "sys_firewall::setup_rule"
         ],
-        "description": "Specific IP Address to enable/disable the port for. A value of 'any' allow any IP address",
+        "description": "Specific IP Address to enable/disable the port for. A value of 'any' allows any IP address (default)",
         "display_name": "Firewall Rule IP Address"
+      },
+      "sys_firewall/rule/protocol": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+          "tcp",
+          "udp",
+          "all"
+        ],
+        "default": "tcp",
+        "type": "string",
+        "recipes": [
+          "sys_firewall::setup_rule"
+        ],
+        "description": "Firewall protocol use. Defaults to 'tcp'",
+        "display_name": "Firewall Rule Protocol"
       },
       "sys_firewall/rule/port": {
         "required": "required",
@@ -32,16 +48,17 @@
         "recipes": [
           "sys_firewall::setup_rule"
         ],
-        "description": "Firewall port to Enable/Disable.",
+        "description": "Firewall port to Enable/Disable. (Ex. 8000)",
         "display_name": "Firewall Rule Port"
       },
       "sys_firewall/rule/enable": {
-        "required": "required",
+        "required": "optional",
         "calculated": false,
         "choice": [
           "enable",
           "disable"
         ],
+        "default": "enable",
         "type": "string",
         "recipes": [
           "sys_firewall::setup_rule"
@@ -59,8 +76,7 @@
         "default": "enabled",
         "type": "string",
         "recipes": [
-          "sys_firewall::default",
-          "sys_firewall::setup_rule"
+          "sys_firewall::default"
         ],
         "description": "Enables iptables firewall for this server which allows port 22, 80 and 443 open by default.  Use sys_firewall::setup_rule recipe to enable/disable extra ports.",
         "display_name": "Firewall"

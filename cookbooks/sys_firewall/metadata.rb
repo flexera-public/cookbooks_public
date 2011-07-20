@@ -16,24 +16,31 @@ attribute "sys_firewall/enabled",
   :required => "optional",
   :choice => ["enabled", "disabled"],
   :default => "enabled",
-  :recipes => [ "sys_firewall::default", "sys_firewall::setup_rule" ]
+  :recipes => [ "sys_firewall::default" ]
 
 attribute "sys_firewall/rule/enable",  
   :display_name => "Firewall Rule",  
   :description => "Enables/Disables a firewall rule.",
   :choice => ["enable", "disable"],
-  :required => "required",
+  :default => "enable",
   :recipes => [ "sys_firewall::setup_rule" ]
 
 attribute "sys_firewall/rule/port",  
   :display_name => "Firewall Rule Port",  
-  :description => "Firewall port to Enable/Disable.",
+  :description => "Firewall port to Enable/Disable. (Ex. 8000)",
   :required => "required",
+  :recipes => [ "sys_firewall::setup_rule" ]
+  
+attribute "sys_firewall/rule/protocol",  
+  :display_name => "Firewall Rule Protocol",  
+  :description => "Firewall protocol use. Defaults to 'tcp'",
+  :choice => ["tcp", "udp", "all"],
+  :default => "tcp",
   :recipes => [ "sys_firewall::setup_rule" ]
 
 attribute "sys_firewall/rule/ip_address",  
   :display_name => "Firewall Rule IP Address",  
-  :description => "Specific IP Address to enable/disable the port for. A value of 'any' allow any IP address",
+  :description => "Specific IP Address to enable/disable the port for. A value of 'any' allows any IP address (default)",
   :required => "optional",
   :default => "any",
   :recipes => [ "sys_firewall::setup_rule" ]
