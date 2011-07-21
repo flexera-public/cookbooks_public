@@ -1,3 +1,6 @@
+service "collectd" do
+  action :nothing
+end
 
 if node[:platform] == 'centos'
   if node[:kernel][:machine] == "x86_64"
