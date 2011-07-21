@@ -43,7 +43,7 @@ attribute "rs_utils/private_ssh_key",
  :display_name => "Private SSH Key",
  :description => "The private SSH key of another instance that gets installed on this instance.  It allows this instance to SSH into another instance to update the configuration files. Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key",
  :required => "required",
- :default => "",
+ :default => nil,
  :recipes => [ "rs_utils::setup_ssh" ]
 
 attribute "rs_utils/mysql_binary_backup_file",
