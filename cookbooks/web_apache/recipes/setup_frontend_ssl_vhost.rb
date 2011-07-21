@@ -31,9 +31,9 @@ end
 # condition for ubuntu
 package "mod_ssl"
 
-# == Setup PHP Apache vhost on port 443
-#
-php_port = "443"
+# == Setup Apache vhost on following ports
+https_port = "443"
+http_port  = "80"
 
 # disable default vhost
 apache_site "000-default" do
@@ -87,8 +87,8 @@ else
   ssl_certificate_chain_file = nil
 end
 
-node[:apache][:listen_ports].reject!  { |x| x=="80" }
-  
+node[:apache][:listen_ports].push(http_port) unless node[:apache][:listen_ports].include?(http_port)
+
 
 template "#{node[:apache][:dir]}/ports.conf" do
   cookbook "apache2"
@@ -97,16 +97,26 @@ template "#{node[:apache][:dir]}/ports.conf" do
   notifies :restart, resources(:service => "apache2")
 end
 
-# == Configure apache vhost for PHP
+# == Configure apache ssl vhost for PHP
 #
-web_app "#{node[:web_apache][:application_name]}.frontend" do
+web_app "#{node[:web_apache][:application_name]}.frontend.ssl" do
   template "apache_ssl_vhost.erb"
   docroot node[:web_apache][:docroot]
-  vhost_port php_port 
+  vhost_port https_port
   server_name node[:web_apache][:server_name]
   ssl_certificate_chain_file ssl_certificate_chain_file
   ssl_passphrase node[:web_apache][:ssl_passphrase]
   ssl_certificate_file ssl_certificate_file
   ssl_key_file ssl_key_file
+  notifies :restart, resources(:service => "apache2")
+end
+
+# == Configure apache non-ssl vhost for PHP
+#
+web_app "#{node[:web_apache][:application_name]}.frontend.http" do
+  template "apache.conf.erb"
+  docroot node[:web_apache][:docroot]
+  vhost_port http_port
+  server_name node[:web_apache][:server_name]
   notifies :restart, resources(:service => "apache2")
 end
