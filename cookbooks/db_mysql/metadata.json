@@ -43,6 +43,7 @@
       "db_mysql::do_backup_ebs": "Creates an EBS backup EBS storage",
       "db_mysql::do_backup": "Creates a backup of the MySQL data to the specified cloud storage location. (Premium Account Only) ",
       "db_mysql::do_dump_export": "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)",
+      "db_mysql::setup_monitoring": "Install collectd-mysql for monitoring support",
       "db_mysql::do_backup_cloud_files": "Create a binary backup of the MySQL database and save it in the specified Rackspace Cloud Files container.",
       "db_mysql::install_mysql": "Installs the packages that are required for MySQL servers.",
       "db_mysql::do_restore_s3": "Restores the MySQL database from a binary backup saved in the specified Amazon S3 bucket.",

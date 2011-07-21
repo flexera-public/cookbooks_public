@@ -22,6 +22,7 @@ recipe  "db_mysql::do_dump_import", "Initializes the MySQL database with a dumpf
 recipe  "db_mysql::do_dump_export", "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)"
 recipe  "db_mysql::setup_continuous_export", "Schedules the daily run of do_dump_export."
 recipe  "db_mysql::do_force_reset", "Reset the DB back to a pristine state."
+recipe  "db_mysql::setup_monitoring", "Install collectd-mysql for monitoring support"
 
 # == Premium Account Recipes
 #
