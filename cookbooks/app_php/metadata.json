@@ -57,6 +57,9 @@
         "choice": [
 
         ],
+        "default": [
+          "php53u-pear"
+        ],
         "type": "array",
         "recipes": [
           "app_php::default"
