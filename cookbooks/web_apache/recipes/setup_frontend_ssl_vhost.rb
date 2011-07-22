@@ -99,7 +99,7 @@ end
 
 # == Configure apache ssl vhost for PHP
 #
-web_app "#{node[:web_apache][:application_name]}.frontend.ssl" do
+web_app "#{node[:web_apache][:application_name]}.frontend.https" do
   template "apache_ssl_vhost.erb"
   docroot node[:web_apache][:docroot]
   vhost_port https_port
