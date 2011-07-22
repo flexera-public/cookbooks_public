@@ -80,7 +80,7 @@
         "display_name": "Storage Account Provider"
       },
       "db_mysql/backup/cron_backup_minute": {
-        "required": "optional",
+        "required": "required",
         "calculated": false,
         "choice": [
 
@@ -235,7 +235,7 @@
         "display_name": "Import/Export settings for MySQL dump file management."
       },
       "db_mysql/backup/cron_backup_hour": {
-        "required": "optional",
+        "required": "required",
         "calculated": false,
         "choice": [
 
