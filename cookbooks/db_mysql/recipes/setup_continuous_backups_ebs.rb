@@ -1,4 +1,8 @@
-log "Enabling continuous backups to EBS via cron job:#{node[:db_mysql][:backup][:cron_backup_minute]} #{node[:db_mysql][:backup][:cron_backup_hour]}"
+log "Enabling continuous backups to EBS via cron job: Minute:#{node[:db_mysql][:backup][:cron_backup_minute]} Hour:#{node[:db_mysql][:backup][:cron_backup_hour]}"
+
+raise "ERROR: missing cron_backup_minute value." unless node[:db_mysql][:backup][:cron_backup_minute]
+raise "ERROR: missing cron_backup_hour value." unless node[:db_mysql][:backup][:cron_backup_hour]
+
 cron "RightScale continuous backups EBS" do
   minute "#{node[:db_mysql][:backup][:cron_backup_minute]}"
   hour "#{node[:db_mysql][:backup][:cron_backup_hour]}"

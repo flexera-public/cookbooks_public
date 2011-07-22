@@ -209,6 +209,17 @@ attribute "db_mysql/backup/storage_container",
   :default => "",
   :recipes => restore_recipes + backup_recipes
 
+attribute "db_mysql/backup/cron_backup_minute",
+  :display_name => "Backup cron minute", 
+  :description => "Defines the minute of the hour when the backup will be taken.",
+  :required => false,
+  :recipes => setup_cron_recipes
+
+attribute "db_mysql/backup/cron_backup_hour",
+  :display_name => "Backup cron hour",
+  :description => "Defines the hour when the backup will be taken.",
+  :required => false,
+  :recipes => setup_cron_recipes
   
 # == Import/export Attributes
 #
