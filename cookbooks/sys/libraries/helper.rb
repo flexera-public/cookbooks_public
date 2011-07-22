@@ -38,6 +38,50 @@ module RightScale
         shed_string.strip
       end
 
+      # Use the server_collection resource programatically
+      # FIXME: This is highly dependent on Chef version      
+      def self.requery_server_collection(tag, collection_name, node, run_context)
+        resrc = Chef::Resource::ServerCollection.new(collection_name)
+        resrc.tags tag
+        provider = nil      
+        if (Chef::VERSION =~ /0\.9/) # provider signature changed in Chef 0.9
+          provider = Chef::Provider::ServerCollection.new(resrc, run_context)
+        else 
+          provider = Chef::Provider::ServerCollection.new(node, resrc)
+        end
+        provider.send("action_load")
+      end
+            
+      # Use the template resource programatically
+      # FIXME: This is highly dependent on Chef version      
+      def self.run_template(target_file, source, cookbook, variables, enable, command, node, run_context)
+        resrc = Chef::Resource::Template.new(target_file)
+        resrc.source source
+        resrc.cookbook cookbook
+        resrc.variables variables
+        resrc.backup false
+        #resrc.notifies notify_action, notify_resources
+        
+        if (Chef::VERSION =~ /0\.9/) # provider signature changed in Chef 0.9
+          provider = Chef::Provider::Template.new(resrc, run_context)
+        else 
+          provider = Chef::Provider::Template.new(node, resrc)
+        end
+        provider.load_current_resource
+               
+        if enable
+          provider.send("action_create")
+        else
+          provider.send("action_delete")
+        end
+        
+        Chef::Log.info `/usr/sbin/rebuild-iptables` if resrc.updated
+      end
+      
+      def self.calculate_exponential_backoff(value)
+        ((value == 1) ? 2 : (value*value)) 
+      end
+
     end
   end
 end

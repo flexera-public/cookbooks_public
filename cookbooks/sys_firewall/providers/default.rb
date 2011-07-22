@@ -20,8 +20,11 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-
+require "timeout"
+    
 action :update do
+  
+  log "==================== sys_firewall(:update) : Begin ===================="
   
   # Set local variables from attributes
   port = new_resource.port ? new_resource.port : new_resource.name
@@ -48,54 +51,109 @@ action :update do
     log "Firewall not enabled. Not adding rule for #{port}."
   else
     
-    ip_list = [ ]
-    
-    # Add specific ip address 
-    ip_list << ip_addr if ip_addr
-
-    # Add tagged servers
-    if tag
-      r = server_collection collection_name do
-        tags tag
-        action :nothing
-      end
-      r.run_action(:load)
-
-      # Grab private_ip of all tagged servers
-      valid_ip_regex = '(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])'
-      @node[:server_collection][collection_name].each do |_, tags|
-        tags.detect { |t| t =~ /^server:private_ip_0=(#{valid_ip_regex})$/ }
-        client_ip = Regexp.last_match[1]
-        ip_list << client_ip
-      end
-    end
-
     # Setup iptables rebuild resouce 
     execute "rebuild-iptables" do
       command "/usr/sbin/rebuild-iptables"
       action :nothing
     end
-    
-    # Use iptables cookbook to create open/close port for ip list
-    ip_list.each do |ip|
-      
-      log "Adding iptables rule for IP Address: #{ip}"
-      
-      rule = "port_#{port}"
-      rule << "_#{ip.gsub('/','_')}_#{protocol}" 
-      iptables_rule rule do
-        source "iptables_port.erb"
-        cookbook "sys_firewall"
-        variables ({ 
-          :port => port,
-          :protocol => protocol,
-          :ip_addr => (ip == "any") ? nil : ip })
-        enable to_enable
-      end 
+  
+    server_collection collection_name do
+      tags tag
     end
-  end
+    
+    ruby_block 'Register all currently active app servers' do
+      block do
+        ip_list = [ ]
 
-end
+        # Add specific ip address 
+        ip_list << ip_addr if ip_addr
+
+        # Add tagged servers
+        if tag
+          begin            
+            ip_tag = "server:private_ip_0"
+            timeout_sec = 60 
+            delay_sec = 1
+            status = Timeout::timeout(timeout_sec) do  
+              done = false
+              until done      
+                all_tags_exist = true
+                done = true
+      
+                valid_ip_regex = '(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])'
+                done = true
+      
+                # Grab private_ip of all tagged servers
+                Chef::Log.info "Loop through server collection for servers with #{tag} tag..."
+      
+                @node[:server_collection][collection_name].each do |_, tags|              
+                  # Use regex to extract
+                  tags.detect { |t| t =~ /^#{ip_tag}=(#{valid_ip_regex})$/ }
+                  match = Regexp.last_match
+                  if match 
+                    client_ip = match[1]
+                    ip_list << client_ip unless ip_list.include?(client_ip)
+                    Chef::Log.info "  Found server with #{tag} tag. IP=#{client_ip}"
+                  else
+                     Chef::Log.warn("  Tag '#{ip_tag}' not found for server. Skipping...")
+                     all_tags_exist = false
+                     next
+                  end
+                end
+      
+                unless all_tags_exist
+                  Chef::Log.error("Server with #{tag} tag does not contain #{ip_tag}.")
+
+                  delay_sec = RightScale::System::Helper.calculate_exponential_backoff(delay_sec)
+                  Chef::Log.info("Retrying in #{delay_sec} seconds...") 
+                  sleep(delay_sec)
+
+                  RightScale::System::Helper.requery_server_collection(tag, collection_name, node, @run_context)
+              
+                  done = false 
+                  all_tags_exist = true # inoccent until proven guilty
+                end
+     
+              end # until
+            end # timeout
+          rescue Timeout::Error => e
+            Chef::Log.error "Unable to find #{ip_tag} after #{timeout_sec} seconds. Not adding rule."
+          end
+        end # if tag
+                  
+        # Use iptables cookbook to create open/close port for ip list
+        ip_list.each do |ip|
+  
+          Chef::Log.info "Updating iptables rule for IP Address: #{ip}"
+  
+          rule = "port_#{port}"
+          rule << "_#{ip.gsub('/','_')}_#{protocol}" 
+                    
+          # Programatically execute template resource
+          RightScale::System::Helper.run_template(
+                "/etc/iptables.d/#{rule}",    # target_file
+                "iptables_port.erb",          # source
+                "sys_firewall",               # cookbook
+                {                             # variables
+                  :port => port,
+                  :protocol => protocol,
+                  :ip_addr => (ip == "any") ? nil : ip 
+                }, 
+                to_enable,                    # enable
+                "/usr/sbin/rebuild-iptables", # command to run
+                node, 
+                @run_context)
+        end # each
+          
+          
+      end # block
+    end # ruby_block
+            
+  end # else
+  
+  log "==================== sys_firewall(:update) : End ===================="
+
+end # action
 
 action :update_request do
   
