@@ -67,7 +67,7 @@ when "debian","ubuntu"
 end
 
 case node[:kernel][:machine]
-when "i386"
+when "i386", "i686"
   rs_utils[:collectd_lib] = "/usr/lib/collectd"
 when "x86_64"
   rs_utils[:collectd_lib] = "/usr/lib64/collectd"
