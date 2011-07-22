@@ -9,6 +9,7 @@ recipe "web_apache::install_apache", "Install and configure Apache2 webserver."
 recipe "web_apache::setup_frontend", "Frontend apache vhost.  Select ssl_enabled for SSL."
 recipe "web_apache::setup_frontend_ssl_vhost", "Frontend apache vhost with SSL enabled"
 recipe "web_apache::setup_frontend_http_vhost", "Frontend apache vhost with SSL enabled"
+recipe "web_apache::setup_monitoring", "Install collectd-apache for monitoring support"
 
 all_recipes = [ "web_apache::default",  "web_apache::install_apache", "web_apache::setup_frontend_ssl_vhost", "web_apache::setup_frontend_http_vhost", "web_apache::setup_frontend"]
 
