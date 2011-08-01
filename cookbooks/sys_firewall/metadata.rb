@@ -28,7 +28,7 @@ attribute "sys_firewall/rule/enable",
 attribute "sys_firewall/rule/port",  
   :display_name => "Firewall Rule Port",  
   :description => "Firewall port to Enable/Disable. (Ex. 8000)",
-  :required => "required",
+  :required => "optional",
   :recipes => [ "sys_firewall::setup_rule" ]
   
 attribute "sys_firewall/rule/protocol",  
