@@ -28,6 +28,7 @@ action :update do
   
   # Set local variables from attributes
   port = new_resource.port ? new_resource.port : new_resource.name
+  raise "ERROR: port must be set" if port == ""
   protocol = new_resource.protocol
   to_enable = new_resource.enable
   ip_addr = new_resource.ip_addr
