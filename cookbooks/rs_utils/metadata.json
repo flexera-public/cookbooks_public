@@ -92,12 +92,11 @@
       "description": "The short hostname that you would like this node to have, e.g. kryten"
     },
     "rs_utils/private_ssh_key": {
-      "required": "optional",
+      "required": "required",
       "calculated": false,
       "choice": [
 
       ],
-      "default": null,
       "type": "string",
       "recipes": [
         "rs_utils::setup_ssh"
