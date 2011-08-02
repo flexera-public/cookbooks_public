@@ -31,7 +31,9 @@ if node[:sys_firewall][:enabled] == "enabled"
     bash "List contents of iptables.d" do
       user "root"
       code <<-EOH
+        echo "==================== do_list_rules : /etc/iptables.d Begin =================="
         ls -l /etc/iptables.d
+        echo "==================== do_list_rules : /etc/iptables.d End ===================="
       EOH
     end
 #
@@ -39,7 +41,9 @@ if node[:sys_firewall][:enabled] == "enabled"
   bash "List contents of iptables.d" do
     user "root"
     code <<-EOH
+      echo "==================== do_list_rules : Firewall rules Begin =================="
       iptables --list -n
+      echo "==================== do_list_rules : Firewall rules End =================="
     EOH
   end
 #
