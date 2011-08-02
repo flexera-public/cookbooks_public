@@ -94,6 +94,7 @@
   "name": "sys_firewall",
   "recipes": {
     "sys_firewall::default": "Use in conjunction with the 'Firewall' input to enable or disable iptables.",
+    "sys_firewall::do_list_rules": "List the firewall rules",
     "sys_firewall::setup_rule": "Use for enabling/disabling specific firewall ports."
   },
   "groupings": {

@@ -9,6 +9,7 @@ depends "iptables"
 
 recipe "sys_firewall::default", "Use in conjunction with the 'Firewall' input to enable or disable iptables."
 recipe "sys_firewall::setup_rule", "Use for enabling/disabling specific firewall ports."
+recipe "sys_firewall::do_list_rules", "List the firewall rules"
 
 attribute "sys_firewall/enabled",  
   :display_name => "Firewall",  
