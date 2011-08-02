@@ -33,7 +33,7 @@
       "description": "Firewall protocol use. Defaults to 'tcp'"
     },
     "sys_firewall/rule/port": {
-      "required": "optional",
+      "required": "required",
       "calculated": false,
       "choice": [
 
