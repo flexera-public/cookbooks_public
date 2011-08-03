@@ -20,6 +20,10 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+require 'rightscale_tools'
+
 action :set_private do
   log "==================== sys_dns(:set_private) DNSMadeEasy ==================== "
+
+  RightScale::DmeDNS.new.action_set(new_resource.id, new_resource.user, new_resource.password, new_resource.address)
 end
