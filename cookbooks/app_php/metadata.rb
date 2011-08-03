@@ -5,6 +5,7 @@ description      "Installs the php application server."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
 
+depends "app"
 depends "web_apache"
 depends "db_mysql"
 depends "repo_git"
