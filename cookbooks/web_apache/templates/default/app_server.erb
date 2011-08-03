@@ -14,7 +14,7 @@
 
   RewriteEngine On
   # Uncomment for rewrite debugging
-  #RewriteLog <%= @node[:apache][:log_dir] %>/http_rewrite_log
+  #RewriteLog <%= node[:apache][:log_dir] %>/http_rewrite_log
   #RewriteLogLevel 9
 
   # Enable status page for monitoring purposes
@@ -29,8 +29,8 @@
   RewriteRule ^.*$ /system/maintenance.html [L]
 
   # Setup the logs in the appropriate directory
-  CustomLog <%= @node[:apache][:log_dir] %>/access_log combined
-  ErrorLog  <%= @node[:apache][:log_dir] %>/error_log
+  CustomLog <%= node[:apache][:log_dir] %>/access_log combined
+  ErrorLog  <%= node[:apache][:log_dir] %>/error_log
 
   #Remote logging -- handle by syslog
   ErrorLog "|logger -p local3.info -t httperror"

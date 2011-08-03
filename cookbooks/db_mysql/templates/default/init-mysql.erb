@@ -31,11 +31,11 @@ ERR_LOGGER="logger -p daemon.err -t /etc/init.d/mysql -i"
 # *** Wait for process to be alive, connected, and innodb ready.  
 # on startup: timeout results in failure status even if mysql is half up (and connection is available).
 # innodb *must be enabled
-START_TIMEOUT=<%= @node[:db_mysql][:init_timeout] %>
+START_TIMEOUT=<%= node[:db_mysql][:init_timeout] %>
 
 # *** Wait for process to exit
 # on shutdown: timeout results in forced shutdown, do not set this too low!
-STOP_TIMEOUT=<%= @node[:db_mysql][:init_timeout] %>
+STOP_TIMEOUT=<%= node[:db_mysql][:init_timeout] %>
 
 # Safeguard (relative paths, core dumps..)
 cd /
