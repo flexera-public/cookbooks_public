@@ -8,8 +8,8 @@ version          "0.1"
 recipe "sys_dns::default", "Verifies rightscale_tools installed."
 recipe "sys_dns::do_set_private", "Sets the dynamic DNS entry to the first private IP of the server."
 
-attribute "sys_dns/provider",
-  :display_name => "Provider",
+attribute "sys_dns/choice",
+  :display_name => "DNS Service Provider",
   :description => "TODO",
   :required => "required",
   :choice => ["DNSMadeEasy", "DynDNS", "Route53"]

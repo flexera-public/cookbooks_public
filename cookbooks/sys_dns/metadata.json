@@ -4,21 +4,6 @@
   "name": "sys_dns",
   "maintainer_email": "support@rightscale.com",
   "attributes": {
-    "sys_dns/provider": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-        "DNSMadeEasy",
-        "DynDNS",
-        "Route53"
-      ],
-      "type": "string",
-      "recipes": [
-
-      ],
-      "description": "TODO",
-      "display_name": "Provider"
-    },
     "sys_dns/user": {
       "required": "required",
       "calculated": false,
@@ -31,6 +16,21 @@
       ],
       "description": "TODO",
       "display_name": "User"
+    },
+    "sys_dns/choice": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+        "DNSMadeEasy",
+        "DynDNS",
+        "Route53"
+      ],
+      "type": "string",
+      "recipes": [
+
+      ],
+      "description": "TODO",
+      "display_name": "DNS Service Provider"
     },
     "sys_dns/id": {
       "required": "required",

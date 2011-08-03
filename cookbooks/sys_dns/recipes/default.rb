@@ -25,9 +25,11 @@
 
 # assuming rightscale_tools are installed
 ruby_block "Verifying rightscale_tools gem is installed" do
-  begin
-    require 'rightscale_tools'
-  rescue LoadError
-    log "Missing 'rightscale_tools' gem!"
+  block do
+    begin
+      require 'rightscale_tools'
+    rescue LoadError
+      Chef::Log.error("Missing 'rightscale_tools' gem!")
+    end
   end
 end

@@ -27,4 +27,4 @@ attribute :id, :kind_of => String
 attribute :user, :kind_of => String
 attribute :password, :kind_of => String
 attribute :address, :kind_of => String # TODO: , :regex => 
-attribute :provider, :equal_to => [ "DNSMadeEasy", "DynDNS", "Route53" ]
+attribute :choice, :equal_to => [ "DNSMadeEasy", "DynDNS", "Route53" ]
