@@ -21,7 +21,9 @@
 #
 
 action :set_private do
-  log "==================== sys_dns(:set_private) DNSMadeEasy ==================== "
+  log "==================== sys_dns(:set_private) DNSMadeEasy BEGIN ==================== "
 
-  RightScale::DNS::DME.action_set(new_resource.id, new_resource.user, new_resource.password, new_resource.address)
+  RightScale::DnsTools::DME.action_set(new_resource.id, new_resource.user, new_resource.password, new_resource.address)
+
+  log "==================== sys_dns(:set_private) DNSMadeEasy   END ==================== "
 end

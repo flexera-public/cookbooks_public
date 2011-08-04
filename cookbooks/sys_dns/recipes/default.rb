@@ -23,13 +23,4 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# assuming rightscale_tools are installed
-ruby_block "Verifying rightscale_tools gem is installed" do
-  block do
-    begin
-      require 'rightscale_tools'
-    rescue LoadError
-      Chef::Log.error("Missing 'rightscale_tools' gem!")
-    end
-  end
-end
+#
