@@ -20,7 +20,6 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-depends "sys"
 require "timeout"
     
 action :update do
