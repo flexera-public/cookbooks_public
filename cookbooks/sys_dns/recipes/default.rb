@@ -23,6 +23,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+log "==================== sys_dns(default) BEGIN ===================="
+
 package 'perl-Digest-SHA1'
 package 'perl-Digest-HMAC'
 
@@ -40,3 +42,5 @@ remote_file "/opt/rightscale/dns/dnscurl.pl" do
   mode "0755"
   backup false
 end
+
+log "==================== sys_dns(default)   END ===================="
