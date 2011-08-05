@@ -25,30 +25,43 @@
 # Cookbook Name:: app_tomcat
 # Recipe:: default
 
-# TODO - changes if not centos (ie ubuntu)
-# TEST - currently only for centos
-#case node[:platform]
-#when "centos","fedora","suse"
+script 'create swapfile' do
+  not_if {File.exists?("/swapfile")}
+  interpreter 'bash'
+  code <<-eof
+    dd if=/dev/zero of=/swapfile bs=1M count=2048 
+    chmod 600 /swapfile
+    mkswap /swapfile
+  eof
+end
 
-  script 'create swapfile' do
-    interpreter 'bash'
-    not_if { File.exists?('/swapfile') }
-    code <<-eof
-      dd if=/dev/zero of=/var/swapfile bs=1M count=2048 &&
-      chmod 600 /swapfile &&
-      mkswap /swapfile &&
-    eof
+# append swap to /etc/fstab
+append_to_fstab = true
+fstab_contents = File.open('/etc/fstab') { |f| f.read }
+fstab_contents.each_line do |line| 
+  if ( line.strip =~ /^\/swapfile/ )
+    append_to_fstab = false
+    break
+  end
+end
+  
+if (append_to_fstab)
+  fstab_contents << "\n/swapfile  swap      swap    defaults        0 0\n"
+
+  file "/etc/fstab" do
+    content fstab_contents
+    owner "root"
+    group "root"
+    mode "0644"
+    action :create
   end
 
-#echo "/swapfile  swap      swap    defaults        0 0" >> /etc/fstab
-
-  mount '/dev/null' do  # swap file entry for fstab
-    action :enable  # cannot mount; only add to fstab
-    device '/swapfile'
-    fstype 'swap'
-  end
-   
-  script 'activate swap' do
-    interpreter 'bash'
-    code 'swapon /swapfile'
-  end
+else
+  log "/swapfile fstab entry already exists - skipping editing fstab"
+end
+  
+script 'activate swap' do
+  not_if {File.exists?("/swapfile")}
+  interpreter 'bash'
+  code 'swapon /swapfile'
+end
