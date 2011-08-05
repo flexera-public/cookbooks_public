@@ -25,43 +25,56 @@
 # Cookbook Name:: app_tomcat
 # Recipe:: default
 
-script 'create swapfile' do
-  not_if {File.exists?("/swapfile")}
-  interpreter 'bash'
-  code <<-eof
-    dd if=/dev/zero of=/swapfile bs=1M count=2048 
-    chmod 600 /swapfile
-    mkswap /swapfile
-  eof
-end
+swap_size = node[:sys][:swap_size]
 
-# append swap to /etc/fstab
-append_to_fstab = true
-fstab_contents = File.open('/etc/fstab') { |f| f.read }
-fstab_contents.each_line do |line| 
-  if ( line.strip =~ /^\/swapfile/ )
-    append_to_fstab = false
-    break
-  end
-end
-  
-if (append_to_fstab)
-  fstab_contents << "\n/swapfile  swap      swap    defaults        0 0\n"
-
-  file "/etc/fstab" do
-    content fstab_contents
-    owner "root"
-    group "root"
-    mode "0644"
-    action :create
-  end
-
+# sanitize user data
+if (swap_size =~ /^(0|[1-9]\d+)$/)
+  log "valid swap size #{swap_size}"
 else
-  log "/swapfile fstab entry already exists - skipping editing fstab"
-end
-  
-script 'activate swap' do
-  not_if {File.exists?("/swapfile")}
-  interpreter 'bash'
-  code 'swapon /swapfile'
+  log "invalid swap size '#{swap_size}' - disabling swap"
+  swap_size = "0"
+end 
+
+# check if swap is disabled
+if (swap_size == "0")
+  log "swap size = 0 - disabling swap"
+else
+  script 'create swapfile' do
+    not_if {File.exists?("/swapfile")}
+    interpreter 'bash'
+    code <<-eof
+      dd if=/dev/zero of=/swapfile bs=1G count=#{swap_size}
+      chmod 600 /swapfile
+      mkswap /swapfile
+    eof
+  end
+
+  # append swap to /etc/fstab if not already there
+  append_to_fstab = true
+  fstab_contents = File.open('/etc/fstab') { |f| f.read }
+  fstab_contents.each_line do |line| 
+    if ( line.strip =~ /^\/swapfile/ )
+      append_to_fstab = false
+      break
+    end
+  end
+    
+  if (append_to_fstab)
+    fstab_contents << "\n/swapfile  swap      swap    defaults        0 0\n"
+    file "/etc/fstab" do
+      content fstab_contents
+      owner "root"
+      group "root"
+      mode "0644"
+      action :create
+    end
+  else
+    log "/swapfile fstab entry already exists - skipping editing fstab"
+  end
+    
+  script 'activate swap' do
+    not_if {File.exists?("/swapfile")}
+    interpreter 'bash'
+    code 'swapon /swapfile'
+  end
 end

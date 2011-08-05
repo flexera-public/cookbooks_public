@@ -16,9 +16,9 @@ attribute "sys/reconverge_list",
   :default => "",
   :recipes => [ "sys::default", "sys::do_reconverge_list_enable", "sys::do_reconverge_list_disable" ]
 
-attribute "sys/swapsize",
-  :display_name => "Swap size in GB (0 to disable)",
-  :description => "Create and install swap file",
+attribute "sys/swap_size",
+  :display_name => "Swap size (GB)",
+  :description => "Create and install swap file.  Select '0' to disable swap.",
   :type => "string",
   :choice => ["0","2"],
   :default => "0",
