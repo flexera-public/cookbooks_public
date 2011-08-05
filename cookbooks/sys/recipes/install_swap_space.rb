@@ -25,32 +25,39 @@
 # Cookbook Name:: app_tomcat
 # Recipe:: default
 
+recipe_name = "#{self.cookbook_name}" + "::" + "#{self.recipe_name}"
+
+log "[#{recipe_name}] START"
+
 swap_size = node[:sys][:swap_size]
 swap_file = "/swapfile"
 
 # sanitize user data
 if (swap_size !~ /^[0-9][\d\.]*$/ )
-  log "invalid swap size '#{swap_size}' - raising error"
+  log "[#{recipe_name}] invalid swap size '#{swap_size}' - raising error"
   raise "ERROR: invalid swap size."
 else
-  log "valid swap size '#{swap_size}'"
   # convert swap_size from GB to MB
   swap_size = ((swap_size.to_f)*1024).to_i
 end
 
 # check if swap is disabled
 if (swap_size == 0)
-  log "swap size = 0 - disabling swap"
+  log "[#{recipe_name}] swap size = 0 - disabling swap"
 else
-  script 'create swapfile' do
-    not_if {File.exists?(swap_file)}
-    interpreter 'bash'
-    code <<-eof
-      dd if=/dev/zero of=#{swap_file} bs=1M count=#{swap_size}
-      chmod 600 #{swap_file}
-      mkswap #{swap_file}
-      swapon #{swap_file}
-    eof
+  if ( File.exists?(swap_file) )
+    log "[#{recipe_name}] swap file already exists - skipping create"
+  else
+    script 'create swapfile' do
+      not_if {File.exists?(swap_file)}
+      interpreter 'bash'
+      code <<-eof
+        dd if=/dev/zero of=#{swap_file} bs=1M count=#{swap_size}
+        chmod 600 #{swap_file}
+        mkswap #{swap_file}
+        swapon #{swap_file}
+      eof
+    end
   end
 
   # append swap to /etc/fstab if not already there
@@ -73,7 +80,8 @@ else
       action :create
     end
   else
-    log "#{swap_file} fstab entry already exists - skipping editing fstab"
+    log "[#{recipe_name}] fstab entry already exists - skipping editing fstab"
   end
 
 end
+log "[#{recipe_name}] END"
