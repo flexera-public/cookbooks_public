@@ -46,6 +46,7 @@ else
       dd if=/dev/zero of=/swapfile bs=1G count=#{swap_size}
       chmod 600 /swapfile
       mkswap /swapfile
+      swapon /swapfile
     eof
   end
 
@@ -71,10 +72,5 @@ else
   else
     log "/swapfile fstab entry already exists - skipping editing fstab"
   end
-    
-  script 'activate swap' do
-    not_if {File.exists?("/swapfile")}
-    interpreter 'bash'
-    code 'swapon /swapfile'
-  end
+
 end
