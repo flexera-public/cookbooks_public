@@ -28,7 +28,7 @@
 swap_size = node[:sys][:swap_size]
 
 # sanitize user data
-if (swap_size =~ /^(0|[1-9]\d+)$/)
+if (swap_size =~ /^(0|[1-9]\d*)$/)
   log "valid swap size #{swap_size}"
 else
   log "invalid swap size '#{swap_size}' - disabling swap"
