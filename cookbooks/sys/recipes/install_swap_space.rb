@@ -26,27 +26,30 @@
 # Recipe:: default
 
 swap_size = node[:sys][:swap_size]
+swap_file = "/swapfile"
 
 # sanitize user data
-if (swap_size =~ /^(0|[1-9]\d*)$/)
-  log "valid swap size #{swap_size}"
+if (swap_size !~ /^[0-9][\d\.]*$/ )
+  log "invalid swap size '#{swap_size}' - raising error"
+  raise "ERROR: invalid swap size."
 else
-  log "invalid swap size '#{swap_size}' - disabling swap"
-  swap_size = "0"
-end 
+  log "valid swap size '#{swap_size}'"
+  # convert swap_size from GB to MB
+  swap_size = ((swap_size.to_f)*1024).to_i
+end
 
 # check if swap is disabled
-if (swap_size == "0")
+if (swap_size == 0)
   log "swap size = 0 - disabling swap"
 else
   script 'create swapfile' do
-    not_if {File.exists?("/swapfile")}
+    not_if {File.exists?(swap_file)}
     interpreter 'bash'
     code <<-eof
-      dd if=/dev/zero of=/swapfile bs=1G count=#{swap_size}
-      chmod 600 /swapfile
-      mkswap /swapfile
-      swapon /swapfile
+      dd if=/dev/zero of=#{swap_file} bs=1M count=#{swap_size}
+      chmod 600 #{swap_file}
+      mkswap #{swap_file}
+      swapon #{swap_file}
     eof
   end
 
@@ -54,14 +57,14 @@ else
   append_to_fstab = true
   fstab_contents = File.open('/etc/fstab') { |f| f.read }
   fstab_contents.each_line do |line| 
-    if ( line.strip =~ /^\/swapfile/ )
+    if ( line.strip =~ /^#{swap_file}/ )
       append_to_fstab = false
       break
     end
   end
     
   if (append_to_fstab)
-    fstab_contents << "\n/swapfile  swap      swap    defaults        0 0\n"
+    fstab_contents << "\n#{swap_file}  swap      swap    defaults        0 0\n"
     file "/etc/fstab" do
       content fstab_contents
       owner "root"
@@ -70,7 +73,7 @@ else
       action :create
     end
   else
-    log "/swapfile fstab entry already exists - skipping editing fstab"
+    log "#{swap_file} fstab entry already exists - skipping editing fstab"
   end
 
 end

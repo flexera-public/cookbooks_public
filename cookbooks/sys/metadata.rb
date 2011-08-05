@@ -20,6 +20,6 @@ attribute "sys/swap_size",
   :display_name => "Swap size (GB)",
   :description => "Create and install swap file.  Select '0' to disable swap.",
   :type => "string",
-  :choice => ["0","2"],
+  :choice => ["0","2.0"],
   :default => "0",
   :recipes => [ "sys::install_swap_space"]

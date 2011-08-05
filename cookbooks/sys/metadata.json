@@ -24,7 +24,7 @@
         "calculated": false,
         "choice": [
           "0",
-          "2"
+          "2.0"
         ],
         "default": "0",
         "type": "string",
