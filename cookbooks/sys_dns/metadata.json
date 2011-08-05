@@ -71,7 +71,7 @@
   },
   "recipes": {
     "sys_dns::do_set_private": "Sets the dynamic DNS entry to the first private IP of the server.",
-    "sys_dns::default": "Verifies rightscale_tools installed."
+    "sys_dns::default": "Installs Amazon dnscurl.pl utility."
   },
   "groupings": {
   },

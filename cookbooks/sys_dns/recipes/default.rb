@@ -23,4 +23,20 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#
+package 'perl-Digest-SHA1'
+package 'perl-Digest-HMAC'
+
+directory "/opt/rightscale/dns" do
+  owner "root"
+  group "root"
+  mode "0755"
+  recursive true
+end
+
+remote_file "/opt/rightscale/dns/dnscurl.pl" do
+  source "dnscurl.pl"
+  owner "root"
+  group "root"
+  mode "0755"
+  backup false
+end
