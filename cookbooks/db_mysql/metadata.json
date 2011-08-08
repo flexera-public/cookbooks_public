@@ -109,10 +109,7 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files",
-          "db_mysql::setup_continuous_backups_s3",
-          "db_mysql::setup_continuous_backups_ebs",
-          "db_mysql::setup_continuous_backups_cloud_files"
+          "db_mysql::do_backup_cloud_files"
         ],
         "description": "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name.",
         "display_name": "Backup Storage Container"
@@ -189,10 +186,7 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files",
-          "db_mysql::setup_continuous_backups_s3",
-          "db_mysql::setup_continuous_backups_ebs",
-          "db_mysql::setup_continuous_backups_cloud_files"
+          "db_mysql::do_backup_cloud_files"
         ],
         "description": "The prefix that will be used to name/locate the backup of a particular MySQL database.",
         "display_name": "Backup Lineage"
@@ -250,10 +244,7 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files",
-          "db_mysql::setup_continuous_backups_s3",
-          "db_mysql::setup_continuous_backups_ebs",
-          "db_mysql::setup_continuous_backups_cloud_files"
+          "db_mysql::do_backup_cloud_files"
         ],
         "description": "The number of yearly backups to keep (i.e. rotation size).",
         "display_name": "Backups Keep Yearly"
@@ -358,10 +349,7 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files",
-          "db_mysql::setup_continuous_backups_s3",
-          "db_mysql::setup_continuous_backups_ebs",
-          "db_mysql::setup_continuous_backups_cloud_files"
+          "db_mysql::do_backup_cloud_files"
         ],
         "description": "The number of weekly backups to keep (i.e. rotation size).",
         "display_name": "Backups Keep Weekly"
@@ -378,10 +366,7 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files",
-          "db_mysql::setup_continuous_backups_s3",
-          "db_mysql::setup_continuous_backups_ebs",
-          "db_mysql::setup_continuous_backups_cloud_files"
+          "db_mysql::do_backup_cloud_files"
         ],
         "description": "The maximum number of backups to keep in addition to those being rotated.",
         "display_name": "Backups Maximum"
@@ -398,10 +383,7 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files",
-          "db_mysql::setup_continuous_backups_s3",
-          "db_mysql::setup_continuous_backups_ebs",
-          "db_mysql::setup_continuous_backups_cloud_files"
+          "db_mysql::do_backup_cloud_files"
         ],
         "description": "The number of monthly backups to keep (i.e. rotation size).",
         "display_name": "Backups Keep Monthly"
@@ -423,9 +405,6 @@
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
           "db_mysql::do_backup_cloud_files",
-          "db_mysql::setup_continuous_backups_s3",
-          "db_mysql::setup_continuous_backups_ebs",
-          "db_mysql::setup_continuous_backups_cloud_files",
           "db_mysql::setup_block_device"
         ],
         "description": "The type of cloud storage that will be used to store the backup.  For Amazon S3 or Rackspace Cloud Files, use 'ros' and for Amazon EBS, use 'volume'",
@@ -502,10 +481,7 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files",
-          "db_mysql::setup_continuous_backups_s3",
-          "db_mysql::setup_continuous_backups_ebs",
-          "db_mysql::setup_continuous_backups_cloud_files"
+          "db_mysql::do_backup_cloud_files"
         ],
         "description": "The number of daily backups to keep (i.e. rotation size).",
         "display_name": "Backups Keep Daily"

@@ -50,17 +50,17 @@ recipe "db_mysql::do_disable_continuous_backups_s3", "Disables continuous binary
 recipe "db_mysql::do_disable_continuous_backups_ebs", "Disables continuous EBS backup Snapshots of the MySQL database by updating the crontab."
 recipe "db_mysql::do_disable_continuous_backups_cloud_files", "Disables continuous binary backups of the MySQL database to a Rackspace Cloud Files container by updating the crontab."
 
-all_recipes = [ "db_mysql::do_restore_s3", 
-                "db_mysql::do_backup_s3", 
-                "db_mysql::do_backup", 
-                "db_mysql::do_restore", 
-                "db_mysql::do_restore_ebs", 
-                "db_mysql::do_backup_ebs", 
-                "db_mysql::do_restore_cloud_files", 
-                "db_mysql::do_backup_cloud_files", 
+all_recipes = [ "db_mysql::do_restore_s3",
+                "db_mysql::do_backup_s3",
+                "db_mysql::do_backup",
+                "db_mysql::do_restore",
+                "db_mysql::do_restore_ebs",
+                "db_mysql::do_backup_ebs",
+                "db_mysql::do_restore_cloud_files",
+                "db_mysql::do_backup_cloud_files",
                 "db_mysql::setup_continuous_backups_s3",
-                "db_mysql::setup_continuous_backups_ebs", 
-                "db_mysql::setup_continuous_backups_cloud_files", 
+                "db_mysql::setup_continuous_backups_ebs",
+                "db_mysql::setup_continuous_backups_cloud_files",
                 "db_mysql::do_disable_continuous_backups_s3",
                 "db_mysql::do_disable_continuous_backups_ebs",
                 "db_mysql::do_disable_continuous_backups_cloud_files",
@@ -68,30 +68,30 @@ all_recipes = [ "db_mysql::do_restore_s3",
                 "db_mysql::default",
                 "db_mysql::setup_block_device" ]
 
-restore_recipes = [ "db_mysql::do_restore_s3", 
-                    "db_mysql::do_restore_ebs", 
-                    "db_mysql::do_restore", 
+restore_recipes = [ "db_mysql::do_restore_s3",
+                    "db_mysql::do_restore_ebs",
+                    "db_mysql::do_restore",
                     "db_mysql::do_restore_cloud_files" ]
 
-backup_recipes = [ "db_mysql::do_backup_s3", 
-                   "db_mysql::do_backup", 
-                   "db_mysql::do_backup_ebs", 
+backup_recipes = [ "db_mysql::do_backup_s3",
+                   "db_mysql::do_backup",
+                   "db_mysql::do_backup_ebs",
                    "db_mysql::do_backup_cloud_files"
                     ]
 
-all_recipes_require_rax_cred = [ "db_mysql::do_backup", 
-                                    "db_mysql::do_restore", 
-                                    "db_mysql::do_restore_cloud_files", 
+all_recipes_require_rax_cred = [ "db_mysql::do_backup",
+                                    "db_mysql::do_restore",
+                                    "db_mysql::do_restore_cloud_files",
                                     "db_mysql::do_backup_cloud_files" ]
 
-all_recipes_require_aws_cred = [ "db_mysql::do_backup", 
-                                    "db_mysql::do_restore", 
-                                    "db_mysql::do_backup_s3", 
+all_recipes_require_aws_cred = [ "db_mysql::do_backup",
+                                    "db_mysql::do_restore",
+                                    "db_mysql::do_backup_s3",
                                     "db_mysql::do_restore_s3" ]
 
 setup_cron_recipes = [
                 "db_mysql::setup_continuous_backups_s3",
-                "db_mysql::setup_continuous_backups_ebs", 
+                "db_mysql::setup_continuous_backups_ebs",
                 "db_mysql::setup_continuous_backups_cloud_files"
                 ]
 
@@ -140,43 +140,43 @@ attribute "db_mysql/backup/storage_type",
   :choice => [ "ros", "volume" ],
   :type => "string",
   :required => true,
-  :recipes => restore_recipes + backup_recipes + setup_cron_recipes + ["db_mysql::setup_block_device"]
+  :recipes => restore_recipes + backup_recipes + ["db_mysql::setup_block_device"]
   
 attribute "db_mysql/backup/lineage",
   :display_name => "Backup Lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.",
   :required => true,
-  :recipes => restore_recipes + backup_recipes + setup_cron_recipes
+  :recipes => restore_recipes + backup_recipes 
 
 attribute "db_mysql/backup/max_snapshots",
   :display_name => "Backups Maximum",
   :description => "The maximum number of backups to keep in addition to those being rotated.",
   :default => "60",
-  :recipes => backup_recipes + setup_cron_recipes
+  :recipes => backup_recipes 
   
 attribute "db_mysql/backup/keep_daily",
   :display_name => "Backups Keep Daily",
   :description => "The number of daily backups to keep (i.e. rotation size).",
   :default => "14",
-  :recipes => backup_recipes + setup_cron_recipes
+  :recipes => backup_recipes 
   
 attribute "db_mysql/backup/keep_weekly",
   :display_name => "Backups Keep Weekly",
   :description => "The number of weekly backups to keep (i.e. rotation size).",
   :default => "6",
-  :recipes => backup_recipes + setup_cron_recipes
+  :recipes => backup_recipes 
   
 attribute "db_mysql/backup/keep_monthly",
   :display_name => "Backups Keep Monthly",
   :description => "The number of monthly backups to keep (i.e. rotation size).",
   :default => "12",
-  :recipes => backup_recipes + setup_cron_recipes
+  :recipes => backup_recipes 
   
 attribute "db_mysql/backup/keep_yearly",
   :display_name => "Backups Keep Yearly",
   :description => "The number of yearly backups to keep (i.e. rotation size).",
   :default => "2",
-  :recipes => backup_recipes + setup_cron_recipes
+  :recipes => backup_recipes 
 
 attribute "db_mysql/backup/rackspace_user",
   :display_name => "Rackspace User",
@@ -207,7 +207,7 @@ attribute "db_mysql/backup/storage_container",
   :display_name => "Backup Storage Container",
   :description => "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name.",
   :default => "",
-  :recipes => restore_recipes + backup_recipes + setup_cron_recipes
+  :recipes => restore_recipes + backup_recipes
 
 attribute "db_mysql/backup/cron_backup_minute",
   :display_name => "Backup cron minute", 
@@ -220,7 +220,7 @@ attribute "db_mysql/backup/cron_backup_hour",
   :description => "Defines the hour when the backup will be taken.",
   :required => true,
   :recipes => setup_cron_recipes
-  
+
 # == Import/export Attributes
 #
 attribute "db_mysql/dump",
@@ -261,7 +261,7 @@ attribute "db_mysql/dump/prefix",
   :display_name => "Prefix",
   :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.  Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp.",
   :required => true,
-  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]  
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
 attribute "db_mysql/backup/stripe_count",
   :display_name => "Stripe Count",
@@ -284,7 +284,7 @@ attribute "db_mysql/backup/volume_size",
 attribute "db_mysql/server_usage",
   :display_name => "Server Usage",
   :description => "Use 'dedicated' if the mysql config file allocates all existing resources of the machine.  Use 'shared' if the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example.",
-  :recipes => [ 
+  :recipes => [
                 "db_mysql::install_mysql"
               ],
   :choice => ["shared", "dedicated"],
@@ -298,4 +298,4 @@ attribute "db_mysql/log_bin",
   :description => "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory.",
   :recipes => [ "db_mysql::setup_mysql" ],
   :default => "/mnt/mysql-binlogs/mysql-bin"
-  
+ 
