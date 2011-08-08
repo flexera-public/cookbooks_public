@@ -140,8 +140,8 @@ innodb_file_per_table
 innodb_buffer_pool_size = <%= @node[:db_mysql][:tunable][:innodb_buffer_pool_size] %>
 innodb_additional_mem_pool_size = <%= @node[:db_mysql][:tunable][:innodb_additional_mem_pool_size] %>
 # Set .._log_file_size to 25 % of buffer pool size
-innodb_log_file_size = <%= @node[:db_mysql][:tunable][:innodb_log_file_size] %>
-innodb_log_buffer_size = <%= @node[:db_mysql][:tunable][:innodb_log_buffer_size] %>
+innodb_log_file_size = <%= node[:db_mysql][:tunable][:innodb_log_file_size] %>
+innodb_log_buffer_size = <%= node[:db_mysql][:tunable][:innodb_log_buffer_size] %>
 # Write to log but don't flush on commit (it will be flushed every "second")
 innodb_flush_log_at_trx_commit = 2
 innodb_lock_wait_timeout = 50
@@ -206,4 +206,4 @@ sort_buffer_size        = <%= @node[:db_mysql][:tunable][:myisamchk][:sort_buffe
 # * IMPORTANT: Additional settings that can override those from this file!
 #   The files must end with '.cnf', otherwise they'll be ignored.
 #
-<%= "!includedir /etc/mysql/conf.d/" unless ["centos", "redhat","suse"].include?(node[:platform]) %>
+<%= "!includedir /etc/mysql/conf.d/" unless ["centos", "redhat","suse"].include?(@node[:platform]) %>
