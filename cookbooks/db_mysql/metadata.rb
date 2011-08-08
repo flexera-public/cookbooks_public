@@ -140,43 +140,43 @@ attribute "db_mysql/backup/storage_type",
   :choice => [ "ros", "volume" ],
   :type => "string",
   :required => true,
-  :recipes => restore_recipes + backup_recipes + ["db_mysql::setup_block_device"]
+  :recipes => restore_recipes + backup_recipes + setup_cron_recipes + ["db_mysql::setup_block_device"]
   
 attribute "db_mysql/backup/lineage",
   :display_name => "Backup Lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.",
   :required => true,
-  :recipes => restore_recipes + backup_recipes
+  :recipes => restore_recipes + backup_recipes + setup_cron_recipes
 
 attribute "db_mysql/backup/max_snapshots",
   :display_name => "Backups Maximum",
   :description => "The maximum number of backups to keep in addition to those being rotated.",
   :default => "60",
-  :recipes => backup_recipes
+  :recipes => backup_recipes + setup_cron_recipes
   
 attribute "db_mysql/backup/keep_daily",
   :display_name => "Backups Keep Daily",
   :description => "The number of daily backups to keep (i.e. rotation size).",
   :default => "14",
-  :recipes => backup_recipes
+  :recipes => backup_recipes + setup_cron_recipes
   
 attribute "db_mysql/backup/keep_weekly",
   :display_name => "Backups Keep Weekly",
   :description => "The number of weekly backups to keep (i.e. rotation size).",
   :default => "6",
-  :recipes => backup_recipes
+  :recipes => backup_recipes + setup_cron_recipes
   
 attribute "db_mysql/backup/keep_monthly",
   :display_name => "Backups Keep Monthly",
   :description => "The number of monthly backups to keep (i.e. rotation size).",
   :default => "12",
-  :recipes => backup_recipes
+  :recipes => backup_recipes + setup_cron_recipes
   
 attribute "db_mysql/backup/keep_yearly",
   :display_name => "Backups Keep Yearly",
   :description => "The number of yearly backups to keep (i.e. rotation size).",
   :default => "2",
-  :recipes => backup_recipes
+  :recipes => backup_recipes + setup_cron_recipes
 
 attribute "db_mysql/backup/rackspace_user",
   :display_name => "Rackspace User",
@@ -207,7 +207,7 @@ attribute "db_mysql/backup/storage_container",
   :display_name => "Backup Storage Container",
   :description => "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name.",
   :default => "",
-  :recipes => restore_recipes + backup_recipes
+  :recipes => restore_recipes + backup_recipes + setup_cron_recipes
 
 attribute "db_mysql/backup/cron_backup_minute",
   :display_name => "Backup cron minute", 

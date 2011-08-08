@@ -1,38 +1,7 @@
 {
-    "version": "0.0.1",
-    "recipes": {
-      "db_mysql::setup_continuous_backups_cloud_files": "Updates the crontab for taking continuous binary backups of the MySQL database. Backups are saved to a Rackspace Cloud Files container.",
-      "db_mysql::do_restore_cloud_files": "Restores the MySQL database from a binary backup saved in the specified Rackspace Cloud Files container.",
-      "db_mysql::do_restore_ebs": "restore EBS storage",
-      "db_mysql::do_dump_import": "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)",
-      "db_mysql::setup_application_privileges": "Adds username and password for application privileges.",
-      "db_mysql::do_force_reset": "Reset the DB back to a pristine state.",
-      "db_mysql::install_client_5.0": "Installs the MySQL 5.0 client packages and gem.",
-      "db_mysql::do_disable_continuous_backups_ebs": "Disables continuous EBS backup Snapshots of the MySQL database by updating the crontab.",
-      "db_mysql::setup_block_device": "Creates, formats and mounts the block_device (volume) to the instance.",
-      "db_mysql::setup_my_cnf": "Creates the my.cnf configuration file.",
-      "db_mysql::setup_mysql": "Configures the MySQL server.",
-      "db_mysql::default": "Runs the client 'install_mysql' recipes.",
-      "db_mysql::do_disable_continuous_backups_cloud_files": "Disables continuous binary backups of the MySQL database to a Rackspace Cloud Files container by updating the crontab.",
-      "db_mysql::do_backup_s3": "Create a binary backup of the MySQL database and save it in the specified Amazon S3 bucket.",
-      "db_mysql::do_backup_ebs": "Creates an EBS backup EBS storage",
-      "db_mysql::do_backup": "Creates a backup of the MySQL data to the specified cloud storage location. (Premium Account Only) ",
-      "db_mysql::do_dump_export": "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)",
-      "db_mysql::setup_monitoring": "Install collectd-mysql for monitoring support",
-      "db_mysql::do_backup_cloud_files": "Create a binary backup of the MySQL database and save it in the specified Rackspace Cloud Files container.",
-      "db_mysql::install_mysql": "Installs the packages that are required for MySQL servers.",
-      "db_mysql::do_restore_s3": "Restores the MySQL database from a binary backup saved in the specified Amazon S3 bucket.",
-      "db_mysql::setup_continuous_backups_ebs": "Updates the crontab for taking continuous backups of an EBS-based database. Backups are saved as EBS snapshots of the attached EBS Volume or EBS (Volume) Stripe.",
-      "db_mysql::setup_continuous_backups_s3": "Updates the crontab for taking continuous binary backups of the MySQL database. Backups are saved to an Amazon S3 bucket.",
-      "db_mysql::do_restore": "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) ",
-      "db_mysql::setup_continuous_export": "Schedules the daily run of do_dump_export.",
-      "db_mysql::install_client": "Installs the MySQL 5.1 client packages and gem.",
-      "db_mysql::do_disable_continuous_backups_s3": "Disables continuous binary backups of the MySQL database to an Amazon S3 bucket by updating the crontab.",
-      "db_mysql::setup_admin_privileges": "Adds the username and password for 'superuser' privileges."
+    "recommendations": {
     },
-    "maintainer_email": "support@rightscale.com",
-    "conflicting": {
-    },
+    "maintainer": "RightScale, Inc.",
     "attributes": {
       "db_mysql/dump/prefix": {
         "required": "required",
@@ -140,7 +109,10 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files"
+          "db_mysql::do_backup_cloud_files",
+          "db_mysql::setup_continuous_backups_s3",
+          "db_mysql::setup_continuous_backups_ebs",
+          "db_mysql::setup_continuous_backups_cloud_files"
         ],
         "description": "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name.",
         "display_name": "Backup Storage Container"
@@ -217,7 +189,10 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files"
+          "db_mysql::do_backup_cloud_files",
+          "db_mysql::setup_continuous_backups_s3",
+          "db_mysql::setup_continuous_backups_ebs",
+          "db_mysql::setup_continuous_backups_cloud_files"
         ],
         "description": "The prefix that will be used to name/locate the backup of a particular MySQL database.",
         "display_name": "Backup Lineage"
@@ -275,7 +250,10 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files"
+          "db_mysql::do_backup_cloud_files",
+          "db_mysql::setup_continuous_backups_s3",
+          "db_mysql::setup_continuous_backups_ebs",
+          "db_mysql::setup_continuous_backups_cloud_files"
         ],
         "description": "The number of yearly backups to keep (i.e. rotation size).",
         "display_name": "Backups Keep Yearly"
@@ -380,7 +358,10 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files"
+          "db_mysql::do_backup_cloud_files",
+          "db_mysql::setup_continuous_backups_s3",
+          "db_mysql::setup_continuous_backups_ebs",
+          "db_mysql::setup_continuous_backups_cloud_files"
         ],
         "description": "The number of weekly backups to keep (i.e. rotation size).",
         "display_name": "Backups Keep Weekly"
@@ -397,7 +378,10 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files"
+          "db_mysql::do_backup_cloud_files",
+          "db_mysql::setup_continuous_backups_s3",
+          "db_mysql::setup_continuous_backups_ebs",
+          "db_mysql::setup_continuous_backups_cloud_files"
         ],
         "description": "The maximum number of backups to keep in addition to those being rotated.",
         "display_name": "Backups Maximum"
@@ -414,7 +398,10 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files"
+          "db_mysql::do_backup_cloud_files",
+          "db_mysql::setup_continuous_backups_s3",
+          "db_mysql::setup_continuous_backups_ebs",
+          "db_mysql::setup_continuous_backups_cloud_files"
         ],
         "description": "The number of monthly backups to keep (i.e. rotation size).",
         "display_name": "Backups Keep Monthly"
@@ -436,6 +423,9 @@
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
           "db_mysql::do_backup_cloud_files",
+          "db_mysql::setup_continuous_backups_s3",
+          "db_mysql::setup_continuous_backups_ebs",
+          "db_mysql::setup_continuous_backups_cloud_files",
           "db_mysql::setup_block_device"
         ],
         "description": "The type of cloud storage that will be used to store the backup.  For Amazon S3 or Rackspace Cloud Files, use 'ros' and for Amazon EBS, use 'volume'",
@@ -512,11 +502,51 @@
           "db_mysql::do_backup_s3",
           "db_mysql::do_backup",
           "db_mysql::do_backup_ebs",
-          "db_mysql::do_backup_cloud_files"
+          "db_mysql::do_backup_cloud_files",
+          "db_mysql::setup_continuous_backups_s3",
+          "db_mysql::setup_continuous_backups_ebs",
+          "db_mysql::setup_continuous_backups_cloud_files"
         ],
         "description": "The number of daily backups to keep (i.e. rotation size).",
         "display_name": "Backups Keep Daily"
       }
+    },
+    "suggestions": {
+    },
+    "recipes": {
+      "db_mysql::setup_continuous_backups_cloud_files": "Updates the crontab for taking continuous binary backups of the MySQL database. Backups are saved to a Rackspace Cloud Files container.",
+      "db_mysql::do_restore_cloud_files": "Restores the MySQL database from a binary backup saved in the specified Rackspace Cloud Files container.",
+      "db_mysql::do_restore_ebs": "restore EBS storage",
+      "db_mysql::do_dump_import": "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)",
+      "db_mysql::setup_application_privileges": "Adds username and password for application privileges.",
+      "db_mysql::do_force_reset": "Reset the DB back to a pristine state.",
+      "db_mysql::install_client_5.0": "Installs the MySQL 5.0 client packages and gem.",
+      "db_mysql::do_disable_continuous_backups_ebs": "Disables continuous EBS backup Snapshots of the MySQL database by updating the crontab.",
+      "db_mysql::setup_block_device": "Creates, formats and mounts the block_device (volume) to the instance.",
+      "db_mysql::setup_my_cnf": "Creates the my.cnf configuration file.",
+      "db_mysql::setup_mysql": "Configures the MySQL server.",
+      "db_mysql::default": "Runs the client 'install_mysql' recipes.",
+      "db_mysql::do_disable_continuous_backups_cloud_files": "Disables continuous binary backups of the MySQL database to a Rackspace Cloud Files container by updating the crontab.",
+      "db_mysql::do_backup_s3": "Create a binary backup of the MySQL database and save it in the specified Amazon S3 bucket.",
+      "db_mysql::do_backup_ebs": "Creates an EBS backup EBS storage",
+      "db_mysql::do_backup": "Creates a backup of the MySQL data to the specified cloud storage location. (Premium Account Only) ",
+      "db_mysql::do_dump_export": "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)",
+      "db_mysql::setup_monitoring": "Install collectd-mysql for monitoring support",
+      "db_mysql::do_backup_cloud_files": "Create a binary backup of the MySQL database and save it in the specified Rackspace Cloud Files container.",
+      "db_mysql::install_mysql": "Installs the packages that are required for MySQL servers.",
+      "db_mysql::do_restore_s3": "Restores the MySQL database from a binary backup saved in the specified Amazon S3 bucket.",
+      "db_mysql::setup_continuous_backups_ebs": "Updates the crontab for taking continuous backups of an EBS-based database. Backups are saved as EBS snapshots of the attached EBS Volume or EBS (Volume) Stripe.",
+      "db_mysql::setup_continuous_backups_s3": "Updates the crontab for taking continuous binary backups of the MySQL database. Backups are saved to an Amazon S3 bucket.",
+      "db_mysql::do_restore": "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) ",
+      "db_mysql::setup_continuous_export": "Schedules the daily run of do_dump_export.",
+      "db_mysql::install_client": "Installs the MySQL 5.1 client packages and gem.",
+      "db_mysql::do_disable_continuous_backups_s3": "Disables continuous binary backups of the MySQL database to an Amazon S3 bucket by updating the crontab.",
+      "db_mysql::setup_admin_privileges": "Adds the username and password for 'superuser' privileges."
+    },
+    "dependencies": {
+    },
+    "maintainer_email": "support@rightscale.com",
+    "conflicting": {
     },
     "providing": {
       "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)": [
@@ -532,21 +562,15 @@
 
       ]
     },
-    "dependencies": {
+    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+    "platforms": {
     },
+    "version": "0.0.1",
     "replacing": {
     },
-    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+    "name": "db_mysql",
     "groupings": {
     },
     "long_description": "= DESCRIPTION:\n\nConfigures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.\n\n= REQUIREMENTS:\n\n* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.\n\n= ATTRIBUTES: \n\nSee metadata.rb \n\n= USAGE:\n\nDesigned to be run within a RightScale ServerTemplate with the following run order:\n\nBoot Scripts\n  * install_mysql - Performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.\n  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.\n",
-    "recommendations": {
-    },
-    "name": "db_mysql",
-    "maintainer": "RightScale, Inc.",
-    "suggestions": {
-    },
-    "platforms": {
-    },
     "description": "Installs/configures a MySQL database server with automated backups."
   }
