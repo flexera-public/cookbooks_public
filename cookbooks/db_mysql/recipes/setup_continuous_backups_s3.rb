@@ -2,6 +2,8 @@ log "Enabling continuous backups to S3 via cron job: Minute:#{node[:db_mysql][:b
 
 raise "ERROR: missing cron_backup_minute value." unless node[:db_mysql][:backup][:cron_backup_minute]
 raise "ERROR: missing cron_backup_hour value." unless node[:db_mysql][:backup][:cron_backup_hour]
+raise "ERROR: 'Backup Lineage' required for scheduled process" unless node[:db_mysql][:backup][:lineage]
+raise "ERROR: 'Backup Storage Type' required for scheduled process" unless node[:db_mysql][:backup][:storage_type]
 
 cron "RightScale continuous backups S3" do
   minute "#{node[:db_mysql][:backup][:cron_backup_minute]}"
