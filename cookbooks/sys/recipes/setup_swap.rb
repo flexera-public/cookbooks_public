@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: sys
-# Recipe:: install_swap_space
+# Recipe:: setup_swap
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -25,16 +25,14 @@
 # Cookbook Name:: app_tomcat
 # Recipe:: default
 
-recipe_name = "#{self.cookbook_name}" + "::" + "#{self.recipe_name}"
-
-log "[#{recipe_name}] START"
+log "==================== sys::setup_swap : Begin ===================="
 
 swap_size = node[:sys][:swap_size]
 swap_file = "/swapfile"
 
 # sanitize user data
 if (swap_size !~ /^[0-9][\d\.]*$/ )
-  log "[#{recipe_name}] invalid swap size '#{swap_size}' - raising error"
+  log "invalid swap size '#{swap_size}' - raising error"
   raise "ERROR: invalid swap size."
 else
   # convert swap_size from GB to MB
@@ -43,10 +41,10 @@ end
 
 # check if swap is disabled
 if (swap_size == 0)
-  log "[#{recipe_name}] swap size = 0 - disabling swap"
+  log "swap size = 0 - disabling swap"
 else
   if ( File.exists?(swap_file) )
-    log "[#{recipe_name}] swap file already exists - skipping create"
+    log "swap file already exists - skipping create"
   else
     script 'create swapfile' do
       not_if {File.exists?(swap_file)}
@@ -80,8 +78,8 @@ else
       action :create
     end
   else
-    log "[#{recipe_name}] fstab entry already exists - skipping editing fstab"
+    log "fstab entry already exists - skipping editing fstab"
   end
 
 end
-log "[#{recipe_name}] END"
+log "==================== sys::setup_swap : End ===================="

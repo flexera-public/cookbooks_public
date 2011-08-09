@@ -7,7 +7,7 @@ version          "0.1"
 
 recipe "sys::do_reconverge_list_enable", "Enable list of recipes to run every 15 minutes."
 recipe "sys::do_reconverge_list_disable", "Disable recipe reconverge list."
-recipe "sys::install_swap_space", "Install swap space."
+recipe "sys::setup_swap", "Install swap space."
 
 attribute "sys/reconverge_list",
   :display_name => "Reconverge List",
@@ -18,8 +18,8 @@ attribute "sys/reconverge_list",
 
 attribute "sys/swap_size",
   :display_name => "Swap size (GB)",
-  :description => "Create and install swap file.  Select '0' to disable swap.",
+  :description => "Create and activate swap file.  Select '0' to disable swap.",
   :type => "string",
   :choice => ["0","2.0"],
   :default => "0",
-  :recipes => [ "sys::install_swap_space"]
+  :recipes => [ "sys::setup_swap"]

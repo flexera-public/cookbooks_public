@@ -29,17 +29,17 @@
         "default": "0",
         "type": "string",
         "recipes": [
-          "sys::install_swap_space"
+          "sys::setup_swap"
         ],
-        "description": "Create and install swap file.  Select '0' to disable swap.",
+        "description": "Create and activate swap file.  Select '0' to disable swap.",
         "display_name": "Swap size (GB)"
       }
     },
     "suggestions": {
     },
     "recipes": {
-      "sys::install_swap_space": "Install swap space.",
       "sys::do_reconverge_list_disable": "Disable recipe reconverge list.",
+      "sys::setup_swap": "Install swap space.",
       "sys::do_reconverge_list_enable": "Enable list of recipes to run every 15 minutes."
     },
     "dependencies": {
