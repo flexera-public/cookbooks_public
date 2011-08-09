@@ -1,9 +1,9 @@
 log "Enabling continuous backups to RackSpace CloudFiles via cron job: Minute:#{node[:db_mysql][:backup][:cron_backup_minute]} Hour:#{node[:db_mysql][:backup][:cron_backup_hour]}"
 
-raise "ERROR: missing cron_backup_minute value." unless node[:db_mysql][:backup][:cron_backup_minute]
-raise "ERROR: missing cron_backup_hour value." unless node[:db_mysql][:backup][:cron_backup_hour]
-raise "ERROR: 'Backup Lineage' required for scheduled process" unless node[:db_mysql][:backup][:lineage]
-raise "ERROR: 'Backup Storage Type' required for scheduled process" unless node[:db_mysql][:backup][:storage_type]
+raise "ERROR: missing cron_backup_minute value." if node[:db_mysql][:backup][:cron_backup_minute].empty?
+raise "ERROR: missing cron_backup_hour value." if node[:db_mysql][:backup][:cron_backup_hour].empty?
+raise "ERROR: 'Backup Lineage' required for scheduled process" if node[:db_mysql][:backup][:lineage].empty?
+raise "ERROR: 'Backup Storage Type' required for scheduled process" if node[:db_mysql][:backup][:storage_type].empty?
 
 cron "RightScale continuous backups CloudFiles" do
   minute "#{node[:db_mysql][:backup][:cron_backup_minute]}"
