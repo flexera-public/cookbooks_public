@@ -29,8 +29,8 @@ def value_with_units(value, units, usage_factor)
   raise "Error: value must convert to an integer." unless value.to_i
   raise "Error: units must be k, m, g" unless units =~ /[KMG]/i
   factor = usage_factor.to_f
-  raise "Error: usage_factor must be between 1.0 and 0.0. Value used: #{usage_factor}" if factor > 1.0 || factor <= 0.0
-  (value * factor)to_i.to_s + units
+  raise "Error: usage_factor must be between 1.0 and 0.0. Value used: #{usage_factor}" if factor > 1.0 || factor <= 0.0 
+  (value * factor).to_i.to_s + units
 end
 
 #
