@@ -22,9 +22,9 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Ohai returns total in KB.  Set GB so X*gb can be used in conditional
-gb=1024*1024*1024
+gb=1024*1024
 mem = memory[:total]
-Chef::Log.info("Auto-tuning MySQL parameters.  Total memory: #{mem}"
+Chef::Log.info("Auto-tuning MySQL parameters.  Total memory: #{mem}")
 
 set_unless[:db_mysql][:tunable][:thread_cache_size] = "50"
 set_unless[:db_mysql][:tunable][:max_connections]     = "800" 
@@ -125,6 +125,7 @@ else
 end
 set_unless[:db_mysql][:init_timeout] = tune
 
-if(db_mysql[:server_usage] == :shared)
+#TODO impletment shared
+#if(db_mysql[:server_usage] == :shared)
 # Divide some of the values by 1/2
-End
+#end
