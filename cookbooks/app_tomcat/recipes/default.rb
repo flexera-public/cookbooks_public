@@ -3,8 +3,8 @@
 
 # TODO - changes if not centos (ie ubuntu)
 # TEST - currently only for centos
-case node[:platform]
-when "centos","fedora","suse"
+#case node[:platform]
+#when "centos","fedora","suse"
 
   node[:tomcat][:package_dependencies].each do |p|
     log "installing #{p}"
@@ -58,7 +58,6 @@ when "centos","fedora","suse"
     end
   end
 
-
-else
-    log "nothing done yet for non centos"
-end
+#else
+#    log "nothing done yet for non centos"
+#end
