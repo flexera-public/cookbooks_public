@@ -31,7 +31,7 @@ swap_size = node[:sys][:swap_size]
 swap_file = "/swapfile"
 
 # sanitize user data
-if (swap_size !~ /^[0-9][\d\.]*$/ )
+if (swap_size !~ /^\d*[.]?\d+$/ )
   log "invalid swap size '#{swap_size}' - raising error"
   raise "ERROR: invalid swap size."
 else
