@@ -64,23 +64,37 @@ set_unless[:db_mysql][:tunable][:net_write_timeout]                 = 30 * usage
 set_unless[:db_mysql][:tunable][:back_log]                          = 128 * usage
 set_unless[:db_mysql][:tunable][:max_heap_table_size]               = value_with_units(32,"M",usage)
 set_unless[:db_mysql][:tunable][:expire_logs_days]                  = 10 * usage
-set_unless[:db_mysql][:tunable][:innodb_log_file_size]              = value_with_units(64,"M",usage)
-set_unless[:db_mysql][:tunable][:innodb_log_buffer_size]            = value_with_units(8,"M",usage)
-set_unless[:db_mysql][:tunable][:key_buffer]                        = value_with_units(128,"M",usage)
 set_unless[:db_mysql][:tunable][:net_buffer_length]                 = value_with_units(16,"K",usage)
 set_unless[:db_mysql][:tunable][:read_buffer_size]                  = value_with_units(1,"M",usage)
 set_unless[:db_mysql][:tunable][:read_rnd_buffer_size]              = value_with_units(4,"M",usage)
 set_unless[:db_mysql][:tunable][:log_slow_queries]                  = "log_slow_queries = /var/log/mysqlslow.log"
 set_unless[:db_mysql][:tunable][:long_query_time]                   = "long_query_time = 5"
-set_unless[:db_mysql][:tunable][:isamchk][:key_buffer]              = value_with_units(128,"M",usage)
-set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size]        = value_with_units(128,"M",usage)
-set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer]            = value_with_units(128,"M",usage)
-set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size]      = value_with_units(128,"M",usage)
 
 #
 # Adjust based on memory range.
 #
-# The memory ranges used are < 3GB, 3GB - 10GB, 10GB - 25GB, 25GB - 50GB, > 50GB.
+# The memory ranges used are < 1GB, 1GB - 3GB, 3GB - 10GB, 10GB - 25GB, 25GB - 50GB, > 50GB.
+if mem < 1*GB
+  #
+  # Override buffer sizes for really small servers
+  #
+  set_unless[:db_mysql][:tunable][:key_buffer]                      = value_with_units(16,"M",usage)
+  set_unless[:db_mysql][:tunable][:isamchk][:key_buffer]            = value_with_units(20,"M",usage)
+  set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size]      = value_with_units(20,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer]          = value_with_units(20,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size]    = value_with_units(20,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_log_file_size]            = value_with_units(4,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_log_buffer_size]          = value_with_units(16,"M",usage)
+else
+  set_unless[:db_mysql][:tunable][:key_buffer]                      = value_with_units(128,"M",usage)
+  set_unless[:db_mysql][:tunable][:isamchk][:key_buffer]            = value_with_units(128,"M",usage)
+  set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size]      = value_with_units(128,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer]          = value_with_units(128,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size]    = value_with_units(128,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_log_file_size]            = value_with_units(64,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_log_buffer_size]          = value_with_units(8,"M",usage)
+end
+
 if mem < 3*GB
   set_unless[:db_mysql][:tunable][:table_cache]                     = 256 * usage
   set_unless[:db_mysql][:tunable][:sort_buffer_size]                = value_with_units(2,"M",usage)
