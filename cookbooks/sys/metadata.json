@@ -31,8 +31,8 @@
         "recipes": [
           "sys::setup_swap"
         ],
-        "description": "Create and activate swap file.  Select '0' to disable swap.",
-        "display_name": "Swap size (GB)"
+        "description": "Create and activate swap file.  Select '0' to disable swap. ex: 0.5, 1, 1.5",
+        "display_name": "Swap size in GB"
       }
     },
     "suggestions": {
