@@ -10,8 +10,7 @@ module RightScale
           Chef::Log.warn("Please contact Rightscale to upgrade your account.")
         end
         mount_point = new_resource.name
-        block_device = RightScale::BlockDevice.new(mount_point, new_resource.cloud, new_resource.storage_type)
-        RightScale::Tools::Database.new(block_device, new_resource.user, new_resource.password, :mysql, Chef::Log)
+        RightScale::Tools::Database.factory(:mysql, new_resource.user, new_resource.password, mount_point, Chef::Log)
       end
 
     end

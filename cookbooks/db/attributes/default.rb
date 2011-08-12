@@ -21,13 +21,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# Let others know we are a DB
-right_link_tag "database:active=true"
-
-db node[:db][:data_dir] do
-  user node[:db][:user]
-  password node[:db][:password]
-  type node[:db][:provider_type]
-  persist true
-  action :nothing
-end
+set_unless[:db][:data_dir] = "/mnt/storage"
+set_unless[:db][:provider_type] = "mysql"
+set_unless[:db][:user] = "root"
+set_unless[:db][:password] = ""
