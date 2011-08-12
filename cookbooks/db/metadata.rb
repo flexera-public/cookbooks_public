@@ -22,13 +22,13 @@ recipe "db::request_appserver_deny", "Sends request to deny connections from the
 #
 recipe  "db::do_force_reset", "Reset the DB back to a pristine state."
 
-recipe  "db_mysql::setup_block_device", "Creates, formats and mounts the block_device (volume) to the instance."
+recipe  "db::setup_block_device", "Creates, formats and mounts the block_device (volume) to the instance."
 
-recipe  "db_mysql::do_backup", "Creates a backup of the MySQL data to the specified cloud storage location. (Premium Account Only) "
+recipe  "db::do_backup", "Creates a backup of the MySQL data to the specified cloud storage location. (Premium Account Only) "
 
-recipe  "db_mysql::do_restore", "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) "
+recipe  "db::do_restore", "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) "
 
-recipe "db_mysql::setup_continuous_backups", "Updates the crontab for taking continuous binary backups of the MySQL database."
+recipe "db::setup_continuous_backups", "Updates the crontab for taking continuous binary backups of the MySQL database."
 
-recipe "db_mysql::do_disable_continuous_backups", "Disables continuous binary backups of the MySQL database by updating the crontab."
+recipe "db::do_disable_continuous_backups", "Disables continuous binary backups of the MySQL database by updating the crontab."
 

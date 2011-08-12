@@ -16,14 +16,14 @@
     "suggestions": {
     },
     "recipes": {
-      "db_mysql::do_disable_continuous_backups": "Disables continuous binary backups of the MySQL database by updating the crontab.",
-      "db_mysql::setup_block_device": "Creates, formats and mounts the block_device (volume) to the instance.",
+      "db::do_restore": "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) ",
       "db::request_appserver_allow": "Sends request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true. This should be run on a application server before attempting a database connection.",
-      "db_mysql::do_backup": "Creates a backup of the MySQL data to the specified cloud storage location. (Premium Account Only) ",
+      "db::do_disable_continuous_backups": "Disables continuous binary backups of the MySQL database by updating the crontab.",
+      "db::setup_continuous_backups": "Updates the crontab for taking continuous binary backups of the MySQL database.",
+      "db::setup_block_device": "Creates, formats and mounts the block_device (volume) to the instance.",
       "db::default": "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases.",
-      "db_mysql::setup_continuous_backups": "Updates the crontab for taking continuous binary backups of the MySQL database.",
+      "db::do_backup": "Creates a backup of the MySQL data to the specified cloud storage location. (Premium Account Only) ",
       "db::do_appservers_allow": "Allow connections from all application servers in the deployment that are tagged with appserver:active=true. This should be run on a database server to allow application servers to connect.",
-      "db_mysql::do_restore": "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) ",
       "db::do_force_reset": "Reset the DB back to a pristine state.",
       "db::request_appserver_deny": "Sends request to deny connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true.  This should be run on a application server upon decommissioning.",
       "db::do_appservers_deny": "Deny connections from all application servers in the deployment that are tagged with appserver:active=true.  This can be run on a database server to deny connections from all application servers in the deployment."
