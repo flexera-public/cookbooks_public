@@ -33,13 +33,20 @@ Chef::Log.warn("WARNING: You did not provide credentials for your code repositor
 Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{node[:tomcat][:code][:branch]}" == "") 
 
 # grab application source from remote repository
-repo_git_pull "Get Repository" do
-  url node[:tomcat][:code][:url]
-  branch node[:tomcat][:code][:branch] 
-# TODO
-#  dest node[:tomcat][:docroot]
-
-  cred node[:tomcat][:code][:credentials]
+#repo_git_pull "Get Repository" do
+#  url node[:tomcat][:code][:url]
+#  branch node[:tomcat][:code][:branch] 
+## TODO
+##  dest node[:tomcat][:docroot]
+#
+#  cred node[:tomcat][:code][:credentials]
+#end
+#git "/opt/mysources/couch" do
+git "/usr/share/tomcat6/webapps/ROOT" do
+#  repository "git://github.com/lopakadelp/tomcat_examples.git"
+  repository node[:tomcat][:code][:url]
+  reference node[:tomcat][:code][:branch]
+  action :sync
 end
 
 # == Set code ownership 
