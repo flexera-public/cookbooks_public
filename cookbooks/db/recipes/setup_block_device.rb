@@ -6,13 +6,13 @@ db DATA_DIR do
   action :stop
 end
 
-log "  Resetting block device..."
+log "  Creating block device..."
 block_device DATA_DIR do
-  action :reset
+  action :create
 end
 
-log "  Resetting database, then starting database..."
+log "  Moving database to block device and starting database..."
 db DATA_DIR do
-	action [ :reset, :start ]
+	action [ :move_data_dir, :start ]
 end
 log "==================== #{self.cookbook_name}::#{self.recipe_name} : End ===================="

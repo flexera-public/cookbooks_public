@@ -1,4 +1,18 @@
-actions :stop, :start, :move_data_dir, :reset
+actions [
+  :stop, 
+  :start, 
+  :status, 
+  :lock,
+  :unlock,
+  :move_data_dir, 
+  :reset, 
+  :pre_restore_check, 
+  :restore, 
+  :post_restore_cleanup,
+  :pre_backup_check, 
+  :backup, 
+  :post_backup_cleanup
+]
 
 # Database settings
 #attribute :host, :kind_of => String, :default => "localhost"

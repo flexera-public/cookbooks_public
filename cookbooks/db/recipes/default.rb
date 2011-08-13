@@ -25,8 +25,8 @@
 right_link_tag "database:active=true"
 
 db node[:db][:data_dir] do
-  user node[:db][:user]
-  password node[:db][:password]
+  user node[:db][:admin][:user]
+  password node[:db][:admin][:password]
   type node[:db][:provider_type]
   persist true
   action :nothing
