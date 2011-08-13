@@ -4,6 +4,89 @@
     },
     "long_description": "= DESCRIPTION:\n\nRightScale Database Manager Chef Resource (beta) \n\nThis cookbook contains recipes that generally applicable to all databse\nservers. Also provides a lightweight resource to manage your database \nacross multiple cloud VMs. \n      \n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n\n * Needs RightScale Premium ServerTemplate tools gem installed on system.\n   This gem is only available for paid RightScale customers.\n   Please contact sales@rightscale.com to upgrade you account.\n       \n= USAGE:\n\n== Create\n\nSetup a database with data on a blockdevice that supports backup/restore to \nmultiple clouds.\n\nExample: \n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type node[:database][:backup][:storage_type] # \"volume\" or \"ros\"\n    cloud node[:cloud][:provider]\n    # volume only\n    volume_size node[:database][:backup][:volume_size]\n    stripe_count node[:database][:backup][:stripe_count]\n  \n    action :create\n  end\n\n\n== Backup/Restore\n\nHere is an example of a backup to the EC2 EBS service:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type \"volume\"\n    cloud \"ec2\"\n    lineage \"my_data\"\n    action :backup\n  end\n\nHere is an example of a restore from Rackspace CloudFiles service:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type \"ros\"\n    cloud \"rackspace\"\n    rackspace_user node[:database][:backup][:rackspace_user]\n    rackspace_secret node[:database][:backup][:rackspace_secret]\n    storage_container node[:database][:backup][:storage_container]\n    lineage \"my_data\"\n    action :restore\n  end \n\n\n== Reset\n\nWipes database into a pristine state.  This utility action can be useful in develeopment\nand test environments.  Not recommended for production use.\nWARNING: this will delete any data in your database!\n\nExample:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    cloud node[:cloud][:provider]\n    storage_type node[:database][:backup][:storage_type] # \"volume\" or \"ros\"\n    action :reset\n  end\n\n",
     "attributes": {
+      "db/application/password": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "db::default"
+        ],
+        "description": "The password of the database user that has 'user' privileges.",
+        "display_name": "Database Application Password"
+      },
+      "db/admin/password": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "db::default",
+          "db::do_backup"
+        ],
+        "description": "The password of the database user that has 'admin' privileges.",
+        "display_name": "Database Admin Password"
+      },
+      "db/application/user": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "db::default"
+        ],
+        "description": "The username of the database user that has 'user' privileges.",
+        "display_name": "Database Application Username"
+      },
+      "db/admin/user": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "db::default",
+          "db::do_backup"
+        ],
+        "description": "The username of the database user that has 'admin' privileges.",
+        "display_name": "Database Admin Username"
+      },
+      "db/backup/lineage": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "db::default",
+          "db::do_backup",
+          "db::do_restore",
+          "db::do_backup_schedule_enable",
+          "db::do_backup_schedule_disable"
+        ],
+        "description": "The prefix that will be used to name/locate the backup of a particular MySQL database.",
+        "display_name": "Backup Lineage"
+      },
+      "db": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "hash",
+        "recipes": [
+
+        ],
+        "display_name": "General Database Options"
+      }
     },
     "recommendations": {
     },
@@ -18,12 +101,12 @@
     "recipes": {
       "db::do_restore": "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) ",
       "db::request_appserver_allow": "Sends request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true. This should be run on a application server before attempting a database connection.",
-      "db::do_disable_continuous_backups": "Disables continuous binary backups of the MySQL database by updating the crontab.",
-      "db::setup_continuous_backups": "Updates the crontab for taking continuous binary backups of the MySQL database.",
-      "db::setup_block_device": "Creates, formats and mounts the block_device (volume) to the instance.",
+      "db::setup_block_device": "Relocates the database data_dir onto a block_device that supports snapshot backup and restore. (Premium Account Only) ",
       "db::default": "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases.",
-      "db::do_backup": "Creates a backup of the MySQL data to the specified cloud storage location. (Premium Account Only) ",
+      "db::do_backup": "Creates a backup of the database data_dir to the specified cloud storage location. (Premium Account Only) ",
+      "db::do_backup_schedule_enable": "Updates the crontab for taking continuous binary backups of the database. (Premium Account Only) ",
       "db::do_appservers_allow": "Allow connections from all application servers in the deployment that are tagged with appserver:active=true. This should be run on a database server to allow application servers to connect.",
+      "db::do_backup_schedule_disable": "Disables continuous binary backups of the database by updating the crontab. (Premium Account Only)",
       "db::do_force_reset": "Reset the DB back to a pristine state.",
       "db::request_appserver_deny": "Sends request to deny connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true.  This should be run on a application server upon decommissioning.",
       "db::do_appservers_deny": "Deny connections from all application servers in the deployment that are tagged with appserver:active=true.  This can be run on a database server to deny connections from all application servers in the deployment."

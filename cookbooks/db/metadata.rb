@@ -22,13 +22,53 @@ recipe "db::request_appserver_deny", "Sends request to deny connections from the
 #
 recipe  "db::do_force_reset", "Reset the DB back to a pristine state."
 
-recipe  "db::setup_block_device", "Creates, formats and mounts the block_device (volume) to the instance."
+recipe  "db::setup_block_device", "Relocates the database data_dir onto a block_device that supports snapshot backup and restore. (Premium Account Only) "
 
-recipe  "db::do_backup", "Creates a backup of the MySQL data to the specified cloud storage location. (Premium Account Only) "
+recipe  "db::do_backup", "Creates a backup of the database data_dir to the specified cloud storage location. (Premium Account Only) "
 
 recipe  "db::do_restore", "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) "
 
-recipe "db::setup_continuous_backups", "Updates the crontab for taking continuous binary backups of the MySQL database."
+recipe "db::do_backup_schedule_enable", "Updates the crontab for taking continuous binary backups of the database. (Premium Account Only) "
 
-recipe "db::do_disable_continuous_backups", "Disables continuous binary backups of the MySQL database by updating the crontab."
+recipe "db::do_backup_schedule_disable", "Disables continuous binary backups of the database by updating the crontab. (Premium Account Only)"
+
+
+
+attribute "db",
+  :display_name => "General Database Options",
+  :type => "hash"
+  
+attribute "db/admin/user",
+  :display_name => "Database Admin Username",
+  :description => "The username of the database user that has 'admin' privileges.",
+  :required => true,
+  :recipes => [ "db::default", "db::do_backup" ]
+
+attribute "db/admin/password",
+  :display_name => "Database Admin Password",
+  :description => "The password of the database user that has 'admin' privileges.",
+  :required => true,
+  :recipes => [ "db::default", "db::do_backup" ]
+  
+attribute "db/application/user",
+  :display_name => "Database Application Username",
+  :description => "The username of the database user that has 'user' privileges.",
+  :required => true,
+  :recipes => [ "db::default" ]
+
+attribute "db/application/password",
+  :display_name => "Database Application Password",
+  :description => "The password of the database user that has 'user' privileges.",
+  :required => true,
+  :recipes => [ "db::default" ]
+
+
+# == Backup/Restore (Premium Accounts only)
+#
+attribute "db/backup/lineage",
+  :display_name => "Backup Lineage",
+  :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.",
+  :required => true,
+  :recipes => [ "db::default", "db::do_backup", "db::do_restore", "db::do_backup_schedule_enable", "db::do_backup_schedule_disable" ]
+
 
