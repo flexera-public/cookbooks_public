@@ -1,14 +1,18 @@
 = DESCRIPTION:
 
-Configures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.
+Configures MySQL database clients and stand-alone servers. 
+
+Storage of MySQL server data defaults to root partition.  MySQL dumpfiles to a remote object store (i.e. S3 or CloudFiles) are used for backup and restore.  Also supports scheduling periodic backups via cron. 
+
+This cookbooks can be used in conjuntion with RightScale's premium block_device cookbook that supports snapshot backups. Snapshots can be backed up using cloud volumes (e.g. EBS) and/org remote object storage (e.g. S3, CloudFiles).
+
 
 = REQUIREMENTS:
 
-* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.
+ * Requires a VM launched from a RightScale managed RightImage 
+ * Tested on CentOS 5.6 RightImage
+ * Clouds: EC2, RackSpace, CloudStack 2.2.8, and Eucalyptus 
 
-= ATTRIBUTES: 
-
-See metadata.rb 
 
 = USAGE:
 
