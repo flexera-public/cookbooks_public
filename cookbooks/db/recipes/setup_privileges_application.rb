@@ -24,10 +24,13 @@
 log "==================== #{self.cookbook_name}::#{self.recipe_name} : Begin ===================="
 DATA_DIR = node[:db][:data_dir]
 
+user = node[:db][:application][:user]
+log "Adding #{user} with CRUD privileges for all databases."
+
 db DATA_DIR do
   privilege "user"
-  privilege_username node[:db][:admin][:user]
-  privilege_password node[:db][:admin][:password]
+  privilege_username user
+  privilege_password node[:db][:application][:password]
   privilege_database "*.*" # All databases
 end
 

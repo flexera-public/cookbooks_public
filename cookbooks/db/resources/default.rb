@@ -28,7 +28,7 @@ attribute :timestamp_override, :kind_of => String, :default => nil
 attribute :from_master, :kind_of => String, :default => nil
 
 # Privilege options
-attribute :privilege, :equal_to => [ "mysql" ], :default => "administrator"
+attribute :privilege, :equal_to => [ "administrator", "user" ], :default => "administrator"
 attribute :privilege_username, :kind_of => String
 attribute :privilege_password, :kind_of => String
 attribute :privilege_database, :kind_of => String, :default => "*.*" # All databases

@@ -24,9 +24,12 @@
 log "==================== #{self.cookbook_name}::#{self.recipe_name} : Begin ===================="
 DATA_DIR = node[:db][:data_dir]
 
+user = node[:db][:admin][:user]
+log "Adding #{user} with administrator privileges for all databases."
+
 db DATA_DIR do
   privilege "administrator"
-  privilege_username node[:db][:admin][:user]
+  privilege_username user
   privilege_password node[:db][:admin][:password]
   privilege_database "*.*" # All databases
 end
