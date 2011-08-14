@@ -100,6 +100,8 @@
     },
     "recipes": {
       "db::do_restore": "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) ",
+      "db::setup_privileges_admin.rb": "Adds the username and password for 'superuser' privileges.",
+      "db::setup_privileges_application.rb": "Adds username and password for application privileges.",
       "db::request_appserver_allow": "Sends request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true. This should be run on a application server before attempting a database connection.",
       "db::setup_block_device": "Relocates the database data_dir onto a block_device that supports snapshot backup and restore. (Premium Account Only) ",
       "db::default": "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases.",

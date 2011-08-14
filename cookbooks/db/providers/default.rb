@@ -57,3 +57,8 @@ action :post_backup_cleanup do
   @db = init(new_resource)
   @db.clean_backup_info
 end
+
+action :set_privileges do
+  @db = init(new_resource)
+  @db.set_privileges
+end

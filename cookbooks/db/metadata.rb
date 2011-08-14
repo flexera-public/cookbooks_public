@@ -32,7 +32,8 @@ recipe "db::do_backup_schedule_enable", "Updates the crontab for taking continuo
 
 recipe "db::do_backup_schedule_disable", "Disables continuous binary backups of the database by updating the crontab. (Premium Account Only)"
 
-
+recipe  "db::setup_privileges_admin.rb", "Adds the username and password for 'superuser' privileges."
+recipe  "db::setup_privileges_application.rb", "Adds username and password for application privileges."
 
 attribute "db",
   :display_name => "General Database Options",
