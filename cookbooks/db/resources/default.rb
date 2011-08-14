@@ -19,7 +19,7 @@ actions [
 attribute :user, :kind_of => String, :default => "root"
 attribute :password, :kind_of => String, :default => ""
 attribute :data_dir, :kind_of => String, :default => "/mnt/storage"
-attribute :type, :equal_to => [ :mysql ], :default => :mysql
+attribute :type, :equal_to => [ "mysql" ], :default => "mysql"
 
 
 # Backup/Restore settings
