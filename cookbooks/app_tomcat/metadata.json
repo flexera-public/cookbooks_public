@@ -60,7 +60,7 @@
         "display_name": "Repository URL"
       },
       "tomcat/docroot": {
-        "required": "required",
+        "required": "optional",
         "calculated": false,
         "choice": [
 

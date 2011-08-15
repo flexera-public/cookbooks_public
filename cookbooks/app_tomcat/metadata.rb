@@ -29,7 +29,7 @@ attribute "tomcat/db_name",
 attribute "tomcat/docroot",
   :display_name => "Path of the directory from which tomcat will serve files",
   :description => "Enter location of document root directory",
-  :required => true,
+  :required => false,
   :default => "/usr/share/tomcat6/webapps/ROOT/test",
   :recipes => [ "app_tomcat::do_update_code"  ]
 
