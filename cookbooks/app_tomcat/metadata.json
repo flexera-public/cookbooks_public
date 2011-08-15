@@ -70,8 +70,8 @@
         "recipes": [
           "app_tomcat::do_update_code"
         ],
-        "description": "Enter location of document root directory",
-        "display_name": "Path of the directory from which tomcat will serve files"
+        "description": "Path of the directory from which tomcat will serve files",
+        "display_name": "Document Root"
       },
       "tomcat/code/credentials": {
         "required": "optional",
