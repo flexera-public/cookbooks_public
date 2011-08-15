@@ -30,6 +30,13 @@ raise "You must provide a destination for your application code." if ("#{node[:t
 Chef::Log.warn("WARNING: You did not provide credentials for your code repository -- assuming public repository.") if ("#{node[:tomcat][:code][:credentials]}" == "")
 Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{node[:tomcat][:code][:branch]}" == "")
 
+
+# delete docroot in order for repo_git_pull to work correctly
+directory "#{node[:tomcat][:docroot]}" do
+  recursive true
+  action :delete
+end
+
 # grab application source from remote repository
 repo_git_pull "Get Repository" do
   url    node[:tomcat][:code][:url]
