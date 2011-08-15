@@ -9,6 +9,7 @@ set_unless[:tomcat][:code][:url] = ""
 set_unless[:tomcat][:code][:credentials] = ""
 set_unless[:tomcat][:code][:branch] = "master"  
 set_unless[:tomcat][:db_adapter] = "mysql"
+set_unless[:tomcat][:docroot] = "/usr/share/tomcat6/webapps/ROOT"
 
 # == Calculated attributes
 #

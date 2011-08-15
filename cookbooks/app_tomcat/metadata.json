@@ -59,20 +59,6 @@
         "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
         "display_name": "Repository URL"
       },
-      "tomcat/docroot": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "default": "/usr/share/tomcat6/webapps/ROOT/test",
-        "type": "string",
-        "recipes": [
-          "app_tomcat::do_update_code"
-        ],
-        "description": "Path of the directory from which tomcat will serve files",
-        "display_name": "Document Root"
-      },
       "tomcat/code/credentials": {
         "required": "optional",
         "calculated": false,

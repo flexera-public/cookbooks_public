@@ -26,13 +26,6 @@ attribute "tomcat/db_name",
   :required => true,
   :recipes => [ "app_tomcat::setup_db_connection"  ]
 
-attribute "tomcat/docroot",
-  :display_name => "Document Root",
-  :description => "Path of the directory from which tomcat will serve files",
-  :required => false,
-  :default => "/usr/share/tomcat6/webapps/ROOT/test",
-  :recipes => [ "app_tomcat::do_update_code"  ]
-
 attribute "tomcat/code",
   :display_name => "Tomcat Application Code",
   :type => "hash"
