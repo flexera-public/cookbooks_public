@@ -87,7 +87,7 @@ action :update do
                 # Grab private_ip of all tagged servers
                 Chef::Log.info "Loop through server collection for servers with #{tag} tag..."
       
-                @node[:server_collection][collection_name].each do |_, tags|              
+                node[:server_collection][collection_name].each do |_, tags|              
                   # Use regex to extract
                   tags.detect { |t| t =~ /^#{ip_tag}=(#{valid_ip_regex})$/ }
                   match = Regexp.last_match

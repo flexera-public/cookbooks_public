@@ -47,7 +47,7 @@ end
 # TODO:
 # ubuntu module install
 
-ssl_dir =  "/etc/#{@node[:apache][:config_subdir]}/rightscale.d/key"
+ssl_dir =  "/etc/#{node[:apache][:config_subdir]}/rightscale.d/key"
 
 directory ssl_dir do
   mode "0700"

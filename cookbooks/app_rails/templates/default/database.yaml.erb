@@ -1,9 +1,9 @@
 #File created by chef 
  
-<%= @node[:rails][:env] %>: 
+<%= node[:rails][:env] %>: 
  adapter: mysql
- host:  <%= @node[:rails][:db_dns_name] %>
- username: <%= @node[:rails][:db_app_user] %>
- password:  <%= @node[:rails][:db_app_passwd] %>
- database:  <%= @node[:rails][:db_schema_name] %>
- socket:  <%= @node[:db_mysql][:socket] %>
+ host:  <%= node[:rails][:db_dns_name] %>
+ username: <%= node[:rails][:db_app_user] %>
+ password:  <%= node[:rails][:db_app_passwd] %>
+ database:  <%= node[:rails][:db_schema_name] %>
+ socket:  <%= node[:db_mysql][:socket] %>

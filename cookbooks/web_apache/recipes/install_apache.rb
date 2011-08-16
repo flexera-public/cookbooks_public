@@ -69,15 +69,15 @@ ruby 'move_apache' do
 end
 
 ## Move Apache Logs
-apache_name = @node[:apache][:dir].split("/").last
+apache_name = node[:apache][:dir].split("/").last
 log "apache_name was #{apache_name}"
-log "apache log dir was #{@node[:apache][:log_dir]}"
+log "apache log dir was #{node[:apache][:log_dir]}"
 ruby 'move_apache_logs' do
-  not_if do File.symlink?(@node[:apache][:log_dir]) end
+  not_if do File.symlink?(node[:apache][:log_dir]) end
   code <<-EOH
-    `rm -rf #{@node[:apache][:log_dir]}`
+    `rm -rf #{node[:apache][:log_dir]}`
     `mkdir -p /mnt/log/#{apache_name}`
-    `ln -s /mnt/log/#{apache_name} #{@node[:apache][:log_dir]}`
+    `ln -s /mnt/log/#{apache_name} #{node[:apache][:log_dir]}`
   EOH
 end
 
@@ -85,8 +85,8 @@ end
 case node[:platform]
   when "centos","redhat","fedora","suse"
 
-    binary_to_use = @node[:apache][:binary]
-    if @node[:web_apache][:mpm] != 'prefork'
+    binary_to_use = node[:apache][:binary]
+    if node[:web_apache][:mpm] != 'prefork'
       binary_to_use << ".worker"
     end
 

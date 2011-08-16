@@ -34,7 +34,7 @@ template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/et
   group "root"
   mode "0644"
   variables(
-    :server_id => @node[:db_mysql][:server_id]
+    :server_id => node[:db_mysql][:server_id]
   )
 end
 

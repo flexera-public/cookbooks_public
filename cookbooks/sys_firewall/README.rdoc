@@ -39,7 +39,7 @@ To request all servers with a given tag close a port to a given IP address use:
     machine_tag "loadbalancer:app=www"
     port 8000
     enable false
-    ip_addr @node[:cloud][:private_ips][0]
+    ip_addr node[:cloud][:private_ips][0]
     action :update_request
   end
   

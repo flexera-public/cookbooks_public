@@ -22,7 +22,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 sys_firewall "Open this appserver's ports to all loadbalancers" do
-  machine_tag "loadbalancer:lb=#{@node[:lb_haproxy][:applistener_name]}"
+  machine_tag "loadbalancer:lb=#{node[:lb_haproxy][:applistener_name]}"
   port 8000
   enable false
   action :update

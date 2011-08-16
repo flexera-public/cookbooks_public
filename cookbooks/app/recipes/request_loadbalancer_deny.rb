@@ -22,10 +22,10 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 sys_firewall "Request all appservers close ports to this loadbalancer" do
-  machine_tag "loadbalancer:app=#{@node[:lb_haproxy][:applistener_name]}"
+  machine_tag "loadbalancer:app=#{node[:lb_haproxy][:applistener_name]}"
   port 8000
   enable false
-  ip_addr @node[:cloud][:private_ips][0]
+  ip_addr node[:cloud][:private_ips][0]
   action :update_request
 end
 

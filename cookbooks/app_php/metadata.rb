@@ -5,10 +5,10 @@ description      "Installs the php application server."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
 
+depends "app"
 depends "web_apache"
 depends "db_mysql"
 depends "repo_git"
-depends "repo_git_pull(url, branch, dest, cred)"
  
 recipe  "app_php::default", "Installs the php application server."
 recipe  "app_php::do_update_code", "Update application source files from the remote repository."

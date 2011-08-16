@@ -1,5 +1,23 @@
 {
     "version": "0.1.0",
+    "groupings": {
+    },
+    "long_description": "= DESCRIPTION:\n\nRightScale Database Manager Chef Resource (beta) \n\nThis cookbook contains recipes that generally applicable to all databse\nservers. Also provides a lightweight resource to manage your database \nacross multiple cloud VMs. \n      \n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n\n * Needs RightScale Premium ServerTemplate tools gem installed on system.\n   This gem is only available for paid RightScale customers.\n   Please contact sales@rightscale.com to upgrade you account.\n       \n= USAGE:\n\n== Create\n\nSetup a database with data on a blockdevice that supports backup/restore to \nmultiple clouds.\n\nExample: \n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type node[:database][:backup][:storage_type] # \"volume\" or \"ros\"\n    cloud node[:cloud][:provider]\n    # volume only\n    volume_size node[:database][:backup][:volume_size]\n    stripe_count node[:database][:backup][:stripe_count]\n  \n    action :create\n  end\n\n\n== Backup/Restore\n\nHere is an example of a backup to the EC2 EBS service:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type \"volume\"\n    cloud \"ec2\"\n    lineage \"my_data\"\n    action :backup\n  end\n\nHere is an example of a restore from Rackspace CloudFiles service:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type \"ros\"\n    cloud \"rackspace\"\n    rackspace_user node[:database][:backup][:rackspace_user]\n    rackspace_secret node[:database][:backup][:rackspace_secret]\n    storage_container node[:database][:backup][:storage_container]\n    lineage \"my_data\"\n    action :restore\n  end \n\n\n== Reset\n\nWipes database into a pristine state.  This utility action can be useful in develeopment\nand test environments.  Not recommended for production use.\nWARNING: this will delete any data in your database!\n\nExample:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    cloud node[:cloud][:provider]\n    storage_type node[:database][:backup][:storage_type] # \"volume\" or \"ros\"\n    action :reset\n  end\n\n",
+    "attributes": {
+    },
+    "recommendations": {
+    },
+    "dependencies": {
+      "sys_firewall": [
+
+      ],
+      "block_device": [
+
+      ]
+    },
+    "maintainer": "RightScale, Inc.",
+    "suggestions": {
+    },
     "recipes": {
       "db::request_appserver_allow": "Sends request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true. This should be run on a application server before attempting a database connection.",
       "db::default": "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases.",
@@ -10,26 +28,11 @@
     "maintainer_email": "support@rightscale.com",
     "conflicting": {
     },
-    "attributes": {
-    },
+    "license": "All rights reserved",
     "providing": {
     },
-    "dependencies": {
-      "sys_firewall": [
-
-      ]
-    },
-    "replacing": {
-    },
-    "license": "All rights reserved",
-    "groupings": {
-    },
-    "long_description": "= DESCRIPTION:\n\nRightScale Database Manager Chef Resource (beta) \n\nThis cookbook contains recipes that generally applicable to all databse\nservers. Also provides a lightweight resource to manage your database \nacross multiple cloud VMs. \n      \n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n\n * Needs RightScale Premium ServerTemplate tools gem installed on system.\n   This gem is only available for paid RightScale customers.\n   Please contact sales@rightscale.com to upgrade you account.\n       \n= USAGE:\n\n== Create\n\nSetup a database with data on a blockdevice that supports backup/restore to \nmultiple clouds.\n\nExample: \n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type node[:database][:backup][:storage_type] # \"volume\" or \"ros\"\n    cloud node[:cloud][:provider]\n    # volume only\n    volume_size node[:database][:backup][:volume_size]\n    stripe_count node[:database][:backup][:stripe_count]\n  \n    action :create\n  end\n\n\n== Backup/Restore\n\nHere is an example of a backup to the EC2 EBS service:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type \"volume\"\n    cloud \"ec2\"\n    lineage \"my_data\"\n    action :backup\n  end\n\nHere is an example of a restore from Rackspace CloudFiles service:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type \"ros\"\n    cloud \"rackspace\"\n    rackspace_user node[:database][:backup][:rackspace_user]\n    rackspace_secret node[:database][:backup][:rackspace_secret]\n    storage_container node[:database][:backup][:storage_container]\n    lineage \"my_data\"\n    action :restore\n  end \n\n\n== Reset\n\nWipes database into a pristine state.  This utility action can be useful in develeopment\nand test environments.  Not recommended for production use.\nWARNING: this will delete any data in your database!\n\nExample:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    cloud node[:cloud][:provider]\n    storage_type node[:database][:backup][:storage_type] # \"volume\" or \"ros\"\n    action :reset\n  end\n\n",
-    "recommendations": {
-    },
     "name": "db",
-    "maintainer": "RightScale, Inc.",
-    "suggestions": {
+    "replacing": {
     },
     "platforms": {
     },
