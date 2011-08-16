@@ -1,13 +1,5 @@
 {
-  "recipes": {
-    "app_php::do_update_code": "Update application source files from the remote repository.",
-    "app_php::setup_php_application_vhost": "Setup application vhost on port 8000",
-    "app_php::setup_db_connection": "Setup MySQL database db.php connection file.",
-    "app_php::default": "Installs the php application server."
-  },
   "suggestions": {
-  },
-  "conflicting": {
   },
   "attributes": {
     "php/db_schema_name": {
@@ -94,6 +86,20 @@
       ],
       "display_name": "PHP Application Code"
     },
+    "php/server_name": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "myserver",
+      "type": "string",
+      "recipes": [
+        "app_php::default"
+      ],
+      "display_name": "Server Name",
+      "description": "The fully qualified domain name of the application server used to define your virtual host."
+    },
     "php/code/url": {
       "required": "required",
       "calculated": false,
@@ -110,9 +116,9 @@
       "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git"
     }
   },
-  "description": "Installs the php application server.",
-  "providing": {
+  "conflicting": {
   },
+  "description": "Installs the php application server.",
   "dependencies": {
     "db_mysql": [
 
@@ -127,15 +133,23 @@
 
     ]
   },
+  "providing": {
+  },
   "maintainer": "RightScale, Inc.",
   "replacing": {
   },
-  "maintainer_email": "support@rightscale.com",
   "version": "0.0.1",
+  "maintainer_email": "support@rightscale.com",
+  "name": "app_php",
+  "recipes": {
+    "app_php::do_update_code": "Update application source files from the remote repository.",
+    "app_php::setup_php_application_vhost": "Setup application vhost on port 8000",
+    "app_php::setup_db_connection": "Setup MySQL database db.php connection file.",
+    "app_php::default": "Installs the php application server."
+  },
   "groupings": {
   },
   "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
-  "name": "app_php",
   "recommendations": {
   },
   "platforms": {
