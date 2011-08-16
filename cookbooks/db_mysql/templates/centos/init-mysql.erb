@@ -21,11 +21,11 @@ MYADMIN="/usr/bin/mysqladmin"
 # *** Wait for process to be alive, connected, and innodb ready.  
 # on startup: timeout results in failure status even if mysql is half up (and connection is available).
 # innodb *must be enabled
-START_TIMEOUT=<%= @node[:db_mysql][:init_timeout] %>
+START_TIMEOUT=<%= node[:db_mysql][:init_timeout] %>
 
 # *** Wait for process to exit
 # on shutdown: timeout results in forced shutdown, do not set this too low!
-STOP_TIMEOUT=<%= @node[:db_mysql][:init_timeout] %>
+STOP_TIMEOUT=<%= node[:db_mysql][:init_timeout] %>
 
 # extract value of a MySQL option from config files
 # Usage: get_mysql_option SECTION VARNAME DEFAULT
