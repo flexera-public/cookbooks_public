@@ -38,6 +38,7 @@ end
 #
 
 # Shared servers get %50 of the resources allocated to a dedicated server.
+set_unless[:db_mysql][:server_usage] = "dedicated"  # or "shared"
 usage = 1 # Dedicated server
 usage = 0.5 if db_mysql[:server_usage] == :shared
 
