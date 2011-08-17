@@ -54,8 +54,8 @@ directory ssl_dir do
   recursive true
 end
 
-ssl_certificate_file = ::File.join(ssl_dir, "#{node[:php][:server_name]}.crt")
-ssl_key_file = ::File.join(ssl_dir, "#{node[:php][:server_name]}.key")
+ssl_certificate_file = ::File.join(ssl_dir, "#{node[:web_apache][:server_name]}.crt")
+ssl_key_file = ::File.join(ssl_dir, "#{node[:web_apache][:server_name]}.key")
 
 template ssl_certificate_file do
   mode "0400"
