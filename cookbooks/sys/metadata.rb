@@ -20,6 +20,13 @@ attribute "sys/swap_size",
   :display_name => "Swap size in GB",
   :description => "Create and activate swap file.  Select '0' to disable swap. ex: 0.5, 1, 1.5",
   :type => "string",
-  :choice => ["0","2.0"],
-  :default => "0",
+  :choice => ["0","0.5","2.0"],
+  :required => true,
+  :recipes => [ "sys::setup_swap"]
+
+attribute "sys/swap_file",
+  :display_name => "Swapfile location",
+  :description => "Location of swapfile.  Defaults to '/swapfile'.",
+  :type => "string",
+  :default => "/swapfile",
   :recipes => [ "sys::setup_swap"]

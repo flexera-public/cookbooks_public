@@ -28,9 +28,10 @@
 log "==================== sys::setup_swap : Begin ===================="
 
 swap_size = node[:sys][:swap_size]
-swap_file = "/swapfile"
+#swap_file = "/swapfile"
+swap_file = node[:sys][:swap_file]
 
-# sanitize user data
+# sanitize user data 'swap_size'
 if (swap_size !~ /^\d*[.]?\d+$/ )
   log "invalid swap size '#{swap_size}' - raising error"
   raise "ERROR: invalid swap size."
@@ -39,10 +40,19 @@ else
   swap_size = ((swap_size.to_f)*1024).to_i
 end
 
+
 # check if swap is disabled
 if (swap_size == 0)
   log "swap size = 0 - disabling swap"
 else
+
+  # sanitize user data 'swap_file'
+  if (swap_file !~ /^\/{1}(((\/{1}\.{1})?[a-zA-Z0-9 ]+\/?)+(\.{1}[a-zA-Z0-9]{2,4})?)$/ )
+    log "invalid swap file name - raising error"
+    raise "ERROR: invalid swap file name"
+  end
+
+
   if ( File.exists?(swap_file) )
     log "swap file already exists - skipping create"
   else

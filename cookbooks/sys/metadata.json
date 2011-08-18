@@ -19,14 +19,28 @@
         "description": "A space-separated list of recipes to run every 15 minutes.  This is used to enforce system consistency.  Ex: app::do_firewall_request_open lb_haproxy::do_attach_all",
         "display_name": "Reconverge List"
       },
-      "sys/swap_size": {
+      "sys/swap_file": {
         "required": "optional",
         "calculated": false,
         "choice": [
+
+        ],
+        "default": "/swapfile",
+        "type": "string",
+        "recipes": [
+          "sys::setup_swap"
+        ],
+        "description": "Location of swapfile.  Defaults to '/swapfile'.",
+        "display_name": "Swapfile location"
+      },
+      "sys/swap_size": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
           "0",
+          "0.5",
           "2.0"
         ],
-        "default": "0",
         "type": "string",
         "recipes": [
           "sys::setup_swap"
