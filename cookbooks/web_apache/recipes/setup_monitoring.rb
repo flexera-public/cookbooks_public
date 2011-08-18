@@ -1,6 +1,6 @@
-service "collectd" do
-  action :nothing
-end
+rs_utils_enable_collectd_plugin 'exec'
+
+include_recipe "rs_utils::setup_monitoring"
 
 service "httpd" do
   action :nothing
