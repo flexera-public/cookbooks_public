@@ -6,7 +6,7 @@ attribute :user, :kind_of => String, :default => "root"
 attribute :password, :kind_of => String, :default => ""
 
 # Backup/Restore settings
-attribute :lineage, :kind_of => String
+attribute :lineage, :kind_of => String, :required => true
 attribute :cloud, :equal_to => [ "ec2", "rackspace" ], :required => true
 attribute :force, :kind_of => String, :default => "false"
 attribute :timestamp_override, :kind_of => String, :default => nil
