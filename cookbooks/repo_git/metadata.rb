@@ -6,5 +6,6 @@ version          "0.0.1"
 
 depends "git"
 
-provides "repo_git_pull(url, branch, dest, cred)" 
+#provides "repo_git_pull(url, branch, dest, cred)" 
+provides "repo_git"
 
