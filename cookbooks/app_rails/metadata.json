@@ -1,7 +1,8 @@
 {
     "version": "0.0.1",
-    "providing": {
+    "groupings": {
     },
+    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
     "attributes": {
       "rails/version": {
         "required": "optional",
@@ -15,8 +16,8 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "display_name": "Rails Version",
-        "description": "Specify the version of Rails to install"
+        "description": "Specify the version of Rails to install",
+        "display_name": "Rails Version"
       },
       "rails/spawn_method": {
         "required": "optional",
@@ -31,8 +32,8 @@
           "app_rails::do_update_code",
           "app_rails::install_rails"
         ],
-        "display_name": "Spawn Method",
-        "description": "Specify which Rails spawn method should be used. Ex: conservative, smart, smart-lv2"
+        "description": "Specify which Rails spawn method should be used. Ex: conservative, smart, smart-lv2",
+        "display_name": "Spawn Method"
       },
       "rails": {
         "required": "optional",
@@ -56,8 +57,8 @@
         "recipes": [
           "app_rails::do_db_restore"
         ],
-        "display_name": "Mysqldump File Path",
-        "description": "This input allows you to restore your database by choosing a specific MySQL database backup file.  You will need to specify a full path and/or filename.  Ex: branch/mydb-200910300402.gz"
+        "description": "This input allows you to restore your database by choosing a specific MySQL database backup file.  You will need to specify a full path and/or filename.  Ex: branch/mydb-200910300402.gz",
+        "display_name": "Mysqldump File Path"
       },
       "rails/gems_list": {
         "required": "optional",
@@ -70,8 +71,8 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "display_name": "Gems List",
-        "description": "An optional list of gems that's required by your application."
+        "description": "An optional list of gems that's required by your application.",
+        "display_name": "Gems List"
       },
       "rails/code/branch": {
         "required": "optional",
@@ -87,8 +88,8 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "display_name": "Repository Branch",
-        "description": "The name of the branch within the git repository where the application code should be pulled from."
+        "description": "The name of the branch within the git repository where the application code should be pulled from.",
+        "display_name": "Repository Branch"
       },
       "rails/db_schema_name": {
         "required": "optional",
@@ -102,8 +103,8 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "display_name": "Database Schema Name",
-        "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema"
+        "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
+        "display_name": "Database Schema Name"
       },
       "rails/max_pool_size": {
         "required": "optional",
@@ -117,8 +118,8 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "display_name": "Rails Max Pool Size",
-        "description": "Specify the MaxPoolSize in the Apache vhost"
+        "description": "Specify the MaxPoolSize in the Apache vhost",
+        "display_name": "Rails Max Pool Size"
       },
       "rails/server_name": {
         "required": "optional",
@@ -134,8 +135,8 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "display_name": "Server Name",
-        "description": "The fully qualified domain name of the application server used to define your virtual host."
+        "description": "The fully qualified domain name of the application server used to define your virtual host.",
+        "display_name": "Server Name"
       },
       "rails/db_app_passwd": {
         "required": "optional",
@@ -149,8 +150,8 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "display_name": "Database Password",
-        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Password'.  The application server will then have unrestricted access to the database."
+        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Password'.  The application server will then have unrestricted access to the database.",
+        "display_name": "Database Password"
       },
       "rails/environment": {
         "required": "optional",
@@ -164,8 +165,8 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "display_name": "Rails Environment",
-        "description": "Specify the environment to use for Rails"
+        "description": "Specify the environment to use for Rails",
+        "display_name": "Rails Environment"
       },
       "rails/code/url": {
         "required": "required",
@@ -181,8 +182,8 @@
           "app_rails::default",
           "app_rails::default"
         ],
-        "display_name": "Repository URL",
-        "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git"
+        "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
+        "display_name": "Repository URL"
       },
       "rails/code": {
         "required": "optional",
@@ -206,8 +207,8 @@
         "recipes": [
 
         ],
-        "display_name": "Database DNS Name",
-        "description": "The fully qualified domain name of the database server to which the application server(s) will connect.  Ex: master.mydatabase.com"
+        "description": "The fully qualified domain name of the database server to which the application server(s) will connect.  Ex: master.mydatabase.com",
+        "display_name": "Database DNS Name"
       },
       "rails/application_port": {
         "required": "optional",
@@ -221,8 +222,8 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "display_name": "Application Port",
-        "description": "This input is normally set to 8000 if this server is a combined HAProxy and application server. If this is an application server (w/o HAproxy), set it to 80.  When setting this in a deployment, you should use 80 at the deployment level since you want all of your servers in the array to use this value.  If the server is a FE+APP server, you can set it to 8000 at the server level so that it overrides the deployment level input."
+        "description": "This input is normally set to 8000 if this server is a combined HAProxy and application server. If this is an application server (w/o HAproxy), set it to 80.  When setting this in a deployment, you should use 80 at the deployment level since you want all of your servers in the array to use this value.  If the server is a FE+APP server, you can set it to 8000 at the server level so that it overrides the deployment level input.",
+        "display_name": "Application Port"
       },
       "rails/code/credentials": {
         "required": "optional",
@@ -238,8 +239,8 @@
           "app_rails::default",
           "app_rails::default"
         ],
-        "display_name": "Repository Credentials",
-        "description": "The private SSH key of the git repository."
+        "description": "The private SSH key of the git repository.",
+        "display_name": "Repository Credentials"
       },
       "rails/application_name": {
         "required": "optional",
@@ -253,8 +254,8 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "display_name": "Application Name",
-        "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for 'Application Name', so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name."
+        "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for 'Application Name', so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name.",
+        "display_name": "Application Name"
       },
       "rails/db_app_user": {
         "required": "optional",
@@ -268,20 +269,17 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "display_name": "Database User",
-        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Username'.  The application server will then have unrestricted access to the database."
+        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Username'.  The application server will then have unrestricted access to the database.",
+        "display_name": "Database User"
       }
     },
-    "replacing": {
+    "recommendations": {
     },
     "dependencies": {
       "db_mysql": [
 
       ],
       "rails": [
-
-      ],
-      "repo_git_pull(url, branch, user, dest, cred)": [
 
       ],
       "mysql::client": [
@@ -297,17 +295,9 @@
 
       ]
     },
-    "groupings": {
-    },
-    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
-    "recommendations": {
-    },
-    "license": "Copyright (c) 2010 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
     "maintainer": "RightScale, Inc.",
     "suggestions": {
     },
-    "name": "app_rails",
-    "maintainer_email": "support@rightscale.com",
     "recipes": {
       "app_rails::do_db_restore": "Restore the application database schema from a remote location.",
       "app_rails::setup_db_config": "Configures the rails database.yml file.",
@@ -315,7 +305,14 @@
       "app_rails::default": "Runs app_rails::install_rails.",
       "app_rails::do_update_code": "Update application source files from the remote repository."
     },
+    "maintainer_email": "support@rightscale.com",
     "conflicting": {
+    },
+    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+    "providing": {
+    },
+    "name": "app_rails",
+    "replacing": {
     },
     "platforms": {
     },
