@@ -43,14 +43,17 @@ end
 
 action :post_restore_cleanup do
   @db = init(new_resource)
-  @db.symlink_datadir
-  @db.post_restore_sanity_check
+  @db.symlink_datadir("/var/lib/mysql", node[:db][:data_dir])
+  # TODO: used for replication
+  # @db.post_restore_sanity_check
   @db.post_restore_cleanup
 end
 
 action :pre_backup_check do
   @db = init(new_resource)
   @db.pre_backup_check
+  # TODO: used for replication
+  # @db.write_mysql_backup_info
 end
 
 action :post_backup_cleanup do
