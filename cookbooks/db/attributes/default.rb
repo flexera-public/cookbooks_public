@@ -23,7 +23,7 @@
 
 # TODO: add these to metadata
 set_unless[:db][:data_dir] = "/mnt/storage"
-set_unless[:db][:provider_type] = "mysql"
+set_unless[:db][:provider] = "db_mysql"
 set_unless[:db][:admin][:user] = "root"
 set_unless[:db][:admin][:password] = ""
 
