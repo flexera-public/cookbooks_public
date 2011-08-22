@@ -28,8 +28,9 @@
 log "==================== sys::setup_swap : Begin ===================="
 
 swap_size = node[:sys][:swap_size]
-#swap_file = "/swapfile"
 swap_file = node[:sys][:swap_file]
+
+fs_size_threshold_percent = 75
 
 # sanitize user data 'swap_size'
 if (swap_size !~ /^\d*[.]?\d+$/ )
@@ -39,7 +40,6 @@ else
   # convert swap_size from GB to MB
   swap_size = ((swap_size.to_f)*1024).to_i
 end
-
 
 # check if swap is disabled
 if (swap_size == 0)
@@ -52,9 +52,16 @@ else
     raise "ERROR: invalid swap file name"
   end
 
+  # determine if swapfile is too big for fs that holds it
+  (fs_total,fs_used) = `df --block-size=1M -P #{File.dirname(swap_file)} |tail -1| awk '{print $2":"$3}'`.split(":")
+  if ( (((fs_used.to_f + swap_size).to_f/fs_total.to_f)*100).to_i >= fs_size_threshold_percent )
+    log "swap file size would exceed filesystem threshold of #{fs_size_threshold_percent} percent - raising error"
+    raise "ERROR: swap file size too big - would exceed #{fs_size_threshold_percent} percent of filesystem"
+  end
 
   if ( File.exists?(swap_file) )
-    log "swap file already exists - skipping create"
+    log "swap file already exists - raising error"
+    raise "ERROR: swap file already exists - file must not exist"
   else
     script 'create swapfile' do
       not_if {File.exists?(swap_file)}
