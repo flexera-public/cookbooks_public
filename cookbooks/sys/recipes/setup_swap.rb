@@ -25,7 +25,7 @@
 # Cookbook Name:: app_tomcat
 # Recipe:: default
 
-rs_utils_marker "begin"
+rs_utils_marker :begin
 
 swap_size = node[:sys][:swap_size]
 swap_file = node[:sys][:swap_file]
@@ -46,10 +46,39 @@ if (swap_file !~ /^\/{1}(((\/{1}\.{1})?[a-zA-Z0-9 ]+\/?)+(\.{1}[a-zA-Z0-9]{2,4})
   raise "ERROR: invalid swap file name"
 end
 
-# check if swap is disabled/to be disabled
+# skip creating swap or disabled
 if (swap_size == 0)
-  # TODO - disable swap if file exists
-  log "swap size = 0 - disabling swap"
+  if ( File.exists?(swap_file) && File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? )
+    log "removing swap file"
+    script 'deactivate swapfile' do
+      interpreter 'bash'
+      code <<-eof
+        swapoff #{swap_file}
+        rm #{swap_file}
+      eof
+    end
+
+    # remove swap from /etc/fstab
+    new_fstab_contents = ""
+    fstab_contents = File.open('/etc/fstab') { |f| f.read }
+    fstab_contents.each_line do |line| 
+      if ( line.strip =~ /^#{swap_file}\b/ )
+        # skipping
+      else
+        new_fstab_contents << line
+      end
+    end
+    file "/etc/fstab" do
+      content new_fstab_contents
+      owner "root"
+      group "root"
+      mode "0644"
+      action :create
+    end
+  else
+    log "not creating swap"
+  end
+
 else
 
   # for idempotency, check if selected swapfle is in place, correct size, and on
@@ -58,7 +87,6 @@ else
        File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? )
     log "swap already setup with given input"
   else
-  
     # determine if swapfile is too big for fs that holds it
     (fs_total,fs_used) = `df --block-size=1M -P #{File.dirname(swap_file)} |tail -1| awk '{print $2":"$3}'`.split(":")
     if ( (((fs_used.to_f + swap_size).to_f/fs_total.to_f)*100).to_i >= fs_size_threshold_percent )
@@ -108,4 +136,4 @@ else
   end  
 end
 
-rs_utils_marker "end"
+rs_utils_marker :end
