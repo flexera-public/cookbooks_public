@@ -25,7 +25,7 @@
 # Cookbook Name:: app_tomcat
 # Recipe:: default
 
-log "==================== sys::setup_swap : Begin ===================="
+rs_utils_marker :begin
 
 swap_size = node[:sys][:swap_size]
 swap_file = "/swapfile"
@@ -39,22 +39,65 @@ else
   swap_size = ((swap_size.to_f)*1024).to_i
 end
 
-# check if swap is disabled
+# skip creating swap or disabled
 if (swap_size == 0)
-  log "swap size = 0 - disabling swap"
+  if ( File.exists?(swap_file) && File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? )
+    log "removing swap file"
+    script 'deactivate swapfile' do
+      interpreter 'bash'
+      code <<-eof
+        swapoff #{swap_file}
+        rm #{swap_file}
+      eof
+    end
+
+    # remove swap from /etc/fstab
+    new_fstab_contents = ""
+    fstab_contents = File.open('/etc/fstab') { |f| f.read }
+    fstab_contents.each_line do |line| 
+      if ( line.strip =~ /^#{swap_file}\b/ )
+        # skipping
+      else
+        new_fstab_contents << line
+      end
+    end
+    file "/etc/fstab" do
+      content new_fstab_contents
+      owner "root"
+      group "root"
+      mode "0644"
+      action :create
+    end
+  else
+    log "not creating swap"
+  end
+
 else
   if ( File.exists?(swap_file) )
     log "swap file already exists - skipping create"
   else
-    script 'create swapfile' do
-      not_if {File.exists?(swap_file)}
-      interpreter 'bash'
-      code <<-eof
-        dd if=/dev/zero of=#{swap_file} bs=1M count=#{swap_size}
-        chmod 600 #{swap_file}
-        mkswap #{swap_file}
-        swapon #{swap_file}
-      eof
+    # determine if swapfile is too big for fs that holds it
+    (fs_total,fs_used) = `df --block-size=1M -P #{File.dirname(swap_file)} |tail -1| awk '{print $2":"$3}'`.split(":")
+    if ( (((fs_used.to_f + swap_size).to_f/fs_total.to_f)*100).to_i >= fs_size_threshold_percent )
+      log "swap file size would exceed filesystem threshold of #{fs_size_threshold_percent} percent - raising error"
+      raise "ERROR: swap file size too big - would exceed #{fs_size_threshold_percent} percent of filesystem"
+    end
+  
+    # check if swap_file exists
+    if ( File.exists?(swap_file) )
+      log "swap file already exists - raising error"
+      raise "ERROR: swap file already exists - file must not exist"
+    else
+      script 'create swapfile' do
+        not_if {File.exists?(swap_file)}
+        interpreter 'bash'
+        code <<-eof
+          dd if=/dev/zero of=#{swap_file} bs=1M count=#{swap_size}
+          chmod 600 #{swap_file}
+          mkswap #{swap_file}
+          swapon #{swap_file}
+        eof
+      end
     end
   end
 
@@ -81,5 +124,4 @@ else
     log "fstab entry already exists - skipping editing fstab"
   end
 
-end
-log "==================== sys::setup_swap : End ===================="
+rs_utils_marker :end
