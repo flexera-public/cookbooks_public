@@ -83,8 +83,12 @@ action :post_backup_cleanup do
 end
 
 action :set_privileges do
-  @db = init(new_resource)
-  @db.set_privileges
+  db_mysql_set_privileges "setup db privileges" do
+    preset new_resource.privilege
+    username new_resource.privilege_username
+    password new_resource.privilege_password
+    database new_resource.privilege_database
+  end
 end
 
 action :install_client do

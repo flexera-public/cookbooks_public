@@ -24,11 +24,9 @@
 #
 # Required attributes
 #
-set_unless[:db_mysql][:admin_user] = nil
-set_unless[:db_mysql][:admin_password] = nil
 set_unless[:db_mysql][:server_id] = Time.now.to_i
-
 set_unless[:db_mysql][:fqdn] = nil
+
 #
 # Recommended attributes
 #
@@ -51,22 +49,6 @@ set_unless[:db_mysql][:dump][:storage_account_id] = ""
 set_unless[:db_mysql][:dump][:storage_account_secret] = ""
 set_unless[:db_mysql][:dump][:container] = ""
 set_unless[:db_mysql][:dump][:prefix] = ""
-
-
-# Backup/Restore arguments
-#
-set_unless[:db_mysql][:backup][:lineage] = ""
-set_unless[:db_mysql][:backup][:storage_type] = ""
-set_unless[:db_mysql][:backup][:max_snapshots] = ""
-set_unless[:db_mysql][:backup][:keep_daily] = ""
-set_unless[:db_mysql][:backup][:keep_weekly] = ""
-set_unless[:db_mysql][:backup][:keep_monthly] = ""
-set_unless[:db_mysql][:backup][:keep_yearly] = ""
-
-# Remote Object Storage account info (S3, CloudFiles)
-set_unless[:db_mysql][:backup][:storage_account_id] = ""
-set_unless[:db_mysql][:backup][:storage_account_secret] = ""
-set_unless[:db_mysql][:backup][:storage_container] = ""
 
 # Platform specific attributes
 #

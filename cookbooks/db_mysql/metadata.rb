@@ -13,8 +13,6 @@ provides "db_mysql_gzipfile_backup(db_name, file_path)"
 provides "db_mysql_gzipfile_restore(db_name, file_path)"
 
 recipe  "db_mysql::default", "Runs the client 'db::install_server' recipes."
-recipe  "db_mysql::setup_admin_privileges", "Adds the username and password for 'superuser' privileges."
-recipe  "db_mysql::setup_application_privileges", "Adds username and password for application privileges."
 recipe  "db_mysql::do_dump_import", "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)"
 recipe  "db_mysql::do_dump_export", "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)"
 recipe  "db_mysql::setup_continuous_export", "Schedules the daily run of do_dump_export."
@@ -23,21 +21,28 @@ recipe  "db_mysql::setup_continuous_export", "Schedules the daily run of do_dump
 attribute "db_mysql",
   :display_name => "General Database Options",
   :type => "hash"
+  
+# == Default attributes
+#
+attribute "db_mysql/server_usage",
+  :display_name => "Server Usage",
+  :description => "Use 'dedicated' if the mysql config file allocates all existing resources of the machine.  Use 'shared' if the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example.",
+  :recipes => [
+    "db_mysql::default"
+  ],
+  :choice => ["shared", "dedicated"],
+  :default => "dedicated"
 
-attribute "db_mysql/admin/user",
-  :display_name => "Database Admin Username",
-  :description => "The username of the database user that has 'admin' privileges.",
-  :required => true,
-  :recipes => [ "db_mysql::setup_admin_privileges", "db_mysql::do_backup" ]
-
-attribute "db_mysql/admin/password",
-  :display_name => "Database Admin Password",
-  :description => "The password of the database user that has 'admin' privileges.",
-  :required => true,
-  :recipes => [ "db_mysql::setup_admin_privileges", "db_mysql::do_backup" ]
+attribute "db_mysql/log_bin",
+  :display_name => "MySQL Binlog Destination",
+  :description => "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory.",
+  :recipes => [
+    "db_mysql::default"
+  ],
+  :default => "/mnt/mysql-binlogs/mysql-bin"
 
 
-# == Import/export Attributes
+# == Import/export attributes
 #
 attribute "db_mysql/dump",
   :display_name => "Import/Export settings for MySQL dump file management.",
@@ -79,25 +84,3 @@ attribute "db_mysql/dump/prefix",
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
-#
-# recommended attributes
-#
-attribute "db_mysql/server_usage",
-  :display_name => "Server Usage",
-  :description => "Use 'dedicated' if the mysql config file allocates all existing resources of the machine.  Use 'shared' if the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example.",
-  :recipes => [
-    "db_mysql::default"
-  ],
-  :choice => ["shared", "dedicated"],
-  :default => "dedicated"
-
-#
-# optional attributes
-#
-attribute "db_mysql/log_bin",
-  :display_name => "MySQL Binlog Destination",
-  :description => "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory.",
-  :recipes => [
-    "db_mysql::default"
-  ],
-  :default => "/mnt/mysql-binlogs/mysql-bin"
