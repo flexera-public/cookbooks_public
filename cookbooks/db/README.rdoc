@@ -1,9 +1,11 @@
 = DESCRIPTION:
 
-RightScale Database Manager Chef Resource (beta) 
+RightScale Database Manager (beta) 
 
-This cookbook contains recipes that generally applicable to all databse
-servers. Also provides a lightweight resource to manage your database 
+This cookbook provides a set of database agnostic recipes that encapsulate 
+functionality required for the RightScale Database Manager runbook.
+
+Included is also a lightweight resource to manage your database 
 across multiple cloud VMs. 
       
 = REQUIREMENTS:
@@ -16,63 +18,14 @@ across multiple cloud VMs.
        
 = USAGE:
 
-== Create
+ * DB object setup in default recipe. Referenced by name which is also the data
+   path.
+ * Uses persist option to serialize the DB resource to Chef node between 
+   converges. This allows operational recipes to call actions on the db 
+   resource without, re-specifing creation attributes.
 
-Setup a database with data on a blockdevice that supports backup/restore to 
-multiple clouds.
-
-Example: 
-
-  db "/mnt/storage" do
-    provider "database"
-    storage_type node[:database][:backup][:storage_type] # "volume" or "ros"
-    cloud node[:cloud][:provider]
-    # volume only
-    volume_size node[:database][:backup][:volume_size]
-    stripe_count node[:database][:backup][:stripe_count]
-  
-    action :create
-  end
-
-
-== Backup/Restore
-
-Here is an example of a backup to the EC2 EBS service:
-
-  db "/mnt/storage" do
-    provider "database"
-    storage_type "volume"
-    cloud "ec2"
-    lineage "my_data"
-    action :backup
-  end
-
-Here is an example of a restore from Rackspace CloudFiles service:
-
-  db "/mnt/storage" do
-    provider "database"
-    storage_type "ros"
-    cloud "rackspace"
-    rackspace_user node[:database][:backup][:rackspace_user]
-    rackspace_secret node[:database][:backup][:rackspace_secret]
-    storage_container node[:database][:backup][:storage_container]
-    lineage "my_data"
-    action :restore
-  end 
-
-
-== Reset
-
-Wipes database into a pristine state.  This utility action can be useful in develeopment
-and test environments.  Not recommended for production use.
-WARNING: this will delete any data in your database!
-
-Example:
-
-  db "/mnt/storage" do
-    provider "database"
-    cloud node[:cloud][:provider]
-    storage_type node[:database][:backup][:storage_type] # "volume" or "ros"
-    action :reset
-  end
+ * WARNING: The db::do_force_reset recipe will wipe the current database into a 
+   pristine state.  This utility action can be useful in development and test 
+   environments.  Not recommended for production use.
+   WARNING: this will delete any data in your database!
 
