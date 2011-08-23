@@ -21,6 +21,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 sys_firewall "Request all database close ports to this application server" do
   machine_tag "database:active=true"
   port 3306 # mysql only for now
@@ -28,3 +30,5 @@ sys_firewall "Request all database close ports to this application server" do
   ip_addr node[:cloud][:private_ips][0]
   action :update_request
 end
+
+rs_utils_marker :end

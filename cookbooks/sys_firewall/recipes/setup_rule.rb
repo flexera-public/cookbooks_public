@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 # convert inputs into parameters usable by the firewall_rule definition
 rule_port = node[:sys_firewall][:rule][:port]
 rule_ip = node[:sys_firewall][:rule][:ip_address]
@@ -42,3 +44,4 @@ else
   log "Firewall not enabled. Not adding rule for #{rule_port}."
 end
 
+rs_utils_marker :end

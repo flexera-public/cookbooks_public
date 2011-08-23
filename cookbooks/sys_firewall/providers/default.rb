@@ -24,7 +24,7 @@ require "timeout"
     
 action :update do
   
-  log "==================== sys_firewall(:update) : Begin ===================="
+  rs_utils_marker :begin
   
   # Set local variables from attributes
   port = new_resource.port ? new_resource.port : new_resource.name
@@ -152,12 +152,14 @@ action :update do
             
   end # else
   
-  log "==================== sys_firewall(:update) : End ===================="
+  rs_utils_marker :end
 
 end # action
 
 action :update_request do
   
+  rs_utils_marker :begin
+
   # Deal with attributes
   port = new_resource.port ? new_resource.port : new_resource.name
   to_enable = new_resource.enable
@@ -184,6 +186,8 @@ action :update_request do
     recipients_tags tag
     attributes attrs
   end 
+
+  rs_utils_marker :end
   
 end
 

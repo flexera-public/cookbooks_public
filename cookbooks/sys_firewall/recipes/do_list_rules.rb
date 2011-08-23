@@ -22,8 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
-log "==================== do_list_rules : Begin ===================="
 if node[:sys_firewall][:enabled] == "enabled"
 #
 # List the contents of /etc/iptables.d
@@ -52,4 +52,4 @@ else
   log "Firewall not enabled."
 end
 
-log "==================== do_list_rules : End ===================="
+rs_utils_marker :end

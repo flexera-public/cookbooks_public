@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 if node[:sys_firewall][:enabled] == "enabled" 
   include_recipe "iptables"
   sys_firewall "22" # SSH
@@ -33,3 +35,5 @@ else
     action [:disable, :stop]
   end
 end
+
+rs_utils_marker :end
