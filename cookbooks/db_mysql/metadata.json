@@ -63,20 +63,6 @@
       "description": "The password of the database user that has 'admin' privileges.",
       "display_name": "Database Admin Password"
     },
-    "db_mysql/application/password": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::default",
-        "db_mysql::setup_application_privileges"
-      ],
-      "description": "The password of the database user that has 'user' privileges.",
-      "display_name": "Database Application Password"
-    },
     "db_mysql": {
       "required": "optional",
       "calculated": false,
@@ -115,20 +101,6 @@
 
       ],
       "display_name": "Import/Export settings for MySQL dump file management."
-    },
-    "db_mysql/application/user": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::default",
-        "db_mysql::setup_application_privileges"
-      ],
-      "description": "The username of the database user that has 'user' privileges.",
-      "display_name": "Database Application Username"
     },
     "db_mysql/admin/user": {
       "required": "required",
