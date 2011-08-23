@@ -27,8 +27,6 @@ rs_utils_marker :begin
 # Let others know we are a DB
 right_link_tag "database:active=true"
 
-<<<<<<< HEAD
-=======
 db node[:db][:data_dir] do
   user node[:db][:admin][:user]
   password node[:db][:admin][:password]
@@ -37,5 +35,4 @@ db node[:db][:data_dir] do
   action :nothing
 end
 
->>>>>>> chef_refactor
 rs_utils_marker :end
