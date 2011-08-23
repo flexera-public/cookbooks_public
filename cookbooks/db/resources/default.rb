@@ -12,7 +12,10 @@ actions [
   :pre_backup_check, 
   :backup, 
   :post_backup_cleanup,
-  :set_privileges
+  :set_privileges,
+  :install_client,
+  :install_server,
+  :setup_monitoring
 ]
 
 # Database options

@@ -1,5 +1,5 @@
 # Cookbook Name:: db
-# Recipe:: default
+# Recipe:: setup_monitoring
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -24,15 +24,8 @@
 
 rs_utils_marker :begin
 
-# Let others know we are a DB
-right_link_tag "database:active=true"
-
 db node[:db][:data_dir] do
-  user node[:db][:admin][:user]
-  password node[:db][:admin][:password]
-  persist true
-  provider node[:db][:provider]
-  action :nothing
+  action :setup_monitoring
 end
 
 rs_utils_marker :end
