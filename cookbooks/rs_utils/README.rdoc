@@ -34,3 +34,14 @@ Syntax:
 
 ```rs_utils_monitor_process "nginx"```
 
+
+rs_utils_marker
+------------------------------------
+* Accepts only one parameter, "location" which can be :start or :end.  Can also be :begin, :stop, and the string versions.
+* Used to log the start and end of a recipe using the 'log' chef resource.  Should be added at the beginning and end of a recipe.
+* Log marker: ========================= recipe::name : START/END =========================
+
+Syntax:
+
+```rs_utils_marker :start```
+```rs_utils_marker :end```
