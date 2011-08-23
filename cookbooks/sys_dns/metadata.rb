@@ -12,19 +12,23 @@ attribute "sys_dns/choice",
   :display_name => "DNS Service Provider",
   :description => "TODO",
   :required => "required",
-  :choice => ["DNSMadeEasy", "DynDNS", "Route53"]
+  :choice => ["DNSMadeEasy", "DynDNS", "Route53"],
+  :recipes => ["sys_dns::do_set_private"]
 
 attribute "sys_dns/id",
   :display_name => "Dynamic Record ID",
   :description => "TODO",
-  :required => "required"
+  :required => "required",
+  :recipes => ["sys_dns::do_set_private"]
 
 attribute "sys_dns/user",
   :display_name => "User",
   :description => "TODO",
-  :required => "required"
+  :required => "required",
+  :recipes => ["sys_dns::do_set_private"]
 
 attribute "sys_dns/password",
   :display_name => "Password",
   :description => "TODO",
-  :required => "required"
+  :required => "required",
+  :recipes => ["sys_dns::do_set_private"]

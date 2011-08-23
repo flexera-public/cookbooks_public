@@ -12,7 +12,7 @@
       ],
       "type": "string",
       "recipes": [
-
+        "sys_dns::do_set_private"
       ],
       "description": "TODO",
       "display_name": "User"
@@ -27,7 +27,7 @@
       ],
       "type": "string",
       "recipes": [
-
+        "sys_dns::do_set_private"
       ],
       "description": "TODO",
       "display_name": "DNS Service Provider"
@@ -40,7 +40,7 @@
       ],
       "type": "string",
       "recipes": [
-
+        "sys_dns::do_set_private"
       ],
       "description": "TODO",
       "display_name": "Dynamic Record ID"
@@ -53,7 +53,7 @@
       ],
       "type": "string",
       "recipes": [
-
+        "sys_dns::do_set_private"
       ],
       "description": "TODO",
       "display_name": "Password"
