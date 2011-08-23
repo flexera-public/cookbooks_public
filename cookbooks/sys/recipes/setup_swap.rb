@@ -32,33 +32,20 @@ swap_file = node[:sys][:swap_file]
 
 fs_size_threshold_percent = 75
 
-# sanitize user data 'swap_size'
-if ( swap_size !~ /^\d*[.]?\d+$/ )
-  log "invalid swap size '#{swap_size}' - raising error"
-  raise "ERROR: invalid swap size."
-else
-  # convert swap_size from GB to MB
-  swap_size = ((swap_size.to_f)*1024).to_i
-end
-# sanitize user data 'swap_file'
-if (swap_file !~ /^\/{1}(((\/{1}\.{1})?[a-zA-Z0-9 ]+\/?)+(\.{1}[a-zA-Z0-9]{2,4})?)$/ )
-  log "invalid swap file name - raising error"
-  raise "ERROR: invalid swap file name"
-end
+def clean_swap(swap_file)
 
-# skip creating swap or disabled
-if (swap_size == 0)
-  if ( File.exists?(swap_file) && File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? )
-    log "removing swap file"
+  # turn off swap on swap_file if turned on
+  if ( File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? )
     script 'deactivate swapfile' do
       interpreter 'bash'
       code <<-eof
         swapoff #{swap_file}
-        rm #{swap_file}
       eof
     end
+  end
 
-    # remove swap from /etc/fstab
+  # remove swap from /etc/fstab
+  if ( File.open('/etc/fstab').grep(/^\s*#{swap_file}\b/).any? )
     new_fstab_contents = ""
     fstab_contents = File.open('/etc/fstab') { |f| f.read }
     fstab_contents.each_line do |line| 
@@ -75,65 +62,94 @@ if (swap_size == 0)
       mode "0644"
       action :create
     end
-  else
-    log "not creating swap"
   end
 
+  # delete swap_file if it exists
+  if ( File.exists?(swap_file) )
+    file "#{swap_file}" do
+      backup false
+      action :delete
+    end
+  end
+
+end
+
+def create_swap(swap_file, swap_size)
+
+  # create swapfile, set it as swap, and turn swap on
+  script 'create swapfile' do
+    not_if {File.exists?(swap_file)}
+    interpreter 'bash'
+    code <<-eof
+      dd if=/dev/zero of=#{swap_file} bs=1M count=#{swap_size}
+      chmod 600 #{swap_file}
+      mkswap #{swap_file}
+      swapon #{swap_file}
+    eof
+  end
+  
+  # append swap to /etc/fstab if not already there
+  if ( File.open('/etc/fstab').grep(/^\s*#{swap_file}\b/).any? )
+    log "#{swapfile} already in /etc/fstab"
+  else
+    fstab_contents = File.open('/etc/fstab') { |f| f.read }
+    fstab_contents << "#{swap_file}  swap      swap    defaults        0 0\n"
+    file "/etc/fstab" do
+      content fstab_contents
+      owner "root"
+      group "root"
+      mode "0644"
+      action :create
+    end
+  end
+end
+
+# sanitize user data 'swap_size'
+if ( swap_size !~ /^\d*[.]?\d+$/ )
+  log "invalid swap size '#{swap_size}' - raising error"
+  raise "ERROR: invalid swap size."
+else
+  # convert swap_size from GB to MB
+  swap_size = ((swap_size.to_f)*1024).to_i
+end
+
+# sanitize user data 'swap_file'
+if (swap_file !~ /^\/{1}(((\/{1}\.{1})?[a-zA-Z0-9 ]+\/?)+(\.{1}[a-zA-Z0-9]{2,4})?)$/ )
+  log "invalid swap file name - raising error"
+  raise "ERROR: invalid swap file name"
+end
+
+# skip creating swap or disable swap
+if (swap_size == 0)
+  if ( File.exists?(swap_file) && File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? )
+    clean_swap(swap_file)
+  else
+    log "swap creation disabled"
+  end
 else
 
   # for idempotency, check if selected swapfle is in place, correct size, and on
   if ( File.exists?(swap_file) && \
        File.stat(swap_file).size/1048576 == swap_size && \
        File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? )
-    log "swap already setup with given input"
+    log "valid current swap config"
   else
+    # check for remnents of swap
+    if ( File.exists?(swap_file) || File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? )
+      log "swap remnents detected - cleaning"
+      clean_swap(swap_file)
+    end
+
     # determine if swapfile is too big for fs that holds it
     (fs_total,fs_used) = `df --block-size=1M -P #{File.dirname(swap_file)} |tail -1| awk '{print $2":"$3}'`.split(":")
     if ( (((fs_used.to_f + swap_size).to_f/fs_total.to_f)*100).to_i >= fs_size_threshold_percent )
       log "swap file size would exceed filesystem threshold of #{fs_size_threshold_percent} percent - raising error"
       raise "ERROR: swap file size too big - would exceed #{fs_size_threshold_percent} percent of filesystem"
     end
-  
-    # check if swap_file exists
-    if ( File.exists?(swap_file) )
-      log "swap file already exists - raising error"
-      raise "ERROR: swap file already exists - file must not exist"
-    else
-      script 'create swapfile' do
-        not_if {File.exists?(swap_file)}
-        interpreter 'bash'
-        code <<-eof
-          dd if=/dev/zero of=#{swap_file} bs=1M count=#{swap_size}
-          chmod 600 #{swap_file}
-          mkswap #{swap_file}
-          swapon #{swap_file}
-        eof
-      end
-    end
-  
-    # append swap to /etc/fstab if not already there
-    append_to_fstab = true
-    fstab_contents = File.open('/etc/fstab') { |f| f.read }
-    fstab_contents.each_line do |line| 
-      if ( line.strip =~ /^#{swap_file}/ )
-        append_to_fstab = false
-        break
-      end
-    end
-      
-    if (append_to_fstab)
-      fstab_contents << "\n#{swap_file}  swap      swap    defaults        0 0\n"
-      file "/etc/fstab" do
-        content fstab_contents
-        owner "root"
-        group "root"
-        mode "0644"
-        action :create
-      end
-    else
-      log "fstab entry already exists - skipping editing fstab"
-    end
-  end  
+
+    # should now setup swap file
+    create_swap(swap_file,swap_size)
+  end
 end
 
 rs_utils_marker :end
