@@ -1,6 +1,6 @@
 maintainer       "RightScale, Inc."
 maintainer_email "support@rightscale.com"
-license          "All rights reserved"
+license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'LICENSE')))
 description      "Installs and configures the MySQL database."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1"
@@ -8,6 +8,10 @@ version          "0.1"
 depends "sys_firewall"
 
 recipe "db::default", "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases."
+
+recipe  "db::install_client", "Installs the database client packages and gems."
+recipe  "db::install_server", "Installs and sets up the packages that are required for database servers."
+recipe  "db::setup_monitoring", "Install database collectd monitoring support"
 
 recipe "db::do_appservers_allow", "Allow connections from all application servers in the deployment that are tagged with appserver:active=true. This should be run on a database server to allow application servers to connect."
 recipe "db::do_appservers_deny", "Deny connections from all application servers in the deployment that are tagged with appserver:active=true.  This can be run on a database server to deny connections from all application servers in the deployment."
@@ -38,7 +42,7 @@ recipe  "db::setup_privileges_application", "Adds username and password for appl
 attribute "db",
   :display_name => "General Database Options",
   :type => "hash"
-  
+
 attribute "db/admin/user",
   :display_name => "Database Admin Username",
   :description => "The username of the database user that has 'admin' privileges.",
@@ -50,7 +54,7 @@ attribute "db/admin/password",
   :description => "The password of the database user that has 'admin' privileges.",
   :required => true,
   :recipes => [ "db::default", "db::do_backup" ]
-  
+
 attribute "db/application/user",
   :display_name => "Database Application Username",
   :description => "The username of the database user that has 'user' privileges.",
@@ -71,5 +75,3 @@ attribute "db/backup/lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.",
   :required => true,
   :recipes => [ "db::default", "db::do_backup", "db::do_restore", "db::do_backup_schedule_enable", "db::do_backup_schedule_disable" ]
-
-
