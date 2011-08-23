@@ -1,7 +1,6 @@
-# Cookbook Name:: db_mysql
-# Recipe:: setup_admin_privileges
+# Cookbook Name:: db
 #
-# Copyright (c) 2009-2011 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -22,14 +21,10 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# TODO: add these to metadata
+set_unless[:db][:data_dir] = "/mnt/storage"
+set_unless[:db][:provider] = "db_mysql"
+set_unless[:db][:admin][:user] = "root"
+set_unless[:db][:admin][:password] = ""
 
-db_mysql_set_privileges "setup application privileges" do
-  preset "user"
-<<<<<<< HEAD
-  username node[:db_mysql][:application][:user]
-  password node[:db_mysql][:application][:password]
-=======
-  username @node[:db][:application][:user]
-  password @node[:db][:application][:password]
->>>>>>> chef_refactor
-end
+set_unless[:db][:backup][:lineage] = ""

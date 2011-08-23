@@ -1,7 +1,6 @@
-# Cookbook Name:: db_mysql
-# Recipe:: setup_admin_privileges
+# Cookbook Name:: db
 #
-# Copyright (c) 2009-2011 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -22,14 +21,17 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+log "==================== #{self.cookbook_name}::#{self.recipe_name} : Begin ===================="
+DATA_DIR = node[:db][:data_dir]
 
-db_mysql_set_privileges "setup application privileges" do
-  preset "user"
-<<<<<<< HEAD
-  username node[:db_mysql][:application][:user]
-  password node[:db_mysql][:application][:password]
-=======
-  username @node[:db][:application][:user]
-  password @node[:db][:application][:password]
->>>>>>> chef_refactor
+user = node[:db][:application][:user]
+log "Adding #{user} with CRUD privileges for all databases."
+
+db DATA_DIR do
+  privilege "user"
+  privilege_username user
+  privilege_password node[:db][:application][:password]
+  privilege_database "*.*" # All databases
 end
+
+log "==================== #{self.cookbook_name}::#{self.recipe_name} : End ===================="

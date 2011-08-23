@@ -1,6 +1,3 @@
-# Cookbook Name:: db_mysql
-# Recipe:: setup_my_cnf
-#
 # Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -22,19 +19,23 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#
-# Note! This does NOT restart mysql, only update the my.cnf
-#
+module RightScale
+  module Database
+    module MySQL
+      module Helper
 
-template_source = "my.cnf.erb"
+        def init(new_resource)
+          begin
+            require 'rightscale_tools'
+          rescue LoadError
+            Chef::Log.warn("This database cookbook requires our premium 'rightscale_tools' gem.")
+            Chef::Log.warn("Please contact Rightscale to upgrade your account.")
+          end
+          mount_point = new_resource.name
+          RightScale::Tools::Database.factory(:mysql, new_resource.user, new_resource.password, mount_point, Chef::Log)
+        end
 
-template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
-  source template_source
-  owner "root"
-  group "root"
-  mode "0644"
-  variables(
-    :server_id => node[:db_mysql][:server_id]
-  )
+      end
+    end
+  end
 end
-

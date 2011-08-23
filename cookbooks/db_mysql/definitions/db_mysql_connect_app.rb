@@ -33,8 +33,8 @@ define :db_mysql_connect_app, :template => "db_connection_example.erb", :cookboo
     group params[:group]
     backup false
     variables(
-      :user => node[:db_mysql][:application][:user],
-      :password => node[:db_mysql][:application][:password],
+      :user => node[:db][:application][:user],
+      :password => node[:db][:application][:password],
       :fqdn => node[:db_mysql][:fqdn],
       :socket => node[:db_mysql][:socket],
       :database => params[:database]

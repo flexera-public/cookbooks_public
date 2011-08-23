@@ -29,8 +29,6 @@ set_unless[:db_mysql][:admin_password] = nil
 set_unless[:db_mysql][:server_id] = Time.now.to_i
 
 set_unless[:db_mysql][:fqdn] = nil
-set_unless[:db_mysql][:application][:user] = nil
-set_unless[:db_mysql][:application][:password] = nil
 #
 # Recommended attributes
 #

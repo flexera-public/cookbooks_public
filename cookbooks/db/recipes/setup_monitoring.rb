@@ -1,7 +1,7 @@
-# Cookbook Name:: db_mysql
-# Recipe:: setup_admin_privileges
+# Cookbook Name:: db
+# Recipe:: setup_monitoring
 #
-# Copyright (c) 2009-2011 RightScale Inc
+# Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -22,14 +22,10 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
-db_mysql_set_privileges "setup application privileges" do
-  preset "user"
-<<<<<<< HEAD
-  username node[:db_mysql][:application][:user]
-  password node[:db_mysql][:application][:password]
-=======
-  username @node[:db][:application][:user]
-  password @node[:db][:application][:password]
->>>>>>> chef_refactor
+db node[:db][:data_dir] do
+  action :setup_monitoring
 end
+
+rs_utils_marker :end

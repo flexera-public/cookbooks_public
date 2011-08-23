@@ -1,5 +1,4 @@
-# Cookbook Name:: db_mysql
-# Recipe:: server
+# Cookbook Name:: db
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,30 +21,17 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-include_recipe "db_mysql::install_client"
+log "==================== #{self.cookbook_name}::#{self.recipe_name} : Begin ===================="
+DATA_DIR = node[:db][:data_dir]
 
-# == Install MySQL 5.1 and other packages
-#
-node[:db_mysql][:packages_install].each do |p| 
-  package p 
-end unless node[:db_mysql][:packages_install] == ""
+user = node[:db][:admin][:user]
+log "Adding #{user} with administrator privileges for all databases."
 
-# Uninstall other packages we don't
-node[:db_mysql][:packages_uninstall].each do |p| 
-   package p do
-     action :remove
-   end
-end unless node[:db_mysql][:packages_uninstall] == ""
-
-service "mysql" do
-#  service_name value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "mysqld"}, "default" => "mysql")  
-  supports :status => true, :restart => true, :reload => true
-  action :stop
+db DATA_DIR do
+  privilege "administrator"
+  privilege_username user
+  privilege_password node[:db][:admin][:password]
+  privilege_database "*.*" # All databases
 end
 
-# Create MySQL server system tables
-touchfile = "~/.mysql_installed"
-execute "/usr/bin/mysql_install_db ; touch #{touchfile}" do
-  creates touchfile
-end
-
+log "==================== #{self.cookbook_name}::#{self.recipe_name} : End ===================="
