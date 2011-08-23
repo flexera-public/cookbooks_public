@@ -177,7 +177,7 @@ action :update_request do
   # Setup attributes
   attrs = {:sys_firewall => {:rule => Hash.new}}
   attrs[:sys_firewall][:rule][:port] = port
-  attrs[:sys_firewall][:rule][:enable] = to_enable.to_s # recipe expects a string
+  attrs[:sys_firewall][:rule][:enable] = (to_enable == true) ? "enable" : "disable"
   attrs[:sys_firewall][:rule][:ip_address] = ip_addr
   
   # Use RightNet to update firewall rules on all tagged servers
