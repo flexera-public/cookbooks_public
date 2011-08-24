@@ -2,7 +2,7 @@
     "version": "0.1.0",
     "groupings": {
     },
-    "long_description": "= DESCRIPTION:\n\nRightScale Database Manager for MySQL (beta) \n\nThis an abstract cookbook that defines RightScale's database interface\nand a set of database recipes that leverage that interface.  \n\n= Details\n\nThe database interface is defined using a Chef lightweight-resource[http://wiki.opscode.com/display/chef/Lightweight+Resources+and+Providers+%28LWRP%29] \nSee resources/default.rb for the actions and attributes of the interface.\n\nThis must be used in conjunction with another cookbook that implements a \nlightweight database provider.  See the db_mysql cookbook for an example.\n      \n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n\n * Needs RightScale Premium ServerTemplate tools gem installed on system \n   for the backup and restore recipes.\n   This gem is only available for paid RightScale customers.\n   Please contact sales@rightscale.com to upgrade you account.\n       \n= USAGE:\n\n * DB object setup in default recipe. Referenced by-name which is also the data\n   path.\n   \n * Uses persist option to serialize the DB resource to Chef node between \n   converges. This allows operational recipes to call actions on the db \n   resource without, re-specifing creation attributes.\n\n * WARNING: The db::do_force_reset recipe will wipe the current database into a \n   pristine state.  This utility action can be useful in development and test \n   environments.  Not recommended for production use.\n   WARNING: this will delete any data in your database!\n\n",
+    "long_description": "= DESCRIPTION:\n\nRightScale Database Manager (beta) \n\nThis cookbook provides a set of database agnostic recipes that encapsulate \nfunctionality required for the RightScale Database Manager runbook.\n\nIncluded is also a lightweight resource to manage your database \nacross multiple cloud VMs. \n      \n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n\n * Needs RightScale Premium ServerTemplate tools gem installed on system.\n   This gem is only available for paid RightScale customers.\n   Please contact sales@rightscale.com to upgrade you account.\n       \n= USAGE:\n\n * DB object setup in default recipe. Referenced by name which is also the data\n   path.\n * Uses persist option to serialize the DB resource to Chef node between \n   converges. This allows operational recipes to call actions on the db \n   resource without, re-specifing creation attributes.\n\n * WARNING: The db::do_force_reset recipe will wipe the current database into a \n   pristine state.  This utility action can be useful in development and test \n   environments.  Not recommended for production use.\n   WARNING: this will delete any data in your database!\n\n",
     "attributes": {
       "db/application/password": {
         "required": "required",
@@ -104,9 +104,6 @@
     },
     "dependencies": {
       "sys_firewall": [
-
-      ],
-      "block_device": [
 
       ]
     },
