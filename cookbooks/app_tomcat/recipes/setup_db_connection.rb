@@ -31,9 +31,9 @@ template "/etc/tomcat6/context.xml" do
   group "root"
   mode "0644"
   variables(
-    :user      => node[:db_mysql][:application][:user],
-    :password  => node[:db_mysql][:application][:password],
-    :fqdn      => node[:db_mysql][:fqdn],
+    :user      => node[:db][:application][:user],
+    :password  => node[:db][:application][:password],
+    :fqdn      => node[:db][:fqdn],
     :database  => node[:tomcat][:db_name]
   )
 end

@@ -2,7 +2,7 @@
     "version": "0.1.0",
     "groupings": {
     },
-    "long_description": "= DESCRIPTION:\n\nRightScale Database Manager (beta) \n\nThis cookbook provides a set of database agnostic recipes that encapsulate \nfunctionality required for the RightScale Database Manager runbook.\n\nIncluded is also a lightweight resource to manage your database \nacross multiple cloud VMs. \n      \n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n\n * Needs RightScale Premium ServerTemplate tools gem installed on system.\n   This gem is only available for paid RightScale customers.\n   Please contact sales@rightscale.com to upgrade you account.\n       \n= USAGE:\n\n * DB object setup in default recipe. Referenced by name which is also the data\n   path.\n * Uses persist option to serialize the DB resource to Chef node between \n   converges. This allows operational recipes to call actions on the db \n   resource without, re-specifing creation attributes.\n\n * WARNING: The db::do_force_reset recipe will wipe the current database into a \n   pristine state.  This utility action can be useful in development and test \n   environments.  Not recommended for production use.\n   WARNING: this will delete any data in your database!\n\n",
+    "long_description": "= DESCRIPTION:\n\nRightScale Database Manager for MySQL (beta) \n\nThis an abstract cookbook that defines RightScale's database interface\nand a set of database recipes that leverage that interface.  \n\n= Details\n\nThe database interface is defined using a Chef lightweight-resource[http://wiki.opscode.com/display/chef/Lightweight+Resources+and+Providers+%28LWRP%29] \nSee resources/default.rb for the actions and attributes of the interface.\n\nThis must be used in conjunction with another cookbook that implements a \nlightweight database provider.  See the db_mysql cookbook for an example.\n      \n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n\n * Needs RightScale Premium ServerTemplate tools gem installed on system \n   for the backup and restore recipes.\n   This gem is only available for paid RightScale customers.\n   Please contact sales@rightscale.com to upgrade you account.\n       \n= USAGE:\n\n * DB object setup in default recipe. Referenced by-name which is also the data\n   path.\n   \n * Uses persist option to serialize the DB resource to Chef node between \n   converges. This allows operational recipes to call actions on the db \n   resource without, re-specifing creation attributes.\n\n * WARNING: The db::do_force_reset recipe will wipe the current database into a \n   pristine state.  This utility action can be useful in development and test \n   environments.  Not recommended for production use.\n   WARNING: this will delete any data in your database!\n\n",
     "attributes": {
       "db/application/password": {
         "required": "required",
@@ -71,8 +71,21 @@
           "db::do_backup_schedule_enable",
           "db::do_backup_schedule_disable"
         ],
-        "description": "The prefix that will be used to name/locate the backup of a particular MySQL database.",
+        "description": "The prefix that will be used to name/locate the backup of a particular database.",
         "display_name": "Backup Lineage"
+      },
+      "db/fqdn": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+
+        ],
+        "description": "The fully qualified hostname for the Master Database.",
+        "display_name": "Database Master FQDN"
       },
       "db": {
         "required": "optional",
@@ -101,22 +114,22 @@
     "suggestions": {
     },
     "recipes": {
-      "db::do_restore": "Restores the MySQL database using a backup from the specified cloud storage location. (Premium Account Only) ",
+      "db::do_restore": "Restores the database from the latest backup available in persistent storage of the current cloud.",
       "db::setup_monitoring": "Install database collectd monitoring support",
       "db::request_appserver_allow": "Sends request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true. This should be run on a application server before attempting a database connection.",
-      "db::setup_block_device": "Relocates the database data_dir onto a block_device that supports snapshot backup and restore. (Premium Account Only) ",
+      "db::setup_block_device": "Relocates the database data directory onto a block_device that supports snapshot backup and restore. This should be run on a newly operational server before it get placed into production.",
       "db::default": "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases.",
-      "db::do_backup": "Creates a backup of the database data_dir to the specified cloud storage location. (Premium Account Only) ",
+      "db::do_backup": "Creates a backup of the database using persistent storage in the current cloud.  On Rackspace snapshots are uploaded to CloudFiles.  For all other clouds, volume snapshots (like EBS) are used.",
       "db::install_server": "Installs and sets up the packages that are required for database servers.",
-      "db::do_backup_schedule_enable": "Updates the crontab for taking continuous binary backups of the database. (Premium Account Only) ",
       "db::do_appservers_allow": "Allow connections from all application servers in the deployment that are tagged with appserver:active=true. This should be run on a database server to allow application servers to connect.",
-      "db::install_client": "Installs the database client packages and gems.",
-      "db::setup_privileges_admin": "Adds the username and password for 'superuser' privileges. (Premium Account Only)",
-      "db::do_backup_schedule_disable": "Disables continuous binary backups of the database by updating the crontab. (Premium Account Only)",
-      "db::do_force_reset": "Reset the DB back to a pristine state.",
-      "db::setup_privileges_application": "Adds username and password for application privileges. (Premium Account Only)",
+      "db::do_backup_schedule_enable": "Enables db::do_backup to be run periodically.",
+      "db::install_client": "Installs the database client onto the VM so it can connect to a running server.  This should to be setup on all servers ",
+      "db::do_force_reset": "Reset the DB back to a pristine state. WARNING: this will delete any data in your database!",
+      "db::setup_privileges_admin": "Adds the username and password for 'superuser' privileges.",
+      "db::do_backup_schedule_disable": "Disables db::do_backup from being run periodically.",
       "db::request_appserver_deny": "Sends request to deny connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true.  This should be run on a application server upon decommissioning.",
-      "db::do_appservers_deny": "Deny connections from all application servers in the deployment that are tagged with appserver:active=true.  This can be run on a database server to deny connections from all application servers in the deployment."
+      "db::do_appservers_deny": "Deny connections from all application servers in the deployment that are tagged with appserver:active=true.  This can be run on a database server to deny connections from all application servers in the deployment.",
+      "db::setup_privileges_application": "Adds username and password for application privileges."
     },
     "maintainer_email": "support@rightscale.com",
     "conflicting": {

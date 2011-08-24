@@ -25,7 +25,6 @@
 # Required attributes
 #
 set_unless[:db_mysql][:server_id] = Time.now.to_i
-set_unless[:db_mysql][:fqdn] = nil
 
 #
 # Recommended attributes
