@@ -23,7 +23,7 @@
 
 # A actions to @action_list array.
 # Used to allow comments between entries.
-def add_action(sym)
+def self.add_action(sym)
   @action_list ||= Array.new
   @action_list << sym unless @action_list.include?(sym)
   @action_list
