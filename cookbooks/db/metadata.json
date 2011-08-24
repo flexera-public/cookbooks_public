@@ -105,6 +105,9 @@
     "dependencies": {
       "sys_firewall": [
 
+      ],
+      "block_device": [
+
       ]
     },
     "maintainer": "RightScale, Inc.",

@@ -6,7 +6,7 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1"
 
 depends "sys_firewall"
-
+depends "block_device"
 
 recipe "db::default", "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases."
 
