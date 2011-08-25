@@ -115,8 +115,8 @@ else
 
     # Determine if swapfile is too big for fs that holds it
     (fs_total,fs_used) = `df --block-size=1M -P #{File.dirname(swap_file)} |tail -1| awk '{print $2":"$3}'`.split(":")
-    if ( (((fs_used.to_f + swap_size).to_f/fs_total.to_f)*100).to_i >= fs_size_threshold_percent )
-      raise "ERROR: swap file size too big - would exceed #{fs_size_threshold_percent} percent of filesystem"
+    if ( (((fs_used.to_f + swap_size).to_f/fs_total.to_f)*100).to_i > fs_size_threshold_percent )
+      raise "ERROR: swap file size too big - would exceed #{fs_size_threshold_percent} percent of filesystem - currently using #{fs_used} out of #{fs_total} wanting to add #{swap_size} in swap"
     end
 
     # Should now setup swap file
