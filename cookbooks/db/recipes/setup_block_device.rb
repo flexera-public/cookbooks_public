@@ -14,6 +14,6 @@ end
 
 log "  Moving database to block device and starting database..."
 db DATA_DIR do
-	action [ :move_data_dir, :start ]
+  action [ :move_data_dir, :start ]
 end
 log "==================== #{self.cookbook_name}::#{self.recipe_name} : End ===================="
