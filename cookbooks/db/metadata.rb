@@ -86,7 +86,7 @@ attribute "db/backup/lineage",
   :display_name => "Backup Lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular database.",
   :required => true,
-  :recipes => [ "db::do_backup", "db::do_restore", "db::do_backup_schedule_enable", "db::do_backup_schedule_disable" ]
+  :recipes => [ "db::do_backup", "db::do_restore", "db::do_backup_schedule_enable", "db::do_backup_schedule_disable", "db::setup_block_device", "db::do_force_reset" ]
   
 attribute "db/backup/secondary_location",
   :display_name => "Secondary Backup Location",

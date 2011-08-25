@@ -99,7 +99,9 @@
           "db::do_backup",
           "db::do_restore",
           "db::do_backup_schedule_enable",
-          "db::do_backup_schedule_disable"
+          "db::do_backup_schedule_disable",
+          "db::setup_block_device",
+          "db::do_force_reset"
         ],
         "description": "The prefix that will be used to name/locate the backup of a particular database.",
         "display_name": "Backup Lineage"
