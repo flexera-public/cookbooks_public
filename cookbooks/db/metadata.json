@@ -114,7 +114,7 @@
         ],
         "type": "string",
         "recipes": [
-
+          "db::default"
         ],
         "description": "The fully qualified hostname for the Master Database.",
         "display_name": "Database Master FQDN"
