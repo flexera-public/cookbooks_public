@@ -8,6 +8,7 @@ end
 
 log "  Resetting block device..."
 block_device DATA_DIR do
+  lineage node[:db][:backup][:lineage]
   action :reset
 end
 
