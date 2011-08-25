@@ -28,6 +28,9 @@ recipe "db::do_backup_schedule_disable", "Disables db::do_backup from being run 
 recipe  "db::setup_privileges_admin", "Adds the username and password for 'superuser' privileges."
 recipe  "db::setup_privileges_application", "Adds username and password for application privileges."
 
+recipe  "db::do_secondary_backup", "Creates a backup of the database to a secondary location.  Current choices are "
+recipe  "db::do_secondary_restore", "Restores the database from the latest backup available in persistent storage of the current cloud."
+
 recipe  "db::do_force_reset", "Reset the DB back to a pristine state. WARNING: this will delete any data in your database!"
 
 
@@ -84,3 +87,10 @@ attribute "db/backup/lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular database.",
   :required => true,
   :recipes => [ "db::do_backup", "db::do_restore", "db::do_backup_schedule_enable", "db::do_backup_schedule_disable" ]
+  
+attribute "db/backup/secondary_location",
+  :display_name => "Backup Lineage",
+  :description => "The prefix that will be used to name/locate the backup of a particular database.",
+  :default => "S3",
+  :choice => [ "S3", "CloudFiles" ],
+  :recipes => [ "db::do_secondary_backup", "db::do_secondary_restore" ]

@@ -31,6 +31,22 @@
         "description": "The password of the database user that has 'admin' privileges.",
         "display_name": "Database Admin Password"
       },
+      "db/backup/secondary_location": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+          "S3",
+          "CloudFiles"
+        ],
+        "default": "S3",
+        "type": "string",
+        "recipes": [
+          "db::do_secondary_backup",
+          "db::do_secondary_restore"
+        ],
+        "description": "The prefix that will be used to name/locate the backup of a particular database.",
+        "display_name": "Backup Lineage"
+      },
       "db/application/user": {
         "required": "required",
         "calculated": false,
@@ -117,8 +133,10 @@
       "db::do_restore": "Restores the database from the latest backup available in persistent storage of the current cloud.",
       "db::setup_monitoring": "Install database collectd monitoring support",
       "db::request_appserver_allow": "Sends request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true. This should be run on a application server before attempting a database connection.",
+      "db::do_secondary_backup": "Creates a backup of the database to a secondary location.  Current choices are ",
       "db::setup_block_device": "Relocates the database data directory onto a block_device that supports snapshot backup and restore. This should be run on a newly operational server before it get placed into production.",
       "db::default": "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases.",
+      "db::do_secondary_restore": "Restores the database from the latest backup available in persistent storage of the current cloud.",
       "db::do_backup": "Creates a backup of the database using persistent storage in the current cloud.  On Rackspace snapshots are uploaded to CloudFiles.  For all other clouds, volume snapshots (like EBS) are used.",
       "db::install_server": "Installs and sets up the packages that are required for database servers.",
       "db::do_appservers_allow": "Allow connections from all application servers in the deployment that are tagged with appserver:active=true. This should be run on a database server to allow application servers to connect.",
