@@ -1,4 +1,5 @@
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : Begin ===================="
+rs_utils_marker :begin
+
 DATA_DIR = node[:db][:data_dir]
 
 log "  Stopping database..."
@@ -16,4 +17,5 @@ log "  Moving database to block device and starting database..."
 db DATA_DIR do
   action [ :move_data_dir, :start ]
 end
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : End ===================="
+
+rs_utils_marker :end

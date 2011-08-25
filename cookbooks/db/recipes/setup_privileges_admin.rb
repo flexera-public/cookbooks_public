@@ -21,7 +21,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : Begin ===================="
+rs_utils_marker :begin
+
 DATA_DIR = node[:db][:data_dir]
 
 user = node[:db][:admin][:user]
@@ -34,4 +35,4 @@ db DATA_DIR do
   privilege_database "*.*" # All databases
 end
 
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : End ===================="
+rs_utils_marker :end

@@ -1,4 +1,5 @@
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : Begin ===================="
+rs_utils_marker :begin
+
 DATA_DIR = "/mnt/storage"
 
 snap_lineage = node[:db][:backup][:lineage]
@@ -10,4 +11,4 @@ block_device DATA_DIR do
   action :backup_schedule_enable
 end
 
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : End ===================="
+rs_utils_marker :end

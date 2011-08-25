@@ -1,4 +1,5 @@
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : Begin ===================="
+rs_utils_marker :begin
+
 DATA_DIR = node[:db][:data_dir]
 
 log "  Performing pre-backup check, then lock DB..."
@@ -32,4 +33,4 @@ db DATA_DIR do
   action :post_backup_cleanup
 end
 
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : End ===================="
+rs_utils_marker :end

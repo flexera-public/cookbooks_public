@@ -1,4 +1,5 @@
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : Begin ===================="
+rs_utils_marker :begin
+
 DATA_DIR = node[:db][:data_dir]
 
 log "  Running pre-restore checks..."
@@ -35,4 +36,4 @@ end
 #   action [ :set_replication_grants ]
 # end
 
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : End ===================="
+rs_utils_marker :end

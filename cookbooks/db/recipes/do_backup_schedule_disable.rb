@@ -1,4 +1,5 @@
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : Begin ===================="
+rs_utils_marker :begin
+
 DATA_DIR = "/mnt/storage"
 
 block_device DATA_DIR do
@@ -6,4 +7,4 @@ block_device DATA_DIR do
   action :backup_schedule_disable
 end
 
-log "==================== #{self.cookbook_name}::#{self.recipe_name} : End ===================="
+rs_utils_marker :end
