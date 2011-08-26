@@ -16,19 +16,19 @@ attribute "sys_dns/choice",
   :recipes => ["sys_dns::do_set_private"]
 
 attribute "sys_dns/id",
-  :display_name => "Dynamic Record ID",
+  :display_name => "DNS Record ID",
   :description => "TODO",
   :required => "required",
   :recipes => ["sys_dns::do_set_private"]
 
 attribute "sys_dns/user",
-  :display_name => "User",
+  :display_name => "DNS User",
   :description => "TODO",
   :required => "required",
   :recipes => ["sys_dns::do_set_private"]
 
 attribute "sys_dns/password",
-  :display_name => "Password",
+  :display_name => "DNS Password",
   :description => "TODO",
   :required => "required",
   :recipes => ["sys_dns::do_set_private"]

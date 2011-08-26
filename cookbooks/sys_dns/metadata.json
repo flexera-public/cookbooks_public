@@ -1,85 +1,85 @@
 {
-  "dependencies": {
-  },
-  "name": "sys_dns",
-  "maintainer_email": "support@rightscale.com",
-  "attributes": {
-    "sys_dns/user": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "sys_dns::do_set_private"
-      ],
-      "description": "TODO",
-      "display_name": "User"
+    "version": "0.1.0",
+    "groupings": {
     },
-    "sys_dns/choice": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-        "DNSMadeEasy",
-        "DynDNS",
-        "Route53"
-      ],
-      "type": "string",
-      "recipes": [
-        "sys_dns::do_set_private"
-      ],
-      "description": "TODO",
-      "display_name": "DNS Service Provider"
-    },
-    "sys_dns/id": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
+    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+    "attributes": {
+      "sys_dns/user": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
 
-      ],
-      "type": "string",
-      "recipes": [
-        "sys_dns::do_set_private"
-      ],
-      "description": "TODO",
-      "display_name": "Dynamic Record ID"
-    },
-    "sys_dns/password": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
+        ],
+        "type": "string",
+        "recipes": [
+          "sys_dns::do_set_private"
+        ],
+        "description": "TODO",
+        "display_name": "DNS User"
+      },
+      "sys_dns/choice": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
+          "DNSMadeEasy",
+          "DynDNS",
+          "Route53"
+        ],
+        "type": "string",
+        "recipes": [
+          "sys_dns::do_set_private"
+        ],
+        "description": "TODO",
+        "display_name": "DNS Service Provider"
+      },
+      "sys_dns/id": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
 
-      ],
-      "type": "string",
-      "recipes": [
-        "sys_dns::do_set_private"
-      ],
-      "description": "TODO",
-      "display_name": "Password"
-    }
-  },
-  "license": "All rights reserved",
-  "suggestions": {
-  },
-  "platforms": {
-  },
-  "maintainer": "RightScale, Inc.",
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
-  "version": "0.1.0",
-  "recommendations": {
-  },
-  "recipes": {
-    "sys_dns::do_set_private": "Sets the dynamic DNS entry to the first private IP of the server.",
-    "sys_dns::default": "Installs Amazon dnscurl.pl utility."
-  },
-  "groupings": {
-  },
-  "conflicting": {
-  },
-  "replacing": {
-  },
-  "description": "Installs/Configures sys_dns",
-  "providing": {
+        ],
+        "type": "string",
+        "recipes": [
+          "sys_dns::do_set_private"
+        ],
+        "description": "TODO",
+        "display_name": "DNS Record ID"
+      },
+      "sys_dns/password": {
+        "required": "required",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "sys_dns::do_set_private"
+        ],
+        "description": "TODO",
+        "display_name": "DNS Password"
+      }
+    },
+    "recommendations": {
+    },
+    "dependencies": {
+    },
+    "maintainer": "RightScale, Inc.",
+    "suggestions": {
+    },
+    "recipes": {
+      "sys_dns::do_set_private": "Sets the dynamic DNS entry to the first private IP of the server.",
+      "sys_dns::default": "Installs Amazon dnscurl.pl utility."
+    },
+    "maintainer_email": "support@rightscale.com",
+    "conflicting": {
+    },
+    "license": "All rights reserved",
+    "providing": {
+    },
+    "name": "sys_dns",
+    "replacing": {
+    },
+    "platforms": {
+    },
+    "description": "Installs/Configures sys_dns"
   }
-}
