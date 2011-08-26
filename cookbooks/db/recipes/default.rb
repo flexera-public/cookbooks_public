@@ -1,5 +1,4 @@
 # Cookbook Name:: db
-# Recipe:: default
 #
 # Copyright (c) 2011 RightScale Inc
 #
