@@ -21,9 +21,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-sys_firewall "Open this appserver's ports to all loadbalancers" do
+rs_utils_marker :begin
+
+sys_firewall "Close this appserver's ports to all loadbalancers" do
   machine_tag "loadbalancer:lb=#{node[:lb_haproxy][:applistener_name]}"
   port 8000
   enable false
   action :update
 end
+
+rs_utils_marker :begin
