@@ -22,6 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
 # == Install user-specified Packages and Modules
 #
@@ -32,3 +33,5 @@ end
 node[:php][:module_dependencies].each do |mod|
   apache_module mod
 end
+
+rs_utils_marker :end

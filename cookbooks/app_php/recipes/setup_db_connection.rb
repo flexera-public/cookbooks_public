@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 # == Setup PHP Database Connection
 #
 # Make sure config dir exists
@@ -40,4 +42,4 @@ db_mysql_connect_app File.join(node[:web_apache][:docroot], "config", "db.php") 
   group node[:php][:app_user]
 end
 
-
+rs_utils_marker :end

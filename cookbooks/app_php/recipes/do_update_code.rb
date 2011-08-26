@@ -22,6 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
 # Check that we have the required attributes set
 raise "You must provide a URL to your application code repository" if ("#{node[:php][:code][:url]}" == "") 
@@ -45,3 +46,5 @@ bash "chown_home" do
     chown -R #{node[:php][:app_user]}:#{node[:php][:app_user]} #{node[:web_apache][:docroot]}
   EOH
 end
+
+rs_utils_marker :end

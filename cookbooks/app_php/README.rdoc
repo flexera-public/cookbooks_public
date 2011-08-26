@@ -1,6 +1,12 @@
 = DESCRIPTION:
 
+RightScale PHP application server management cookbook
+
+Installs and configures a PHP application server.
+
 = REQUIREMENTS:
+
+Requires a VM launched from a RightScale managed RightImage 
 
 = ATTRIBUTES: 
 

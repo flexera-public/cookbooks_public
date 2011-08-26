@@ -22,6 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
 service "apache2" do
   action :nothing
@@ -52,3 +53,5 @@ web_app node[:web_apache][:application_name] do
   cookbook "web_apache"
   notifies :restart, resources(:service => "apache2")
 end
+
+rs_utils_marker :end
