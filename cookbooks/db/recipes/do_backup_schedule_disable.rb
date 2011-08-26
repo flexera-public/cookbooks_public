@@ -23,7 +23,7 @@
 
 rs_utils_marker :begin
 
-DATA_DIR = "/mnt/storage"
+DATA_DIR = node[:db][:data_dir]
 
 block_device DATA_DIR do
   cron_backup_recipe "#{self.cookbook_name}::do_backup"

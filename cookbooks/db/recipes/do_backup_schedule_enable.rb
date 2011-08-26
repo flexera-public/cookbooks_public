@@ -23,7 +23,7 @@
 
 rs_utils_marker :begin
 
-DATA_DIR = "/mnt/storage"
+DATA_DIR = node[:db][:data_dir]
 
 snap_lineage = node[:db][:backup][:lineage]
 raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?
