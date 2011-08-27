@@ -21,7 +21,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# A actions to @action_list array.
+# Add actions to @action_list array.
 # Used to allow comments between entries.
 def self.add_action(sym)
   @action_list ||= Array.new
@@ -109,27 +109,90 @@ add_action :reset
 # Relocate the database data directory
 #
 # Moves the data directory from the default install path to the path specified 
-# in name of the resource.  This is used for relocating the data directory
-# to a block device that provides snapshot functionality.
+# in name attribute or data_dir attribute of the resource.  This is used for 
+# relocating the data directory to a block device that provides snapshot 
+# functionality.
 #
-# This action should also setup a symlink from the old path to the new location.
+# This action should also setup a symlink from the old path to the new 
+# location.
 #
 add_action :move_data_dir      
 
 # == Pre-backup Check
-# Verify the database is in a good state for taking a snapshot
+# Verify the database is in a good state for taking a snapshot.
+#
+# This action is used to verify correct state and to preform any
+# other steps necessary before the database is locked.
+#
+# This action should raise an exception if the database is not
+# in a valid state for a backup.
+#
 add_action :pre_backup_check 
+
+# == Post-backup Cleanup
+# Used to cleanup VM after backup.
+#
+# This action is called after the backup has completed.  Can be used to cleanup
+# any temporary files created from the :pre_backup_check action. 
+#
 add_action :post_backup_cleanup
-        
-add_action :pre_restore_check     
-add_action :restore 
+ 
+# == Pre-restore Check
+# Verify the database is in a good state before preforming a restore.
+#
+# This action is called before a restore is performed. It should be used to 
+# verify that the system is in a correct state for restoring and should 
+# preform any other steps necessary before a new block_device is attached
+# and the database is stopped for a restore.
+#
+# This action should raise an exception if the database is not
+# in a valid state for a restore.
+#        
+add_action :pre_restore_check
+
+# == Post-restore Cleanup
+# Used to cleanup VM after restore.
+#
+# This action is called after the block_device restore has completed and  
+# before the database is started.
+#  
+# Used to link the database to the files in the newly restored data_dir.
+# Can also be used to perform other steps necessary to cleanup after a 
+# restore.
+#  
 add_action :post_restore_cleanup
 
+# == Set Privileges
+# Set database user privileges.
+#
+# Use the privilage attributes of this resource to setup 'administrator' or 
+# 'user' privilages to the given username with the given password.
+# 
 add_action :set_privileges
 
+# == Install Client
+# Installs database client
+#
+# Use to install the client on any system that needs to connect to the server.
+# Also should install language binding packages For example, ruby client gem
+# java client jar, php client modules, etc
+# 
 add_action :install_client
+
+# == Install Server
+# Installs database server 
+#
 add_action :install_server
+
+# == Setup Monitoring
+# Install and configure collectd plgins for the server.
+#
+# This is used by the RightScale platorm to display metrics about the database
+# on the RightScale dashboard.  Also enables alerts and escalations for the
+# database.
+#
 add_action :setup_monitoring
+
 
 actions @action_list
 
