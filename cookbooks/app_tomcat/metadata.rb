@@ -8,7 +8,6 @@ version          "0.0.1"
 depends "db_mysql"
 depends "repo_git"
 depends "rs_utils"
-depends "repo_git_pull(url, branch, dest, cred)"
  
 recipe  "app_tomcat::default", "Installs the tomcat application server."
 recipe  "app_tomcat::do_update_code", "Update application source files from the remote repository."
