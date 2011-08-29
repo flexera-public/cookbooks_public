@@ -9,6 +9,7 @@ depends "app"
 depends "web_apache"
 depends "db_mysql"
 depends "repo_git"
+depends "rs_utils"
  
 recipe  "app_php::default", "Installs the php application server."
 recipe  "app_php::do_update_code", "Update application source files from the remote repository."

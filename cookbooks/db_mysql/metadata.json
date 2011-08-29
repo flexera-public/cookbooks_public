@@ -1,8 +1,7 @@
 {
-    "version": "0.0.1",
-    "groupings": {
+    "recommendations": {
     },
-    "long_description": "= DESCRIPTION:\n\nConfigures MySQL database clients and stand-alone servers. \n\nStorage of MySQL server data defaults to root partition.  MySQL dumpfiles to a remote object store (i.e. S3 or CloudFiles) are used for backup and restore.  Also supports scheduling periodic backups via cron. \n\nThis cookbooks can be used in conjuntion with RightScale's premium block_device cookbook that supports snapshot backups. Snapshots can be backed up using cloud volumes (e.g. EBS) and/org remote object storage (e.g. S3, CloudFiles).\n\n\n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n * Tested on CentOS 5.6 RightImage\n * Clouds: EC2, RackSpace, CloudStack 2.2.8, and Eucalyptus \n\n\n= USAGE:\n\nDesigned to be run within a RightScale ServerTemplate with the following run order:\n\nBoot Scripts\n  * install_mysql - Performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.\n  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.\n",
+    "maintainer": "RightScale, Inc.",
     "attributes": {
       "db_mysql/dump/prefix": {
         "required": "required",
@@ -148,14 +147,6 @@
         "display_name": "Server Usage"
       }
     },
-    "recommendations": {
-    },
-    "dependencies": {
-      "db": [
-
-      ]
-    },
-    "maintainer": "RightScale, Inc.",
     "suggestions": {
     },
     "recipes": {
@@ -164,10 +155,17 @@
       "db_mysql::do_dump_export": "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)",
       "db_mysql::setup_continuous_export": "Schedules the daily run of do_dump_export."
     },
+    "dependencies": {
+      "db": [
+
+      ],
+      "rs_utils": [
+
+      ]
+    },
     "maintainer_email": "support@rightscale.com",
     "conflicting": {
     },
-    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
     "providing": {
       "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)": [
 
@@ -182,10 +180,15 @@
 
       ]
     },
-    "name": "db_mysql",
-    "replacing": {
-    },
+    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
     "platforms": {
     },
+    "version": "0.0.1",
+    "replacing": {
+    },
+    "name": "db_mysql",
+    "groupings": {
+    },
+    "long_description": "= DESCRIPTION:\n\nConfigures MySQL database clients and stand-alone servers. \n\nStorage of MySQL server data defaults to root partition.  MySQL dumpfiles to a remote object store (i.e. S3 or CloudFiles) are used for backup and restore.  Also supports scheduling periodic backups via cron. \n\nThis cookbooks can be used in conjuntion with RightScale's premium block_device cookbook that supports snapshot backups. Snapshots can be backed up using cloud volumes (e.g. EBS) and/org remote object storage (e.g. S3, CloudFiles).\n\n\n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n * Tested on CentOS 5.6 RightImage\n * Clouds: EC2, RackSpace, CloudStack 2.2.8, and Eucalyptus \n\n\n= USAGE:\n\nDesigned to be run within a RightScale ServerTemplate with the following run order:\n\nBoot Scripts\n  * install_mysql - Performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.\n  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.\n",
     "description": "Installs/configures a MySQL database server with automated backups."
   }

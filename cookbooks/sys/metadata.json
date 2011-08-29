@@ -57,6 +57,9 @@
       "sys::do_reconverge_list_enable": "Enable list of recipes to run every 15 minutes."
     },
     "dependencies": {
+      "rs_utils": [
+
+      ]
     },
     "maintainer_email": "support@rightscale.com",
     "conflicting": {

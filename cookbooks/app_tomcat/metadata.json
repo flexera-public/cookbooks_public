@@ -105,6 +105,9 @@
       ],
       "repo_git": [
 
+      ],
+      "rs_utils": [
+
       ]
     },
     "maintainer_email": "support@rightscale.com",

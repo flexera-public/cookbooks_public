@@ -6,6 +6,7 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1"
 
 depends "sys_firewall"
+depends "rs_utils"
 
 recipe "app::default", "Adds the appserver:active=true tag to your server which identifies it as an application server. This tag is used by database servers, for example, for opening firewall ports."
 

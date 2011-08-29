@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 template "/etc/tomcat6/tomcat6.conf" do
   action :create
   source "tomcat6_conf.erb"
@@ -42,3 +44,5 @@ service "tomcat6" do
   supports :status => true, :restart => true
   action [ :enable, :start ]
 end
+
+rs_utils_marker :end

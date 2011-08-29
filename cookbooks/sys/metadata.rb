@@ -5,6 +5,8 @@ description      "Installs/Configures RightScale system utilities."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1"
 
+depends "rs_utils"
+
 recipe "sys::do_reconverge_list_enable", "Enable list of recipes to run every 15 minutes."
 recipe "sys::do_reconverge_list_disable", "Disable recipe reconverge list."
 recipe "sys::setup_swap", "Install swap space."

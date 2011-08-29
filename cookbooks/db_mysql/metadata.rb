@@ -6,6 +6,7 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
 
 depends "db"
+depends "rs_utils"
 
 provides "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)"
 provides "db_mysql_set_privileges(type, username, password, db_name)"

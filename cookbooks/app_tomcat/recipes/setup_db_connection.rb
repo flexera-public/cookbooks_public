@@ -25,6 +25,8 @@
 # == Setup tomcat Database Connection
 #
 
+rs_utils_marker :begin
+
 template "/etc/tomcat6/context.xml" do
   source "context_xml.erb"
   owner "root"
@@ -69,3 +71,5 @@ remote_file "/usr/share/tomcat6/lib/jstl-impl-1.2.jar" do
   group "root"
   mode "0644"
 end
+
+rs_utils_marker :end
