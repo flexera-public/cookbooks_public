@@ -5,10 +5,11 @@ description      "Installs the tomcat application server."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
 
+depends "app"
 depends "db_mysql"
 depends "repo_git"
 depends "rs_utils"
- 
+
 recipe  "app_tomcat::default", "Installs the tomcat application server."
 recipe  "app_tomcat::do_update_code", "Update application source files from the remote repository."
 recipe  "app_tomcat::setup_db_connection", "Setup MySQL database db.tomcat connection file."
