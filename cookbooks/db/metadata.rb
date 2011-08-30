@@ -61,25 +61,25 @@ attribute "db/admin/user",
   :display_name => "Database Admin Username",
   :description => "The username of the database user that has 'admin' privileges.",
   :required => true,
-  :recipes => [ "db::default", "db::do_backup" ]
+  :recipes => [ "db::default", "db::do_backup", "db::setup_privileges_admin" ]
 
 attribute "db/admin/password",
   :display_name => "Database Admin Password",
   :description => "The password of the database user that has 'admin' privileges.",
   :required => true,
-  :recipes => [ "db::default", "db::do_backup" ]
+  :recipes => [ "db::default", "db::do_backup", "db::setup_privileges_admin" ]
 
 attribute "db/application/user",
   :display_name => "Database Application Username",
   :description => "The username of the database user that has 'user' privileges.",
   :required => true,
-  :recipes => [ "db::default" ]
+  :recipes => [ "db::default", "db::setup_privileges_application" ]
 
 attribute "db/application/password",
   :display_name => "Database Application Password",
   :description => "The password of the database user that has 'user' privileges.",
   :required => true,
-  :recipes => [ "db::default" ]
+  :recipes => [ "db::default", "db::setup_privileges_application" ]
 
 
 # == Backup/Restore 
