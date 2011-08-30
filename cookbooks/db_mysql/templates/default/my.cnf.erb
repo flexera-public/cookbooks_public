@@ -48,7 +48,10 @@ port            = 3306
 basedir         = <%= node[:db_mysql][:basedir] %>
 datadir         = <%= node[:db_mysql][:datadir] %>
 tmpdir          = <%= node[:db_mysql][:tmpdir] %>
-#default_table_type = INNODB
+
+# Set to have InnoDB engine as default vs MyISAM
+#default-storage-engine=INNODB
+
 skip-external-locking
 #
 # Instead of skip-networking the default is now to listen only on
