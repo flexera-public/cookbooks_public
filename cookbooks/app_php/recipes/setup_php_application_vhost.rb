@@ -33,7 +33,7 @@ apache_site "000-default" do
   enable false
 end
 
-node[:apache][:listen_ports] << "8000" unless node[:apache][:listen_ports].include?("8000")
+node[:apache][:listen_ports] << node[:app][:port] unless node[:apache][:listen_ports].include?(node[:app][:port])
 
 template "#{node[:apache][:dir]}/ports.conf" do
   cookbook "apache2"
