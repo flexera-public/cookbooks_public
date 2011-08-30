@@ -26,4 +26,4 @@ rs_utils_marker :begin
 # Let others know we are an appserver
 right_link_tag "appserver:active=true"
 
-rs_utils_marker :begin
+rs_utils_marker :end

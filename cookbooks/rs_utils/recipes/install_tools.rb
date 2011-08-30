@@ -22,7 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
+rs_utils_marker :begin
 
 SANDBOX_BIN_DIR = "/opt/rightscale/sandbox/bin"
 RS_TOOL_VERSION = "0.3.4"
@@ -43,3 +43,4 @@ r = gem_package RESOURCE_GEM do
 end
 r.run_action(:install)
 
+rs_utils_marker :end

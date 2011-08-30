@@ -28,6 +28,8 @@
 # All non-ec2 clouds will use default syslog-ng configuration
 #
 if "#{node[:rightscale][:servers][:lumberjack][:hostname]}" != "" && node[:rs_utils][:enable_remote_logging] == true
+  
+  rs_utils_marker :begin
 
   log "Configure remote syslog logging"
 
@@ -95,5 +97,7 @@ if "#{node[:rightscale][:servers][:lumberjack][:hostname]}" != "" && node[:rs_ut
   #
   right_link_tag "rs_logging:state=active"
   log "Setting logging active tag"
+  
+  rs_utils_marker :end
 
 end

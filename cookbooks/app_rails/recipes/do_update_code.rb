@@ -22,6 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
 # Check that we have the required attributes set
 raise "You must provide a URL to your application code repository" if ("#{node[:rails][:code][:url]}" == "") 
@@ -38,3 +39,5 @@ repo_git_pull "Get Repository" do
   dest node[:rails][:code][:destination]
   cred node[:rails][:code][:credentials]
 end
+
+rs_utils_marker :end

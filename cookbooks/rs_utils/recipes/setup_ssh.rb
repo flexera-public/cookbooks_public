@@ -24,6 +24,8 @@
 
 if "#{node[:rs_utils][:private_ssh_key]}" != ""
 
+  rs_utils_marker :begin
+
   log "Install private key"
 
   directory "/root/.ssh" do
@@ -33,4 +35,7 @@ if "#{node[:rs_utils][:private_ssh_key]}" != ""
     source "id_rsa.erb"
     mode 0600
   end
+  
+  rs_utils_marker :end
+  
 end

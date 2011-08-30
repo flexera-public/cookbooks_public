@@ -30,4 +30,4 @@ sys_firewall "Close this appserver's ports to all loadbalancers" do
   action :update
 end
 
-rs_utils_marker :begin
+rs_utils_marker :end

@@ -26,6 +26,8 @@
 # == Set the Timezone
 #
 if node[:rs_utils][:timezone]
+  
+  rs_utils_marker :begin
 
   link "/etc/localtime" do
     to "/usr/share/zoneinfo/#{node[:rs_utils][:timezone]}"
@@ -37,6 +39,8 @@ else
 
   # If this attribute is not set leave unchanged and use localtime
   log "rs_utils/timezone set to localtime.  Not changing /etc/localtime..."
+  
+  rs_utils_marker :end
   
 end
 

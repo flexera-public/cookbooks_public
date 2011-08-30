@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 # == Install and setup postfix 
 package "postfix"
 
@@ -67,3 +69,4 @@ remote_file "/etc/logrotate.d/mail" do
   source "mail"
 end
 
+rs_utils_marker :end

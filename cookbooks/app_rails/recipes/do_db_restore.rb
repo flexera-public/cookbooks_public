@@ -22,6 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
 # restore application database schema from remote location
 db_mysql_restore "do database restore" do
@@ -37,3 +38,5 @@ db_mysql_set_privileges "setup user privileges" do
   username node[:rails][:db_app_user]
   password node[:rails][:db_app_passwd]
 end
+
+rs_utils_marker :end
