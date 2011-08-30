@@ -16,18 +16,6 @@
         "description": "Enter the name of the MySQL database to use. Ex: mydatabase",
         "display_name": "Database Name"
       },
-      "tomcat/code": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "hash",
-        "recipes": [
-
-        ],
-        "display_name": "Tomcat Application Code"
-      },
       "tomcat/code/branch": {
         "required": "optional",
         "calculated": false,
@@ -70,18 +58,6 @@
         ],
         "description": "The private SSH key of the git repository.",
         "display_name": "Repository Credentials"
-      },
-      "tomcat": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "hash",
-        "recipes": [
-
-        ],
-        "display_name": "Tomcat Application Settings"
       }
     },
     "suggestions": {

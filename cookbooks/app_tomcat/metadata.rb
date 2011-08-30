@@ -15,36 +15,37 @@ recipe  "app_tomcat::do_update_code", "Update application source files from the 
 recipe  "app_tomcat::setup_db_connection", "Setup MySQL database db.tomcat connection file."
 recipe  "app_tomcat::setup_tomcat_application_vhost", "Setup application vhost on port 8000"
 
-attribute "tomcat",
-  :display_name => "Tomcat Application Settings",
-  :type => "hash"
+#attribute "tomcat",
+#  :display_name => "Tomcat Application Settings",
+#  :type => "hash"
 #
 # optional attributes
 #
 attribute "tomcat/db_name",
   :display_name => "Database Name",
   :description => "Enter the name of the MySQL database to use. Ex: mydatabase",
-  :required => true,
+  :required => "required",
   :recipes => [ "app_tomcat::setup_db_connection"  ]
 
-attribute "tomcat/code",
-  :display_name => "Tomcat Application Code",
-  :type => "hash"
+#attribute "tomcat/code",
+#  :display_name => "Tomcat Application Code",
+#  :type => "hash"
   
 attribute "tomcat/code/url",
   :display_name => "Repository URL",
   :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
-  :required => true,
+  :required => "required",
   :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
 
 attribute "tomcat/code/credentials",
   :display_name => "Repository Credentials",
   :description => "The private SSH key of the git repository.",
-  :required => false,
+  :required => "optional",
   :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
 
 attribute "tomcat/code/branch",
   :display_name => "Repository Branch",
   :description => "The name of the branch within the git repository where the application code should be pulled from.",
+  :required => "optional",
   :default => "master",
   :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
