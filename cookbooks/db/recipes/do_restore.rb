@@ -7,16 +7,14 @@ db DATA_DIR do
   action :pre_restore_check
 end
 
-# ROS requires a setup, but VOLUME does not.
-log "  Creating block device..."
-block_device DATA_DIR do
-  lineage node[:db][:backup][:lineage]
-  action :create
-end
-
+# ROS restore requires a setup, but VOLUME restore does not.
+# Only Rackpspace uses ROS backups
 if node[:cloud][:provider] == "rackspace"
-  # TODO: block device should handle this consistently across clouds
-  include_recipe "block_device::setup_block_device"
+  log "  Creating block device..."
+  block_device DATA_DIR do
+    lineage node[:db][:backup][:lineage]
+    action :create
+  end
 end
 
 log "  Stopping database..."
