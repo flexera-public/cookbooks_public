@@ -1,0 +1,36 @@
+{
+  "suggestions": {
+  },
+  "attributes": {
+  },
+  "conflicting": {
+  },
+  "description": "Installs/Configures lamp",
+  "dependencies": {
+    "db_mysql": [
+
+    ],
+    "app_php": [
+
+    ]
+  },
+  "providing": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "replacing": {
+  },
+  "version": "0.1.0",
+  "maintainer_email": "support@rightscale.com",
+  "name": "lamp",
+  "recipes": {
+    "db::default": "Allows LAMP cookbook to override attributes from other cookbooks.  No installation of configuration is done"
+  },
+  "groupings": {
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+  "recommendations": {
+  },
+  "platforms": {
+  },
+  "license": "All rights reserved"
+}
