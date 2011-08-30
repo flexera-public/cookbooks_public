@@ -35,17 +35,17 @@ attribute "tomcat/code/url",
   :display_name => "Repository URL",
   :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
   :required => true,
-  :recipes => [ "app_tomcat::do_update_code", "app_tomcat::do_db_restore",  "app_tomcat::default" ]
+  :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
 
 attribute "tomcat/code/credentials",
   :display_name => "Repository Credentials",
   :description => "The private SSH key of the git repository.",
   :required => false,
   :default => "",
-  :recipes => [ "app_tomcat::do_update_code", "app_tomcat::do_db_restore",  "app_tomcat::default" ]
+  :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
 
 attribute "tomcat/code/branch",
   :display_name => "Repository Branch",
   :description => "The name of the branch within the git repository where the application code should be pulled from.",
   :default => "master",
-  :recipes => [ "app_tomcat::do_update_code", "app_tomcat::do_db_restore",  "app_tomcat::default" ]
+  :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
