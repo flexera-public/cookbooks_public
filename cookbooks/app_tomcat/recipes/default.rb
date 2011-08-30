@@ -43,10 +43,10 @@ rs_utils_marker :begin
     end
   end
 
-  execute "alternatives" do
-    command "alternatives --auto java"
-    action :run
-  end
+##  execute "alternatives" do
+##    command "alternatives --auto java"
+##    action :run
+##  end
   
   ## Link mysql-connector plugin to Tomcat6 lib
   # ln -sf /usr/share/java/mysql-connector-java.jar /usr/share/tomcat6/lib/mysql-connector-java.jar
