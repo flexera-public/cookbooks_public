@@ -41,7 +41,6 @@ attribute "tomcat/code/credentials",
   :display_name => "Repository Credentials",
   :description => "The private SSH key of the git repository.",
   :required => false,
-  :default => "",
   :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
 
 attribute "tomcat/code/branch",
