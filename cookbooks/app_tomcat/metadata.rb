@@ -15,9 +15,9 @@ recipe  "app_tomcat::do_update_code", "Update application source files from the 
 recipe  "app_tomcat::setup_db_connection", "Setup MySQL database db.tomcat connection file."
 recipe  "app_tomcat::setup_tomcat_application_vhost", "Setup application vhost on port 8000"
 
-#attribute "tomcat",
-#  :display_name => "Tomcat Application Settings",
-#  :type => "hash"
+attribute "tomcat",
+  :display_name => "Tomcat Application Settings",
+  :type => "hash"
 #
 # optional attributes
 #
@@ -27,9 +27,9 @@ attribute "tomcat/db_name",
   :required => "required",
   :recipes => [ "app_tomcat::setup_db_connection"  ]
 
-#attribute "tomcat/code",
-#  :display_name => "Tomcat Application Code",
-#  :type => "hash"
+attribute "tomcat/code",
+  :display_name => "Tomcat Application Code",
+  :type => "hash"
   
 attribute "tomcat/code/url",
   :display_name => "Repository URL",
