@@ -192,11 +192,14 @@ action :install_server do
 
 
   # moves mysql default db to storage location, removes ib_logfiles for re-config of innodb_log_file_size
+  touchfile = ::File.expand_path "~/.mysql_dbmoved"
   ruby_block "clean innodb logfiles" do
+    not_if {File.exists?(touchfile)}
     block do
       require 'fileutils'
       remove_files = ::Dir.glob(::File.join(node[:db_mysql][:datadir], 'ib_logfile*')) + ::Dir.glob(::File.join(node[:db_mysql][:datadir], 'ibdata*'))
       FileUtils.rm_rf(remove_files)
+      File.open(touchfile,'a'){}
     end
   end
 
