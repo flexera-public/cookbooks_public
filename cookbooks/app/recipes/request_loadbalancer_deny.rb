@@ -25,7 +25,7 @@ rs_utils_marker :begin
 
 sys_firewall "Request all appservers close ports to this loadbalancer" do
   machine_tag "loadbalancer:app=#{node[:lb_haproxy][:applistener_name]}"
-  port 8000
+  port node[:app][:port]
   enable false
   ip_addr node[:cloud][:private_ips][0]
   action :update_request
