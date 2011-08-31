@@ -33,6 +33,7 @@ db DATA_DIR do
   privilege_username user
   privilege_password node[:db][:application][:password]
   privilege_database "*.*" # All databases
+  action :set_privileges
 end
 
 rs_utils_marker :end
