@@ -9,5 +9,5 @@ depends "db_mysql"
 depends "app_php"
 
 
-recipe "db::default", "Allows LAMP cookbook to override attributes from other cookbooks.  No installation of configuration is done"
+recipe "lamp::default", "Allows LAMP cookbook to override attributes from other cookbooks.  No installation of configuration is done"
 

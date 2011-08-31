@@ -23,7 +23,7 @@
   "maintainer_email": "support@rightscale.com",
   "name": "lamp",
   "recipes": {
-    "db::default": "Allows LAMP cookbook to override attributes from other cookbooks.  No installation of configuration is done"
+    "lamp::default": "Allows LAMP cookbook to override attributes from other cookbooks.  No installation of configuration is done"
   },
   "groupings": {
   },
