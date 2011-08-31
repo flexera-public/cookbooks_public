@@ -40,6 +40,7 @@ template "#{node[:apache][:dir]}/ports.conf" do
   source "ports.conf.erb"
   variables :apache_listen_ports => node[:apache][:listen_ports]
   notifies :restart, resources(:service => "apache2"), :immediately
+#  notifies :restart, resources(:service => "apache2"), :immediately
 end
 
 # == Configure apache vhost for PHP
