@@ -41,9 +41,10 @@ log "  Performing Restore..."
 # Requires block_device DATA_DIR to be instantiated
 # previously. Make sure block_device::default recipe has been run.
 block_device DATA_DIR do
-  lineage node[:db][:backup][:lineage]
   provider "block_device_ros"
   cloud CLOUD
+  lineage node[:db][:backup][:lineage]
+  timestamp_override node[:db][:backup][:timestamp_override]
   storage_container node[:db][:backup][:secondary_container]
   persist false
   action :restore

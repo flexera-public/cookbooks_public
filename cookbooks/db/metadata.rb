@@ -94,7 +94,7 @@ attribute "db/backup/timestamp_override",
   :display_name => "Restore Timestamp Override", 
   :description => "An optional variable to restore from a specific timestamp. Specify a string matching the timestamp tags on the volume snapshot set.  You will need to specify the timestamp that's defined by the snapshot's tag (not name).  For example, if the snapshot's tag is 'rs_backup:timestamp=1303613371' you would specify '1303613371' for this input.",
   :required => false,
-  :recipes => [ "db::do_restore" ]
+  :recipes => [ "db::do_restore", "db::do_secondary_restore" ]
   
 attribute "db/backup/secondary_location",
   :display_name => "Secondary Backup Location",
