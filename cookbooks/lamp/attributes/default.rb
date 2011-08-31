@@ -22,6 +22,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # LAMP should always listen on localhost
-set[:db][:fqdn] = "localhost"
+set[:db_mysql][:bind_address] = "localhost"
 set[:app][:port] = "80"
 
