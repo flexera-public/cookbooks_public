@@ -27,6 +27,7 @@ log "  Performing Restore..."
 # previously. Make sure block_device::default recipe has been run.
 block_device DATA_DIR do
   lineage node[:db][:backup][:lineage]
+  timestamp_override node[:db][:backup][:timestamp_override]
   action :restore
 end
 

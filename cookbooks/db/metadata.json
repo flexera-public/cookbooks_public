@@ -2,7 +2,7 @@
     "version": "0.1.0",
     "groupings": {
     },
-    "long_description": "= DESCRIPTION:\n\nRightScale Database Manager (beta) \n\nThis cookbook provides a set of database agnostic recipes that encapsulate \nfunctionality required for the RightScale Database Manager runbook.\n\nIncluded is also a lightweight resource to manage your database \nacross multiple cloud VMs. \n      \n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n\n * Needs RightScale Premium ServerTemplate tools gem installed on system.\n   This gem is only available for paid RightScale customers.\n   Please contact sales@rightscale.com to upgrade you account.\n       \n= USAGE:\n\n * DB object setup in default recipe. Referenced by name which is also the data\n   path.\n * Uses persist option to serialize the DB resource to Chef node between \n   converges. This allows operational recipes to call actions on the db \n   resource without, re-specifing creation attributes.\n\n * WARNING: The db::do_force_reset recipe will wipe the current database into a \n   pristine state.  This utility action can be useful in development and test \n   environments.  Not recommended for production use.\n   WARNING: this will delete any data in your database!\n\n",
+    "long_description": "= DESCRIPTION:\n\nRightScale Database Manager (beta) \n\nThis cookbook provides a set of generic database recipes used by the \nRightScale Database Manager ServerTemplate.\n\nIncluded is also a lightweight resource to manage your database \nacross multiple cloud VMs. \n      \n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n\n * Needs RightScale Premium ServerTemplate tools gem installed on system.\n   This gem is only available for paid RightScale customers.\n   Please contact sales@rightscale.com to upgrade you account.\n       \n= USAGE:\n\n * DB object setup in default recipe. Referenced by name which is also the data\n   path.\n * Uses persist option to serialize the DB resource to Chef node between \n   converges. This allows operational recipes to call actions on the db \n   resource without, re-specifing creation attributes.\n\n * WARNING: The db::do_force_reset recipe will wipe the current database into a \n   pristine state.  This utility action can be useful in development and test \n   environments.  Not recommended for production use.\n   WARNING: this will delete any data in your database!\n\n",
     "attributes": {
       "db/application/password": {
         "required": "required",
@@ -105,7 +105,9 @@
           "db::do_backup_schedule_enable",
           "db::do_backup_schedule_disable",
           "db::setup_block_device",
-          "db::do_force_reset"
+          "db::do_force_reset",
+          "db::do_secondary_backup",
+          "db::do_secondary_restore"
         ],
         "description": "The prefix that will be used to name/locate the backup of a particular database.",
         "display_name": "Backup Lineage"
@@ -134,6 +136,19 @@
 
         ],
         "display_name": "General Database Options"
+      },
+      "db/backup/timestamp_override": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "type": "string",
+        "recipes": [
+          "db::do_restore"
+        ],
+        "description": "An optional variable to restore from a specific timestamp. Specify a string matching the timestamp tags on the volume snapshot set.  You will need to specify the timestamp that's defined by the snapshot's tag (not name).  For example, if the snapshot's tag is 'rs_backup:timestamp=1303613371' you would specify '1303613371' for this input.",
+        "display_name": "Restore Timestamp Override"
       }
     },
     "recommendations": {
