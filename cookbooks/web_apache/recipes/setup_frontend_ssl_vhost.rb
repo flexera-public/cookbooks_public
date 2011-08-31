@@ -94,7 +94,7 @@ template "#{node[:apache][:dir]}/ports.conf" do
   cookbook "apache2"
   source "ports.conf.erb"
   variables :apache_listen_ports => node[:apache][:listen_ports]
-  notifies :restart, resources(:service => "apache2")
+  notifies :restart, resources(:service => "apache2"), :immediately
 end
 
 # == Configure apache ssl vhost for PHP
@@ -108,7 +108,7 @@ web_app "#{node[:web_apache][:application_name]}.frontend.https" do
   ssl_passphrase node[:web_apache][:ssl_passphrase]
   ssl_certificate_file ssl_certificate_file
   ssl_key_file ssl_key_file
-  notifies :restart, resources(:service => "apache2")
+  notifies :restart, resources(:service => "apache2"), :immediately
 end
 
 # == Configure apache non-ssl vhost for PHP
@@ -118,5 +118,5 @@ web_app "#{node[:web_apache][:application_name]}.frontend.http" do
   docroot node[:web_apache][:docroot]
   vhost_port http_port
   server_name node[:web_apache][:server_name]
-  notifies :restart, resources(:service => "apache2")
+  notifies :restart, resources(:service => "apache2"), :immediately
 end

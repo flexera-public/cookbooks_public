@@ -39,7 +39,7 @@ template "#{node[:apache][:dir]}/ports.conf" do
   cookbook "apache2"
   source "ports.conf.erb"
   variables :apache_listen_ports => node[:apache][:listen_ports]
-  notifies :restart, resources(:service => "apache2")
+  notifies :restart, resources(:service => "apache2"), :immediately
 end
 
 # == Configure apache vhost for PHP
@@ -51,7 +51,7 @@ web_app node[:web_apache][:application_name] do
   vhost_port node[:app][:port]
   server_name node[:php][:server_name]
   cookbook "web_apache"
-  notifies :restart, resources(:service => "apache2")
+  notifies :restart, resources(:service => "apache2"), :immediately
 end
 
 rs_utils_marker :end

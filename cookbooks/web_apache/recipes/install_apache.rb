@@ -96,7 +96,7 @@ case node[:platform]
       variables(
         :sysconfig_httpd => binary_to_use
       )
-      notifies :reload, resources(:service => "apache2")
+      notifies :reload, resources(:service => "apache2"), :immediately
     end
   when "debian","ubuntu"
     package "apache2-mpm-#{node[:web_apache][:mpm]}"
