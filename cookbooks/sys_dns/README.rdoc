@@ -2,9 +2,10 @@
 
 Select Dynamic DNS provider.
 
-= REQUIREMENTS:
-
-= ATTRIBUTES: 
+Cookbook currently supports DNSMadeEasy, DynDns, and Amazon Route53 DNS providers.  A new chef provider can be created to add support for additional Dynamic DNS services.
 
 = USAGE:
 
+sys_dns::deafult - install the RightScale DNS tools and configure for specified DNS provider.
+
+sys_dns::do_set_private - The recipe will update the A Record with the private IP address of this host instance.
