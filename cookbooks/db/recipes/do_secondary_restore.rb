@@ -32,6 +32,14 @@ db DATA_DIR do
   action :pre_restore_check
 end
 
+# ROS restore requires a setup, but VOLUME restore does not.
+# Since secondary is only ROS we need the folowing create action
+log "  Creating block device..."
+block_device DATA_DIR do
+  lineage node[:db][:backup][:lineage]
+  action :create
+end
+
 log "  Stopping database..."
 db DATA_DIR do
   action :stop
