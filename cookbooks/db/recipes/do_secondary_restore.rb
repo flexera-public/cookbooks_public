@@ -24,7 +24,7 @@
 rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
-CLOUD = (node[:db][:backup][:secondary_location] == "CloudFiles") ? "cloudfiles" : "ec2"
+CLOUD = (node[:db][:backup][:secondary_location] == "CloudFiles") ? "rackspace" : "ec2"
 
 
 log "  Running pre-restore checks..."
