@@ -1,4 +1,4 @@
-= RightScale Database Manager (Beta) 
+= RightScale Database Manager
 
 == DESCRIPTION:
 
