@@ -1,5 +1,7 @@
 = DESCRIPTION:
 
+Select Dynamic DNS provider.
+
 = REQUIREMENTS:
 
 = ATTRIBUTES: 
