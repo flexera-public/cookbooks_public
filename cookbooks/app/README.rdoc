@@ -1,15 +1,23 @@
-= DESCRIPTION:
+= RightScale App Cookbook (Beta)
+
+== DESCRIPTION:
 
 RightScale application server management cookbook (beta) 
 
 This cookbook contains recipes that generally applicable to all application
 servers.
 
-= REQUIREMENTS:
+== DETAILS:
+
+== REQUIREMENTS:
 
 Requires a VM launched from a RightScale managed RightImage 
+
+== SETUP:
        
-= USAGE:
+== USAGE:
 
 Add the default recipe to tag your server as an appserver. This is used by 
 servers (like databases) to identify their clients.
+
+== KNOWN LIMITIATIONS:

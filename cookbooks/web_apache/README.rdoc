@@ -1,8 +1,8 @@
-= RightScale LAMP Cookbook (Beta)
+= RightScale Web Apache (Beta)
 
 == DESCRIPTION:
 
-== DETAILS:
+== DETIALS:
 
 == REQUIREMENTS:
 

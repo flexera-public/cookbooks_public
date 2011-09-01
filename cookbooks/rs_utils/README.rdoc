@@ -1,17 +1,25 @@
-= DESCRIPTION:
+= RightScale Utilities Cookbook (Beta)
+
+== DESCRIPTION:
 
 Base recipes used to setup services used by the RightScale Cloud Management Platform
 
-= REQUIREMENTS:
+== DETAILS:
+
+== REQUIREMENTS:
 
 Requires a VM launched from a RightScale managed RightImage
 
-= USAGE:
+== SETUP:
+
+== USAGE:
 
 Run the rs_utils::default recipe to perform common server configuration steps  
 such as enabling monitoring and logging on the RightScale Dashboard.
 
-= DEFINITIONS
+== KNWON LIMITATIONS:
+
+== DEFINITIONS
 
 rs_utils_enable_collectd_plugin
 ---------------------------------------------

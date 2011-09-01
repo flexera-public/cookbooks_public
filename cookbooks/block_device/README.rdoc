@@ -1,4 +1,6 @@
-= DESCRIPTION:
+= RightScale Block Device Cookbook (Beta)
+
+== DESCRIPTION:
 
 The block_device cookbook manages a block_device that not only can be mounted
 but also has the ability to backup/restore itself to persistent storage of the
@@ -13,3 +15,12 @@ and ServerTemplates.
 
 Please refer to the block_device cookbook in cookbooks_premium for more information.
 
+== DETAILS:
+
+== REQUIREMENTS:
+
+== SETUP:
+
+== USAGE:
+
+== KNOWN LIMITATIONS
