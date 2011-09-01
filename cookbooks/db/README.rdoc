@@ -1,31 +1,128 @@
-= DESCRIPTION:
+= RightScale Database Manager (Beta) 
 
-RightScale Database Manager (beta) 
+== DESCRIPTION:
 
-This cookbook provides a set of database agnostic recipes that encapsulate 
-functionality required for the RightScale Database Manager runbook.
+This cookbook provides a set of database recipes used by the RightScale 
+Database Manager ServerTemplates.
 
-Included is also a lightweight resource to manage your database 
-across multiple cloud VMs. 
+This cookbook does not contain a specific database implementation, rather 
+it provides an interface for general database actions and parameters.
+
+
+== DETAILS:
+
+=== General
+The 'db' interface is defined by a Lightweight Resource, which can be found in
+the resources/default.rb file.
+
+This cookbook is intended to be used in conjunction with cookbooks that contain
+Lightweight Providers which implement the 'db' interface. See the RightScale 
+db_mysql cookbook for an example.
+
+For more about Lightweight Resources and Providers (LWRPs), please see the Chef
+wiki at:
+  
+  http://wiki.opscode.com/display/chef/Lightweight+Resources+and+Providers+%28LWRP%29
+  
+=== Backup/Restore
+This cookbook depends on the block_device LWRP for backup and restore 
+actions.  See db::do_backup and db::do_restore recipes for examples.  The 
+block_device cookbook in RightScale's cookbooks_premium repository
+provides primary and secondary persistence solutions for multiple clouds.
+
+However, using LWRPs one can provide their own block_device implementation
+instead.  
+
+Please see RightScale's premium block_device cookbook for the list of 
+available actions, attributes and usage.
+
       
-= REQUIREMENTS:
+== REQUIREMENTS:
 
- * Requires a VM launched from a RightScale managed RightImage 
+* Must be used with a 'db' provider in the cookbook path.
+* Depends on a 'block_device' resource for backup and restore recipes. 
 
- * Needs RightScale Premium ServerTemplate tools gem installed on system.
-   This gem is only available for paid RightScale customers.
-   Please contact sales@rightscale.com to upgrade you account.
-       
-= USAGE:
+     
+== SETUP:
+   
+* Place db::default recipe into your runlist to setup the db resource.  When
+  using a RightScale ServerTemplate, this will also automatically add the 
+  common database attributes to your ServerTemplate inputs.
+   
+* The default recipe for the cookbook that contains the db provider must also
+  be added to your runlist. For example:
+  
+    db_mysql::default 
+    
+  This will load your provider and pull in any database specific attributes 
+  as inputs.
 
- * DB object setup in default recipe. Referenced by name which is also the data
-   path.
- * Uses persist option to serialize the DB resource to Chef node between 
-   converges. This allows operational recipes to call actions on the db 
-   resource without, re-specifing creation attributes.
+== USAGE:
 
- * WARNING: The db::do_force_reset recipe will wipe the current database into a 
-   pristine state.  This utility action can be useful in development and test 
-   environments.  Not recommended for production use.
-   WARNING: this will delete any data in your database!
+=== Initialize a master database:
+
+1. Once your VMs is operational, run the:
+   
+    "db::setup_block_device"
+    
+   recipe. This will initialize your database onto a block device
+   that supports backup and restore operations. 
+2. Initialize your database from previous dumpfile or other source.
+3. Register your database with a Dynamic DNS provider using:
+
+    "sys_dns::do_set_private"
+   
+   to allow you application servers to start making connections.
+4. Backup your database using:
+
+    "db:do_backup"
+    
+   to allow restoring the master database in case of failure or
+   planned termination.
+   
+=== Restore a master database:
+
+1. Once your VMs is operational, run the:
+   
+    "db::do_restore"
+    
+   recipe. This will restore your database from a backup previously saved to
+   persistent cloud storage. 
+3. Register your database with a Dynamic DNS provider using:
+
+    "sys_dns::do_set_private"
+   
+   to allow you application servers to start making connections.
+
+
+== KNOWN LIMITATIONS:
+
+* Currently only one db provider should be present in your cookbook path.
+* The 'appserver_allow' and 'appserver_deny' recipes require VMs managed 
+  by the RightScale platform to run.
+  
+   
+== PROVIDERS:
+
+When writing your own database Lightweight Provider:
+
+* The database provider to use is defined by node[:db][:provider] attribute, 
+  you will need to override this. You can do so by adding: 
+   
+    set[:db][:provider] = "db_myprovider"
+    
+  in the attributes file of your provider cookbook.
+  
+* Any database specific attributes that you wish to make user configurable 
+  should be added to the cookbook metadata with the default recipe included in
+  the attribute's 'recipes' array.  For more about Chef metadata, please see
+  the Chef wiki at:
+  
+    http://wiki.opscode.com/display/chef/Metadata
+   
+* Your provider cookbook metadata should depend on this cookbook by
+  added a 'depends' line to your metadata. For example:
+  
+    depends "db"
+    
 

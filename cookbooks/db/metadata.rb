@@ -1,19 +1,21 @@
 maintainer       "RightScale, Inc."
 maintainer_email "support@rightscale.com"
 license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'LICENSE')))
-description      "Installs and configures the MySQL database."
+description      "RightScale Database Manager"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
-version          "0.1"
+version          "0.2"
 
-depends "sys_firewall"
-depends "block_device"
 depends "rs_utils"
+depends "block_device"
+depends "sys_firewall"
 
-recipe "db::default", "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases."
+recipe "db::default", "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases. Also loads the 'db' resource."
 
-recipe  "db::install_client", "Installs the database client onto the VM so it can connect to a running server.  This should to be setup on all servers "
+recipe  "db::install_client", "Installs the database client onto the VM so it can connect to a running server.  This should to be setup on all database servers and servers intended to connect to the servers."
+
 recipe  "db::install_server", "Installs and sets up the packages that are required for database servers."
-recipe  "db::setup_monitoring", "Install database collectd monitoring support"
+
+recipe  "db::setup_monitoring", "Install database collectd monitoring support.  This is required for monitoring and alerting for your servers."
 
 
 # == Common Database Recipes

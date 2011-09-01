@@ -11,3 +11,5 @@ block_device implementation.  This cookbook is included as a placeholder to
 meet the block_device dependancy requirement for public RightScale cookbooks 
 and ServerTemplates. 
 
+Please refer to the block_device cookbook in cookbooks_premium for more information.
+
