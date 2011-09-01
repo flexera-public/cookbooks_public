@@ -53,7 +53,7 @@ attribute "db",
   
 attribute "db/fqdn",
   :display_name => "Database Master FQDN",
-  :description => "The fully qualified hostname for the Master Database.",
+  :description => "The fully qualified domain name for the Master Database.",
   :required => true,
   :recipes => [ "db::default" ]
 
