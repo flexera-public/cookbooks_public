@@ -23,6 +23,17 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_maker :begin
+
+skip, reason = true, "Storage account provider not provided" unless node[:db_mysql][:dump][:storage_account_provider]
+skip, reason = true, "Container not provided"                unless node[:db_mysql][:dump][:container]
+skip, reason = true, "Prefix not provided"                   unless node[:db_mysql][:dump][:prefix]
+skip, reason = true, "DB schema name not provided"           unless node[:db_mysql][:dump][:schema_name]
+
+if skip 
+  log.info "Skipping import: #{reason}"
+  exit
+end
 
 temp_dir = node[:db_mysql][:tmpdir]
 schema_name = node[:db_mysql][:dump][:schema_name]
@@ -46,8 +57,11 @@ execute "Download MySQL dumpfile from Remote Object Store" do
 
 end
 
+schema_exists =  `echo "show databases" | mysql | grep -q  "^#{schema_name}$"`
+log.info "DB schema exists, skipping import" if schema_exists
+
 bash "Import MySQL dump file: #{dumpfile}" do
-  not_if "echo \"show databases\" | mysql | grep -q  \"^#{schema_name}$\""
+  not_if schema_exists
   user "root"
   cwd temp_dir
   code <<-EOH
@@ -62,3 +76,4 @@ bash "Import MySQL dump file: #{dumpfile}" do
   EOH
 end
 
+rs_utils_maker :end
