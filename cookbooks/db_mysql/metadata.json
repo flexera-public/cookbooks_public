@@ -36,7 +36,8 @@
       "required": "required",
       "calculated": false,
       "choice": [
-
+        "ec2",
+        "rackspace"
       ],
       "type": "string",
       "recipes": [
@@ -185,7 +186,7 @@
   },
   "groupings": {
   },
-  "long_description": "= DESCRIPTION:\n\nConfigures MySQL database clients and stand-alone servers. \n\nStorage of MySQL server data defaults to root partition.  MySQL dumpfiles to a remote object store (i.e. S3 or CloudFiles) are used for backup and restore.  Also supports scheduling periodic backups via cron. \n\nThis cookbooks can be used in conjuntion with RightScale's premium block_device cookbook that supports snapshot backups. Snapshots can be backed up using cloud volumes (e.g. EBS) and/org remote object storage (e.g. S3, CloudFiles).\n\n\n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n * Tested on CentOS 5.6 RightImage\n * Clouds: EC2, RackSpace, CloudStack 2.2.8, and Eucalyptus \n\n\n= USAGE:\n\nDesigned to be run within a RightScale ServerTemplate with the following run order:\n\nBoot Scripts\n  * install_mysql - Performs base server install and configuration.\n\nDefinitions\n  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.\n  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.\n",
+  "long_description": "= RightScale Database Manager for MySQL (Beta) \n\n== DESCRIPTION:\n\nProvides the MySQL implementation of the 'db' resource to install and \nmanage MySQL database stand-alone servers and clients.\n\n\n== DETAILS\n\nThe 'db' implementation is defined by a Lightweight Provider, which can be \nfound in the providers/default.rb file.\n\nThe majority of the functionality of the MySQL provider is encapsulated \nin the premium rightscale_tools gem, however, there are currently a handful\nof recipes that can be used without it. See 'Public Recipes' in the USAGE\nsection below.\n\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage \n\n* Tested on CentOS 5.6 RightImage\n\n* Supports MySQL 5.1 \n\n* Needs RightScale Premium ServerTemplate tools gem installed on system.\n  This gem is only available for paid RightScale customers.\n  Please contact sales@rightscale.com to upgrade you account.\n\n\n== SETUP:\n\n* Place db::default recipe into your runlist to setup the db resource.  When\n  using a RightScale ServerTemplate, this will also automatically add the \n  common database attributes to your ServerTemplate inputs.\n   \n* Also, place the db_mysql::default recipe into your runlist to load the\n  MySQL provider, tuning parameters, as well as other MySQL specific \n  attributes in as inputs.\n\n== USAGE:\n\n=== Basic usage\nOnce setup, use the recipes in the 'db' cookbook to install and manage your\nMySQL database servers and clients.  See the db/README.rdoc for usage \ndetails.\n\n\n=== MySQL Tuning and my.cnf\n\nCustom tuning parameters can be applied by overriding the mysql_tuning.rb\nattributes file.  For more information and an example override repository\nplease see:\n\n  https://github.com/ekargard/cookbooks_override/tree/master/cookbooks/db_mysql\n  \n\n=== Public Recipes\nHere is the list of db recipes that can be used without the preimum \nrightscale_tools gem:\n\n* db::default\n* db::install_client\n* db::install_server\n* db::setup_monitoring\n* db::setup_privileges_admin\n* db::setup_privileges_application\n* db::do_appserver_allow\n* db::do_appserver_deny\n* db::request_appserver_allow\n* db::request_appserver_deny\n\nThese recipes are used by the RightScale LAMP ServerTemplate.\n\n\n== KNOWN LIMITATIONS\n\n* none\n\n\n   \n\n",
   "recommendations": {
   },
   "platforms": {
