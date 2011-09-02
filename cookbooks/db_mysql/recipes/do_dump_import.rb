@@ -23,17 +23,17 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-rs_utils_maker :begin
+#rs_utils_maker :begin
 
-skip, reason = true, "Storage account provider not provided" unless node[:db_mysql][:dump][:storage_account_provider]
-skip, reason = true, "Container not provided"                unless node[:db_mysql][:dump][:container]
-skip, reason = true, "Prefix not provided"                   unless node[:db_mysql][:dump][:prefix]
-skip, reason = true, "DB schema name not provided"           unless node[:db_mysql][:dump][:schema_name]
-
-if skip 
-  log.info "Skipping import: #{reason}"
-  exit
-end
+#skip, reason = true, "DB schema name not provided"           unless node[:db_mysql][:dump][:schema_name]
+#skip, reason = true, "Prefix not provided"                   unless node[:db_mysql][:dump][:prefix]
+#skip, reason = true, "Storage account provider not provided" unless node[:db_mysql][:dump][:storage_account_provider]
+#skip, reason = true, "Container not provided"                unless node[:db_mysql][:dump][:container]
+#
+#if skip 
+#  log.info "Skipping import: #{reason}"
+#  exit
+#end
 
 temp_dir = node[:db_mysql][:tmpdir]
 schema_name = node[:db_mysql][:dump][:schema_name]
@@ -77,4 +77,4 @@ bash "Import MySQL dump file: #{dumpfile}" do
   EOH
 end
 
-rs_utils_maker :end
+#rs_utils_maker :end
