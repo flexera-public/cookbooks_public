@@ -3,7 +3,7 @@
   },
   "attributes": {
     "db_mysql/dump/prefix": {
-      "required": "required",
+      "required": "optional",
       "calculated": false,
       "choice": [
 
@@ -18,7 +18,7 @@
       "description": "The prefix that will be used to name/locate the backup of a particular MySQL database.  Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp."
     },
     "db_mysql/dump/container": {
-      "required": "required",
+      "required": "optional",
       "calculated": false,
       "choice": [
 
@@ -33,7 +33,7 @@
       "description": "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name."
     },
     "db_mysql/dump/storage_account_provider": {
-      "required": "required",
+      "required": "optional",
       "calculated": false,
       "choice": [
         "ec2",
@@ -61,7 +61,7 @@
       "display_name": "General Database Options"
     },
     "db_mysql/dump/storage_account_id": {
-      "required": "required",
+      "required": "optional",
       "calculated": false,
       "choice": [
 
@@ -102,7 +102,7 @@
       "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory. Ex: /mnt/mysql-binlogs/mysql-bin"
     },
     "db_mysql/dump/storage_account_secret": {
-      "required": "required",
+      "required": "optional",
       "calculated": false,
       "choice": [
 
@@ -117,7 +117,7 @@
       "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key."
     },
     "db_mysql/dump/schema_name": {
-      "required": "required",
+      "required": "optional",
       "calculated": false,
       "choice": [
 
