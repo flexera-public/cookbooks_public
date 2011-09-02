@@ -58,6 +58,7 @@ attribute "db_mysql/dump/schema_name",
 attribute "db_mysql/dump/storage_account_provider",
   :display_name => "Storage Account Provider",
   :description => "Select the cloud infrastructure where the backup will be saved. For Amazon S3, use ec2.  For Rackspace Cloud Files, use rackspace.",
+  :choice => ["ec2", "rackspace"],
   :required => true,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
 
