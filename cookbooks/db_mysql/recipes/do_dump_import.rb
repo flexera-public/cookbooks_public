@@ -57,8 +57,8 @@ execute "Download MySQL dumpfile from Remote Object Store" do
 
 end
 
-schema_exists = `echo "show databases" | mysql | grep -q  "^#{schema_name}$"`.chomp
-log.info "DB schema exists, skipping import" if schema_exists.empty?
+#schema_exists = `echo "show databases" | mysql | grep -q  "^#{schema_name}$"`.chomp
+#log.info "DB schema exists, skipping import" if schema_exists.empty?
 
 bash "Import MySQL dump file: #{dumpfile}" do
   not_if schema_exists
