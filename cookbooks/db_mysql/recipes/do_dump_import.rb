@@ -60,7 +60,7 @@ else
   log "DB schema exists, skipping import" if schema_exists.empty?
   
   bash "Import MySQL dump file: #{dumpfile}" do
-    not_if schema_exists.empty?
+    only_if schema_exists.empty?
     user "root"
     cwd temp_dir
     code <<-EOH
