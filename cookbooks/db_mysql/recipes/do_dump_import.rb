@@ -56,11 +56,9 @@ else
 
   end
 
-  schema_exists = `echo "show databases" | mysql | grep -q  "^#{schema_name}$"`.chomp
-  log "DB schema exists, skipping import" if schema_exists.empty?
-  
+#TODO Log if import skipped
   bash "Import MySQL dump file: #{dumpfile}" do
-    only_if schema_exists.empty?
+    not_if "echo \"show databases\" | mysql | grep -q  \"^#{schema_name}$\""
     user "root"
     cwd temp_dir
     code <<-EOH
