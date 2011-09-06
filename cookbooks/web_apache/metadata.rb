@@ -14,6 +14,7 @@ recipe "web_apache::setup_monitoring", "Install collectd-apache for monitoring s
 all_recipes = [ "web_apache::default",  "web_apache::install_apache", "web_apache::setup_frontend_ssl_vhost", "web_apache::setup_frontend_http_vhost", "web_apache::setup_frontend"]
 
 depends "apache2"
+depends "rs_utils"
 
 attribute "web_apache",
   :display_name => "apache hash",

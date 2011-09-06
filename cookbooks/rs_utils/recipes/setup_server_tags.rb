@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 # RightScale unique identifier
 uuid = node[:rightscale][:instance_uuid]
 log "Adding server tag for UUID #{uuid}"
@@ -44,3 +46,5 @@ while node[:cloud][:public_ips] && node[:cloud][:public_ips][i] do
   right_link_tag "server:public_ip_#{i}=#{ip}"
   i += 1
 end
+
+rs_utils_marker :end

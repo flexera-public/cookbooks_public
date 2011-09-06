@@ -1,22 +1,84 @@
-= DESCRIPTION:
+= RightScale Database Manager for MySQL (Beta) 
 
-Configures MySQL database servers that act as a Master-DB. Specifically designed for RightScale's Manager for MySQL-EBS. Storage of MySQL data will be done using EBS Volumes. EBS Snapshots are used for database backups.
+== DESCRIPTION:
 
-= REQUIREMENTS:
+Provides the MySQL implementation of the 'db' resource to install and 
+manage MySQL database stand-alone servers and clients.
 
-* The Opscode's public cookbooks must be in your cookbook path -- the 'mysql' cookbook is used for client install.
 
-= ATTRIBUTES: 
+== DETAILS
 
-See metadata.rb 
+The 'db' implementation is defined by a Lightweight Provider, which can be 
+found in the providers/default.rb file.
 
-= USAGE:
+The majority of the functionality of the MySQL provider is encapsulated 
+in the premium rightscale_tools gem, however, there are currently a handful
+of recipes that can be used without it. See 'Public Recipes' in the USAGE
+section below.
 
-Designed to be run within a RightScale ServerTemplate with the following run order:
 
-Boot Scripts
-  * install_mysql - Performs base server install and configuration.
+== REQUIREMENTS:
 
-Definitions
-  * db_mysql_restore - Restores database from MySQL dump retrieved from a remote location.
-  * db_mysql_set_privileges - Configures a user's privileges.  Currently only 'administrator' and 'user' settings are supported.
+* Requires a VM launched from a RightScale managed RightImage 
+
+* Tested on CentOS 5.6 RightImage
+
+* Supports MySQL 5.1 
+
+* Needs RightScale Premium ServerTemplate tools gem installed on system.
+  This gem is only available for paid RightScale customers.
+  Please contact sales@rightscale.com to upgrade you account.
+
+
+== SETUP:
+
+* Place db::default recipe into your runlist to setup the db resource.  When
+  using a RightScale ServerTemplate, this will also automatically add the 
+  common database attributes to your ServerTemplate inputs.
+   
+* Also, place the db_mysql::default recipe into your runlist to load the
+  MySQL provider, tuning parameters, as well as other MySQL specific 
+  attributes in as inputs.
+
+== USAGE:
+
+=== Basic usage
+Once setup, use the recipes in the 'db' cookbook to install and manage your
+MySQL database servers and clients.  See the db/README.rdoc for usage 
+details.
+
+
+=== MySQL Tuning and my.cnf
+
+Custom tuning parameters can be applied by overriding the mysql_tuning.rb
+attributes file.  For more information and an example override repository
+please see:
+
+  https://github.com/ekargard/cookbooks_override/tree/master/cookbooks/db_mysql
+  
+
+=== Public Recipes
+Here is the list of db recipes that can be used without the preimum 
+rightscale_tools gem:
+
+* db::default
+* db::install_client
+* db::install_server
+* db::setup_monitoring
+* db::setup_privileges_admin
+* db::setup_privileges_application
+* db::do_appserver_allow
+* db::do_appserver_deny
+* db::request_appserver_allow
+* db::request_appserver_deny
+
+These recipes are used by the RightScale LAMP ServerTemplate.
+
+
+== KNOWN LIMITATIONS
+
+* none
+
+
+   
+

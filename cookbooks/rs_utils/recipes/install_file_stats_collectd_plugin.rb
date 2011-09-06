@@ -23,6 +23,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 # Load the exec plugin in the main config file
 rs_utils_enable_collectd_plugin "exec"
 #node[:rs_utils][:plugin_list] += " exec" unless node[:rs_utils][:plugin_list] =~ /exec/
@@ -69,3 +71,5 @@ ruby_block "add_collectd_gauges" do
 end
 
 log "Installed collectd file_stats plugin."
+
+rs_utils_marker :end

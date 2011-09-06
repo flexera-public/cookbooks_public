@@ -5,9 +5,11 @@ description      "Installs the php application server."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
 
+depends "app"
 depends "web_apache"
 depends "db_mysql"
 depends "repo_git"
+depends "rs_utils"
  
 recipe  "app_php::default", "Installs the php application server."
 recipe  "app_php::do_update_code", "Update application source files from the remote repository."
@@ -20,6 +22,12 @@ attribute "php",
 #
 # optional attributes
 #
+attribute "php/server_name",
+  :display_name => "Server Name",
+  :description => "The fully qualified domain name of the application server used to define your virtual host.",
+  :default => "myserver",
+  :recipes => ["app_php::default" ]
+
 attribute "php/modules_list",
   :display_name => "PHP module packages",
   :description => "An optional list of php module packages to install.  Accepts an array of package names (IE: php53u-mysql,php53u-pecl-memcache).  When using CentOS package names are prefixed with php53u instead of php.  To see a list of available php modules on CentOS run 'yum search php53u' on the server.",

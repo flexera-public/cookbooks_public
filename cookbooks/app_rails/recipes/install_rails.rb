@@ -22,6 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
 include_recipe "web_apache"
 include_recipe "rails"
@@ -29,7 +30,7 @@ include_recipe "passenger_apache2::mod_rails"
 include_recipe "mysql::client"
 
 # install optional gems required for the application
-@node[:rails][:gems_list].each { |gem| gem_package gem } unless "#{@node[:rails][:gems_list]}" == ""
+node[:rails][:gems_list].each { |gem| gem_package gem } unless "#{node[:rails][:gems_list]}" == ""
 
 # grab application source from remote repository
 include_recipe "app_rails::do_update_code"
@@ -38,7 +39,7 @@ include_recipe "app_rails::do_update_code"
 include_recipe "app_rails::setup_db_config"
 
 # this should work but chef breaks -- https://tickets.opscode.com/browse/CHEF-205
- #directory @node[:rails][:code][:destination] do
+ #directory node[:rails][:code][:destination] do
    #owner 'www-data'
    #group 'www-data'
    #mode 0755
@@ -50,12 +51,12 @@ include_recipe "app_rails::setup_db_config"
 #chown application directory 
 bash "chown_home" do
   code <<-EOH
-    echo "chown -R #{@node[:rails][:app_user]}:#{@node[:rails][:app_user]} #{@node[:rails][:code][:destination]}" >> /tmp/bash
-    chown -R #{@node[:rails][:app_user]}:#{@node[:rails][:app_user]} #{@node[:rails][:code][:destination]}
+    echo "chown -R #{node[:rails][:app_user]}:#{node[:rails][:app_user]} #{node[:rails][:code][:destination]}" >> /tmp/bash
+    chown -R #{node[:rails][:app_user]}:#{node[:rails][:app_user]} #{node[:rails][:code][:destination]}
   EOH
 end
 
-passenger_port = @node[:rails][:application_port]
+passenger_port = node[:rails][:application_port]
 
 # if port 80, disable default vhost
 if passenger_port == "80" 
@@ -64,11 +65,11 @@ if passenger_port == "80"
   end
 end
 
-ports = @node[:apache][:listen_ports].include?(passenger_port) \
-    ? @node[:apache][:listen_ports] \
-    : [@node[:apache][:listen_ports], passenger_port].flatten
+ports = node[:apache][:listen_ports].include?(passenger_port) \
+    ? node[:apache][:listen_ports] \
+    : [node[:apache][:listen_ports], passenger_port].flatten
 
-template "#{@node[:apache][:dir]}/ports.conf" do
+template "#{node[:apache][:dir]}/ports.conf" do
   cookbook "apache2"
   source "ports.conf.erb"
   variables :apache_listen_ports => ports
@@ -76,12 +77,12 @@ template "#{@node[:apache][:dir]}/ports.conf" do
 end
 
 # setup the passenger vhost
-web_app @node[:rails][:application_name] do
+web_app node[:rails][:application_name] do
   template "passenger_web_app.conf.erb"
-  docroot @node[:rails][:code][:destination]
-  vhost_port @node[:rails][:application_port]
-  server_name @node[:rails][:server_name]
-  rails_env @node[:rails][:env]
+  docroot node[:rails][:code][:destination]
+  vhost_port node[:rails][:application_port]
+  server_name node[:rails][:server_name]
+  rails_env node[:rails][:env]
 end
 
 # Move rails logs to /mnt  (TODO:create move definition in rs_tools?)
@@ -103,3 +104,4 @@ template "/etc/logrotate.d/rails" do
    )    
 end
 
+rs_utils_marker :end

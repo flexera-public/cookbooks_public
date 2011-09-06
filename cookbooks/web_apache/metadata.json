@@ -1,14 +1,5 @@
 {
-    "recipes": {
-      "web_apache::default": "Runs web_apache::install_apache.",
-      "web_apache::setup_frontend": "Frontend apache vhost.  Select ssl_enabled for SSL.",
-      "web_apache::install_apache": "Install and configure Apache2 webserver.",
-      "web_apache::setup_monitoring": "Install collectd-apache for monitoring support",
-      "web_apache::setup_frontend_ssl_vhost": "Frontend apache vhost with SSL enabled",
-      "web_apache::setup_frontend_http_vhost": "Frontend apache vhost with SSL enabled"
-    },
-    "replacing": {
-    },
+    "version": "0.0.1",
     "groupings": {
     },
     "long_description": "",
@@ -24,8 +15,8 @@
           "web_apache::setup_frontend_ssl_vhost",
           "web_apache::setup_frontend"
         ],
-        "display_name": "SSL Certificate Key",
-        "description": "SSL Certificate Key"
+        "description": "SSL Certificate Key",
+        "display_name": "SSL Certificate Key"
       },
       "web_apache/mpm": {
         "required": "optional",
@@ -43,8 +34,8 @@
           "web_apache::setup_frontend_http_vhost",
           "web_apache::setup_frontend"
         ],
-        "display_name": "Multi-Processing Module",
-        "description": "Can be set to 'worker' or 'prefork' and defines the setting in httpd.conf.  Use 'worker' for Rails/Tomcat/Standalone frontends and 'prefork' for PHP."
+        "description": "Can be set to 'worker' or 'prefork' and defines the setting in httpd.conf.  Use 'worker' for Rails/Tomcat/Standalone frontends and 'prefork' for PHP.",
+        "display_name": "Multi-Processing Module"
       },
       "web_apache/ssl_enable": {
         "required": "optional",
@@ -59,8 +50,8 @@
           "web_apache::install_apache",
           "web_apache::setup_frontend"
         ],
-        "display_name": "SSL Enable",
-        "description": "Enable SSL"
+        "description": "Enable SSL",
+        "display_name": "SSL Enable"
       },
       "web_apache/ssl_certificate": {
         "required": "optional",
@@ -73,8 +64,8 @@
           "web_apache::setup_frontend_ssl_vhost",
           "web_apache::setup_frontend"
         ],
-        "display_name": "SSL Certificate",
-        "description": "SSL Certificate"
+        "description": "SSL Certificate",
+        "display_name": "SSL Certificate"
       },
       "web_apache": {
         "required": "optional",
@@ -86,8 +77,8 @@
         "recipes": [
 
         ],
-        "display_name": "apache hash",
-        "description": "Apache Web Server"
+        "description": "Apache Web Server",
+        "display_name": "apache hash"
       },
       "web_apache/application_name": {
         "required": "optional",
@@ -104,8 +95,8 @@
           "web_apache::setup_frontend_http_vhost",
           "web_apache::setup_frontend"
         ],
-        "display_name": "Application Name",
-        "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name."
+        "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name.",
+        "display_name": "Application Name"
       },
       "web_apache/server_name": {
         "required": "optional",
@@ -122,8 +113,8 @@
           "web_apache::setup_frontend_http_vhost",
           "web_apache::setup_frontend"
         ],
-        "display_name": "Server Name",
-        "description": "The fully qualified domain name of the application server used to define your virtual host."
+        "description": "The fully qualified domain name of the application server used to define your virtual host.",
+        "display_name": "Server Name"
       },
       "web_apache/ssl_certificate_chain": {
         "required": "optional",
@@ -136,8 +127,8 @@
           "web_apache::setup_frontend_ssl_vhost",
           "web_apache::setup_frontend"
         ],
-        "display_name": "SSL Certificate Chain",
-        "description": "SSL Certificate Chain"
+        "description": "SSL Certificate Chain",
+        "display_name": "SSL Certificate Chain"
       },
       "web_apache/ssl_passphrase": {
         "required": "optional",
@@ -150,29 +141,41 @@
           "web_apache::setup_frontend_ssl_vhost",
           "web_apache::setup_frontend"
         ],
-        "display_name": "SSL passphrase",
-        "description": "SSL passphrase"
+        "description": "SSL passphrase",
+        "display_name": "SSL passphrase"
       }
     },
     "recommendations": {
     },
-    "description": "Installs/configures the apache2 webserver",
     "dependencies": {
       "apache2": [
+
+      ],
+      "rs_utils": [
 
       ]
     },
     "maintainer": "RightScale, Inc.",
     "suggestions": {
     },
+    "recipes": {
+      "web_apache::default": "Runs web_apache::install_apache.",
+      "web_apache::setup_frontend": "Frontend apache vhost.  Select ssl_enabled for SSL.",
+      "web_apache::install_apache": "Install and configure Apache2 webserver.",
+      "web_apache::setup_monitoring": "Install collectd-apache for monitoring support",
+      "web_apache::setup_frontend_ssl_vhost": "Frontend apache vhost with SSL enabled",
+      "web_apache::setup_frontend_http_vhost": "Frontend apache vhost with SSL enabled"
+    },
     "maintainer_email": "support@rightscale.com",
     "conflicting": {
     },
-    "version": "0.0.1",
-    "name": "web_apache",
+    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
     "providing": {
+    },
+    "name": "web_apache",
+    "replacing": {
     },
     "platforms": {
     },
-    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
+    "description": "Installs/configures the apache2 webserver"
   }

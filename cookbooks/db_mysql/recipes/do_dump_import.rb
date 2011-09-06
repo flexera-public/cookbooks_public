@@ -23,42 +23,55 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
-temp_dir = node[:db_mysql][:tmpdir]
-schema_name = node[:db_mysql][:dump][:schema_name]
+skip, reason = true, "DB schema name not provided"           if node[:db_mysql][:dump][:schema_name] == ""
+skip, reason = true, "Prefix not provided"                   if node[:db_mysql][:dump][:prefix] == ""
+skip, reason = true, "Storage account provider not provided" if node[:db_mysql][:dump][:storage_account_provider] == ""
+skip, reason = true, "Container not provided"                if node[:db_mysql][:dump][:container] == ""
 
-cloud = node[:db_mysql][:dump][:storage_account_provider] unless node[:db_mysql][:dump][:storage_account_provider] == ""
-cloud ||= node[:cloud][:provider]
+if skip 
+  log "Skipping import: #{reason}"
+else
 
-container = node[:db_mysql][:dump][:container]
-prefix = node[:db_mysql][:dump][:prefix]
-dumpfile = "#{temp_dir}/#{prefix}.gz"
+  temp_dir = node[:db_mysql][:tmpdir]
+  schema_name = node[:db_mysql][:dump][:schema_name]
 
-execute "Download MySQL dumpfile from Remote Object Store" do
-  command "/opt/rightscale/sandbox/bin/mc_sync.rb get --cloud #{cloud} " +
-          "--container #{container} --source #{prefix} " +
-          "--latest --dest #{dumpfile}"
-  creates dumpfile
-  environment ({ 
-    'STORAGE_ACCOUNT_ID' => node[:db_mysql][:dump][:storage_account_id],
-    'STORAGE_ACCOUNT_SECRET' => node[:db_mysql][:dump][:storage_account_secret],
-  })
+  cloud = node[:db_mysql][:dump][:storage_account_provider] unless node[:db_mysql][:dump][:storage_account_provider] == ""
+  cloud ||= node[:cloud][:provider]
+
+  container = node[:db_mysql][:dump][:container]
+  prefix = node[:db_mysql][:dump][:prefix]
+  dumpfile = "#{temp_dir}/#{prefix}.gz"
+
+  execute "Download MySQL dumpfile from Remote Object Store" do
+    command "/opt/rightscale/sandbox/bin/mc_sync.rb get --cloud #{cloud} " +
+            "--container #{container} --source #{prefix} " +
+            "--latest --dest #{dumpfile}"
+    creates dumpfile
+    environment ({ 
+      'STORAGE_ACCOUNT_ID' => node[:db_mysql][:dump][:storage_account_id],
+      'STORAGE_ACCOUNT_SECRET' => node[:db_mysql][:dump][:storage_account_secret],
+    })
+
+  end
+
+#TODO Log if import skipped
+  bash "Import MySQL dump file: #{dumpfile}" do
+    not_if "echo \"show databases\" | mysql | grep -q  \"^#{schema_name}$\""
+    user "root"
+    cwd temp_dir
+    code <<-EOH
+      set -e
+      if [ ! -f #{dumpfile} ] 
+      then 
+        echo "ERROR: MySQL dumpfile not found! File: '#{dumpfile}'" 
+        exit 1
+      fi 
+      mysqladmin -u root create #{schema_name} 
+      gunzip < #{dumpfile} | mysql -u root -b #{schema_name}
+    EOH
+  end
 
 end
-
-bash "Import MySQL dump file: #{dumpfile}" do
-  not_if "echo \"show databases\" | mysql | grep -q  \"^#{schema_name}$\""
-  user "root"
-  cwd temp_dir
-  code <<-EOH
-    set -e
-    if [ ! -f #{dumpfile} ] 
-    then 
-      echo "ERROR: MySQL dumpfile not found! File: '#{dumpfile}'" 
-      exit 1
-    fi 
-    mysqladmin -u root create #{schema_name} 
-    gunzip < #{dumpfile} | mysql -u root -b #{schema_name}
-  EOH
-end
-
+rs_utils_marker :end

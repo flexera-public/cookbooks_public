@@ -6,9 +6,12 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1"
 
 depends "iptables"
+depends "sys"
+depends "rs_utils"
 
 recipe "sys_firewall::default", "Use in conjunction with the 'Firewall' input to enable or disable iptables."
 recipe "sys_firewall::setup_rule", "Use for enabling/disabling specific firewall ports."
+recipe "sys_firewall::do_list_rules", "List the firewall rules"
 
 attribute "sys_firewall/enabled",  
   :display_name => "Firewall",  

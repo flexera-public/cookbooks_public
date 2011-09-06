@@ -11,7 +11,8 @@ depends "passenger_apache2::mod_rails"
 depends "mysql::client"
 depends "repo_git"
 depends "db_mysql"
-
+depends "rs_utils"
+ 
 recipe  "app_rails::default", "Runs app_rails::install_rails."
 recipe  "app_rails::do_db_restore", "Restore the application database schema from a remote location."
 recipe  "app_rails::do_update_code", "Update application source files from the remote repository."

@@ -293,6 +293,9 @@
       ],
       "passenger_apache2::mod_rails": [
 
+      ],
+      "rs_utils": [
+
       ]
     },
     "maintainer": "RightScale, Inc.",

@@ -1,8 +1,13 @@
-= DESCRIPTION:
+= RightScale App Rails Cookbook (Beta)
 
-= REQUIREMENTS:
+== DESCRIPTION:
 
-= ATTRIBUTES: 
+== DETAILS:
 
-= USAGE:
+== REQUIREMENTS:
 
+== SETUP:
+
+== USAGE:
+
+== KNOWN LIMITATIONS:

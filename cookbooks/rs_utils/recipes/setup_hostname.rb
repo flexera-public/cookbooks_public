@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 require 'socket'
 
 def local_ip
@@ -169,3 +171,5 @@ ruby_block "show_new_host_info" do
     Chef::Log.info("FQDN of host: #{`hostname -f` == '' ? '<none>' : `hostname -f`}")
   end
 end
+
+rs_utils_marker :end

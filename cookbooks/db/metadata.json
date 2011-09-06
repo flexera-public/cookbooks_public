@@ -1,40 +1,197 @@
 {
-    "version": "0.1.0",
-    "groupings": {
-    },
-    "long_description": "= DESCRIPTION:\n\nRightScale Database Manager Chef Resource (beta) \n\nThis cookbook contains recipes that generally applicable to all databse\nservers. Also provides a lightweight resource to manage your database \nacross multiple cloud VMs. \n      \n= REQUIREMENTS:\n\n * Requires a VM launched from a RightScale managed RightImage \n\n * Needs RightScale Premium ServerTemplate tools gem installed on system.\n   This gem is only available for paid RightScale customers.\n   Please contact sales@rightscale.com to upgrade you account.\n       \n= USAGE:\n\n== Create\n\nSetup a database with data on a blockdevice that supports backup/restore to \nmultiple clouds.\n\nExample: \n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type node[:database][:backup][:storage_type] # \"volume\" or \"ros\"\n    cloud node[:cloud][:provider]\n    # volume only\n    volume_size node[:database][:backup][:volume_size]\n    stripe_count node[:database][:backup][:stripe_count]\n  \n    action :create\n  end\n\n\n== Backup/Restore\n\nHere is an example of a backup to the EC2 EBS service:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type \"volume\"\n    cloud \"ec2\"\n    lineage \"my_data\"\n    action :backup\n  end\n\nHere is an example of a restore from Rackspace CloudFiles service:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    storage_type \"ros\"\n    cloud \"rackspace\"\n    rackspace_user node[:database][:backup][:rackspace_user]\n    rackspace_secret node[:database][:backup][:rackspace_secret]\n    storage_container node[:database][:backup][:storage_container]\n    lineage \"my_data\"\n    action :restore\n  end \n\n\n== Reset\n\nWipes database into a pristine state.  This utility action can be useful in develeopment\nand test environments.  Not recommended for production use.\nWARNING: this will delete any data in your database!\n\nExample:\n\n  db \"/mnt/storage\" do\n    provider \"database\"\n    cloud node[:cloud][:provider]\n    storage_type node[:database][:backup][:storage_type] # \"volume\" or \"ros\"\n    action :reset\n  end\n\n",
-    "attributes": {
-    },
-    "recommendations": {
-    },
-    "dependencies": {
-      "sys_firewall": [
+  "dependencies": {
+    "sys_firewall": ">= 0.0.0",
+    "block_device": ">= 0.0.0",
+    "rs_utils": ">= 0.0.0"
+  },
+  "name": "db",
+  "maintainer_email": "support@rightscale.com",
+  "attributes": {
+    "db/application/password": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
 
       ],
-      "block_device": [
+      "type": "string",
+      "recipes": [
+        "db::default",
+        "db::setup_privileges_application"
+      ],
+      "description": "The password of the database user that has 'user' privileges.",
+      "display_name": "Database Application Password"
+    },
+    "db/admin/password": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
 
-      ]
+      ],
+      "type": "string",
+      "recipes": [
+        "db::default",
+        "db::do_backup",
+        "db::setup_privileges_admin"
+      ],
+      "description": "The password of the database user that has 'admin' privileges.",
+      "display_name": "Database Admin Password"
     },
-    "maintainer": "RightScale, Inc.",
-    "suggestions": {
+    "db/backup/secondary_container": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db::do_secondary_backup",
+        "db::do_secondary_restore"
+      ],
+      "description": "Container for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud",
+      "display_name": "Secondary Backup Container"
     },
-    "recipes": {
-      "db::request_appserver_allow": "Sends request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true. This should be run on a application server before attempting a database connection.",
-      "db::default": "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases.",
-      "db::do_appservers_allow": "Allow connections from all application servers in the deployment that are tagged with appserver:active=true. This should be run on a database server to allow application servers to connect.",
-      "db::request_appserver_deny": "Sends request to deny connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true.  This should be run on a application server upon decommissioning.",
-      "db::do_appservers_deny": "Deny connections from all application servers in the deployment that are tagged with appserver:active=true.  This can be run on a database server to deny connections from all application servers in the deployment."
+    "db/backup/secondary_location": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+        "S3",
+        "CloudFiles"
+      ],
+      "default": "S3",
+      "type": "string",
+      "recipes": [
+        "db::do_secondary_backup",
+        "db::do_secondary_restore"
+      ],
+      "description": "Location for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud",
+      "display_name": "Secondary Backup Location"
     },
-    "maintainer_email": "support@rightscale.com",
-    "conflicting": {
+    "db/application/user": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db::default",
+        "db::setup_privileges_application"
+      ],
+      "description": "The username of the database user that has 'user' privileges.",
+      "display_name": "Database Application Username"
     },
-    "license": "All rights reserved",
-    "providing": {
+    "db/admin/user": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db::default",
+        "db::do_backup",
+        "db::setup_privileges_admin"
+      ],
+      "description": "The username of the database user that has 'admin' privileges.",
+      "display_name": "Database Admin Username"
     },
-    "name": "db",
-    "replacing": {
+    "db/backup/lineage": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db::do_backup",
+        "db::do_restore",
+        "db::do_backup_schedule_enable",
+        "db::do_backup_schedule_disable",
+        "db::setup_block_device",
+        "db::do_force_reset",
+        "db::do_secondary_backup",
+        "db::do_secondary_restore"
+      ],
+      "description": "The prefix that will be used to name/locate the backup of a particular database.",
+      "display_name": "Backup Lineage"
     },
-    "platforms": {
+    "db/fqdn": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db::default"
+      ],
+      "description": "The fully qualified domain name for the Master Database.",
+      "display_name": "Database Master FQDN"
     },
-    "description": "Installs and configures the MySQL database."
+    "db": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "hash",
+      "recipes": [
+
+      ],
+      "display_name": "General Database Options"
+    },
+    "db/backup/timestamp_override": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db::do_restore",
+        "db::do_secondary_restore"
+      ],
+      "description": "An optional variable to restore from a specific timestamp. Specify a string matching the timestamp tags on the volume snapshot set.  You will need to specify the timestamp that's defined by the snapshot's tag (not name).  For example, if the snapshot's tag is 'rs_backup:timestamp=1303613371' you would specify '1303613371' for this input.",
+      "display_name": "Restore Timestamp Override"
+    }
+  },
+  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "suggestions": {
+  },
+  "platforms": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "long_description": "= RightScale Database Manager\n\n== DESCRIPTION:\n\nThis cookbook provides a set of database recipes used by the RightScale \nDatabase Manager ServerTemplates.\n\nThis cookbook does not contain a specific database implementation, rather \nit provides an interface for general database actions and parameters.\n\n\n== DETAILS:\n\n=== General\nThe 'db' interface is defined by a Lightweight Resource, which can be found in\nthe resources/default.rb file.\n\nThis cookbook is intended to be used in conjunction with cookbooks that contain\nLightweight Providers which implement the 'db' interface. See the RightScale \ndb_mysql cookbook for an example.\n\nFor more about Lightweight Resources and Providers (LWRPs), please see the Chef\nwiki at:\n  \n  http://wiki.opscode.com/display/chef/Lightweight+Resources+and+Providers+%28LWRP%29\n  \n=== Backup/Restore\nThis cookbook depends on the block_device LWRP for backup and restore \nactions.  See db::do_backup and db::do_restore recipes for examples.  The \nblock_device cookbook in RightScale's cookbooks_premium repository\nprovides primary and secondary persistence solutions for multiple clouds.\n\nHowever, using LWRPs one can provide their own block_device implementation\ninstead.  \n\nPlease see RightScale's premium block_device cookbook for the list of \navailable actions, attributes and usage.\n\n      \n== REQUIREMENTS:\n\n* Must be used with a 'db' provider in the cookbook path.\n* Depends on a 'block_device' resource for backup and restore recipes. \n\n     \n== SETUP:\n   \n* Place db::default recipe into your runlist to setup the db resource.  When\n  using a RightScale ServerTemplate, this will also automatically add the \n  common database attributes to your ServerTemplate inputs.\n   \n* The default recipe for the cookbook that contains the db provider must also\n  be added to your runlist. For example:\n  \n    db_mysql::default \n    \n  This will load your provider and pull in any database specific attributes \n  as inputs.\n\n== USAGE:\n\n=== Initialize a master database:\n\n1. Once your VMs is operational, run the:\n   \n    \"db::setup_block_device\"\n    \n   recipe. This will initialize your database onto a block device\n   that supports backup and restore operations. \n2. Initialize your database from previous dumpfile or other source.\n3. Register your database with a Dynamic DNS provider using:\n\n    \"sys_dns::do_set_private\"\n   \n   to allow you application servers to start making connections.\n4. Backup your database using:\n\n    \"db:do_backup\"\n    \n   to allow restoring the master database in case of failure or\n   planned termination.\n   \n=== Restore a master database:\n\n1. Once your VMs is operational, run the:\n   \n    \"db::do_restore\"\n    \n   recipe. This will restore your database from a backup previously saved to\n   persistent cloud storage. \n3. Register your database with a Dynamic DNS provider using:\n\n    \"sys_dns::do_set_private\"\n   \n   to allow you application servers to start making connections.\n\n\n== KNOWN LIMITATIONS:\n\n* Currently only one db provider should be present in your cookbook path.\n* The 'appserver_allow' and 'appserver_deny' recipes require VMs managed \n  by the RightScale platform to run.\n  \n   \n== PROVIDERS:\n\nWhen writing your own database Lightweight Provider:\n\n* The database provider to use is defined by node[:db][:provider] attribute, \n  you will need to override this. You can do so by adding: \n   \n    set[:db][:provider] = \"db_myprovider\"\n    \n  in the attributes file of your provider cookbook.\n  \n* Any database specific attributes that you wish to make user configurable \n  should be added to the cookbook metadata with the default recipe included in\n  the attribute's 'recipes' array.  For more about Chef metadata, please see\n  the Chef wiki at:\n  \n    http://wiki.opscode.com/display/chef/Metadata\n   \n* Your provider cookbook metadata should depend on this cookbook by\n  added a 'depends' line to your metadata. For example:\n  \n    depends \"db\"\n    \n\n",
+  "version": "0.2.0",
+  "recommendations": {
+  },
+  "recipes": {
+    "db::do_restore": "Restores the database from the latest backup available in persistent storage of the current cloud.",
+    "db::setup_monitoring": "Install database collectd monitoring support.  This is required for monitoring and alerting for your servers.",
+    "db::request_appserver_allow": "Sends request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true. This should be run on a application server before attempting a database connection.",
+    "db::do_secondary_backup": "Creates a backup of the database to a secondary location.  Current choices are AWS S3 or Rackspace's CloudFiles.",
+    "db::setup_block_device": "Relocates the database data directory onto a block_device that supports snapshot backup and restore. This should be run on a newly operational server before it get placed into production.",
+    "db::default": "Adds the database:active=true tag to your server which identifies it as an database server. This is used by application servers to identify active databases. Also loads the 'db' resource.",
+    "db::do_secondary_restore": "Restores the database from the latest backup available in a secondary location.",
+    "db::do_backup": "Creates a backup of the database using persistent storage in the current cloud.  On Rackspace snapshots are uploaded to CloudFiles.  For all other clouds, volume snapshots (like EBS) are used.",
+    "db::install_server": "Installs and sets up the packages that are required for database servers.",
+    "db::do_appservers_allow": "Allow connections from all application servers in the deployment that are tagged with appserver:active=true. This should be run on a database server to allow application servers to connect.",
+    "db::do_backup_schedule_enable": "Enables db::do_backup to be run periodically.",
+    "db::install_client": "Installs the database client onto the VM so it can connect to a running server.  This should to be setup on all database servers and servers intended to connect to the servers.",
+    "db::do_force_reset": "Reset the DB back to a pristine state. WARNING: this will delete any data in your database!",
+    "db::setup_privileges_admin": "Adds the username and password for 'superuser' privileges.",
+    "db::do_backup_schedule_disable": "Disables db::do_backup from being run periodically.",
+    "db::request_appserver_deny": "Sends request to deny connections from the caller's private IP address to all database servers in the deployment that are tagged with database:active=true.  This should be run on a application server upon decommissioning.",
+    "db::do_appservers_deny": "Deny connections from all application servers in the deployment that are tagged with appserver:active=true.  This can be run on a database server to deny connections from all application servers in the deployment.",
+    "db::setup_privileges_application": "Adds username and password for application privileges."
+  },
+  "groupings": {
+  },
+  "conflicting": {
+  },
+  "replacing": {
+  },
+  "description": "RightScale Database Manager",
+  "providing": {
   }
+}

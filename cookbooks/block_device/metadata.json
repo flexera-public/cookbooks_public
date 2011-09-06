@@ -1,0 +1,29 @@
+{
+    "version": "0.1.0",
+    "groupings": {
+    },
+    "long_description": "= DESCRIPTION:\n\nThe block_device cookbook manages a block_device that not only can be mounted\nbut also has the ability to backup/restore itself to persistent storage of the\ncloud in which it is running. The block_device also has the capability to \nbackup/restore to/from remote clouds such as Rackspace's CloudFiles and \nAmazon's S3.\n\nFor premium account customers, this cookbook will be overridden by the full \nblock_device implementation.  This cookbook is included as a placeholder to \nmeet the block_device dependancy requirement for public RightScale cookbooks \nand ServerTemplates. \n\n",
+    "attributes": {
+    },
+    "recommendations": {
+    },
+    "dependencies": {
+    },
+    "maintainer": "RightScale, Inc.",
+    "suggestions": {
+    },
+    "recipes": {
+    },
+    "maintainer_email": "support@rightscale.com",
+    "conflicting": {
+    },
+    "license": "All rights reserved",
+    "providing": {
+    },
+    "name": "block_device",
+    "replacing": {
+    },
+    "platforms": {
+    },
+    "description": "Installs/Configures block_device"
+  }

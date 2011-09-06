@@ -21,207 +21,119 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-set_unless[:db_mysql][:tunable][:thread_cache_size] = "50"
-set_unless[:db_mysql][:tunable][:max_connections]     = "800" 
-set_unless[:db_mysql][:tunable][:wait_timeout] = "28800"
-set_unless[:db_mysql][:tunable][:net_read_timeout]    = "30" 
-set_unless[:db_mysql][:tunable][:net_write_timeout]   = "30" 
-set_unless[:db_mysql][:tunable][:back_log]            = "128" 
-set_unless[:db_mysql][:tunable][:max_heap_table_size] = "32M" 
-set_unless[:db_mysql][:tunable][:expire_logs_days] = "10"
 
-# These were the hardcoded defaults in my.cnf for all instance sizes. They're a bit inflated for a t1.micro though
-# and are set lower only for t1.micro instances
-set_unless[:db_mysql][:tunable][:innodb_log_file_size]   = "64M"
-set_unless[:db_mysql][:tunable][:innodb_log_buffer_size] = "8M"
+#
+# Adjust values based on a usage factor and create human readable string
+#
+def value_with_units(value, units, usage_factor)
+  raise "Error: value must convert to an integer." unless value.to_i
+  raise "Error: units must be k, m, g" unless units =~ /[KMG]/i
+  factor = usage_factor.to_f
+  raise "Error: usage_factor must be between 1.0 and 0.0. Value used: #{usage_factor}" if factor > 1.0 || factor <= 0.0 
+  (value * factor).to_i.to_s + units
+end
 
-if !attribute?("ec2")
-  set_unless[:db_mysql][:init_timeout] = 1200
-  
-  # using the same settings as a dedicated-m1.small ec2 instance
-  set_unless[:db_mysql][:tunable][:key_buffer] = "128M"
-  set_unless[:db_mysql][:tunable][:table_cache] = "256"
-  set_unless[:db_mysql][:tunable][:sort_buffer_size] = "1M"
-  set_unless[:db_mysql][:tunable][:net_buffer_length] = "8K"     
-  set_unless[:db_mysql][:tunable][:read_buffer_size] = "1M"
-  set_unless[:db_mysql][:tunable][:read_rnd_buffer_size] = "4M"
-  set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size] = "64M"
-  set_unless[:db_mysql][:tunable][:query_cache_size] = "24M"
-  set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size] = "128M"
-  set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = "24M"
-  set_unless[:db_mysql][:tunable][:log_slow_queries] = "log_slow_queries = /var/log/mysqlslow.log"
-  set_unless[:db_mysql][:tunable][:long_query_time] = "long_query_time = 5"
-  set_unless[:db_mysql][:tunable][:isamchk][:key_buffer] = "128M"
-  set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size] = "128M"
-  set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer] = "128M"
-  set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size] = "128M" 
+#
+# Set tuning parameters in the my.cnf file.
+#
+
+# Shared servers get %50 of the resources allocated to a dedicated server.
+set_unless[:db_mysql][:server_usage] = "dedicated"  # or "shared"
+usage = 1 # Dedicated server
+usage = 0.5 if db_mysql[:server_usage] == :shared
+
+# Ohai returns total in KB.  Set GB so X*GB can be used in conditional
+GB=1024*1024
+
+mem = memory[:total].to_i/1024
+Chef::Log.info("Auto-tuning MySQL parameters.  Total memory: #{mem}M")
+one_percent_mem = (mem*0.01).to_i
+one_percent_str=value_with_units(one_percent_mem,"M",usage)
+eighty_percent_mem = (mem*0.80).to_i
+eighty_percent_str=value_with_units(eighty_percent_mem,"M",usage)
+
+#
+# Fixed parameters, common value for all instance sizes
+#
+# These parameters may be to large for verry small instance sizes with < 1gb memory.
+#
+set_unless[:db_mysql][:tunable][:thread_cache_size]                 = 50 * usage
+set_unless[:db_mysql][:tunable][:max_connections]                   = 800 * usage
+set_unless[:db_mysql][:tunable][:wait_timeout]                      = 28800 * usage
+set_unless[:db_mysql][:tunable][:net_read_timeout]                  = 30 * usage
+set_unless[:db_mysql][:tunable][:net_write_timeout]                 = 30 * usage
+set_unless[:db_mysql][:tunable][:back_log]                          = 128 * usage
+set_unless[:db_mysql][:tunable][:max_heap_table_size]               = value_with_units(32,"M",usage)
+set_unless[:db_mysql][:tunable][:expire_logs_days]                  = 10 * usage
+set_unless[:db_mysql][:tunable][:net_buffer_length]                 = value_with_units(16,"K",usage)
+set_unless[:db_mysql][:tunable][:read_buffer_size]                  = value_with_units(1,"M",usage)
+set_unless[:db_mysql][:tunable][:read_rnd_buffer_size]              = value_with_units(4,"M",usage)
+set_unless[:db_mysql][:tunable][:log_slow_queries]                  = "log_slow_queries = /var/log/mysqlslow.log"
+set_unless[:db_mysql][:tunable][:long_query_time]                   = "long_query_time = 5"
+
+#
+# Adjust based on memory range.
+#
+# The memory ranges used are < 1GB, 1GB - 3GB, 3GB - 10GB, 10GB - 25GB, 25GB - 50GB, > 50GB.
+if mem < 1*GB
+  #
+  # Override buffer sizes for really small servers
+  #
+  set_unless[:db_mysql][:tunable][:key_buffer]                      = value_with_units(16,"M",usage)
+  set_unless[:db_mysql][:tunable][:isamchk][:key_buffer]            = value_with_units(20,"M",usage)
+  set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size]      = value_with_units(20,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer]          = value_with_units(20,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size]    = value_with_units(20,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_log_file_size]            = value_with_units(4,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_log_buffer_size]          = value_with_units(16,"M",usage)
 else
-        
-  # Override the init timeout value for EC2 instance types
-  case ec2[:instance_type]
-  when "m1.small"
-     set_unless[:db_mysql][:init_timeout] = "600"     
-  when "c1.medium"
-     set_unless[:db_mysql][:init_timeout] = "1200"
-  when "m1.large"
-     set_unless[:db_mysql][:init_timeout] = "1800"
-  when "c1.xlarge"
-     set_unless[:db_mysql][:init_timeout] = "1800"
-  when "m1.xlarge"
-     set_unless[:db_mysql][:init_timeout] = "1800"
-  else 
-     set_unless[:db_mysql][:init_timeout] = "1200"
-  end
-  
-  # tune the database for dedicated vs. shared and instance type
-  case ec2[:instance_type]
-  # TODO: The settings for t1.micro may be excessively conservative, but we're going to be okay with it for now
-    when "t1.micro"
-      set_unless[:db_mysql][:tunable][:innodb_log_file_size]   = "2M"
-      set_unless[:db_mysql][:tunable][:innodb_log_buffer_size] = "2M"
-     if(db_mysql[:server_usage] == :dedicated)
-      set_unless[:db_mysql][:tunable][:key_buffer] = "48M"
-      set_unless[:db_mysql][:tunable][:table_cache] = "80"
-      set_unless[:db_mysql][:tunable][:sort_buffer_size] = "256K"
-      set_unless[:db_mysql][:tunable][:net_buffer_length] = "2K"
-      set_unless[:db_mysql][:tunable][:read_buffer_size] = "256K"
-      set_unless[:db_mysql][:tunable][:read_rnd_buffer_size] = "1M"
-      set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size] = "24M"
-      set_unless[:db_mysql][:tunable][:query_cache_size] = "8M"
-      set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size] = "485M"
-      set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = "8M"
-      set_unless[:db_mysql][:tunable][:log_slow_queries] = "log_slow_queries = /var/log/mysqlslow.log"
-      set_unless[:db_mysql][:tunable][:long_query_time] = "long_query_time = 5"
-      set_unless[:db_mysql][:tunable][:isamchk][:key_buffer] = "48M"
-      set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size] = "48M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer] = "48M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size] = "48M"
-     else
-      set_unless[:db_mysql][:tunable][:key_buffer] = "24M"
-      set_unless[:db_mysql][:tunable][:table_cache] = "24"
-      set_unless[:db_mysql][:tunable][:sort_buffer_size] = "128K"
-      set_unless[:db_mysql][:tunable][:net_buffer_length] = "2K"
-      set_unless[:db_mysql][:tunable][:read_buffer_size] = "128K"
-      set_unless[:db_mysql][:tunable][:read_rnd_buffer_size] = "256K"
-      set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size] = "2M"
-      set_unless[:db_mysql][:tunable][:query_cache_size] = "1M"
-      set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size] = "5M"
-      set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = "640K"
-      set_unless[:db_mysql][:tunable][:log_slow_queries] = ""
-      set_unless[:db_mysql][:tunable][:long_query_time] = ""
-      set_unless[:db_mysql][:tunable][:isamchk][:key_buffer] = "7M"
-      set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size] = "7M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer] = "7M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size] = "7M"
-      set_unless[:db_mysql][:tunable][:max_connections]     = "100"
-     end
-  when "m1.small", "c1.medium"
-     if (db_mysql[:server_usage] == :dedicated) 
-      set_unless[:db_mysql][:tunable][:key_buffer] = "128M"
-      set_unless[:db_mysql][:tunable][:table_cache] = "256"
-      set_unless[:db_mysql][:tunable][:sort_buffer_size] = "1M"
-      set_unless[:db_mysql][:tunable][:net_buffer_length] = "8K"     
-      set_unless[:db_mysql][:tunable][:read_buffer_size] = "1M"
-      set_unless[:db_mysql][:tunable][:read_rnd_buffer_size] = "4M"
-      set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size] = "64M"
-      set_unless[:db_mysql][:tunable][:query_cache_size] = "24M"
-      set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size] = "1G"
-      set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = "24M"
-      set_unless[:db_mysql][:tunable][:log_slow_queries] = "log_slow_queries = /var/log/mysqlslow.log"
-      set_unless[:db_mysql][:tunable][:long_query_time] = "long_query_time = 5"
-      set_unless[:db_mysql][:tunable][:isamchk][:key_buffer] = "128M"
-      set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size] = "128M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer] = "128M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size] = "128M"
-     else
-      set_unless[:db_mysql][:tunable][:key_buffer] = "64M"
-      set_unless[:db_mysql][:tunable][:table_cache] = "64"
-      set_unless[:db_mysql][:tunable][:sort_buffer_size] = "512K"
-      set_unless[:db_mysql][:tunable][:net_buffer_length] = "8K"     
-      set_unless[:db_mysql][:tunable][:read_buffer_size] = "512K"
-      set_unless[:db_mysql][:tunable][:read_rnd_buffer_size] = "1M"
-      set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size] = "8M"
-      set_unless[:db_mysql][:tunable][:query_cache_size] = "4M"
-      set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size] = "16M"
-      set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = "2M"
-      set_unless[:db_mysql][:tunable][:log_slow_queries] = ""
-      set_unless[:db_mysql][:tunable][:long_query_time] = ""
-      set_unless[:db_mysql][:tunable][:isamchk][:key_buffer] = "20M"
-      set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size] = "20M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer] = "20M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size] = "20M"
-     end
-  when "m1.large", "c1.xlarge"    
-     if (db_mysql[:server_usage] == :dedicated) 
-      set_unless[:db_mysql][:tunable][:key_buffer] = "192M"
-      set_unless[:db_mysql][:tunable][:table_cache] = "512"
-      set_unless[:db_mysql][:tunable][:sort_buffer_size] = "4M"
-      set_unless[:db_mysql][:tunable][:net_buffer_length] = "16K"
-      set_unless[:db_mysql][:tunable][:read_buffer_size] = "1M"
-      set_unless[:db_mysql][:tunable][:read_rnd_buffer_size] = "4M"
-      set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size] = "64M"
-      set_unless[:db_mysql][:tunable][:query_cache_size] = "32M"
-      set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size] = "4500M"
-      set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = "200M"
-      set_unless[:db_mysql][:tunable][:log_slow_queries] = "log_slow_queries = /var/log/mysqlslow.log"
-      set_unless[:db_mysql][:tunable][:long_query_time] = "long_query_time = 5"
-      set_unless[:db_mysql][:tunable][:isamchk][:key_buffer] = "128M"
-      set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size] = "128M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer] = "128M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size] = "128M"
-     else
-      set_unless[:db_mysql][:tunable][:key_buffer] = "128M"
-      set_unless[:db_mysql][:tunable][:table_cache] = "256"
-      set_unless[:db_mysql][:tunable][:sort_buffer_size] = "2M"
-      set_unless[:db_mysql][:tunable][:net_buffer_length] = "8K"
-      set_unless[:db_mysql][:tunable][:read_buffer_size] = "256K"
-      set_unless[:db_mysql][:tunable][:read_rnd_buffer_size] = "512K"
-      set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size] = "8M"
-      set_unless[:db_mysql][:tunable][:query_cache_size] = "24M"
-      set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size] = "2G"
-      set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = "100M"
-      set_unless[:db_mysql][:tunable][:log_slow_queries] = ""
-      set_unless[:db_mysql][:tunable][:long_query_time] = ""
-      set_unless[:db_mysql][:tunable][:isamchk][:key_buffer] = "20M"
-      set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size] = "20M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer] = "20M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size] = "20M"
-     end 
-  when "m1.xlarge"
-     if (db_mysql[:server_usage] == :dedicated) 
-      set_unless[:db_mysql][:tunable][:key_buffer] = "265M"
-      set_unless[:db_mysql][:tunable][:table_cache] = "1024"
-      set_unless[:db_mysql][:tunable][:sort_buffer_size] = "8M"
-      set_unless[:db_mysql][:tunable][:net_buffer_length] = "16K"
-      set_unless[:db_mysql][:tunable][:read_buffer_size] = "1M"
-      set_unless[:db_mysql][:tunable][:read_rnd_buffer_size] = "4M"
-      set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size] = "96M"
-      set_unless[:db_mysql][:tunable][:query_cache_size] = "64M"
-      set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size] = "900M"
-      set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = "200M"
-      set_unless[:db_mysql][:tunable][:log_slow_queries] = "log_slow_queries = /var/log/mysqlslow.log"
-      set_unless[:db_mysql][:tunable][:long_query_time] = "long_query_time = 5"
-      set_unless[:db_mysql][:tunable][:isamchk][:key_buffer] = "128M"
-      set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size] = "128M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer] = "128M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size] = "128M"
-     else
-      set_unless[:db_mysql][:tunable][:key_buffer] = "192M"
-      set_unless[:db_mysql][:tunable][:table_cache] = "512"
-      set_unless[:db_mysql][:tunable][:sort_buffer_size] = "2M"
-      set_unless[:db_mysql][:tunable][:net_buffer_length] = "8K"
-      set_unless[:db_mysql][:tunable][:read_buffer_size] = "512K"
-      set_unless[:db_mysql][:tunable][:read_rnd_buffer_size] = "512K"
-      set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size] = "8M"
-      set_unless[:db_mysql][:tunable][:query_cache_size] = "32M"
-      set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size] = "4G"
-      set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = "100M"
-      set_unless[:db_mysql][:tunable][:log_slow_queries] = ""
-      set_unless[:db_mysql][:tunable][:long_query_time] = ""
-      set_unless[:db_mysql][:tunable][:isamchk][:key_buffer] = "20M"
-      set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size] = "20M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer] = "20M"
-      set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size] = "20M"
-     end
-  end 
-end 
+  set_unless[:db_mysql][:tunable][:key_buffer]                      = value_with_units(128,"M",usage)
+  set_unless[:db_mysql][:tunable][:isamchk][:key_buffer]            = value_with_units(128,"M",usage)
+  set_unless[:db_mysql][:tunable][:isamchk][:sort_buffer_size]      = value_with_units(128,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisamchk][:key_buffer]          = value_with_units(128,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisamchk][:sort_buffer_size]    = value_with_units(128,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_log_file_size]            = value_with_units(64,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_log_buffer_size]          = value_with_units(8,"M",usage)
+end
+
+if mem < 3*GB
+  set_unless[:db_mysql][:tunable][:table_cache]                     = 256 * usage
+  set_unless[:db_mysql][:tunable][:sort_buffer_size]                = value_with_units(2,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(64,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = value_with_units(50,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(96,"M",usage)
+  set_unless[:db_mysql][:init_timeout]                              = 600 * usage
+elsif mem < 10*GB
+  set_unless[:db_mysql][:tunable][:table_cache]                     = 512 * usage
+  set_unless[:db_mysql][:tunable][:sort_buffer_size]                = value_with_units(4,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = value_with_units(200,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(96,"M",usage)
+  set_unless[:db_mysql][:init_timeout]                              = 1200 * usage
+elsif mem < 25*GB
+  set_unless[:db_mysql][:tunable][:table_cache]                     = 1024 * usage
+  set_unless[:db_mysql][:tunable][:sort_buffer_size]                = value_with_units(8,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = value_with_units(300,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(128,"M",usage)
+  set_unless[:db_mysql][:init_timeout]                              = 1800 * usage
+elsif mem < 50*GB
+  set_unless[:db_mysql][:tunable][:table_cache]                     = 2048 * usage
+  set_unless[:db_mysql][:tunable][:sort_buffer_size]                = value_with_units(16,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = value_with_units(400,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(256,"M",usage)
+  set_unless[:db_mysql][:init_timeout]                              = 2400 * usage
+else 
+  set_unless[:db_mysql][:tunable][:table_cache]                     = 4096 * usage
+  set_unless[:db_mysql][:tunable][:sort_buffer_size]                = value_with_units(32,"M",usage)
+  set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = value_with_units(500,"M",usage)
+  set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(512,"M",usage)
+  set_unless[:db_mysql][:init_timeout]                              = 3000 * usage
+end
+
+#
+# Calculate as a percentage of memory
+#
+Chef::Log.info("Setting query_cache_size to: #{one_percent_str}")
+set_unless[:db_mysql][:tunable][:query_cache_size]                  = one_percent_str
+Chef::Log.info("Setting query_cache_size to: #{eighty_percent_str}")
+set_unless[:db_mysql][:tunable][:innodb_buffer_pool_size]           = eighty_percent_str
+

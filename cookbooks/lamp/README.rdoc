@@ -1,0 +1,13 @@
+= RightScale LAMP Cookbook (Beta)
+
+== DESCRIPTION:
+
+== DETAILS:
+
+== REQUIREMENTS:
+
+== SETUP:
+
+== USAGE:
+
+== KNOWN LIMITATIONS:

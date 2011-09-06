@@ -1,0 +1,85 @@
+{
+  "suggestions": {
+  },
+  "attributes": {
+    "sys_dns/user": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "sys_dns::do_set_private"
+      ],
+      "display_name": "DNS User",
+      "description": "The username that's used to access and modify your DNS A Records.   For DNSMadeEasy and DynDNS, enter your username. (Ex: myUsername)  For AwsDNS, enter your AWS Access Key ID.  (Ex: 1JHQQ4KVEVM1JHQQ4KVE)"
+    },
+    "sys_dns/choice": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+        "DNSMadeEasy",
+        "DynDNS",
+        "Route53"
+      ],
+      "type": "string",
+      "recipes": [
+        "sys_dns::do_set_private"
+      ],
+      "display_name": "DNS Service Provider",
+      "description": "The name of your DNS provider.  Select the DNS provider that you're using to manage the DNS A Records of your Master/Slave DB servers.   Ex: DNSMadeEasy, DynDNS, Route53"
+    },
+    "sys_dns/id": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "sys_dns::do_set_private"
+      ],
+      "display_name": "DNS Record ID",
+      "description": "The unique identifier that's associated with the DNS A Record of the Master-DB.  The unique identifier is assigned by the DNS provider when you create a dynamic DNS A Record.   This ID is used to update the associated A Record with the private IP Address of the Master-DB when defining which server is the master database.  If you are using DNSMadeEasy as your DNS provider, a 7-digit number is used.  (Ex: 4403234)"
+    },
+    "sys_dns/password": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "sys_dns::do_set_private"
+      ],
+      "display_name": "DNS Password",
+      "description": "The password that's used to access and modify your DNS A Records.   For DNSMadeEasy and DynDNS, enter your password. (Ex: myPassw0rd)  For AwsDNS, enter your AWS Secret Access Key. (Ex: XVdxPgOM4auGcMlPz61XVdxPgOM4auGcMlPz6)"
+    }
+  },
+  "conflicting": {
+  },
+  "description": "Installs/Configures sys_dns",
+  "dependencies": {
+  },
+  "providing": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "replacing": {
+  },
+  "version": "0.1.0",
+  "maintainer_email": "support@rightscale.com",
+  "name": "sys_dns",
+  "recipes": {
+    "sys_dns::do_set_private": "Sets the dynamic DNS entry to the first private IP of the server.",
+    "sys_dns::default": "Installs Amazon dnscurl.pl utility."
+  },
+  "groupings": {
+  },
+  "long_description": "= DESCRIPTION:\n\nSelect Dynamic DNS provider.\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+  "recommendations": {
+  },
+  "platforms": {
+  },
+  "license": "All rights reserved"
+}

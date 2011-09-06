@@ -21,10 +21,14 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 sys_firewall "Request all appservers open ports to this loadbalancer" do
-  machine_tag "loadbalancer:app=#{@node[:lb_haproxy][:applistener_name]}"
-  port 8000
+  machine_tag "loadbalancer:app=#{node[:lb_haproxy][:applistener_name]}"
+  port node[:app][:port]
   enable true
-  ip_addr @node[:cloud][:private_ips][0]
+  ip_addr node[:cloud][:private_ips][0]
   action :update_request
 end
+
+rs_utils_marker :end

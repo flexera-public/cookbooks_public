@@ -9,8 +9,8 @@
   RailsBaseURI /
   RailsEnv <%= @params[:rails_env] %>
 
-  RailsSpawnMethod <%= @node[:rails][:spawn_method] %>
-  PassengerMaxPoolSize <%= @node[:rails][:max_pool_size] %>
+  RailsSpawnMethod <%= node[:rails][:spawn_method] %>
+  PassengerMaxPoolSize <%= node[:rails][:max_pool_size] %>
 
   <Directory <%= @params[:docroot] %>/public >
     Options FollowSymLinks
@@ -21,7 +21,7 @@
 
   RewriteEngine On
   # Uncomment for rewrite debugging
-  #RewriteLog <%= @node[:apache][:log_dir] %>/http_rewrite_log
+  #RewriteLog <%= node[:apache][:log_dir] %>/http_rewrite_log
   #RewriteLogLevel 9
 
   # Enable status page for monitoring purposes
@@ -36,8 +36,8 @@
   RewriteRule ^.*$ /system/maintenance.html [L]
 
   # Setup the logs in the appropriate directory
-  CustomLog <%= @node[:apache][:log_dir] %>/access.log combined
-  ErrorLog  <%= @node[:apache][:log_dir] %>/error.log
+  CustomLog <%= node[:apache][:log_dir] %>/access.log combined
+  ErrorLog  <%= node[:apache][:log_dir] %>/error.log
 
 #  #Remote logging -- handle by syslog
 #  ErrorLog "|logger -p local3.info -t httperror"

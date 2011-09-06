@@ -1,0 +1,40 @@
+= RightScale System DNS Cookbook
+
+== DESCRIPTION:
+
+This cookbook provides a set of dynamic DNS recipes used by RightScale ServerTemplates
+including Database Manager ServerTemplates.
+
+Cookbook currently supports DNSMadeEasy, DynDns, and Amazon Route53 DNS service providers.
+A new chef provider can be created to add support for additional dynamic DNS service providers.
+
+== DETAILS:
+
+=== General
+The cookbook provides a common interface for updating DNS records for the different DNS 
+service providers.
+
+For additional information:
+  http://support.rightscale.com/03-Tutorials/02-AWS/02-Website_Edition/2._Deployment_Setup/4._Domain_Setup
+
+== REQUIREMENTS:
+* An account with the desired DNS service provider
+* DNS A record's created external to this cookbook.
+
+== SETUP/USAGE:
+
+* Place sys_dns::default recipe into your runlist to setup the dynamic DNS provider resource.
+
+  This will install the support tools and chef providers for the dynamic DNS provider selected
+  by the "DNS Service Provider" input.
+
+  When using a RightScale ServerTemplate, this will automatically add the common DNS sewrvice
+  provider attributes to your ServerTemplate inputs.
+
+* Place sys_dns::do_set_private recipe in your runlist.  This will set the DNS record identified
+  by the "DNS Record ID" ServerTemplate input to the first private IP address of the instance.
+
+== KNOWN LIMITATIONS:
+
+* Currently only the first private IP address can be set.
+

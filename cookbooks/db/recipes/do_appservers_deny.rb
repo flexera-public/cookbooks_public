@@ -21,9 +21,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 sys_firewall "Open this database's ports to all appservers" do
   machine_tag "appserver:active=true"
   port 3306 # mysql only for now
   enable false
   action :update
 end
+
+rs_utils_marker :end

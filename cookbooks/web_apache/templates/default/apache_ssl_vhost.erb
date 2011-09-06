@@ -14,7 +14,7 @@
 
   RewriteEngine On
   # Uncomment for rewrite debugging
-  #RewriteLog <%= @node[:apache][:log_dir] %>/http_rewrite_log
+  #RewriteLog <%= node[:apache][:log_dir] %>/http_rewrite_log
   #RewriteLogLevel 9
 
   # Enable status page for monitoring purposes
@@ -32,8 +32,8 @@
   RewriteRule ^/(.*)$ http://127.0.0.1:85%{REQUEST_URI} [P,QSA,L]
 
   # Setup the logs in the appropriate directory
-  CustomLog <%= @node[:apache][:log_dir] %>/access_log combined
-  ErrorLog  <%= @node[:apache][:log_dir] %>/error_log
+  CustomLog <%= node[:apache][:log_dir] %>/access_log combined
+  ErrorLog  <%= node[:apache][:log_dir] %>/error_log
 
 	# Serve any existing local files directly (except actionable ones)
 	RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} -f

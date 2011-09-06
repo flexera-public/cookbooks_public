@@ -22,6 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
 service "apache2" do
   action :nothing
@@ -32,13 +33,14 @@ apache_site "000-default" do
   enable false
 end
 
-node[:apache][:listen_ports] << "8000" unless node[:apache][:listen_ports].include?("8000")
+node[:apache][:listen_ports] << node[:app][:port] unless node[:apache][:listen_ports].include?(node[:app][:port])
 
 template "#{node[:apache][:dir]}/ports.conf" do
   cookbook "apache2"
   source "ports.conf.erb"
   variables :apache_listen_ports => node[:apache][:listen_ports]
   notifies :restart, resources(:service => "apache2")
+#  notifies :restart, resources(:service => "apache2"), :immediately
 end
 
 # == Configure apache vhost for PHP
@@ -47,8 +49,10 @@ end
 web_app node[:web_apache][:application_name] do
   template "app_server.erb"
   docroot node[:web_apache][:docroot]
-  vhost_port "8000"
+  vhost_port node[:app][:port]
   server_name node[:php][:server_name]
   cookbook "web_apache"
-  notifies :restart, resources(:service => "apache2")
+  notifies :restart, resources(:service => "apache2"), :immediately
 end
+
+rs_utils_marker :end

@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 # Load the mysql plugin in the main config file
 rs_utils_enable_collectd_plugin "mysql"
 #node[:rs_utils][:plugin_list] += " mysql" unless node[:rs_utils][:plugin_list] =~ /mysql/
@@ -51,3 +53,5 @@ template File.join(node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
   source "processes.conf.erb"
   notifies :restart, resources(:service => "collectd")
 end
+
+rs_utils_marker :end

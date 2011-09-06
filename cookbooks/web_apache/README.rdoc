@@ -1,0 +1,13 @@
+= RightScale Web Apache (Beta)
+
+== DESCRIPTION:
+
+== DETIALS:
+
+== REQUIREMENTS:
+
+== SETUP:
+
+== USAGE:
+
+== KNOWN LIMITATIONS:

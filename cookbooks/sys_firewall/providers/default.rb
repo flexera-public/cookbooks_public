@@ -24,10 +24,11 @@ require "timeout"
     
 action :update do
   
-  log "==================== sys_firewall(:update) : Begin ===================="
+  rs_utils_marker :begin
   
   # Set local variables from attributes
   port = new_resource.port ? new_resource.port : new_resource.name
+  raise "ERROR: port must be set" if port == ""
   protocol = new_resource.protocol
   to_enable = new_resource.enable
   ip_addr = new_resource.ip_addr
@@ -86,7 +87,7 @@ action :update do
                 # Grab private_ip of all tagged servers
                 Chef::Log.info "Loop through server collection for servers with #{tag} tag..."
       
-                @node[:server_collection][collection_name].each do |_, tags|              
+                node[:server_collection][collection_name].each do |_, tags|              
                   # Use regex to extract
                   tags.detect { |t| t =~ /^#{ip_tag}=(#{valid_ip_regex})$/ }
                   match = Regexp.last_match
@@ -151,12 +152,14 @@ action :update do
             
   end # else
   
-  log "==================== sys_firewall(:update) : End ===================="
+  rs_utils_marker :end
 
 end # action
 
 action :update_request do
   
+  rs_utils_marker :begin
+
   # Deal with attributes
   port = new_resource.port ? new_resource.port : new_resource.name
   to_enable = new_resource.enable
@@ -174,7 +177,7 @@ action :update_request do
   # Setup attributes
   attrs = {:sys_firewall => {:rule => Hash.new}}
   attrs[:sys_firewall][:rule][:port] = port
-  attrs[:sys_firewall][:rule][:enable] = to_enable.to_s # recipe expects a string
+  attrs[:sys_firewall][:rule][:enable] = (to_enable == true) ? "enable" : "disable"
   attrs[:sys_firewall][:rule][:ip_address] = ip_addr
   
   # Use RightNet to update firewall rules on all tagged servers
@@ -183,6 +186,8 @@ action :update_request do
     recipients_tags tag
     attributes attrs
   end 
+
+  rs_utils_marker :end
   
 end
 

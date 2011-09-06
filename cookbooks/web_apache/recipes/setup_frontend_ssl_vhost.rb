@@ -47,15 +47,15 @@ end
 # TODO:
 # ubuntu module install
 
-ssl_dir =  "/etc/#{@node[:apache][:config_subdir]}/rightscale.d/key"
+ssl_dir =  "/etc/#{node[:apache][:config_subdir]}/rightscale.d/key"
 
 directory ssl_dir do
   mode "0700"
   recursive true
 end
 
-ssl_certificate_file = ::File.join(ssl_dir, "#{node[:php][:server_name]}.crt")
-ssl_key_file = ::File.join(ssl_dir, "#{node[:php][:server_name]}.key")
+ssl_certificate_file = ::File.join(ssl_dir, "#{node[:web_apache][:server_name]}.crt")
+ssl_key_file = ::File.join(ssl_dir, "#{node[:web_apache][:server_name]}.key")
 
 template ssl_certificate_file do
   mode "0400"
@@ -95,6 +95,7 @@ template "#{node[:apache][:dir]}/ports.conf" do
   source "ports.conf.erb"
   variables :apache_listen_ports => node[:apache][:listen_ports]
   notifies :restart, resources(:service => "apache2")
+#  notifies :restart, resources(:service => "apache2"), :immediately
 end
 
 # == Configure apache ssl vhost for PHP
@@ -109,6 +110,7 @@ web_app "#{node[:web_apache][:application_name]}.frontend.https" do
   ssl_certificate_file ssl_certificate_file
   ssl_key_file ssl_key_file
   notifies :restart, resources(:service => "apache2")
+#  notifies :restart, resources(:service => "apache2"), :immediately
 end
 
 # == Configure apache non-ssl vhost for PHP
@@ -118,5 +120,5 @@ web_app "#{node[:web_apache][:application_name]}.frontend.http" do
   docroot node[:web_apache][:docroot]
   vhost_port http_port
   server_name node[:web_apache][:server_name]
-  notifies :restart, resources(:service => "apache2")
+  notifies :restart, resources(:service => "apache2"), :immediately
 end
