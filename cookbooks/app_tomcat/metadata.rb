@@ -12,8 +12,8 @@ depends "rs_utils"
 
 recipe  "app_tomcat::default", "Installs the tomcat application server."
 recipe  "app_tomcat::do_update_code", "Update application source files from the remote repository."
-recipe  "app_tomcat::setup_db_connection", "Setup MySQL database db.tomcat connection file."
-recipe  "app_tomcat::setup_tomcat_application_vhost", "Setup application vhost on port 8000"
+recipe  "app_tomcat::setup_db_connection", "Set up the MySQL database db.tomcat connection file."
+recipe  "app_tomcat::setup_tomcat_application_vhost", "Set up the application vhost on port 8000."
 
 attribute "tomcat",
   :display_name => "Tomcat Application Settings",
@@ -45,7 +45,7 @@ attribute "tomcat/code/credentials",
 
 attribute "tomcat/code/branch",
   :display_name => "Repository Branch",
-  :description => "The name of the branch within the git repository where the application code should be pulled from.",
+  :description => "The name of the branch within the git repository where the application code should be pulled from. Ex: mybranch",
   :required => "optional",
   :default => "master",
   :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
