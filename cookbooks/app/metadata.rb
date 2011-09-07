@@ -8,12 +8,12 @@ version          "0.1"
 depends "sys_firewall"
 depends "rs_utils"
 
-recipe "app::default", "Adds the appserver:active=true tag to your server which identifies it as an application server. This tag is used by database servers, for example, for opening firewall ports."
+recipe "app::default", "Adds the appserver:active=true tag to your server which identifies it as an application server. For example, database servers will update its firewall port permissions to accept incoming requests from application servers with this tag."
 
-recipe "app::do_loadbalancers_allow", "Allow connections from all load balancers within a given listener pool which are tagged with loadbalancer:lb=<applistener_name>.  This should be run on an application server before requesting connection to load balancers."
+recipe "app::do_loadbalancers_allow", "Allows connections from all load balancers within a given listener pool which are tagged with loadbalancer:lb=<applistener_name>. This script should be run on an application server before it makes a request to be connected to the load balancers."
 
-recipe "app::do_loadbalancers_deny", "Deny connections from all load balancers which are tagged with loadbalancer:lb=<applistener_name>. This can be run on an application server to deny connections from all load balancers within a given listener pool."
+recipe "app::do_loadbalancers_deny", "Denies connections from all load balancers which are tagged with loadbalancer:lb=<applistener_name>. For example, you can run this script on an application server to deny connections from all load balancers within a given listener pool."
 
-recipe "app::request_loadbalancer_allow", "Sends request to all application servers tagged with loadbalancer:app=<applistener_name> to allow connections from the caller's private IP address. This should be run on a load balancer before attaching application servers."
+recipe "app::request_loadbalancer_allow", "Sends request to all application servers tagged with loadbalancer:app=<applistener_name> to allow connections from the server's private IP address. This script should be run on a load balancer before any application servers are attached to it."
 
-recipe "app::request_loadbalancer_deny", "Sends request to all application servers tagged with loadbalancer:app=<applistener_name> to deny connections from the caller's private IP address.  This should be run on a load balancer after disconnecting application servers or upon decommissioning."
+recipe "app::request_loadbalancer_deny", "Sends request to all application servers tagged with loadbalancer:app=<applistener_name> to deny connections from the server's private IP address. This script should be run on a load balancer after disconnecting application servers or upon decommissioning."
