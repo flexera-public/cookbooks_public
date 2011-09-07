@@ -14,10 +14,10 @@ depends "db_mysql"
 depends "rs_utils"
  
 recipe  "app_rails::default", "Runs app_rails::install_rails."
-recipe  "app_rails::do_db_restore", "Restore the application database schema from a remote location."
-recipe  "app_rails::do_update_code", "Update application source files from the remote repository."
-recipe  "app_rails::install_rails", "Installs the rails application server."
-recipe  "app_rails::setup_db_config", "Configures the rails database.yml file."
+recipe  "app_rails::do_db_restore", "Restores the application database schema from a remote location."
+recipe  "app_rails::do_update_code", "Updates the application source files from the remote repository."
+recipe  "app_rails::install_rails", "Installs the Rails application server."
+recipe  "app_rails::setup_db_config", "Configures the Rails database.yml file."
 
 attribute "rails",
   :display_name => "Rails Passenger Settings",
@@ -27,13 +27,13 @@ attribute "rails",
 # Rails Database configuration vars  
 attribute "rails/db_app_user",
   :display_name => "Database User",
-  :description => "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Username'.  The application server will then have unrestricted access to the database.",
+  :description => "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that is used for the 'Database Admin Username' input.  The application server will then have unrestricted access to the database.",
   :required => false,
   :recipes => ["app_rails::do_db_restore", "app_rails::install_rails", "app_rails::default"]
 
 attribute "rails/db_app_passwd",
   :display_name => "Database Password",
-  :description => "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Password'.  The application server will then have unrestricted access to the database.",
+  :description => "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for the 'Database Admin Password' input.  The application server will then have unrestricted access to the database.",
   :required => false,
   :recipes => ["app_rails::do_db_restore", "app_rails::install_rails", "app_rails::default"]
 
@@ -99,7 +99,7 @@ attribute "rails/code/branch",
   
 attribute "rails/application_port",
   :display_name => "Application Port",
-  :description => "This input is normally set to 8000 if this server is a combined HAProxy and application server. If this is an application server (w/o HAproxy), set it to 80.  When setting this in a deployment, you should use 80 at the deployment level since you want all of your servers in the array to use this value.  If the server is a FE+APP server, you can set it to 8000 at the server level so that it overrides the deployment level input.",
+  :description => "This input is normally set to 8000 if this server is a combined HAProxy and application server. If this is a dedicated application server (w/o HAProxy), set it to 80.  When setting this input in a deployment, you should use 80 at the deployment level since you want all of your servers in the array to use this value.  If the server is a FE+APP server, you can set it to 8000 at the server level so that it overrides the deployment level input.",
   :default => "8000",
   :recipes => [ "app_rails::install_rails", "app_rails::default" ]
 
@@ -111,19 +111,19 @@ attribute "rails/spawn_method",
 
 attribute "rails/max_pool_size",
   :display_name => "Rails Max Pool Size",
-  :description => "Specify the MaxPoolSize in the Apache vhost",
+  :description => "Specify the MaxPoolSize in the Apache vhost.",
   :default => "4",
   :recipes => [ "app_rails::install_rails", "app_rails::default" ]
 
 attribute "rails/version",
   :display_name => "Rails Version",
-  :description => "Specify the version of Rails to install",
+  :description => "Specify the version of Rails to install.",
   :default => "false",
   :recipes => [ "app_rails::install_rails", "app_rails::default" ]
 
 attribute "rails/environment",
   :display_name => "Rails Environment",
-  :description => "Specify the environment to use for Rails",
+  :description => "Specify the environment to use for Rails.",
   :default => "production",
   :recipes => [ "app_rails::install_rails", "app_rails::default" ]
 
