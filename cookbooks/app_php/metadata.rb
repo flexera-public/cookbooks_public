@@ -12,9 +12,9 @@ depends "repo_git"
 depends "rs_utils"
  
 recipe  "app_php::default", "Installs the php application server."
-recipe  "app_php::do_update_code", "Update application source files from the remote repository."
-recipe  "app_php::setup_db_connection", "Setup MySQL database db.php connection file."
-recipe  "app_php::setup_php_application_vhost", "Setup application vhost on port 8000"
+recipe  "app_php::do_update_code", "Updates application source files from the remote repository."
+recipe  "app_php::setup_db_connection", "Set up the MySQL database db.php connection file."
+recipe  "app_php::setup_php_application_vhost", "Set up the application vhost on port 8000."
 
 attribute "php",
   :display_name => "PHP Application Settings",
@@ -30,7 +30,7 @@ attribute "php/server_name",
 
 attribute "php/modules_list",
   :display_name => "PHP module packages",
-  :description => "An optional list of php module packages to install.  Accepts an array of package names (IE: php53u-mysql,php53u-pecl-memcache).  When using CentOS package names are prefixed with php53u instead of php.  To see a list of available php modules on CentOS run 'yum search php53u' on the server.",
+  :description => "An optional list of php module packages to install.  Accepts an array of package names (IE: php53u-mysql,php53u-pecl-memcache).  When using CentOS, package names are prefixed with php53u instead of php.  To see a list of available php modules on CentOS, run 'yum search php53u' on the server.",
   :type => "array",
   :default => [ "php53u-pear" ],
   :recipes => [  "app_php::default" ] 
