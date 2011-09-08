@@ -11,7 +11,7 @@ depends "rs_utils"
 
 recipe "sys_firewall::default", "Use in conjunction with the 'Firewall' input to enable or disable iptables."
 recipe "sys_firewall::setup_rule", "Use for enabling/disabling specific firewall ports."
-recipe "sys_firewall::do_list_rules", "List the firewall rules"
+recipe "sys_firewall::do_list_rules", "List the firewall rules."
 
 attribute "sys_firewall/enabled",  
   :display_name => "Firewall",  
@@ -43,7 +43,7 @@ attribute "sys_firewall/rule/protocol",
 
 attribute "sys_firewall/rule/ip_address",  
   :display_name => "Firewall Rule IP Address",  
-  :description => "Address can be either a network name, a network IP address (with /mask), or a plain IP address.  The mask can be either a network mask or a plain number, specifying the number of 1's at the left side of the network mask.  Thus, a mask of 24 is equivalent to 255.255.255.0.  A '!' argument before the address specification inverts the sense of the address.  A value of 'any' allows any IP address (default)",
+  :description => "Address can either be a network name, a network IP address (with /mask), or a plain IP address.  The mask can either be a network mask or a plain number specifying the number of 1's at the left side of the network mask.  Thus, a mask of 24 is equivalent to 255.255.255.0.  A '!' argument before the address specification inverts the sense of the address.  A value of 'any' allows any IP address (default).",
   :required => "optional",
   :default => "any",
   :recipes => [ "sys_firewall::setup_rule" ]

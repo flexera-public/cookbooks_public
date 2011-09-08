@@ -37,7 +37,7 @@ attribute "php/modules_list",
 
 attribute "php/db_schema_name",
   :display_name => "Database Schema Name",
-  :description => "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
+  :description => "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema will be backed up.  Ex: mydbschema",
   :required => false,
   :recipes => [ "app_php::setup_db_connection"  ]
 
@@ -60,6 +60,6 @@ attribute "php/code/credentials",
 
 attribute "php/code/branch",
   :display_name => "Repository Branch",
-  :description => "The name of the branch/tag/SHA within the git repository where the application code should be pulled from.",
+  :description => "The name of the branch/tag/SHA within the git repository where the application code should be pulled from. Ex: mybranch",
   :required => true,
   :recipes => [ "app_php::do_update_code", "app_php::do_db_restore",  "app_php::default" ]

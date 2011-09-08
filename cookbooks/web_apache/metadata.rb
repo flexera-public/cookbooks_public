@@ -5,10 +5,10 @@ description      "Installs/configures the apache2 webserver"
 version          "0.0.1"
 
 recipe "web_apache::default", "Runs web_apache::install_apache."
-recipe "web_apache::install_apache", "Install and configure Apache2 webserver."
+recipe "web_apache::install_apache", "Installs and configures the Apache2 webserver."
 recipe "web_apache::setup_frontend", "Frontend apache vhost.  Select ssl_enabled for SSL."
-recipe "web_apache::setup_frontend_ssl_vhost", "Frontend apache vhost with SSL enabled"
-recipe "web_apache::setup_frontend_http_vhost", "Frontend apache vhost with SSL enabled"
+recipe "web_apache::setup_frontend_ssl_vhost", "Frontend apache vhost with SSL enabled."
+recipe "web_apache::setup_frontend_http_vhost", "Frontend apache vhost with SSL enabled."
 recipe "web_apache::setup_monitoring", "Install collectd-apache for monitoring support"
 
 all_recipes = [ "web_apache::default",  "web_apache::install_apache", "web_apache::setup_frontend_ssl_vhost", "web_apache::setup_frontend_http_vhost", "web_apache::setup_frontend"]
@@ -23,14 +23,14 @@ attribute "web_apache",
   
 attribute "web_apache/mpm",
   :display_name => "Multi-Processing Module",
-  :description => "Can be set to 'worker' or 'prefork' and defines the setting in httpd.conf.  Use 'worker' for Rails/Tomcat/Standalone frontends and 'prefork' for PHP.",
+  :description => "Defines the multi-processing module setting in httpd.conf.  Use 'worker' for Rails/Tomcat/Standalone frontends and 'prefork' for PHP.",
   :recipes => all_recipes,
   :choice => [ "prefork", "worker" ],
   :default =>  "prefork"
 
 attribute "web_apache/ssl_enable",
   :display_name => "SSL Enable",
-  :description => "Enable SSL",
+  :description => "Enables SSL ('https')",
   :recipes => [
                 "web_apache::install_apache",
                 "web_apache::setup_frontend"
