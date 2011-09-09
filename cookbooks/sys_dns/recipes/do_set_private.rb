@@ -21,6 +21,7 @@
 # LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+rs_utils_maker :begin
 
 sys_dns "Setting Host" do
   provider "sys_dns_#{node[:sys_dns][:choice]}"
@@ -32,3 +33,4 @@ sys_dns "Setting Host" do
 
   action :set_private
 end
+rs_utils_maker :end

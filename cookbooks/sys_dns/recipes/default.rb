@@ -23,7 +23,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-log "==================== sys_dns(default) BEGIN ===================="
+rs_utils_marker :begin
 
 package 'perl-Digest-SHA1'
 package 'perl-Digest-HMAC'
@@ -43,4 +43,4 @@ remote_file "/opt/rightscale/dns/dnscurl.pl" do
   backup false
 end
 
-log "==================== sys_dns(default)   END ===================="
+rs_utils_marker :end
