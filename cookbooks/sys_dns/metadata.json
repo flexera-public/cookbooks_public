@@ -1,8 +1,6 @@
 {
-  "dependencies": {
+  "suggestions": {
   },
-  "name": "sys_dns",
-  "maintainer_email": "support@rightscale.com",
   "attributes": {
     "sys_dns/user": {
       "required": "required",
@@ -12,10 +10,11 @@
       ],
       "type": "string",
       "recipes": [
-        "sys_dns::do_set_private"
+        "sys_dns::do_set_private",
+        "sys_dns::default"
       ],
-      "description": "The username that is used to access and modify your DNS A Records. For DNSMadeEasy and DynDNS, enter your username. (Ex: myUsername)  For AwsDNS, enter your AWS Access Key ID.  (Ex: 1JHQQ4KVEVM1JHQQ4KVE)",
-      "display_name": "DNS User"
+      "display_name": "DNS User",
+      "description": "The username that is used to access and modify your DNS A Records. For DNSMadeEasy and DynDNS, enter your username. (Ex: myUsername)  For AwsDNS, enter your AWS Access Key ID.  (Ex: 1JHQQ4KVEVM1JHQQ4KVE)"
     },
     "sys_dns/choice": {
       "required": "required",
@@ -27,10 +26,11 @@
       ],
       "type": "string",
       "recipes": [
-        "sys_dns::do_set_private"
+        "sys_dns::do_set_private",
+        "sys_dns::default"
       ],
-      "description": "The name of your DNS provider.  Select the DNS provider that you're using to manage the DNS A Records of your Master/Slave DB servers.   Ex: DNSMadeEasy, DynDNS, Route53",
-      "display_name": "DNS Service Provider"
+      "display_name": "DNS Service Provider",
+      "description": "The name of your DNS provider.  Select the DNS provider that you're using to manage the DNS A Records of your Master/Slave DB servers.   Ex: DNSMadeEasy, DynDNS, Route53"
     },
     "sys_dns/id": {
       "required": "required",
@@ -40,10 +40,11 @@
       ],
       "type": "string",
       "recipes": [
-        "sys_dns::do_set_private"
+        "sys_dns::do_set_private",
+        "sys_dns::default"
       ],
-      "description": "The unique identifier that is associated with the DNS A Record of the Master-DB.  The unique identifier is assigned by the DNS provider when you create a dynamic DNS A Record.   This ID is used to update the associated A Record with the private IP Address of the Master-DB when defining which server is the master database.  If you are using DNSMadeEasy as your DNS provider, a 7-digit number is used.  (Ex: 4403234)",
-      "display_name": "DNS Record ID"
+      "display_name": "DNS Record ID",
+      "description": "The unique identifier that is associated with the DNS A Record of the Master-DB.  The unique identifier is assigned by the DNS provider when you create a dynamic DNS A Record.   This ID is used to update the associated A Record with the private IP Address of the Master-DB when defining which server is the master database.  If you are using DNSMadeEasy as your DNS provider, a 7-digit number is used.  (Ex: 4403234)"
     },
     "sys_dns/password": {
       "required": "required",
@@ -53,33 +54,36 @@
       ],
       "type": "string",
       "recipes": [
-        "sys_dns::do_set_private"
+        "sys_dns::do_set_private",
+        "sys_dns::default"
       ],
-      "description": "The password that is used to access and modify your DNS A Records. For DNSMadeEasy and DynDNS, enter your password. (Ex: myPassw0rd)  For AwsDNS, enter your AWS Secret Access Key. (Ex: XVdxPgOM4auGcMlPz61XVdxPgOM4auGcMlPz6)",
-      "display_name": "DNS Password"
+      "display_name": "DNS Password",
+      "description": "The password that is used to access and modify your DNS A Records. For DNSMadeEasy and DynDNS, enter your password. (Ex: myPassw0rd)  For AwsDNS, enter your AWS Secret Access Key. (Ex: XVdxPgOM4auGcMlPz61XVdxPgOM4auGcMlPz6)"
     }
   },
-  "license": "All rights reserved",
-  "suggestions": {
+  "conflicting": {
   },
-  "platforms": {
+  "description": "Installs/Configures sys_dns",
+  "dependencies": {
+  },
+  "providing": {
   },
   "maintainer": "RightScale, Inc.",
-  "long_description": "= RightScale System DNS Cookbook\n\n== DESCRIPTION:\n\nThis cookbook provides a set of dynamic DNS recipes used by RightScale ServerTemplates\nincluding Database Manager ServerTemplates.\n\nCookbook currently supports DNSMadeEasy, DynDns, and Amazon Route53 DNS service providers.\nA new chef provider can be created to add support for additional dynamic DNS service providers.\n\n== DETAILS:\n\n=== General\nThe cookbook provides a common interface for updating DNS records for the different DNS \nservice providers.\n\nFor additional information:\n  http://support.rightscale.com/03-Tutorials/02-AWS/02-Website_Edition/2._Deployment_Setup/4._Domain_Setup\n\n== REQUIREMENTS:\n* An account with the desired DNS service provider\n* DNS A record's created external to this cookbook.\n\n== SETUP/USAGE:\n\n* Place sys_dns::default recipe into your runlist to setup the dynamic DNS provider resource.\n\n  This will install the support tools and chef providers for the dynamic DNS provider selected\n  by the \"DNS Service Provider\" input.\n\n  When using a RightScale ServerTemplate, this will automatically add the common DNS sewrvice\n  provider attributes to your ServerTemplate inputs.\n\n* Place sys_dns::do_set_private recipe in your runlist.  This will set the DNS record identified\n  by the \"DNS Record ID\" ServerTemplate input to the first private IP address of the instance.\n\n== KNOWN LIMITATIONS:\n\n* Currently only the first private IP address can be set.\n\n",
-  "version": "0.1.0",
-  "recommendations": {
+  "replacing": {
   },
+  "version": "0.1.0",
+  "maintainer_email": "support@rightscale.com",
+  "name": "sys_dns",
   "recipes": {
     "sys_dns::do_set_private": "Sets the dynamic DNS entry to the first private IP of the server.",
     "sys_dns::default": "Installs Amazon's dnscurl.pl utility."
   },
   "groupings": {
   },
-  "conflicting": {
+  "long_description": "= RightScale System DNS Cookbook\n\n== DESCRIPTION:\n\nThis cookbook provides a set of dynamic DNS recipes used by RightScale ServerTemplates\nincluding Database Manager ServerTemplates.\n\nCookbook currently supports DNSMadeEasy, DynDns, and Amazon Route53 DNS service providers.\nA new chef provider can be created to add support for additional dynamic DNS service providers.\n\n== DETAILS:\n\n=== General\nThe cookbook provides a common interface for updating DNS records for the different DNS \nservice providers.\n\nFor additional information:\n  http://support.rightscale.com/03-Tutorials/02-AWS/02-Website_Edition/2._Deployment_Setup/4._Domain_Setup\n\n== REQUIREMENTS:\n* An account with the desired DNS service provider\n* DNS A record's created external to this cookbook.\n\n== SETUP/USAGE:\n\n* Place sys_dns::default recipe into your runlist to setup the dynamic DNS provider resource.\n\n  This will install the support tools and chef providers for the dynamic DNS provider selected\n  by the \"DNS Service Provider\" input.\n\n  When using a RightScale ServerTemplate, this will automatically add the common DNS sewrvice\n  provider attributes to your ServerTemplate inputs.\n\n* Place sys_dns::do_set_private recipe in your runlist.  This will set the DNS record identified\n  by the \"DNS Record ID\" ServerTemplate input to the first private IP address of the instance.\n\n== KNOWN LIMITATIONS:\n\n* Currently only the first private IP address can be set.\n\n",
+  "recommendations": {
   },
-  "replacing": {
+  "platforms": {
   },
-  "description": "Installs/Configures sys_dns",
-  "providing": {
-  }
+  "license": "All rights reserved"
 }
