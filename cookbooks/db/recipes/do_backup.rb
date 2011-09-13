@@ -27,7 +27,7 @@ DATA_DIR = node[:db][:data_dir]
 
 log "  Performing pre-backup check, then lock DB..."
 db DATA_DIR do
-  action [ :pre_backup_check, :lock ]
+  action [ :pre_backup_check, :lock, :write_backup_info ]
 end
 
 log "  Performing Snapshot..."

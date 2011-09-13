@@ -57,6 +57,11 @@ action :reset do
   @db.reset
 end
 
+action :write_backup_info do
+  @db = init(new_resource)
+  @db.write_backup_info
+end
+
 action :pre_restore_check do
   @db = init(new_resource)
   @db.pre_restore_sanity_check

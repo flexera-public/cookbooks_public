@@ -136,6 +136,10 @@ add_action :pre_backup_check
 # any temporary files created from the :pre_backup_check action. 
 #
 add_action :post_backup_cleanup
+
+# == Write Backup Info
+# TODO
+add_action :write_backup_info
  
 # == Pre-restore Check
 # Verify the database is in a good state before preforming a restore.
