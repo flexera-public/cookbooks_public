@@ -41,4 +41,4 @@ db DATA_DIR do
 	action [ :reset, :start ]
 end
 
-rs_utils_marker :begin
+rs_utils_marker :end
