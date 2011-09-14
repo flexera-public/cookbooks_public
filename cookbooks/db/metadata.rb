@@ -93,6 +93,7 @@ attribute "db/backup/lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular database.",
   :required => true,
   :recipes => [
+    "db::default",
     "db::do_backup",
     "db::do_restore",
     "db::do_backup_schedule_enable",
@@ -100,11 +101,7 @@ attribute "db/backup/lineage",
     "db::setup_block_device",
     "db::do_force_reset",
     "db::do_secondary_backup",
-    "db::do_secondary_restore",
-    "db_mysql::do_init_slave",
-    "db_mysql::do_restore_and_become_master",
-    "db_mysql::setup_slave_backup",
-    "db_mysql::setup_master_backup"
+    "db::do_secondary_restore"
   ]
   
 attribute "db/backup/timestamp_override",
