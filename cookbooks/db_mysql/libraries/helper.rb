@@ -85,7 +85,7 @@ module RightScale
 	  end
 	end
 
-        def self.reconfigure_replication(hostname = 'localhost', newmaster_host = nil, newmaster_logfile=nil, newmaster_position=nil)
+        def self.reconfigure_replication(node, hostname = 'localhost', newmaster_host = nil, newmaster_logfile=nil, newmaster_position=nil)
           master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
           newmaster_host = master_info['Master_IP']
           newmaster_logfile = master_info['File']

@@ -438,7 +438,7 @@ action :promote do
       RightScale::Database::MySQL::Helper.do_query(node, 'UNLOCK TABLES', node[:db][:oldmaster_host])
       SystemTimer.timeout_after(RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT) do
 	#demote oldmaster
-	RightScale::Database::MySQL::Helper.reconfigure_replication(node[:db][:oldmaster_host], node[:ipaddress], newmaster_file, newmaster_position)
+	RightScale::Database::MySQL::Helper.reconfigure_replication(node, node[:db][:oldmaster_host], node[:ipaddress], newmaster_file, newmaster_position)
       end
     end
   rescue Timeout::Error => e
