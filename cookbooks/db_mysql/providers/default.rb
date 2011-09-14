@@ -39,7 +39,7 @@ end
 
 action :lock do
   @db = init(new_resource)
-  @db.unlock
+  @db.lock
 end
 
 action :unlock do
