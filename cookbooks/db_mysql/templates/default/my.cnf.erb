@@ -164,8 +164,8 @@ log-bin=<%=node[:db_mysql][:log_bin] %>
 # This is essential under systems using upstart, as the hostname may not be 
 # consistently set during daemon start.
 #
-relay-log-index=/mnt/mysql/<%= node[:hostname] %>-relay-log.index
-relay-log=/mnt/mysql/<%= node[:hostname] %>-relay-bin
+relay-log-index=<%= node[:db][:data_dir] %>/<%= node[:hostname] %>-relay-log.index
+relay-log=<%= node[:db][:data_dir] %>/<%= node[:hostname] %>-relay-bin
 
 #
 # * Security Features
