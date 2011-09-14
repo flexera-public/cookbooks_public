@@ -197,6 +197,14 @@ add_action :install_server
 #
 add_action :setup_monitoring
 
+# == Promote
+# TODO
+add_action :promote
+
+# == Grant Replication Slave
+# TODO
+add_action :grant_replication_slave
+
 
 actions @action_list
 

@@ -27,6 +27,7 @@ module RightScale
 	require 'yaml'
 
 	SNAPSHOT_POSITION_FILENAME = 'rs_snapshot_position.yaml'
+	DEFAULT_CRITICAL_TIMEOUT = 7
 
         def init(new_resource)
           begin
@@ -83,6 +84,46 @@ module RightScale
 	    end
 	  end
 	end
+
+        def self.reconfigure_replication(hostname = 'localhost', newmaster_host = nil, newmaster_logfile=nil, newmaster_position=nil)
+          master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
+          newmaster_host = master_info['Master_IP']
+          newmaster_logfile = master_info['File']
+          newmaster_position = master_info['Position']
+          Chef::Log.info "Configuring with #{newmaster_host} logfile #{newmaster_logfile} position #{newmaster_position}"
+
+          # legacy did this twice, looks like slave stop can fail once (only throws warning if slave is already stopped)
+          RightScale::Database::MySQL::Helper.do_query(node, "STOP SLAVE", hostname)
+          RightScale::Database::MySQL::Helper.do_query(node, "STOP SLAVE", hostname)
+
+          cmd = "CHANGE MASTER TO MASTER_HOST='#{newmaster_host}'"
+          cmd = cmd +          ", MASTER_USER='#{node[:db_mysql][:replication][:user]}'"
+          cmd = cmd +          ", MASTER_PASSWORD='#{node[:db_mysql][:replication][:password]}'"
+          cmd = cmd +          ", MASTER_LOG_FILE='#{newmaster_logfile}'"
+          cmd = cmd +          ", MASTER_LOG_POS=#{newmaster_position}"
+          Chef::Log.info "Reconfiguring replication on localhost: \n#{cmd}"
+          RightScale::Database::MySQL::Helper.do_query(node, cmd, hostname)
+
+          RightScale::Database::MySQL::Helper.do_query(node, "START SLAVE", hostname)
+          started=false
+          10.times do
+            row = RightScale::Database::MySQL::Helper.do_query(node, "SHOW SLAVE STATUS", hostname)
+            slave_IO = row["Slave_IO_Running"].strip.downcase
+            slave_SQL = row["Slave_SQL_Running"].strip.downcase
+            if( slave_IO == "yes" and slave_SQL == "yes" ) then
+              started=true
+              break
+            else
+              Chef::Log.info "threads at new slave not started yet...waiting a bit more..."
+              sleep 2
+            end
+          end
+          if( started )
+            Chef::Log.info "Slave threads on the master are up and running."
+          else
+            Chef::Log.info "Error: slave threads in the master do not seem to be up and running..."
+          end
+        end
       end
     end
   end
