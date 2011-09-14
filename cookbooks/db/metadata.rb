@@ -92,7 +92,20 @@ attribute "db/backup/lineage",
   :display_name => "Backup Lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular database.",
   :required => true,
-  :recipes => [ "db::do_backup", "db::do_restore", "db::do_backup_schedule_enable", "db::do_backup_schedule_disable", "db::setup_block_device", "db::do_force_reset", "db::do_secondary_backup", "db::do_secondary_restore" ]
+  :recipes => [
+    "db::do_backup",
+    "db::do_restore",
+    "db::do_backup_schedule_enable",
+    "db::do_backup_schedule_disable",
+    "db::setup_block_device",
+    "db::do_force_reset",
+    "db::do_secondary_backup",
+    "db::do_secondary_restore",
+    "db_mysql::do_init_slave",
+    "db_mysql::do_restore_and_become_master",
+    "db_mysql::setup_slave_backup",
+    "db_mysql::setup_master_backup"
+  ]
   
 attribute "db/backup/timestamp_override",
   :display_name => "Restore Timestamp Override", 

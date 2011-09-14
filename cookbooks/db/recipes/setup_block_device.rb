@@ -25,6 +25,10 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
+#TODO add in checks if block device exists and bail out.
+#Current implementation leaves server in a bad state after
+#trying to re-setup the blockdevice
+#
 log "  Stopping database..."
 db DATA_DIR do
   action :stop

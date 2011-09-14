@@ -7,6 +7,10 @@ db DATA_DIR do
   action :pre_restore_check
 end
 
+log "======== LINEAGE ========="
+log node[:db][:backup][:lineage]
+log "======== LINEAGE ========="
+
 # ROS restore requires a setup, but VOLUME restore does not.
 # Only Rackpspace uses ROS backups
 if node[:cloud][:provider] == "rackspace"
