@@ -30,6 +30,7 @@ set_unless[:db_mysql][:server_id] = Time.now.to_i
 # Recommended attributes
 #
 set_unless[:db_mysql][:server_usage] = "dedicated"  # or "shared"
+set_unless[:db_mysql][:previous_master] = nil
 
 
 # Optional attributes
