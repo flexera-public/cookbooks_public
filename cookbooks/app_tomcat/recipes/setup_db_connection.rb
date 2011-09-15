@@ -52,6 +52,7 @@ template "/usr/share/tomcat6/webapps/ROOT/dbread.jsp" do
   owner "root"
   group "root"
   mode "0644"
+  backup false
 end
 
 # chef 0.8.* uses remote_file, 0.9.* uses cookbook_file
