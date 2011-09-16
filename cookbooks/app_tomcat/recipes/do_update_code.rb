@@ -49,8 +49,10 @@ end
 
 # Set code ownership
 bash "chown_home" do
+  flags "-ex"
   code <<-EOH
     if [ -z "#{node[:tomcat][:code][:root][:war]}" ] ; then
+      echo #{node[:tomcat][:docroot]} > /mnt/alex.txt
       echo "Renaming #{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root][:war]} to #{node[:tomcat][:docroot]}/ROOT.war"
       mv #{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root][:war]} #{node[:tomcat][:docroot]}/ROOT.war
     fi
