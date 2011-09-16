@@ -49,3 +49,9 @@ attribute "tomcat/code/branch",
   :required => "optional",
   :default => "master",
   :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
+
+attribute "tomcat/code/root/war",
+  :display_name => "War file for ROOT",
+  :description => "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
+  :required => "optional",
+  :recipes => [ "app_tomcat::do_update_code" ]
