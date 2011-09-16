@@ -47,14 +47,6 @@ template "/etc/tomcat6/web.xml" do
   mode "0644"
 end
 
-template "/usr/share/tomcat6/webapps/ROOT/dbread.jsp" do
-  source "dbread_jsp.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  backup false
-end
-
 # chef 0.8.* uses remote_file, 0.9.* uses cookbook_file
 #cookbook_file "/usr/share/tomcat6/lib/jstl-api-1.2.jar" do
 remote_file "/usr/share/tomcat6/lib/jstl-api-1.2.jar" do
