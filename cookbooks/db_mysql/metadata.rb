@@ -7,6 +7,7 @@ version          "0.0.1"
 
 depends "db"
 depends "rs_utils"
+depends "block_device"
 
 provides "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)"
 provides "db_mysql_set_privileges(type, username, password, db_name)"
@@ -17,6 +18,20 @@ recipe  "db_mysql::default", "Runs the client 'db::install_server' recipes."
 recipe  "db_mysql::do_dump_import", "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)"
 recipe  "db_mysql::do_dump_export", "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)"
 recipe  "db_mysql::setup_continuous_export", "Schedules the daily run of do_dump_export."
+
+# == Master/Slave Recipes
+recipe "db_mysql::default", "Installs dbtools"
+recipe "db_mysql::do_restore_and_become_master", "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
+recipe "db_mysql::do_init_slave", "Initialize MySQL Slave"
+recipe "db_mysql::do_tag_as_master", "USE WITH CAUTION! Tag server with master tags and set master DNS to this server."
+recipe "db_mysql::do_lookup_master", "Use tags to lookup current master and save in the node"
+recipe "db_mysql::do_promote_to_master", "Promote a replicating slave to master"
+recipe "db_mysql::setup_master_backup", "Set up crontab MySQL backup job with the master frequency and rotation."
+recipe "db_mysql::setup_slave_backup", "Set up crontab MySQL backup job with the slave frequency and rotation."
+recipe "db_mysql::setup_master_dns", "USE WITH CAUTION! Set master DNS to this server's IP"
+recipe "db_mysql::setup_replication_privileges", "Set up privileges for MySQL replication slaves."
+recipe "db_mysql::request_master_allow", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to allow connections from the server's private IP address.  This script should be run on a slave before it sets up replication."
+recipe "db_mysql::request_master_deny", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to deny connections from the server's private IP address.  This script should be run on a slave when it stops replicating."
 
 
 attribute "db_mysql",
@@ -86,4 +101,29 @@ attribute "db_mysql/dump/prefix",
   :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.  Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp.",
   :required => false,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
+
+# == Master/Slave Attributes
+attribute "db_mysql/backup/master/hour",
+  :display_name => "Master Backup Cron Hour",
+  :description => "Defines the hour of the day when the backup EBS snapshot will be taken of the Master database.  Backups of the Master are taken daily.  By default, an hour will be randomly chosen at launch time.  The time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'.  Uses standard crontab format. (Ex: 23) for 11pm.",
+  :required => false,
+  :recipes => [ "db_mysql::setup_slave_backup", "db_mysql::setup_master_backup", "db_mysql::do_disable_backup", "db_mysql::do_enable_backup" ]
+
+attribute "db_mysql/backup/slave/hour",
+  :display_name => "Slave Backup Cron Hour",
+  :description => "By default, backup EBS Snapshots of the Slave database are taken hourly. (Ex: *)",
+  :required => false,
+  :recipes => [ "db_mysql::setup_slave_backup", "db_mysql::setup_master_backup", "db_mysql::do_disable_backup", "db_mysql::do_enable_backup" ]
+
+attribute "db_mysql/backup/master/minute",
+  :display_name => "Master Backup Cron Minute",
+  :description => "Defines the minute of the hour when the backup EBS snapshot will be taken of the Master database.  Backups of the Master are taken daily.  By default, a minute will be randomly chosen at launch time.  The time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'.  Uses standard crontab format. (Ex: 30) for the 30th minute of the hour.",
+  :required => false,
+  :recipes => [ "db_mysql::setup_slave_backup", "db_mysql::setup_master_backup", "db_mysql::do_disable_backup", "db_mysql::do_enable_backup" ]
+
+attribute "db_mysql/backup/slave/minute",
+  :display_name => "Slave Backup Cron Minute",
+  :description => "Defines the minute of the hour when the backup EBS snapshot will be taken of the Slave database.  Backups of the Slave are taken hourly.  By default, a minute will be randomly chosen at launch time.  Uses standard crontab format. (Ex: 30) for the 30th minute of the hour.",
+  :required => false,
+  :recipes => [ "db_mysql::setup_slave_backup", "db_mysql::setup_master_backup", "db_mysql::do_disable_backup", "db_mysql::do_enable_backup" ]
 
