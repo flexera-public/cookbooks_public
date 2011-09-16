@@ -51,7 +51,7 @@ end
 bash "chown_home" do
   code <<-EOH
     if [ -z "#{node[:tomcat][:code][:root][:war]}" ] ; then
-      echo "Renaming #{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root][:war]} to #{node[:tomcat][:docroot]/ROOT.war}"
+      echo "Renaming #{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root][:war]} to #{node[:tomcat][:docroot]}/ROOT.war"
       mv #{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root][:war]} #{node[:tomcat][:docroot]}/ROOT.war
     fi
     chown -R #{node[:tomcat][:app_user]}:#{node[:tomcat][:app_user]} #{node[:tomcat][:docroot]}
