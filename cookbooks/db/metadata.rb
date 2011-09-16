@@ -73,6 +73,18 @@ attribute "db/admin/password",
   :required => true,
   :recipes => [ "db::default", "db::do_backup", "db::setup_privileges_admin" ]
 
+attribute "db/replication/user",
+  :display_name => "Database Replication Username",
+  :description => "The username of the database user that has 'replciation' privileges.",
+  :required => true,
+  :recipes => [ "db::default" ]
+
+attribute "db/replication/password",
+  :display_name => "Database Replication Password",
+  :description => "The password of the database user that has 'replciation' privileges.",
+  :required => true,
+  :recipes => [ "db::default" ]
+
 attribute "db/application/user",
   :display_name => "Database Application Username",
   :description => "The username of the database user that has 'user' privileges.",

@@ -97,8 +97,8 @@ module RightScale
           RightScale::Database::MySQL::Helper.do_query(node, "STOP SLAVE", hostname)
 
           cmd = "CHANGE MASTER TO MASTER_HOST='#{newmaster_host}'"
-          cmd = cmd +          ", MASTER_USER='#{node[:db_mysql][:replication][:user]}'"
-          cmd = cmd +          ", MASTER_PASSWORD='#{node[:db_mysql][:replication][:password]}'"
+          cmd = cmd +          ", MASTER_USER='#{node[:db][:replication][:user]}'"
+          cmd = cmd +          ", MASTER_PASSWORD='#{node[:db][:replication][:password]}'"
           cmd = cmd +          ", MASTER_LOG_FILE='#{newmaster_logfile}'"
           cmd = cmd +          ", MASTER_LOG_POS=#{newmaster_position}"
           Chef::Log.info "Reconfiguring replication on localhost: \n#{cmd}"

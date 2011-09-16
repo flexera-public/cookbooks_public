@@ -111,6 +111,19 @@
       "display_name": "Backup Lineage",
       "description": "The prefix that will be used to name/locate the backup of a particular database."
     },
+    "db/replication/password": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db::default"
+      ],
+      "display_name": "Database Replication Password",
+      "description": "The password of the database user that has 'replciation' privileges."
+    },
     "db/fqdn": {
       "required": "required",
       "calculated": false,
@@ -135,6 +148,19 @@
 
       ],
       "display_name": "General Database Options"
+    },
+    "db/replication/user": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db::default"
+      ],
+      "display_name": "Database Replication Username",
+      "description": "The username of the database user that has 'replciation' privileges."
     },
     "db/backup/timestamp_override": {
       "required": "optional",
