@@ -361,9 +361,9 @@ end
 action :grant_replication_slave do
   require 'mysql'
 
-  Chef::Log.info "GRANT REPLICATION SLAVE to #{@node[:db][:replication][:user]}"
+  Chef::Log.info "GRANT REPLICATION SLAVE to #{node[:db][:replication][:user]}"
   con = Mysql.new('localhost', 'root')
-  con.query("GRANT REPLICATION SLAVE ON *.* TO '#{@node[:db][:replication][:user]}'@'%' IDENTIFIED BY '#{@node[:db][:replication][:password]}'")
+  con.query("GRANT REPLICATION SLAVE ON *.* TO '#{node[:db][:replication][:user]}'@'%' IDENTIFIED BY '#{node[:db][:replication][:password]}'")
   con.query("FLUSH PRIVILEGES")
   con.close
 end
