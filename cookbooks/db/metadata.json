@@ -181,6 +181,9 @@
   },
   "description": "RightScale Database Manager",
   "dependencies": {
+    "db_mysql": [
+
+    ],
     "sys_firewall": [
 
     ],

@@ -8,7 +8,7 @@ version          "0.2"
 depends "rs_utils"
 depends "block_device"
 depends "sys_firewall"
-depends "block_device"
+depends "db_mysql"
 
 
 recipe "db::default", "Adds the database:active=true tag to your server which identifies it as an database server. The tag is used by application servers to identify active databases. It also loads the required 'db' resources."
