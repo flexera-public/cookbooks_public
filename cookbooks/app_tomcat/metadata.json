@@ -40,7 +40,7 @@
           "app_tomcat::do_update_code",
           "app_tomcat::default"
         ],
-        "description": "The name of the branch within the git repository where the application code should be pulled from.",
+        "description": "The name of the branch within the git repository where the application code should be pulled from. Ex: mybranch",
         "display_name": "Repository Branch"
       },
       "tomcat/code/url": {
@@ -87,8 +87,8 @@
     "suggestions": {
     },
     "recipes": {
-      "app_tomcat::setup_tomcat_application_vhost": "Setup application vhost on port 8000",
-      "app_tomcat::setup_db_connection": "Setup MySQL database db.tomcat connection file.",
+      "app_tomcat::setup_tomcat_application_vhost": "Set up the application vhost on port 8000.",
+      "app_tomcat::setup_db_connection": "Set up the MySQL database db.tomcat connection file.",
       "app_tomcat::do_update_code": "Update application source files from the remote repository.",
       "app_tomcat::default": "Installs the tomcat application server."
     },
@@ -120,6 +120,6 @@
     "name": "app_tomcat",
     "groupings": {
     },
-    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+    "long_description": "= RightScale App Tomcat Cookbook (Beta)\n\n== DESCRIPTION:\n\n== DETAILS:\n\n== REQUIREMENTS:\n\n== SETUP: \n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n",
     "description": "Installs the tomcat application server."
   }

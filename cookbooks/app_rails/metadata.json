@@ -1,8 +1,7 @@
 {
-    "version": "0.0.1",
-    "groupings": {
+    "recommendations": {
     },
-    "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+    "maintainer": "RightScale, Inc.",
     "attributes": {
       "rails/version": {
         "required": "optional",
@@ -16,7 +15,7 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "description": "Specify the version of Rails to install",
+        "description": "Specify the version of Rails to install.",
         "display_name": "Rails Version"
       },
       "rails/spawn_method": {
@@ -71,7 +70,7 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "description": "An optional list of gems that's required by your application.",
+        "description": "An optional list of gems that is required by your application.",
         "display_name": "Gems List"
       },
       "rails/code/branch": {
@@ -118,7 +117,7 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "description": "Specify the MaxPoolSize in the Apache vhost",
+        "description": "Specify the MaxPoolSize in the Apache vhost.",
         "display_name": "Rails Max Pool Size"
       },
       "rails/server_name": {
@@ -150,7 +149,7 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Password'.  The application server will then have unrestricted access to the database.",
+        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the password of that account for this input.  If there is not a restricted MySQL account then use the same value that is used for the 'Database Admin Password' input.  The application server will then have unrestricted access to the database.",
         "display_name": "Database Password"
       },
       "rails/environment": {
@@ -165,7 +164,7 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "description": "Specify the environment to use for Rails",
+        "description": "Specify the environment to use for Rails.",
         "display_name": "Rails Environment"
       },
       "rails/code/url": {
@@ -254,7 +253,7 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for 'Application Name', so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name.",
+        "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for the 'Application Name' input, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name.",
         "display_name": "Application Name"
       },
       "rails/db_app_user": {
@@ -269,11 +268,18 @@
           "app_rails::install_rails",
           "app_rails::default"
         ],
-        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that's used for 'Database Admin Username'.  The application server will then have unrestricted access to the database.",
+        "description": "If the MySQL administrator set up a restricted MySQL account for application servers to access the database, then specify the username of that account for this input.  If there is not a restricted MySQL account then use the same value that is used for the 'Database Admin Username' input.  The application server will then have unrestricted access to the database.",
         "display_name": "Database User"
       }
     },
-    "recommendations": {
+    "suggestions": {
+    },
+    "recipes": {
+      "app_rails::do_db_restore": "Restores the application database schema from a remote location.",
+      "app_rails::setup_db_config": "Configures the Rails database.yml file.",
+      "app_rails::install_rails": "Installs the Rails application server.",
+      "app_rails::default": "Runs app_rails::install_rails.",
+      "app_rails::do_update_code": "Updates the application source files from the remote repository."
     },
     "dependencies": {
       "db_mysql": [
@@ -298,26 +304,20 @@
 
       ]
     },
-    "maintainer": "RightScale, Inc.",
-    "suggestions": {
-    },
-    "recipes": {
-      "app_rails::do_db_restore": "Restore the application database schema from a remote location.",
-      "app_rails::setup_db_config": "Configures the rails database.yml file.",
-      "app_rails::install_rails": "Installs the rails application server.",
-      "app_rails::default": "Runs app_rails::install_rails.",
-      "app_rails::do_update_code": "Update application source files from the remote repository."
-    },
     "maintainer_email": "support@rightscale.com",
     "conflicting": {
     },
-    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
     "providing": {
     },
-    "name": "app_rails",
-    "replacing": {
-    },
+    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
     "platforms": {
     },
+    "version": "0.0.1",
+    "replacing": {
+    },
+    "name": "app_rails",
+    "groupings": {
+    },
+    "long_description": "= RightScale App Rails Cookbook (Beta)\n\n== DESCRIPTION:\n\n== DETAILS:\n\n== REQUIREMENTS:\n\n== SETUP:\n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n",
     "description": "Installs the rails application server on apache+passenger."
   }

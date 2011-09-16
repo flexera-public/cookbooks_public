@@ -14,7 +14,7 @@
         "recipes": [
           "sys_firewall::setup_rule"
         ],
-        "description": "Address can be either a network name, a network IP address (with /mask), or a plain IP address.  The mask can be either a network mask or a plain number, specifying the number of 1's at the left side of the network mask.  Thus, a mask of 24 is equivalent to 255.255.255.0.  A '!' argument before the address specification inverts the sense of the address.  A value of 'any' allows any IP address (default)",
+        "description": "Address can either be a network name, a network IP address (with /mask), or a plain IP address.  The mask can either be a network mask or a plain number specifying the number of 1's at the left side of the network mask.  Thus, a mask of 24 is equivalent to 255.255.255.0.  A '!' argument before the address specification inverts the sense of the address.  A value of 'any' allows any IP address (default).",
         "display_name": "Firewall Rule IP Address"
       },
       "sys_firewall/rule/protocol": {
@@ -81,7 +81,7 @@
     },
     "recipes": {
       "sys_firewall::default": "Use in conjunction with the 'Firewall' input to enable or disable iptables.",
-      "sys_firewall::do_list_rules": "List the firewall rules",
+      "sys_firewall::do_list_rules": "List the firewall rules.",
       "sys_firewall::setup_rule": "Use for enabling/disabling specific firewall ports."
     },
     "dependencies": {
@@ -109,6 +109,6 @@
     "name": "sys_firewall",
     "groupings": {
     },
-    "long_description": "= DESCRIPTION:\n\nRightScale firewall cookbook (beta) \n\nBuilt upon the opscode iptables cookbook, this coobook provides a LWRP\nfor managing access to mutliple servers in a deployment using machine \ntags.\n\n= REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n= USAGE:\n\n * Use the default recipe in conjunction with the 'Firewall' input to \n   enable or disable iptables.\n\n * Use setup_rule recipe for enabling/disabling specific ports.\n\n== Updating firewall rules using tags*\n\n=== Update Action\nTo open a local port to all servers with a given tag use:\n\n  sys_firewall \"Open this database's ports to all appservers\" do\n    machine_tag \"appserver:active=true\"\n    port 3306\n    enable true\n    action :update\n  end\n  \nThis can be useful as a server is booting to open up access for multiple \nsystems at once.\n    \n=== Update Request Action\nTo request all servers with a given tag close a port to a given IP address use:\n\n  sys_firewall \"Request all appservers close ports to this loadbalancer\" do\n    machine_tag \"loadbalancer:app=www\"\n    port 8000\n    enable false\n    ip_addr node[:cloud][:private_ips][0]\n    action :update_request\n  end\n  \nThis can be useful when decommissioning a running server that had previously\nrequested ports opened.\n\n  \n* all tag based actions are scoped to the deployment\n\n",
+    "long_description": "= RightScale System Firewall Cookbook (Beta)\n\n== DESCRIPTION:\n\nRightScale firewall cookbook (beta) \n\nBuilt upon the opscode iptables cookbook, this coobook provides a LWRP\nfor managing access to mutliple servers in a deployment using machine \ntags.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n\n== USAGE:\n\n * Use the default recipe in conjunction with the 'Firewall' input to \n   enable or disable iptables.\n\n * Use setup_rule recipe for enabling/disabling specific ports.\n\n=== Updating firewall rules using tags*\n\n==== Update Action\nTo open a local port to all servers with a given tag use:\n\n  sys_firewall \"Open this database's ports to all appservers\" do\n    machine_tag \"appserver:active=true\"\n    port 3306\n    enable true\n    action :update\n  end\n  \nThis can be useful as a server is booting to open up access for multiple \nsystems at once.\n\n==== Update Request Action\nTo request all servers with a given tag close a port to a given IP address use:\n\n  sys_firewall \"Request all appservers close ports to this loadbalancer\" do\n    machine_tag \"loadbalancer:app=www\"\n    port 8000\n    enable false\n    ip_addr node[:cloud][:private_ips][0]\n    action :update_request\n  end\n  \nThis can be useful when decommissioning a running server that had previously\nrequested ports opened.\n\n  \n* all tag based actions are scoped to the deployment\n\n== KNOWN LIMITATIONS\n",
     "description": "Installs/Configures firewall"
   }
