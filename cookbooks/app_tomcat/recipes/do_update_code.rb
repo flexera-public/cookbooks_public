@@ -47,13 +47,11 @@ repo_git_pull "Get Repository" do
   cred   node[:tomcat][:code][:credentials]
 end
 
-# Set code ownership
-bash "chown_home" do
+# Set ROOT war and code ownership
+bash "set_root_war_and_chown_home" do
   flags "-ex"
   code <<-EOH
-    if [ -z "#{node[:tomcat][:code][:root][:war]}" ] ; then
-      echo #{node[:tomcat][:docroot]} > /mnt/alex.txt
-      echo "Renaming #{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root][:war]} to #{node[:tomcat][:docroot]}/ROOT.war"
+    if [ ! -z "#{node[:tomcat][:code][:root][:war]}" -a -e "#{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root][:war]}" ] ; then
       mv #{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root][:war]} #{node[:tomcat][:docroot]}/ROOT.war
     fi
     chown -R #{node[:tomcat][:app_user]}:#{node[:tomcat][:app_user]} #{node[:tomcat][:docroot]}
