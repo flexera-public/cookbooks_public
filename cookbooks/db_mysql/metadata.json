@@ -1,11 +1,23 @@
 {
-  "dependencies": {
-    "db": ">= 0.0.0",
-    "rs_utils": ">= 0.0.0"
+  "suggestions": {
   },
-  "name": "db_mysql",
-  "maintainer_email": "support@rightscale.com",
   "attributes": {
+    "db_mysql/backup/slave/minute": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_slave_backup",
+        "db_mysql::setup_master_backup",
+        "db_mysql::do_disable_backup",
+        "db_mysql::do_enable_backup"
+      ],
+      "display_name": "Slave Backup Cron Minute",
+      "description": "Defines the minute of the hour when the backup EBS snapshot will be taken of the Slave database.  Backups of the Slave are taken hourly.  By default, a minute will be randomly chosen at launch time.  Uses standard crontab format. (Ex: 30) for the 30th minute of the hour."
+    },
     "db_mysql/dump/prefix": {
       "required": "optional",
       "calculated": false,
@@ -18,8 +30,8 @@
         "db_mysql::do_dump_export",
         "db_mysql::setup_continuous_export"
       ],
-      "description": "The prefix that will be used to name/locate the backup of a particular MySQL database.  Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp.",
-      "display_name": "Prefix"
+      "display_name": "Prefix",
+      "description": "The prefix that will be used to name/locate the backup of a particular MySQL database.  Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp."
     },
     "db_mysql/dump/container": {
       "required": "optional",
@@ -33,8 +45,8 @@
         "db_mysql::do_dump_export",
         "db_mysql::setup_continuous_export"
       ],
-      "description": "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name.",
-      "display_name": "Container"
+      "display_name": "Container",
+      "description": "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name."
     },
     "db_mysql/dump/storage_account_provider": {
       "required": "optional",
@@ -49,8 +61,8 @@
         "db_mysql::do_dump_export",
         "db_mysql::setup_continuous_export"
       ],
-      "description": "Select the cloud infrastructure where the backup will be saved. For Amazon S3, use ec2.  For Rackspace Cloud Files, use rackspace.",
-      "display_name": "Storage Account Provider"
+      "display_name": "Storage Account Provider",
+      "description": "Select the cloud infrastructure where the backup will be saved. For Amazon S3, use ec2.  For Rackspace Cloud Files, use rackspace."
     },
     "db_mysql": {
       "required": "optional",
@@ -76,8 +88,24 @@
         "db_mysql::do_dump_export",
         "db_mysql::setup_continuous_export"
       ],
-      "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID. For Rackspace Cloud Files, use your Rackspace login Username.",
-      "display_name": "Storage Account Id"
+      "display_name": "Storage Account Id",
+      "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID. For Rackspace Cloud Files, use your Rackspace login Username."
+    },
+    "db_mysql/backup/master/minute": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_slave_backup",
+        "db_mysql::setup_master_backup",
+        "db_mysql::do_disable_backup",
+        "db_mysql::do_enable_backup"
+      ],
+      "display_name": "Master Backup Cron Minute",
+      "description": "Defines the minute of the hour when the backup EBS snapshot will be taken of the Master database.  Backups of the Master are taken daily.  By default, a minute will be randomly chosen at launch time.  The time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'.  Uses standard crontab format. (Ex: 30) for the 30th minute of the hour."
     },
     "db_mysql/dump": {
       "required": "optional",
@@ -102,8 +130,40 @@
       "recipes": [
         "db_mysql::default"
       ],
-      "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory. Ex: /mnt/mysql-binlogs/mysql-bin",
-      "display_name": "MySQL Binlog Destination"
+      "display_name": "MySQL Binlog Destination",
+      "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory. Ex: /mnt/mysql-binlogs/mysql-bin"
+    },
+    "db_mysql/backup/slave/hour": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_slave_backup",
+        "db_mysql::setup_master_backup",
+        "db_mysql::do_disable_backup",
+        "db_mysql::do_enable_backup"
+      ],
+      "display_name": "Slave Backup Cron Hour",
+      "description": "By default, backup EBS Snapshots of the Slave database are taken hourly. (Ex: *)"
+    },
+    "db_mysql/backup/master/hour": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::setup_slave_backup",
+        "db_mysql::setup_master_backup",
+        "db_mysql::do_disable_backup",
+        "db_mysql::do_enable_backup"
+      ],
+      "display_name": "Master Backup Cron Hour",
+      "description": "Defines the hour of the day when the backup EBS snapshot will be taken of the Master database.  Backups of the Master are taken daily.  By default, an hour will be randomly chosen at launch time.  The time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'.  Uses standard crontab format. (Ex: 23) for 11pm."
     },
     "db_mysql/dump/storage_account_secret": {
       "required": "optional",
@@ -117,8 +177,8 @@
         "db_mysql::do_dump_export",
         "db_mysql::setup_continuous_export"
       ],
-      "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key.",
-      "display_name": "Storage Account Secret"
+      "display_name": "Storage Account Secret",
+      "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key."
     },
     "db_mysql/dump/schema_name": {
       "required": "optional",
@@ -132,8 +192,8 @@
         "db_mysql::do_dump_export",
         "db_mysql::setup_continuous_export"
       ],
-      "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
-      "display_name": "Schema Name"
+      "display_name": "Schema Name",
+      "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema"
     },
     "db_mysql/server_usage": {
       "required": "optional",
@@ -147,37 +207,67 @@
       "recipes": [
         "db_mysql::default"
       ],
-      "description": "Use 'dedicated' if the mysql config file allocates all existing resources of the machine.  Use 'shared' if the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example.",
-      "display_name": "Server Usage"
+      "display_name": "Server Usage",
+      "description": "Use 'dedicated' if the mysql config file allocates all existing resources of the machine.  Use 'shared' if the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example."
     }
-  },
-  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
-  "suggestions": {
-  },
-  "platforms": {
-  },
-  "maintainer": "RightScale, Inc.",
-  "long_description": "= RightScale Database Manager for MySQL (Beta) \n\n== DESCRIPTION:\n\nProvides the MySQL implementation of the 'db' resource to install and \nmanage MySQL database stand-alone servers and clients.\n\n\n== DETAILS\n\nThe 'db' implementation is defined by a Lightweight Provider, which can be \nfound in the providers/default.rb file.\n\nThe majority of the functionality of the MySQL provider is encapsulated \nin the premium rightscale_tools gem, however, there are currently a handful\nof recipes that can be used without it. See 'Public Recipes' in the USAGE\nsection below.\n\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage \n\n* Tested on CentOS 5.6 RightImage\n\n* Supports MySQL 5.1 \n\n* Needs RightScale Premium ServerTemplate tools gem installed on system.\n  This gem is only available for paid RightScale customers.\n  Please contact sales@rightscale.com to upgrade you account.\n\n\n== SETUP:\n\n* Place db::default recipe into your runlist to setup the db resource.  When\n  using a RightScale ServerTemplate, this will also automatically add the \n  common database attributes to your ServerTemplate inputs.\n   \n* Also, place the db_mysql::default recipe into your runlist to load the\n  MySQL provider, tuning parameters, as well as other MySQL specific \n  attributes in as inputs.\n\n== USAGE:\n\n=== Basic usage\nOnce setup, use the recipes in the 'db' cookbook to install and manage your\nMySQL database servers and clients.  See the db/README.rdoc for usage \ndetails.\n\n\n=== MySQL Tuning and my.cnf\n\nCustom tuning parameters can be applied by overriding the mysql_tuning.rb\nattributes file.  For more information and an example override repository\nplease see:\n\n  https://github.com/ekargard/cookbooks_override/tree/master/cookbooks/db_mysql\n  \n\n=== Public Recipes\nHere is the list of db recipes that can be used without the preimum \nrightscale_tools gem:\n\n* db::default\n* db::install_client\n* db::install_server\n* db::setup_monitoring\n* db::setup_privileges_admin\n* db::setup_privileges_application\n* db::do_appserver_allow\n* db::do_appserver_deny\n* db::request_appserver_allow\n* db::request_appserver_deny\n\nThese recipes are used by the RightScale LAMP ServerTemplate.\n\n\n== KNOWN LIMITATIONS\n\n* none\n\n\n   \n\n",
-  "version": "0.0.1",
-  "recommendations": {
-  },
-  "recipes": {
-    "db_mysql::do_dump_import": "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)",
-    "db_mysql::default": "Runs the client 'db::install_server' recipes.",
-    "db_mysql::do_dump_export": "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)",
-    "db_mysql::setup_continuous_export": "Schedules the daily run of do_dump_export."
-  },
-  "groupings": {
   },
   "conflicting": {
   },
+  "description": "Installs/configures a MySQL database server with automated backups.",
+  "dependencies": {
+    "db": [
+
+    ],
+    "block_device": [
+
+    ],
+    "rs_utils": [
+
+    ]
+  },
+  "providing": {
+    "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)": [
+
+    ],
+    "db_mysql_gzipfile_restore(db_name, file_path)": [
+
+    ],
+    "db_mysql_gzipfile_backup(db_name, file_path)": [
+
+    ],
+    "db_mysql_set_privileges(type, username, password, db_name)": [
+
+    ]
+  },
+  "maintainer": "RightScale, Inc.",
   "replacing": {
   },
-  "description": "Installs/configures a MySQL database server with automated backups.",
-  "providing": {
-    "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)": ">= 0.0.0",
-    "db_mysql_gzipfile_restore(db_name, file_path)": ">= 0.0.0",
-    "db_mysql_gzipfile_backup(db_name, file_path)": ">= 0.0.0",
-    "db_mysql_set_privileges(type, username, password, db_name)": ">= 0.0.0"
-  }
+  "version": "0.0.1",
+  "maintainer_email": "support@rightscale.com",
+  "name": "db_mysql",
+  "recipes": {
+    "db_mysql::do_promote_to_master": "Promote a replicating slave to master",
+    "db_mysql::do_dump_import": "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)",
+    "db_mysql::do_lookup_master": "Use tags to lookup current master and save in the node",
+    "db_mysql::default": "Installs dbtools",
+    "db_mysql::do_tag_as_master": "USE WITH CAUTION! Tag server with master tags and set master DNS to this server.",
+    "db_mysql::do_dump_export": "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)",
+    "db_mysql::setup_replication_privileges": "Set up privileges for MySQL replication slaves.",
+    "db_mysql::setup_slave_backup": "Set up crontab MySQL backup job with the slave frequency and rotation.",
+    "db_mysql::do_restore_and_become_master": "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master.",
+    "db_mysql::request_master_deny": "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to deny connections from the server's private IP address.  This script should be run on a slave when it stops replicating.",
+    "db_mysql::do_init_slave": "Initialize MySQL Slave",
+    "db_mysql::setup_continuous_export": "Schedules the daily run of do_dump_export.",
+    "db_mysql::setup_master_dns": "USE WITH CAUTION! Set master DNS to this server's IP",
+    "db_mysql::setup_master_backup": "Set up crontab MySQL backup job with the master frequency and rotation.",
+    "db_mysql::request_master_allow": "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to allow connections from the server's private IP address.  This script should be run on a slave before it sets up replication."
+  },
+  "groupings": {
+  },
+  "long_description": "= RightScale Database Manager for MySQL (Beta) \n\n== DESCRIPTION:\n\nProvides the MySQL implementation of the 'db' resource to install and \nmanage MySQL database stand-alone servers and clients.\n\n\n== DETAILS\n\nThe 'db' implementation is defined by a Lightweight Provider, which can be \nfound in the providers/default.rb file.\n\nThe majority of the functionality of the MySQL provider is encapsulated \nin the premium rightscale_tools gem, however, there are currently a handful\nof recipes that can be used without it. See 'Public Recipes' in the USAGE\nsection below.\n\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage \n\n* Tested on CentOS 5.6 RightImage\n\n* Supports MySQL 5.1 \n\n* Needs RightScale Premium ServerTemplate tools gem installed on system.\n  This gem is only available for paid RightScale customers.\n  Please contact sales@rightscale.com to upgrade you account.\n\n\n== SETUP:\n\n* Place db::default recipe into your runlist to setup the db resource.  When\n  using a RightScale ServerTemplate, this will also automatically add the \n  common database attributes to your ServerTemplate inputs.\n   \n* Also, place the db_mysql::default recipe into your runlist to load the\n  MySQL provider, tuning parameters, as well as other MySQL specific \n  attributes in as inputs.\n\n== USAGE:\n\n=== Basic usage\nOnce setup, use the recipes in the 'db' cookbook to install and manage your\nMySQL database servers and clients.  See the db/README.rdoc for usage \ndetails.\n\n\n=== MySQL Tuning and my.cnf\n\nCustom tuning parameters can be applied by overriding the mysql_tuning.rb\nattributes file.  For more information and an example override repository\nplease see:\n\n  https://github.com/ekargard/cookbooks_override/tree/master/cookbooks/db_mysql\n  \n\n=== Public Recipes\nHere is the list of db recipes that can be used without the preimum \nrightscale_tools gem:\n\n* db::default\n* db::install_client\n* db::install_server\n* db::setup_monitoring\n* db::setup_privileges_admin\n* db::setup_privileges_application\n* db::do_appserver_allow\n* db::do_appserver_deny\n* db::request_appserver_allow\n* db::request_appserver_deny\n\nThese recipes are used by the RightScale LAMP ServerTemplate.\n\n\n== KNOWN LIMITATIONS\n\n* none\n\n\n   \n\n",
+  "recommendations": {
+  },
+  "platforms": {
+  },
+  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
 }
