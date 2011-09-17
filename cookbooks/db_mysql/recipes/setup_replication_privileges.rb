@@ -9,7 +9,7 @@
 
 rs_utils_marker :begin
 
-db "grant replication privileges" do
+db node[:db][:data_dir] do
   action :grant_replication_slave
 end
 
