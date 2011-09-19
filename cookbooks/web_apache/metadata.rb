@@ -10,7 +10,7 @@ recipe "web_apache::setup_frontend", "Frontend apache vhost.  Select ssl_enabled
 recipe "web_apache::setup_frontend_ssl_vhost", "Frontend apache vhost with SSL enabled."
 recipe "web_apache::setup_frontend_http_vhost", "Frontend apache vhost with SSL enabled."
 recipe "web_apache::setup_monitoring", "Install collectd-apache for monitoring support"
-recipe "web_apache::setup_mod_jk", "Install and configures mod_jk"
+recipe "web_apache::setup_mod_jk", "Installs and configures mod_jk"
 
 all_recipes = [ "web_apache::default",  "web_apache::install_apache", "web_apache::setup_frontend_ssl_vhost", "web_apache::setup_frontend_http_vhost", "web_apache::setup_frontend"]
 
