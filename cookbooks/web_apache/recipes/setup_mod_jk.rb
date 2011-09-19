@@ -30,7 +30,7 @@ if arch == "x86_64"
   package "apr-devel.x86_64"
   package "apache2" do
     package_name "apr-devel.i386"
-    action :uninstall
+    action :remove
   end
 end
 
