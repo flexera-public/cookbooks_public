@@ -1,53 +1,67 @@
-# Cookbook Name:: web_apache
-# Recipe:: setup_frontend_http_vhost
 #
-# Copyright (c) 2011 RightScale Inc
+# Cookbook Name:: apache2
+# Recipe:: mod_jk 
 #
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
+# Copyright 2008-2009, Opscode, Inc.
 #
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# http://blog.mansonthomas.com/2009/06/setup-tomcat6-with-native-library-with.html
+# 
+if platform?(%w{"centos", "redhat"})
+  bash "install_redhat_mod_jk" do
+  user "root"
+  cwd "/tmp"
+  code <<-EOH
+      wget http://apache.favoritelinks.net//tomcat/tomcat-connectors/jk/binaries/linux/jk-1.2.31/x86_64/mod_jk-1.2.31-httpd-2.2.x.so
+      cp mod_jk-1.2.31-httpd-2.2.x.so /usr/lib64/httpd/modules/mod_jk.so
+      chmod a+x /usr/lib64/httpd/modules/mod_jk.so
+      echo 'LoadModule jk_module /usr/lib64/httpd/modules/mod_jk.so' >> /etc/httpd/mods_available/jk.load
+EOH
+  end
+end
+
+pkgs = value_for_platform(
+  ["centos", "redhat", "fedora"] => {"default" => %w{"mod_jk-ap20"}},
+  ["ubuntu", "debian"] => {"default" => %w{"libapache2-mod-jk"}},
+  "default" => %w{"libapache2-mod-jk"}
+)
+
+pkgs.each do |pkg|
+  package pkg do
+    action :upgrade
+  end
+end
+
+## configure mod_jk, add jk.conf
+#template "#{node[:apache][:dir]}/mods-available/jk.conf" do
+#  source "mods/jk.conf.erb"
+#  mode 0644
+#  owner "root"
+#  group "root"
+#end
+#
+## add /etc/apache2/worker.properties
+#template "#{node[:apache][:dir]}/workers.properties" do
+#  source "mods/jk-worker.properties.erb"
+#  owner "root"
+#  group "root"
+#end
+
+apache_module "jk" do
+  conf true
+end
 
 service "apache2" do
-  action :nothing
-end
-
-# == Setup PHP Apache vhost on port 80
-#
-php_port = "80"
-
-# disable default vhost
-apache_site "000-default" do
-  enable false
-end
-
-template "#{node[:apache][:dir]}/ports.conf" do
-  cookbook "apache2"
-  source "ports.conf.erb"
-  variables :apache_listen_ports => php_port
-  notifies :restart, resources(:service => "apache2")
-#  notifies :restart, resources(:service => "apache2"), :immediately
-end
-
-# == Configure apache vhost for PHP
-#
-web_app "#{node[:web_apache][:application_name]}.frontend" do
-  template "apache.conf.erb"
-  docroot node[:web_apache][:docroot]
-  vhost_port php_port
-  server_name node[:web_apache][:server_name]
+  action :restart
 end
