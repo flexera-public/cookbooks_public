@@ -46,9 +46,10 @@ bash "install_tomcat_connectors" do
   flags "-ex"
   code <<-EOH
     cd /tmp
-    tar xzf tomcat-connectors-1.2.26-src.tar.gz -C /tmp/
+    mkdir -p /tmp/tc-unpack
+    tar xzf tomcat-connectors-1.2.26-src.tar.gz -C /tmp/tc-unpack --strip-components=1
 
-    cd native
+    cd tc-unpack/native
     ./buildconf.sh
     ./configure --with-apxs=/usr/sbin/apxs --quiet
     make -s
