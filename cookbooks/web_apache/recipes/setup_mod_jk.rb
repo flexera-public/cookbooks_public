@@ -37,7 +37,22 @@ if arch == "x86_64"
 end
 
 if node[:platform] == 'centos'
-    remote_file "/etc/#{arch}/tomcat-connectors-1.2.26-src.tar.gz" do
+    remote_file "/tmp/tomcat-connectors-1.2.26-src.tar.gz" do
       source "tomcat-connectors-1.2.26-src.tar.gz"
     end
 end
+
+bash "install_tomcat_connectors" do
+  flags "-ex"
+  code <<-EOH
+    cd /tmp
+    tar xzf tomcat-connectors-1.2.26-src.tar.gz -C /tmp/
+
+    cd native
+    ./buildconf.sh
+    ./configure --with-apxs=/usr/sbin/apxs --quiet
+    make -s
+    su -c 'make install'
+  EOH
+end
+
