@@ -37,9 +37,14 @@ if arch == "x86_64"
 end
 
 if node[:platform] == 'centos'
-    remote_file "/tmp/tomcat-connectors-1.2.26-src.tar.gz" do
-      source "tomcat-connectors-1.2.26-src.tar.gz"
-    end
+  remote_file "/tmp/tomcat-connectors-1.2.26-src.tar.gz" do
+    source "tomcat-connectors-1.2.26-src.tar.gz"
+  end
+
+  package "httpd-devel" do
+    action :install
+    options "-y"
+  end
 end
 
 bash "install_tomcat_connectors" do
