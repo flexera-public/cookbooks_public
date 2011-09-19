@@ -51,8 +51,8 @@ end
 bash "set_root_war_and_chown_home" do
   flags "-ex"
   code <<-EOH
-    if [ ! -z "#{node[:tomcat][:code][:root][:war]}" -a -e "#{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root][:war]}" ] ; then
-      mv #{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root][:war]} #{node[:tomcat][:docroot]}/ROOT.war
+    if [ ! -z "#{node[:tomcat][:code][:root_war]}" -a -e "#{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root_war]}" ] ; then
+      mv #{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root_war]} #{node[:tomcat][:docroot]}/ROOT.war
     fi
     chown -R #{node[:tomcat][:app_user]}:#{node[:tomcat][:app_user]} #{node[:tomcat][:docroot]}
   EOH

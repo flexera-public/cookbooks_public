@@ -39,19 +39,6 @@
     "platforms": {
     },
     "attributes": {
-      "tomcat/code/root/war": {
-        "calculated": false,
-        "type": "string",
-        "choice": [
-
-        ],
-        "description": "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
-        "display_name": "War file for ROOT",
-        "required": "optional",
-        "recipes": [
-          "app_tomcat::do_update_code"
-        ]
-      },
       "tomcat/db_name": {
         "calculated": false,
         "type": "string",
@@ -90,6 +77,19 @@
         "recipes": [
           "app_tomcat::do_update_code",
           "app_tomcat::default"
+        ]
+      },
+      "tomcat/code/root_war": {
+        "calculated": false,
+        "type": "string",
+        "choice": [
+
+        ],
+        "description": "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
+        "display_name": "War file for ROOT",
+        "required": "optional",
+        "recipes": [
+          "app_tomcat::do_update_code"
         ]
       },
       "tomcat/code/url": {
