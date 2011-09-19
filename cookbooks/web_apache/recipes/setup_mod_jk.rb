@@ -27,9 +27,10 @@ apache = "/etc/#{node[:apache][:config_subdir]}"
 arch = node[:kernel][:machine]
 
 if arch == "x86_64"
-  package "apr-devel.x86_64"
-  package "apache2" do
-    package_name "apr-devel.i386"
+  package "apr-devel.x86_64" do
+    action :install
+  end
+  package "apr-devel.i386" do
     action :remove
   end
 end
