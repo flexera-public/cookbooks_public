@@ -25,26 +25,22 @@
 apache = "/etc/#{node[:apache][:config_subdir]}"  
   
 arch = node[:kernel][:machine]
+connectors_source = "tomcat-connectors-1.2.32-src.tar.gz"
 
 if arch == "x86_64"
-
-  
-  package "apr-devel.x86_64" do
-    action :install
-    options "-y"
-  end
-  
-    package "apr-devel.i386" do
-    action :remove
-    options "-y"
+  bash "install_remove" do
+    flags "-ex"
+    code <<-EOH
+      yum install apr-devel.x86_64 -y
+      yum remove apr-devel.i386 -y
+    EOH
   end
 end
 
 if node[:platform] == 'centos'
-  remote_file "/tmp/tomcat-connectors-1.2.26-src.tar.gz" do
-    source "tomcat-connectors-1.2.26-src.tar.gz"
+  remote_file "/tmp/#{connectors_source}" do
+    source "#{connectors_source}"
   end
-
   package "httpd-devel" do
     action :install
     options "-y"
@@ -56,7 +52,7 @@ bash "install_tomcat_connectors" do
   code <<-EOH
     cd /tmp
     mkdir -p /tmp/tc-unpack
-    tar xzf tomcat-connectors-1.2.26-src.tar.gz -C /tmp/tc-unpack --strip-components=1
+    tar xzf #{connectors_source} -C /tmp/tc-unpack --strip-components=1
 
     cd tc-unpack/native
     ./buildconf.sh
