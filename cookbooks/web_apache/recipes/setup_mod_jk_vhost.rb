@@ -24,7 +24,7 @@
 
 arch = node[:kernel][:machine]
 connectors_source = "tomcat-connectors-1.2.32-src.tar.gz"
-etc_apache = "/etc/#{node[:apache][:config_subdir]}"
+etc_apache = "/etc/httpd"
 
 if arch == "x86_64"
   bash "install_remove" do
@@ -73,7 +73,7 @@ end
 
 # == Configure apache vhost for tomcat
 #
-template "#{etc_apache}/sites-enabled/#{node[:web_apache][:application_name]}.conf" do
+template "#{etc_apache}/sites-enabled/mmmmmmmmmmmmmmmmmmmmmm.conf" do
   template "apache_mod_jk_vhost.erb"
   docroot node[:web_apache][:docroot]
   vhost_port node[:app][:port]
