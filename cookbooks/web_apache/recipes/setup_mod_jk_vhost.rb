@@ -24,6 +24,7 @@
 
 arch = node[:kernel][:machine]
 connectors_source = "tomcat-connectors-1.2.32-src.tar.gz"
+etc_apache = "/etc/#{node[:apache][:config_subdir]}"
 
 if arch == "x86_64"
   bash "install_remove" do
@@ -60,19 +61,19 @@ bash "install_tomcat_connectors" do
 end
 
 execute "Rename mod_jk.conf" do
-  command "[ -s #{apache}/conf.d/mod_jk.conf ] && mv -f #{apache}/conf.d/mod_jk.conf #{apache}/conf.d/mod_jk.conf.bak.$(date "+%s")"
+  command "[ -s #{etc_apache}/conf.d/mod_jk.conf ] && mv -f #{etc_apache}/conf.d/mod_jk.conf #{etc_apache}/conf.d/mod_jk.conf.bak.$(date "+%s")"
 end
 
 # == Configure mod_jk conf
 #
-template "#{apache}/conf.d/mod_jk.conf" do
+template "#{etc_apache}/conf.d/mod_jk.conf" do
   template "mod_jk.conf.erb"
   tomcat_name "tomcat6"
 end
 
 # == Configure apache vhost for tomcat
 #
-template "/etc/#{node[:apache][:dir]}/sites-enabled/#{web_apache[:application_name]}.conf" do
+template "#{etc_apache}/sites-enabled/#{node[:web_apache][:application_name]}.conf" do
   template "apache_mod_jk_vhost.erb"
   docroot node[:web_apache][:docroot]
   vhost_port node[:app][:port]
@@ -80,3 +81,8 @@ template "/etc/#{node[:apache][:dir]}/sites-enabled/#{web_apache[:application_na
   notifies :restart, resources(:service => "apache2")
 #  notifies :restart, resources(:service => "apache2"), :immediately
 end
+
+# disable default vhost
+#apache_site "000-default" do
+#  enable false
+#end
