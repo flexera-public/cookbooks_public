@@ -48,9 +48,7 @@ template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/et
 end
 
 # empty out the binary log dir
-x = node[:db_mysql][:log_bin]
-logbin_dir = x.gsub(/#{::File.basename(x)}$/, "")
-directory logbin_dir do
+directory ::File.dirname(node[:db_mysql][:log_bin]) do
   action [:delete, :create]
   recursive true
   owner 'mysql'
