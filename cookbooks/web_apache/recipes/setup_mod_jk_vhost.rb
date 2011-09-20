@@ -67,14 +67,14 @@ end
 # == Configure mod_jk conf
 #
 template "#{etc_apache}/conf.d/mod_jk.conf" do
-  template "mod_jk.conf.erb"
+  source "mod_jk.conf.erb"
   tomcat_name "tomcat6"
 end
 
 # == Configure apache vhost for tomcat
 #
 template "#{etc_apache}/sites-enabled/#{node[:web_apache][:application_name]}.conf" do
-  template "apache_mod_jk_vhost.erb"
+  source "apache_mod_jk_vhost.erb"
   docroot node[:web_apache][:docroot]
   vhost_port node[:app][:port]
   server_name node[:php][:server_name]
