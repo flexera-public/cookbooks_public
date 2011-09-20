@@ -20,7 +20,7 @@ cron "Master continuous backups" do
   minute  "#{node[:db_mysql][:backup][:master][:minute]}"
   hour    "#{node[:db_mysql][:backup][:master][:hour]}"
   user    "root"
-  command "rs_run_recipe -n \"db_mysql::do_backup\" 2>&1 > /var/log/mysql_cron_backup.log"
+  command "rs_run_recipe -n \"db::do_backup\" 2>&1 > /var/log/mysql_cron_backup.log"
   action :create
 end
 
@@ -29,7 +29,7 @@ cron "Master continuous backups" do
   minute "#{node[:db_mysql][:backup][:master][:minute]}"
   hour "#{node[:db_mysql][:backup][:master][:hour]}"
   user "root"
-  command "rs_run_recipe -n \"db_mysql::do_backup\" 2>&1 > /var/log/mysql_cron_backup.log"
+  command "rs_run_recipe -n \"db::do_backup\" 2>&1 > /var/log/mysql_cron_backup.log"
   action :create
 end
 
