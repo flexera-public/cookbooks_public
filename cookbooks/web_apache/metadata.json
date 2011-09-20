@@ -5,6 +5,7 @@
       "web_apache::setup_frontend": "Frontend apache vhost.  Select ssl_enabled for SSL.",
       "web_apache::setup_monitoring": "Install collectd-apache for monitoring support",
       "web_apache::setup_frontend_ssl_vhost": "Frontend apache vhost with SSL enabled.",
+      "web_apache::setup_mod_jk_vhost": "Installs, configures mod_jk and creates vhost.",
       "web_apache::setup_frontend_http_vhost": "Frontend apache vhost with SSL enabled."
     },
     "groupings": {
