@@ -1,4 +1,4 @@
-# Cookbook Name:: web_apache
+# Cookbook Name:: app_tomcat
 # Recipe:: setup_mod_jk
 #
 # Copyright (c) 2011 RightScale Inc
@@ -22,14 +22,18 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-apache = "/etc/#{node[:apache][:config_subdir]}"  
-  
+case platform
+when "ubuntu", "debian"
+  apache = "/etc/apache2"
+when "centos", "fedora", "suse"
+  apache = "/etc/httpd"
+end
+ 
 arch = node[:kernel][:machine]
 connectors_source = "tomcat-connectors-1.2.32-src.tar.gz"
 
 if arch == "x86_64"
   bash "install_remove" do
-    flags "-ex"
     code <<-EOH
       yum install apr-devel.x86_64 -y
       yum remove apr-devel.i386 -y
@@ -62,3 +66,6 @@ bash "install_tomcat_connectors" do
   EOH
 end
 
+execute "Rename mod_jk.conf" do
+  command "[ -s #{apache}/conf.d/mod_jk.conf ] && mv -f #{apache}/conf.d/mod_jk.conf #{apache}/conf.d/mod_jk.conf.bak.$(date "+%s")"
+end

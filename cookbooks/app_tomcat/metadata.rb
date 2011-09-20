@@ -13,7 +13,8 @@ depends "rs_utils"
 recipe  "app_tomcat::default", "Installs the tomcat application server."
 recipe  "app_tomcat::do_update_code", "Update application source files from the remote repository."
 recipe  "app_tomcat::setup_db_connection", "Set up the MySQL database db.tomcat connection file."
-recipe  "app_tomcat::setup_tomcat_application_vhost", "Set up the application vhost on port 8000."
+recipe  "app_tomcat::setup_tomcat_application_vhost", "Set up the application vhost on port 8080."
+recipe  "app_tomcat::setup_mod_jk", "Installs and configures mod_jk"
 
 attribute "tomcat",
   :display_name => "Tomcat Application Settings",
