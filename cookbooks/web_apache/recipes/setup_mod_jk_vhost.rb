@@ -1,5 +1,5 @@
-# Cookbook Name:: app_tomcat
-# Recipe:: setup_mod_jk
+# Cookbook Name:: web_apache
+# Recipe:: setup_mod_jk_vhost
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -69,3 +69,13 @@ end
 execute "Rename mod_jk.conf" do
   command "[ -s #{apache}/conf.d/mod_jk.conf ] && mv -f #{apache}/conf.d/mod_jk.conf #{apache}/conf.d/mod_jk.conf.bak.$(date "+%s")"
 end
+
+# == Configure apache vhost for tomcat
+web_app node[:web_apache][:application_name] do
+  template "apache_mod_jk_vhost.erb"
+  docroot node[:web_apache][:docroot]
+  vhost_port node[:app][:port]
+  server_name node[:php][:server_name]
+  notifies :restart, resources(:service => "apache2"), :immediately
+end
+
