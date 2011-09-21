@@ -10,6 +10,7 @@
 rs_utils_marker :begin
 
 include_recipe "db_mysql::do_lookup_master"
+raise "No master DB found" unless node[:db_mysql][:current_master_ip] && node[:db_mysql][:current_master_uuid] 
 include_recipe "db_mysql::request_master_allow"
 include_recipe "db::do_restore"
 

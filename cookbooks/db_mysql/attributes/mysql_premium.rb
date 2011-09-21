@@ -5,11 +5,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-#set_unless[:db_mysql][:replication][:user] = nil
-#set_unless[:db_mysql][:replication][:password] = nil
-
 set_unless[:db_mysql][:backup][:slave][:max_allowed_lag] = 60
-
 
 set_unless[:db_mysql][:this_is_master] = false
 set_unless[:db_mysql][:current_master_uuid] = nil

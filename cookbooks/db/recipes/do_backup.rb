@@ -27,14 +27,23 @@ DATA_DIR = node[:db][:data_dir]
 
 # Make sure the node variables related to master are set on this instance
 include_recipe 'db_mysql::do_lookup_master'
-log "  Performing pre-backup check, then lock DB..."
+log "  Performing pre-backup check..." unless node[:db][:backup][:force] == true
 db DATA_DIR do
-  action [ :pre_backup_check, :lock, :write_backup_info ]
+  # Skip checks if force is used.
+  not_if node[:db][:backup][:force]
+  action [ :pre_backup_check ]
+end
+
+log "  Performing lock DB and write backup info file..."
+db DATA_DIR do
+  action [ :lock, :write_backup_info ]
 end
 
 log "  Performing Snapshot..."
 # Requires block_device node[:db][:block_device] to be instantiated
 # previously. Make sure block_device::default recipe has been run.
+# TODO: add as master so that a new slave after promotion can kick off a backup
+# without waiting for DNS and tags to propagate.  MVP??
 block_device DATA_DIR do
   lineage node[:db][:backup][:lineage]
   action :snapshot

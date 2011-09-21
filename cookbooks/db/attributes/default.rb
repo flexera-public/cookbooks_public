@@ -31,3 +31,5 @@ set_unless[:db][:replication][:user] = nil
 set_unless[:db][:replication][:password] = nil
 
 set_unless[:db][:backup][:lineage] = ""
+
+set_unless[:db][:backup][:force] = false

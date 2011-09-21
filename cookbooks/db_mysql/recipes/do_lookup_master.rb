@@ -14,8 +14,10 @@ r = server_collection "master_servers" do
 end
 r.run_action(:load)
 
-# Finds the current master and sets the node attrib for node[:db_mysql][:current_master_uuid]
-# ALSO: sets up special variable :this_is_master
+# Finds the current master and sets the node attribs for 
+#   node[:db_mysql][:current_master_uuid]
+#   node[:db_mysql][:current_master_ip]
+#   node[:db_mysql][:this_is_master]
 r = ruby_block "find current master" do
   block do
     collect = {}
@@ -37,14 +39,16 @@ r = ruby_block "find current master" do
     if current_master_uuid
       node[:db_mysql][:current_master_uuid] = current_master_uuid.split(/=/, 2).last.chomp
     else
-      raise "No current master db found"
+      node[:db_mysql][:current_master_uuid] = nil
+      Chef::Log.info "No current master db found"
     end
     if current_master_ip
       node[:db_mysql][:current_master_ip] = current_master_ip.split(/=/, 2).last.chomp
     else
-      raise "No current master ip found"
+      node[:db_mysql][:current_master_ip] = nil
+      Chef::Log.info "No current master ip found"
     end
-      Chef::Log.info "found current master: #{node[:db_mysql][:current_master_uuid]} ip: #{node[:db_mysql][:current_master_ip]} active at #{most_recent_timestamp}"
+    Chef::Log.info "found current master: #{node[:db_mysql][:current_master_uuid]} ip: #{node[:db_mysql][:current_master_ip]} active at #{most_recent_timestamp}" if current_master_uuid && current_master_ip
   end
 end
 r.run_action(:create)

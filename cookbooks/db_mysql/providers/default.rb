@@ -63,6 +63,7 @@ action :write_backup_info do
   masterstatus['Master_IP'] = node[:db_mysql][:current_master_ip]
   masterstatus['Master_instance_uuid'] = node[:db_mysql][:current_master_uuid]
   slavestatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS')
+  slavestatus ||= Hash.new
   if node[:db_mysql][:this_is_master]
     Chef::Log.info "Backing up Master info"
   else
@@ -378,25 +379,27 @@ action :promote do
 
   RightScale::Database::MySQL::Helper.do_query(node, "SET GLOBAL READ_ONLY=0", 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
   newmasterstatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS', 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
-  node[:db_mysql][:previous_master] = newmasterstatus['Master_Host']
-  raise "FATAL: could not determine master host from slave status" if node[:db_mysql][:previous_master].nil?
-  Chef::Log.info "host: #{node[:db_mysql][:previous_master]} user: #{node[:db][:admin][:user]}, pass: #{node[:db][:admin][:password]}"
+#  node[:db_mysql][:previous_master] = newmasterstatus['Master_Host']
+  previous_master = node[:db_mysql][:current_master_ip]
+  raise "FATAL: could not determine master host from slave status" if previous_master.nil?
+  Chef::Log.info "host: #{previous_master}}"
+  #Chef::Log.info "host: #{previous_master} user: #{node[:db][:admin][:user]}, pass: #{node[:db][:admin][:password]}"
 
   # PHASE1: contains non-critical old master operations, if a timeout or
   # error occurs we continue promotion assuming the old master is dead.
   begin
     # OLDMASTER: query with terminate (STOP SLAVE)
-    RightScale::Database::MySQL::Helper.do_query(node, 'STOP SLAVE', node[:db_mysql][:previous_master], RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT, 2)
+    RightScale::Database::MySQL::Helper.do_query(node, 'STOP SLAVE', previous_master, RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT, 2)
 
     # OLDMASTER: flush_and_lock_db
-    RightScale::Database::MySQL::Helper.do_query(node, 'FLUSH TABLES WITH READ LOCK', node[:db_mysql][:previous_master], 5, 12)
+    RightScale::Database::MySQL::Helper.do_query(node, 'FLUSH TABLES WITH READ LOCK', previous_master, 5, 12)
 
 
     # OLDMASTER:
-    masterstatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS', node[:db_mysql][:previous_master], RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+    masterstatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS', previous_master, RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
 
     # OLDMASTER: unconfigure source of replication
-    RightScale::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST=''", node[:db_mysql][:previous_master], RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+    RightScale::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST=''", previous_master, RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
 
     master_file=masterstatus['File']
     master_position=masterstatus['Position']
@@ -427,12 +430,12 @@ action :promote do
 
   # PHASE3: more non-critical operations, have already made assumption oldmaster is dead
   begin
-    unless node[:db_mysql][:previous_master].nil?
+    unless previous_master.nil?
       #unlocking oldmaster
-      RightScale::Database::MySQL::Helper.do_query(node, 'UNLOCK TABLES', node[:db_mysql][:previous_master])
+      RightScale::Database::MySQL::Helper.do_query(node, 'UNLOCK TABLES', previous_master)
       SystemTimer.timeout_after(RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT) do
 	#demote oldmaster
-	RightScale::Database::MySQL::Helper.reconfigure_replication(node, node[:db_mysql][:previous_master], node[:ipaddress], newmaster_file, newmaster_position)
+	RightScale::Database::MySQL::Helper.reconfigure_replication(node, previous_master, node[:cloud][:private_ips][0], newmaster_file, newmaster_position)
       end
     end
   rescue Timeout::Error => e
@@ -440,6 +443,4 @@ action :promote do
   rescue => e
     Chef::Log.info("WARNING: rescuing exception #{e}, continuing with promote")
   end
-  # used to skip pre_backup_sanity_check
-  node[:db][:backup][:force] = true
 end

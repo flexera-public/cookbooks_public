@@ -10,6 +10,7 @@
 rs_utils_marker :begin
 
 include_recipe "db_mysql::do_lookup_master"
+raise "No master DB found" unless node[:db_mysql][:current_master_ip] && node[:db_mysql][:current_master_uuid] 
 
 sys_firewall "Request master database close port 3306 to this slave" do
   machine_tag "rs_dbrepl:master_instance_uuid=#{node[:db_mysql][:current_master_uuid]}"

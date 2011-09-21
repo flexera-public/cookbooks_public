@@ -9,13 +9,15 @@
 
 rs_utils_marker :begin
 
-include_recipe 'db_mysql::do_lookup_master'
+#include_recipe 'db_mysql::do_lookup_master'
 
 # Find current master
 ruby_block "slave check" do
   block do
     raise "FATAL: this instance is already a master!" if node[:db_mysql][:this_is_master]
-    raise "FATAL: Unable to lookup current master server" unless node[:db_mysql][:current_master_uuid]
+    # The master could be terminated.  Warn the user and plow ahead and try to become master.
+    Chef::Log.warn "WARNING: Unable to lookup current master server UUID" unless node[:db_mysql][:current_master_uuid]
+    Chef::Log.warn "WARNING: Unable to lookup current master server IP" unless node[:db_mysql][:current_master_ip]
   end
 end
 
@@ -44,14 +46,22 @@ template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/et
   cookbook 'db_mysql'
 end
 
+
+# Change the tags, but, leave the current_master* node attributes so they can be used for "previous" master
+include_recipe 'db_mysql::do_tag_as_master'
+include_recipe "db_mysql::setup_replication_privileges"
+
 db node[:db][:data_dir] do
   action :promote
 end
 
-include_recipe "db_mysql::setup_replication_privileges"
-include_recipe 'db_mysql::do_tag_as_master'
+# Now do the lookup to setup the current_master
+include_recipe 'db_mysql::do_lookup_master'
 include_recipe 'db_mysql::setup_master_backup'
+# used to skip pre_backup_sanity_check
+node[:db][:backup][:force] = true
 include_recipe 'db::do_backup'
+node[:db][:backup][:force] = false
 
 remote_recipe "enable slave backups on oldmaster" do
   recipe "db_mysql::setup_slave_backup"
