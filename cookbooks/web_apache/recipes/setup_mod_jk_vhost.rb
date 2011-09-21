@@ -68,16 +68,18 @@ end
 #
 template "#{etc_apache}/conf.d/mod_jk.conf" do
   source "mod_jk.conf.erb"
-  tomcat_name "tomcat6"
+  variables :tomcat_name => "tomcat6"
 end
 
 # == Configure apache vhost for tomcat
 #
 template "#{etc_apache}/sites-enabled/#{node[:web_apache][:application_name]}.conf" do
   source "apache_mod_jk_vhost.erb"
-  docroot node[:web_apache][:docroot]
-  vhost_port node[:app][:port]
-  server_name node[:php][:server_name]
+  variables(
+    :docroot     => node[:web_apache][:docroot],
+    :vhost_port  => node[:app][:port],
+    :server_name => node[:php][:server_name]
+  )
   notifies :restart, resources(:service => "apache2")
 #  notifies :restart, resources(:service => "apache2"), :immediately
 end
