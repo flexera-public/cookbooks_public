@@ -1,16 +1,16 @@
 # HTTP-only virtual host template with mod_jk
 
-Listen <%= @params[:vhost_port] %>
-<VirtualHost *:<%= @params[:vhost_port] %>>
+Listen <%= @vhost_port %>
+<VirtualHost *:<%= @vhost_port %>>
 
-     ServerName <%= @params[:server_name] %>
+     ServerName <%= @server_name %>
      UseCanonicalName On
 
-     DocumentRoot <%= @params[:docroot] %>
+     DocumentRoot <%= @docroot %>
       <DirectoryMatch  /\.git/|/\.svn/ >
        Deny from all
      </DirectoryMatch>
-     <Directory "<%= @params[:docroot] %>">
+     <Directory "<%= @docroot %>">
       Options FollowSymLinks
       AllowOverride None
       Order allow,deny

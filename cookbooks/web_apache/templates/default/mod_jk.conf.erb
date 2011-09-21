@@ -3,11 +3,11 @@
 LoadModule    jk_module  modules/mod_jk.so
 
 # Where to find workers.properties
-JkWorkersFile /etc/<%= @params[:tomcat_name] %>/workers.properties
+JkWorkersFile /etc/<%= @tomcat_name %>/workers.properties
 # Where to put jk shared memory
-JkShmFile     /var/log/<%= @params[:tomcat_name] %>/mod_jk.shm
+JkShmFile     /var/log/<%= @tomcat_name %>/mod_jk.shm
 # Where to put jk logs
-JkLogFile     /var/log/<%= @params[:tomcat_name] %>/mod_jk.log
+JkLogFile     /var/log/<%= @tomcat_name %>/mod_jk.log
 # Set the jk log level [debug/error/info]
 JkLogLevel    info
 # Select the log format
