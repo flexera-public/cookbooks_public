@@ -62,10 +62,6 @@ bash "install_tomcat_connectors" do
   EOH
 end
 
-execute "Rename mod_jk.conf" do
-  command "-e #{etc_apache}/conf.d/mod_jk.conf ] && mv -f #{etc_apache}/conf.d/mod_jk.conf #{etc_apache}/conf.d/mod_jk.conf.bak.$(date '+%s') || true"
-end
-
 # == Configure workers.properties for mod_jk
 #
 template "/etc/tomcat6/workers.properties" do
@@ -78,6 +74,7 @@ end
 #
 template "#{etc_apache}/conf.d/mod_jk.conf" do
   action :create
+  backup false
   source "mod_jk.conf.erb"
   variables :tomcat_name => "tomcat6"
 end
@@ -97,7 +94,7 @@ end
 # == Configure apache vhost for tomcat
 #
 template "#{etc_apache}/sites-enabled/#{node[:web_apache][:application_name]}.conf" do
-  action :create
+  action :create_if_missing
   source "apache_mod_jk_vhost.erb"
   variables(
     :docroot     => docroot4apache,
