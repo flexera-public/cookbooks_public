@@ -15,7 +15,7 @@ include_recipe 'db_mysql::do_lookup_master'
 ruby_block "slave check" do
   block do
     raise "FATAL: this instance is already a master!" if node[:db_mysql][:this_is_master]
-    raise "FATAL: Unable to lookup current master server" unless node[:db_mysql][:current_master]
+    raise "FATAL: Unable to lookup current master server" unless node[:db_mysql][:current_master_uuid]
   end
 end
 
@@ -55,7 +55,7 @@ include_recipe 'db::do_backup'
 
 remote_recipe "enable slave backups on oldmaster" do
   recipe "db_mysql::setup_slave_backup"
-  recipients_tags "rs_dbrepl:master_instance_uuid=#{node[:db_mysql][:current_master]}"
+  recipients_tags "rs_dbrepl:master_instance_uuid=#{node[:db_mysql][:current_master_uuid]}"
 end
 
 rs_utils_marker :end

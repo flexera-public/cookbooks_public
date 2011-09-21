@@ -12,7 +12,7 @@ rs_utils_marker :begin
 include_recipe "db_mysql::do_lookup_master"
 
 sys_firewall "Request master database open port 3306 to this slave" do
-  machine_tag "rs_dbrepl:master_instance_uuid=#{node[:db_mysql][:current_master]}"
+  machine_tag "rs_dbrepl:master_instance_uuid=#{node[:db_mysql][:current_master_uuid]}"
   port 3306
   enable true
   ip_addr node[:cloud][:private_ips][0]
