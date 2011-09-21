@@ -25,8 +25,15 @@
 
 rs_utils_marker :begin
 
-package 'perl-Digest-SHA1'
-package 'perl-Digest-HMAC'
+package value_for_platform(
+    [ "ubuntu", "debian" ] => { "default" => "libdigest-sha1-perl" },
+    [ "centos", "redhat", "suse" ] => { "default" => "perl-Digest-SHA1" }
+  )
+
+package value_for_platform(
+    [ "ubuntu", "debian" ] => { "default" => "libdigest-hmac-perl" },
+    [ "centos", "redhat", "suse" ] => { "default" => "perl-Digest-HMAC" }
+  )
 
 directory "/opt/rightscale/dns" do
   owner "root"
