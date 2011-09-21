@@ -14,7 +14,7 @@ r = server_collection "master_servers" do
 end
 r.run_action(:load)
 
-# Finds the current master and sets the node attrib for node[:db_mysql][:current_master]
+# Finds the current master and sets the node attrib for node[:db_mysql][:current_master_uuid]
 # ALSO: sets up special variable :this_is_master
 r = ruby_block "find current master" do
   block do
@@ -22,11 +22,12 @@ r = ruby_block "find current master" do
     node[:server_collection]["master_servers"].each do |id, tags|
       active = tags.select { |s| s =~ /rs_dbrepl:master_active/ }
       my_uuid = tags.detect { |u| u =~ /rs_dbrepl:master_instance_uuid/ }
+      my_ip_0 = tags.detect { |i| i =~ /server:public_ip_0/ }
       most_recent = active.sort.last
-      collect[most_recent] = my_uuid
+      collect[most_recent] = my_uuid, my_ip_0
     end
-    most_recent_timest = collect.keys.sort.last
-    current_master_uuid = collect[most_recent_timest]
+    most_recent_timestamp = collect.keys.sort.last
+    current_master_uuid, current_master_ip = collect[most_recent_timestamp]
     if current_master_uuid =~ /#{node[:rightscale][:instance_uuid]}/
       Chef::Log.info "THIS instance is the current master"
       node[:db_mysql][:this_is_master] = true
@@ -34,12 +35,16 @@ r = ruby_block "find current master" do
       node[:db_mysql][:this_is_master] = false
     end
     if current_master_uuid
-      node[:db_mysql][:current_master] = current_master_uuid.split(/=/, 2).last.chomp if current_master_uuid
-      Chef::Log.info "found current master: #{node[:db_mysql][:current_master]} active at #{most_recent_timest}"
+      node[:db_mysql][:current_master_uuid] = current_master_uuid.split(/=/, 2).last.chomp
     else
-      Chef::Log.warn "no current master db found"
       raise "No current master db found"
     end
+    if current_master_ip
+      node[:db_mysql][:current_master_ip] = current_master_ip.split(/=/, 2).last.chomp
+    else
+      raise "No current master ip found"
+    end
+      Chef::Log.info "found current master: #{node[:db_mysql][:current_master_uuid]} ip: #{node[:db_mysql][:current_master_ip]} active at #{most_recent_timestamp}"
   end
 end
 r.run_action(:create)

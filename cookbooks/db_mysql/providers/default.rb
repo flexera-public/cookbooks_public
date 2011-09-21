@@ -58,21 +58,15 @@ action :reset do
 end
 
 action :write_backup_info do
+  masterstatus = Hash.new
   masterstatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS')
-  if masterstatus
+  masterstatus['Master_IP'] = node[:db_mysql][:current_master_ip]
+  masterstatus['Master_instance_uuid'] = node[:db_mysql][:current_master_uuid]
+  slavestatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS')
+  if node[:db_mysql][:this_is_master]
     Chef::Log.info "Backing up Master info"
-    # Good, this is an instance that has binlogs enabled...we'll save that "master" info so that we can potentially
-    # initialize a slave from it (if this instance is still alive)
-    #masterstatus['Master_IP'] = db.get_ip_from_ifconfig(nil)
-    masterstatus['Master_IP'] = node[:cloud][:private_ips][0]
-    masterstatus['Master_instance_uuid'] = node[:rightscale][:instance_uuid]
   else
     Chef::Log.info "Backing up slave replication status"
-    slavestatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS')
-    masterstatus = Hash.new
-    # Need to get the master hostname from slave status and then resolve to get the IP
-    masterhost = slavestatus['Master_Host']
-    masterstatus['Master_IP'] = `host -4 -t A #{masterhost}`.split(/ /)[3].chomp
     masterstatus['File'] = slavestatus['Relay_Master_Log_File']
     masterstatus['Position'] = slavestatus['Exec_Master_Log_Pos']
   end
