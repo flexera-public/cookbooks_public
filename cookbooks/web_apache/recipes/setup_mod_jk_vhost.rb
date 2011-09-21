@@ -22,7 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-rs_utils_marker :begin 
+rs_utils_marker :begin
 
 arch = node[:kernel][:machine]
 connectors_source = "tomcat-connectors-1.2.32-src.tar.gz"
@@ -63,7 +63,15 @@ bash "install_tomcat_connectors" do
 end
 
 execute "Rename mod_jk.conf" do
-  command "-e /etc/httpd/conf.d/mod_jk.conf ] && mv -f /etc/httpd/conf.d/mod_jk.conf /etc/httpd/conf.d/mod_jk.conf.bak.$(date '+%s') || true"
+  command "-e #{etc_apache}/conf.d/mod_jk.conf ] && mv -f #{etc_apache}/conf.d/mod_jk.conf #{etc_apache}/conf.d/mod_jk.conf.bak.$(date '+%s') || true"
+end
+
+# == Configure workers.properties for mod_jk
+#
+template "/etc/tomcat6/workers.properties" do
+  action :create
+  source "tomcat_workers.properties.erb"
+  variables :tomcat_name => "tomcat6"
 end
 
 # == Configure mod_jk conf
@@ -89,6 +97,10 @@ end
 # disable default vhost
 #apache_site "000-default" do
 #  enable false
+#end
+
+#service "apache2" do
+#  action :nothing
 #end
 
 rs_utils_marker :end
