@@ -88,13 +88,19 @@ execute "Enable a2enmod apache module" do
   command "a2enmod rewrite && a2enmod deflate"
 end
 
+if node[:tomcat][:code][:root_war]
+  docroot4apache = "#{node[:tomcat][:docroot]}"
+else
+  docroot4apache = "#{node[:tomcat][:docroot]}/ROOT"
+end
+
 # == Configure apache vhost for tomcat
 #
 template "#{etc_apache}/sites-enabled/#{node[:web_apache][:application_name]}.conf" do
   action :create
   source "apache_mod_jk_vhost.erb"
   variables(
-    :docroot     => node[:tomcat][:docroot],
+    :docroot     => docroot4apache,
     :vhost_port  => node[:app][:port],
     :server_name => node[:web_apache][:server_name]
   )
