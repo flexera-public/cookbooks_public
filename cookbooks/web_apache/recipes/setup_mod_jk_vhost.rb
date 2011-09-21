@@ -94,19 +94,14 @@ template "#{etc_apache}/sites-enabled/#{node[:web_apache][:application_name]}.co
   action :create
   source "apache_mod_jk_vhost.erb"
   variables(
-    :docroot     => node[:web_apache][:docroot],
+    :docroot     => node[:tomcat][:docroot],
     :vhost_port  => node[:app][:port],
     :server_name => node[:web_apache][:server_name]
   )
 end
 
-# disable default vhost
-#apache_site "000-default" do
-#  enable false
-#end
-
-#service "apache2" do
-#  action :nothing
-#end
+service "#{node[:apache][:config_subdir]}" do
+  action [ :enable, :restart ]
+end
 
 rs_utils_marker :end
