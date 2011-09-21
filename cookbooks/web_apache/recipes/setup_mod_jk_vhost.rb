@@ -101,7 +101,7 @@ template "#{etc_apache}/sites-enabled/#{node[:web_apache][:application_name]}.co
 end
 
 service "#{node[:apache][:config_subdir]}" do
-  action [ :enable, :restart ]
+  action :restart
 end
 
 rs_utils_marker :end
