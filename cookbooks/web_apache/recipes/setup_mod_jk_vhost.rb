@@ -86,9 +86,9 @@ execute "Enable a2enmod apache module" do
 end
 
 if node[:tomcat][:code][:root_war]
-  docroot4apache = "#{node[:tomcat][:docroot]}"
-else
   docroot4apache = "#{node[:tomcat][:docroot]}/ROOT"
+else
+  docroot4apache = "#{node[:tomcat][:docroot]}"
 end
 
 # == Configure apache vhost for tomcat
