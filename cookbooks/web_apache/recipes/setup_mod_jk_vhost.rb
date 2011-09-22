@@ -85,9 +85,11 @@ execute "Enable a2enmod apache module" do
   command "a2enmod rewrite && a2enmod deflate"
 end
 
-if node[:tomcat][:code][:root_war]
+if (defined? node[:tomcat][:code][:root_war])
+  log "root_war defined, setting apache docroot to #{node[:tomcat][:docroot]}/ROOT"
   docroot4apache = "#{node[:tomcat][:docroot]}/ROOT"
 else
+  log "root_war not defined, setting apache docroot to #{node[:tomcat][:docroot]}"
   docroot4apache = "#{node[:tomcat][:docroot]}"
 end
 
