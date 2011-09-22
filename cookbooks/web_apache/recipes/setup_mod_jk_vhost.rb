@@ -24,9 +24,13 @@
 
 rs_utils_marker :begin
 
+etc_apache = "/etc/#{node[:apache][:config_subdir]}"
+
+#check if mod_jk is installed
+if !File.exists?("#{etc_apache}/conf.d/mod_jk.conf")
+
 arch = node[:kernel][:machine]
 connectors_source = "tomcat-connectors-1.2.32-src.tar.gz"
-etc_apache = "/etc/#{node[:apache][:config_subdir]}"
 
 if arch == "x86_64"
   bash "install_remove" do
@@ -107,6 +111,10 @@ end
 
 service "#{node[:apache][:config_subdir]}" do
   action :restart
+end
+
+else
+  log "mod_jk already installed, skipping the recipe"
 end
 
 rs_utils_marker :end
