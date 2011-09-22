@@ -79,7 +79,11 @@ end
 
 ruby_block "reconfigure_replication" do
   block do
-    RightScale::Database::MySQL::Helper.reconfigure_replication(node)
+    master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
+    newmaster_host = master_info['Master_IP']
+    newmaster_logfile = master_info['File']
+    newmaster_position = master_info['Position'] 
+    RightScale::Database::MySQL::Helper.reconfigure_replication(node, 'localhost', newmaster_host, newmaster_logfile, newmaster_position)
   end
 end
 

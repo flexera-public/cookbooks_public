@@ -86,10 +86,11 @@ module RightScale
 	end
 
         def self.reconfigure_replication(node, hostname = 'localhost', newmaster_host = nil, newmaster_logfile=nil, newmaster_position=nil)
-          master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
-          newmaster_host = master_info['Master_IP']
-          newmaster_logfile = master_info['File']
-          newmaster_position = master_info['Position']
+# These must be passed and not read from a file
+#          master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
+#          newmaster_host = master_info['Master_IP']
+#          newmaster_logfile = master_info['File']
+#          newmaster_position = master_info['Position']
           Chef::Log.info "Configuring with #{newmaster_host} logfile #{newmaster_logfile} position #{newmaster_position}"
 
           # legacy did this twice, looks like slave stop can fail once (only throws warning if slave is already stopped)
