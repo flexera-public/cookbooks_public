@@ -52,6 +52,18 @@
           "app_tomcat::setup_db_connection"
         ]
       },
+      "tomcat/java": {
+        "calculated": false,
+        "type": "hash",
+        "choice": [
+
+        ],
+        "display_name": "Tomcat java settings",
+        "recipes": [
+
+        ],
+        "required": "optional"
+      },
       "tomcat/code": {
         "calculated": false,
         "type": "hash",
@@ -76,6 +88,19 @@
         "required": "optional",
         "recipes": [
           "app_tomcat::do_update_code",
+          "app_tomcat::default"
+        ]
+      },
+      "tomcat/java/xmx": {
+        "calculated": false,
+        "type": "string",
+        "choice": [
+
+        ],
+        "description": "The java Xmx argument (i.e. 512m)",
+        "display_name": "Tomcat Java XMX",
+        "required": "optional",
+        "recipes": [
           "app_tomcat::default"
         ]
       },
@@ -129,6 +154,19 @@
         "required": "optional",
         "recipes": [
           "app_tomcat::do_update_code",
+          "app_tomcat::default"
+        ]
+      },
+      "tomcat/java/xms": {
+        "calculated": false,
+        "type": "string",
+        "choice": [
+
+        ],
+        "description": "The java Xms argument (i.e. 512m)",
+        "display_name": "Tomcat Java XMS",
+        "required": "optional",
+        "recipes": [
           "app_tomcat::default"
         ]
       }

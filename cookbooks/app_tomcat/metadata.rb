@@ -31,6 +31,10 @@ attribute "tomcat/code",
   :display_name => "Tomcat Application Code",
   :type => "hash"
   
+attribute "tomcat/java",
+  :display_name => "Tomcat java settings",
+  :type => "hash"
+  
 attribute "tomcat/code/url",
   :display_name => "Repository URL",
   :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
@@ -55,3 +59,15 @@ attribute "tomcat/code/root_war",
   :description => "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
   :required => "optional",
   :recipes => [ "app_tomcat::do_update_code" ]
+
+attribute "tomcat/java/xms",
+  :display_name => "Tomcat Java XMS",
+  :description => "The java Xms argument (i.e. 512m)",
+  :required => "optional",
+  :recipes => [ "app_tomcat::default" ]
+
+attribute "tomcat/java/xmx",
+  :display_name => "Tomcat Java XMX",
+  :description => "The java Xmx argument (i.e. 512m)",
+  :required => "optional",
+  :recipes => [ "app_tomcat::default" ]
