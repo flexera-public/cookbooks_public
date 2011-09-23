@@ -35,12 +35,12 @@ Chef::Log.info("You did not provide branch informaiton -- setting to default.") 
 # Execute once, on first boot
 if (! node[:delete_docroot_once])
   log("Deleting the original docroot #{node[:tomcat][:docroot]}")
-
   directory "#{node[:tomcat][:docroot]}" do
     recursive true
     action :delete
   end
-  
+
+  log("Cloning repository to #{node[:tomcat][:docroot]}")
   # Clone to grab application source from remote repository. Pull is done in the next bash script
   repo_git_pull "Get Repository" do
     url    node[:tomcat][:code][:url]
