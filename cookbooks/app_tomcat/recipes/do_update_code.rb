@@ -32,24 +32,32 @@ raise "You must provide a destination for your application code." if ("#{node[:t
 Chef::Log.warn("WARNING: You did not provide credentials for your code repository -- assuming public repository.") if ("#{node[:tomcat][:code][:credentials]}" == "")
 Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{node[:tomcat][:code][:branch]}" == "")
 
-#clone once, pull is done in the next bash script
-if !File.exists?("#{node[:tomcat][:docroot]}")
-  # grab application source from remote repository
+# Execute once, on first boot
+if (! node[:delete_docroot_once])
+  log("Deleting the original docroot #{node[:tomcat][:docroot]}")
+
+  directory "#{node[:tomcat][:docroot]}" do
+    recursive true
+    action :delete
+  end
+  
+  # Clone to grab application source from remote repository. Pull is done in the next bash script
   repo_git_pull "Get Repository" do
     url    node[:tomcat][:code][:url]
     branch node[:tomcat][:code][:branch]
     dest   node[:tomcat][:docroot]
     cred   node[:tomcat][:code][:credentials]
-  end
-end
+  end  
+  node[:delete_docroot_once] = true
+end 
 
-#Set ROOT war and code ownership
+# Set ROOT war and code ownership
 bash "set_root_war_and_chown_home" do
   flags "-ex"
   code <<-EOH
     cd #{node[:tomcat][:docroot]}
     git_pull_output=$(git pull)
-    if grep -i -q "Already up-to-date"<<<$git_pull_output; then
+    if grep -i -q "Already up-to-date"<<<$git_pull_output && test "#{node[:delete_docroot_once]}" = ""; then
       echo "Code is up-to-date, exiting successfully"
       exit 0
     fi
