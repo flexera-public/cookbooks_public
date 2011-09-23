@@ -81,19 +81,19 @@ rs_utils_marker :begin
     end
   end
   
-bash "Create /usr/lib/jvm-exports/java if possible" do
-  flags "-ex"
-  code <<-EOH
-    if [ -d "/usr/lib/jvm-exports" ] && [ ! -d "/usr/lib/jvm-exports/java" ]; then
-      cd /usr/lib/jvm-exports
-      java_dir=`ls -d java-* -1 2>/dev/null | tail -1`
-
-      if test "$jboss_archive" = "" ; then
-        ln -s $java_dir java
+  bash "Create /usr/lib/jvm-exports/java if possible" do
+    flags "-ex"
+    code <<-EOH
+      if [ -d "/usr/lib/jvm-exports" ] && [ ! -d "/usr/lib/jvm-exports/java" ]; then
+        cd /usr/lib/jvm-exports
+        java_dir=`ls -d java-* -1 2>/dev/null | tail -1`
+  
+        if test "$jboss_archive" = "" ; then
+          ln -s $java_dir java
+        fi
       fi
-    fi
-  EOH
-end
+    EOH
+  end
 
 #else
 #    log "nothing done yet for non centos"
