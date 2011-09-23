@@ -40,6 +40,11 @@ template "/etc/tomcat6/server.xml" do
   mode "0644"
 end
 
+template "/etc/logrotate.d/tomcat6" do
+  source "tomcat6_logrotate.conf.erb"
+  variables :tomcat_name => "tomcat6"
+end
+
 service "tomcat6" do
   supports :status => true, :restart => true
   action [ :enable, :start ]
