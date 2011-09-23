@@ -43,7 +43,7 @@ bash "Add optional Java XMS and XMX parameters" do
       [ -n "#{node[:tomcat][:java][:xms]}" ] && xms_val="#{node[:tomcat][:java][:xms]}"
       [ -n "#{node[:tomcat][:java][:xmx]}" ] && xmx_val="#{node[:tomcat][:java][:xmx]}"
       cat << EOF >> $tc_conf
-# Increase the memory allocation size
+# Set the memory allocation size
 CATALINA_OPTS="\$CATALINA_OPTS -Xms$xms_val -Xmx$xmx_val"
 EOF
     fi

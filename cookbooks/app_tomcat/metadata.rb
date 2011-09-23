@@ -14,6 +14,7 @@ recipe  "app_tomcat::default", "Installs the tomcat application server."
 recipe  "app_tomcat::do_update_code", "Update application source files from the remote repository."
 recipe  "app_tomcat::setup_db_connection", "Set up the MySQL database db.tomcat connection file."
 recipe  "app_tomcat::setup_tomcat_configs", "Configure tomcat."
+recipe  "app_tomcat::setup_monitoring", "Install collectd monitoring for tomcat."
 
 attribute "tomcat",
   :display_name => "Tomcat Application Settings",

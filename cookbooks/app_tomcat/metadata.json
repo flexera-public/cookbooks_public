@@ -1,5 +1,6 @@
 {
     "recipes": {
+      "app_tomcat::setup_monitoring": "Install collectd monitoring for tomcat.",
       "app_tomcat::setup_tomcat_configs": "Configure tomcat.",
       "app_tomcat::setup_db_connection": "Set up the MySQL database db.tomcat connection file.",
       "app_tomcat::default": "Installs the tomcat application server.",
