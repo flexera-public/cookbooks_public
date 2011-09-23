@@ -25,14 +25,15 @@
 # add the collectd exec plugin to the set of collectd plugins if it isn't already there
 rs_utils_enable_collectd_plugin 'exec'
 
-# rebuild the collectd configuration file if necessary
-include_recipe "rs_utils::setup_monitoring"
-
 if !File.exists?("/usr/share/java/collectd.jar")
+  # rebuild the collectd configuration file if necessary
+  include_recipe "rs_utils::setup_monitoring"
+  
   if node[:platform] == 'centos'
     
     cookbook_file "/usr/share/java/collectd.jar" do
       source "collectd.jar"
+      mode "0644"
     end
   
     bash "Configure collectd for tomcat" do
@@ -46,8 +47,13 @@ EOF
       EOH
     end
 
+  service "tomcat6" do
+    supports :status => true, :restart => true
+    action [ :restart ]
+  end
+
   else
-    Chef::Log.info "WARNING: attempting to install collectd-apache on unsupported platform #{node[:platform]}, continuing.."
+    Chef::Log.info "WARNING: attempting to install collectd-tomcat on unsupported platform #{node[:platform]}."
   end
 else
   log("Collectd plugin for Tomcat already installed, skipping...")
