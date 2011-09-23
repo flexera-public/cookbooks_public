@@ -9,7 +9,7 @@
     },
     "recommendations": {
     },
-    "version": "0.0.1",
+    "version": "0.1.1",
     "maintainer": "RightScale, Inc.",
     "long_description": "= RightScale App Tomcat Cookbook (Beta)\n\n== DESCRIPTION:\n\n== DETAILS:\n\n== REQUIREMENTS:\n\n== SETUP: \n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n",
     "description": "Installs the tomcat application server.",
@@ -101,7 +101,7 @@
         "display_name": "Tomcat Java XMX",
         "required": "optional",
         "recipes": [
-          "app_tomcat::default"
+          "app_tomcat::setup_tomcat_configs"
         ]
       },
       "tomcat/code/root_war": {
@@ -167,7 +167,7 @@
         "display_name": "Tomcat Java XMS",
         "required": "optional",
         "recipes": [
-          "app_tomcat::default"
+          "app_tomcat::setup_tomcat_configs"
         ]
       }
     },

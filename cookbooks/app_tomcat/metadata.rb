@@ -3,7 +3,7 @@ maintainer_email "support@rightscale.com"
 #license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'LICENSE')))
 description      "Installs the tomcat application server."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
-version          "0.0.1"
+version          "0.1.1"
 
 depends "app"
 depends "db_mysql"
@@ -64,10 +64,10 @@ attribute "tomcat/java/xms",
   :display_name => "Tomcat Java XMS",
   :description => "The java Xms argument (i.e. 512m)",
   :required => "optional",
-  :recipes => [ "app_tomcat::default" ]
+  :recipes => [ "app_tomcat::setup_tomcat_configs" ]
 
 attribute "tomcat/java/xmx",
   :display_name => "Tomcat Java XMX",
   :description => "The java Xmx argument (i.e. 512m)",
   :required => "optional",
-  :recipes => [ "app_tomcat::default" ]
+  :recipes => [ "app_tomcat::setup_tomcat_configs" ]

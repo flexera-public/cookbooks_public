@@ -32,6 +32,24 @@ template "/etc/tomcat6/tomcat6.conf" do
   mode "0644"
 end
 
+bash "Add optional Java XMS and XMX parameters" do
+  flags "-ex"
+  code <<-EOH
+    tc_conf=/etc/tomcat6/tomcat6.conf
+
+    if [ -z "$(grep "OPTS -Xms" $tc_conf)" ] ; then 
+      xms_val="512m"
+      xmx_val="512m"
+      [ -n "#{node[:tomcat][:java][:xms]}" ] && xms_val="#{node[:tomcat][:java][:xms]}"
+      [ -n "#{node[:tomcat][:java][:xmx]}" ] && xmx_val="#{node[:tomcat][:java][:xmx]}"
+      cat << EOF >> $tc_conf
+# Increase the memory allocation size
+CATALINA_OPTS="\$CATALINA_OPTS -Xms$xms_val -Xmx$xmx_val"
+EOF
+    fi
+  EOH
+end
+
 template "/etc/tomcat6/server.xml" do
   action :create
   source "server_xml.erb"
