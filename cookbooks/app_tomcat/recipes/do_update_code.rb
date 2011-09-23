@@ -34,7 +34,7 @@ Chef::Log.info("You did not provide branch informaiton -- setting to default.") 
 
 # Execute once, on first boot
 if (! node[:delete_docroot_once])
-  log("Deleting the original docroot #{node[:tomcat][:docroot]}")
+  log("Deleting the original docroot")
   directory "#{node[:tomcat][:docroot]}" do
     recursive true
     action :delete
@@ -48,7 +48,6 @@ if (! node[:delete_docroot_once])
     dest   node[:tomcat][:docroot]
     cred   node[:tomcat][:code][:credentials]
   end  
-  node[:delete_docroot_once] = true
 end 
 
 # Set ROOT war and code ownership
@@ -67,5 +66,7 @@ bash "set_root_war_and_chown_home" do
     chown -R #{node[:tomcat][:app_user]}:#{node[:tomcat][:app_user]} #{node[:tomcat][:docroot]}
   EOH
 end
+
+node[:delete_docroot_once] = true
 
 rs_utils_marker :end

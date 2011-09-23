@@ -48,8 +48,8 @@ template "/etc/tomcat6/web.xml" do
 end
 
 # chef 0.8.* uses remote_file, 0.9.* uses cookbook_file
-#cookbook_file "/usr/share/tomcat6/lib/jstl-api-1.2.jar" do
-remote_file "/usr/share/tomcat6/lib/jstl-api-1.2.jar" do
+cookbook_file "/usr/share/tomcat6/lib/jstl-api-1.2.jar" do
+#remote_file "/usr/share/tomcat6/lib/jstl-api-1.2.jar" do
   source "jstl-api-1.2.jar"
   owner "root"
   group "root"
@@ -57,8 +57,8 @@ remote_file "/usr/share/tomcat6/lib/jstl-api-1.2.jar" do
 end
 
 # chef 0.8.* uses remote_file, 0.9.* uses cookbook_file
-#cookbook_file "/usr/share/tomcat6/lib/jstl-impl-1.2.jar" do
-remote_file "/usr/share/tomcat6/lib/jstl-impl-1.2.jar" do
+cookbook_file "/usr/share/tomcat6/lib/jstl-impl-1.2.jar" do
+#remote_file "/usr/share/tomcat6/lib/jstl-impl-1.2.jar" do
   source "jstl-impl-1.2.jar"
   owner "root"
   group "root"
