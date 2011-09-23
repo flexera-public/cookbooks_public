@@ -33,7 +33,7 @@ Chef::Log.warn("WARNING: You did not provide credentials for your code repositor
 Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{node[:tomcat][:code][:branch]}" == "")
 
 # Execute once, on first boot
-if (! node[:delete_docroot_once])
+if (! node[:delete_docroot_executed])
   log("Deleting the original docroot")
   directory "#{node[:tomcat][:docroot]}" do
     recursive true
@@ -56,7 +56,7 @@ bash "set_root_war_and_chown_home" do
   code <<-EOH
     cd #{node[:tomcat][:docroot]}
     git_pull_output=$(git pull)
-    if grep -i -q "Already up-to-date"<<<$git_pull_output && test "#{node[:delete_docroot_once]}" = ""; then
+    if grep -i -q "Already up-to-date"<<<$git_pull_output && test "#{node[:delete_docroot_executed]}" = "true"; then
       echo "Code is up-to-date, exiting successfully"
       exit 0
     fi
@@ -67,6 +67,6 @@ bash "set_root_war_and_chown_home" do
   EOH
 end
 
-node[:delete_docroot_once] = true
+node[:delete_docroot_executed] = true
 
 rs_utils_marker :end
