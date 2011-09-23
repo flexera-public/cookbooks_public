@@ -48,8 +48,13 @@ EOF
     end
 
   service "tomcat6" do
-    supports :status => true, :restart => true
-    action [ :restart ]
+    action [ :stop ]
+  end
+
+  sleep 3
+
+  service "tomcat6" do
+    action [ :start ]
   end
 
   else
