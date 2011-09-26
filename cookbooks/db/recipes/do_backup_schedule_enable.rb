@@ -25,12 +25,25 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
+include_recipe "db_mysql::do_lookup_master"
+
 snap_lineage = node[:db][:backup][:lineage]
 raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?
+
+# TODO: fix for LAMP
+if node[:db_mysql][:this_is_master]
+  hour = node[:db_mysql][:backup][:master][:hour]
+  minute = node[:db_mysql][:backup][:master][:minute]
+else
+  hour = node[:db_mysql][:backup][:slave][:hour]
+  minute = node[:db_mysql][:backup][:slave][:minute]
+end
 
 block_device DATA_DIR do
   lineage snap_lineage
   cron_backup_recipe "#{self.cookbook_name}::do_backup"
+  cron_backup_hour hour.to_s
+  cron_backup_minute minute.to_s
   action :backup_schedule_enable
 end
 
