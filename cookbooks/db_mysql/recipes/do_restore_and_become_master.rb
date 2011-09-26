@@ -10,13 +10,6 @@
 rs_utils_marker :begin
 
 include_recipe "db::do_restore"
-
-# TODO this is a restart because there is a connection issue that needs to be fixed
-# global read lock is not released after flush
-service "mysql" do
-  action :restart
-end
-
 include_recipe "db_mysql::setup_replication_privileges"
 include_recipe "db_mysql::do_tag_as_master"
 include_recipe "db_mysql::setup_master_backup"
