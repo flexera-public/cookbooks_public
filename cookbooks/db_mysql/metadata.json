@@ -215,6 +215,9 @@
   },
   "description": "Installs/configures a MySQL database server with automated backups.",
   "dependencies": {
+    "sys_dns": [
+
+    ],
     "db": [
 
     ],
