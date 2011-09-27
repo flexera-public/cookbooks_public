@@ -35,7 +35,7 @@ set_unless[:rs_utils][:process_match_list] = ""
 set_unless[:rs_utils][:private_ssh_key] = ""
 set_unless[:rs_utils][:collectd_share] = "/usr/share/collectd"
 
-set_unless[:rs_utils][:mysql_binary_backup_file] = "/var/run/mysql-binary-backup"
+set_unless[:rs_utils][:db_backup_file] = "/var/run/db-backup"
 
 default[:rs_utils][:plugin_list] = ""
 default[:rs_utils][:plugin_list_ary] = [

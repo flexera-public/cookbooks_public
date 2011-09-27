@@ -53,7 +53,7 @@ remote_file(::File.join(node[:rs_utils][:collectd_lib], "plugins", 'file-stats.r
 end
 
 # Used in db_mysql::do_backup in cookbooks_premium for backups
-file node[:rs_utils][:mysql_binary_backup_file] do
+file node[:rs_utils][:db_backup_file] do
   action :touch
   owner "nobody"
   group value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "nobody"}, "default" => "nogroup")
