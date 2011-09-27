@@ -21,6 +21,14 @@ ruby_block "slave check" do
   end
 end
 
+# TODO determine if the old master is still up and we should open the port to it
+sys_firewall "Open port 3306 to the old master which is becoming a slave" do
+  port 3306
+  enable true
+  ip_addr node[:db_mysql][:current_master_ip]
+  action :update
+end
+
 x = node[:db_mysql][:log_bin]
 logbin_dir = x.gsub(/#{::File.basename(x)}$/, "")
 directory logbin_dir do
