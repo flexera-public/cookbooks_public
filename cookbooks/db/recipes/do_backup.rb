@@ -57,9 +57,22 @@ end
 log "  Performing Backup of lineage #{node[:db][:backup][:lineage]} and post-backup cleanup..."
 # Requires block_device node[:db][:block_device] to be instantiated
 # previously. Make sure block_device::default recipe has been run.
+
+if node[:cloud][:provider] == "rackspace"
+  account_id = node[:block_device][:rackspace_user]
+  account_secret = node[:block_device][:rackspace_secret]
+else
+  account_id = node[:block_device][:aws_access_key_id]
+  account_secret = node[:block_device][:aws_secret_access_key]
+end
+
 bash "backup.rb" do
+  environment ({ 
+    'STORAGE_ACCOUNT_ID' => account_id,
+    'STORAGE_ACCOUNT_SECRET' => account_secret
+  })
   code <<-EOH
-  /opt/rightscale/sandbox/bin/backup.rb --backuponly --lineage #{node[:db][:backup][:lineage]} 2>&1 | logger -t rs_db_backup &
+  /opt/rightscale/sandbox/bin/backup.rb --backuponly --lineage #{node[:db][:backup][:lineage]} --cloud #{node[:cloud][:provider]} --storage-type #{node[:block_device][:storage_type]} --container #{node[:block_device][:storage_container]} 2>&1 | logger -t rs_db_backup &
   EOH
 end
 
