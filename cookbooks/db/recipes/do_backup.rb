@@ -54,17 +54,12 @@ db DATA_DIR do
   action :unlock
 end
 
-log "  Performing Backup..."
+log "  Performing Backup and post-backup cleanup..."
 # Requires block_device node[:db][:block_device] to be instantiated
 # previously. Make sure block_device::default recipe has been run.
-block_device DATA_DIR do
-  lineage node[:db][:backup][:lineage]
-  action :backup
-end
-
-log "  Performing post-backup cleanup..."
-db DATA_DIR do
-  action :post_backup_cleanup
+execute "backup.rb" do
+  command "/opt/rightscale/sandbox/bin/backup.rb --backuponly --lineage=#{node[:db][:backup][:lineage]} &"
+  action :run
 end
 
 rs_utils_marker :end
