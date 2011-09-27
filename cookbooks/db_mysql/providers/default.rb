@@ -99,7 +99,7 @@ end
 
 action :post_backup_cleanup do
   @db = init(new_resource)
-  @db.clean_backup_info
+  @db.post_backup_steps
 end
 
 action :set_privileges do
