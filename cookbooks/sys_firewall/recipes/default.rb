@@ -36,4 +36,26 @@ else
   end
 end
 
+
+# == Increase connection tracking table sizes
+#
+# Increase the value for the 'net.ipv4.netfilter.ip_conntrack_max' parameter
+# to avoid dropping packets on high-throughput systems.
+#
+# The ip_conntrack_max is calculated based on the RAM available on
+# the VM using this formula: ip_conntrack_max=32*n, where n is the amount
+# of RAM in MB. For the instance types greater or equal to 2GB, the value is
+# 65536.
+#
+GB=1024*1024
+mem_mb = node[:memory][:total].to_i/1024
+conn_max = (mem_mb >= 2*GB) ? 65536 : 32*mem_mb
+
+log "Setup IP connection tracking limit of #{conn_max}"
+bash "Update net.ipv4.ip_conntrack_max" do
+  code <<-EOH 
+    sysctl -w net.ipv4.ip_conntrack_max=#{conn_max}
+  EOH
+end
+
 rs_utils_marker :end
