@@ -36,9 +36,29 @@ block_device DATA_DIR do
   action :reset
 end
 
+log "  Cleaning stuff..."
+bash "cleaning stuff" do
+  code <<-EOH
+  rm -f #{node[:rs_utils][:db_backup_file]} #{::File.join('/var/lock', DATA_DIR.gsub('/', '_') + '.lock')} /var/run/rightscale_tools_database_lock.pid
+  rmdir #{DATA_DIR}
+  rs_tag -r 'rs_dbrepl:*'
+  EOH
+end
+
+sys_dns "cleaning dns" do
+  provider "sys_dns_#{node[:sys_dns][:choice]}"
+
+  id node[:sys_dns][:id]
+  user node[:sys_dns][:user]
+  password node[:sys_dns][:password]
+  address '1.1.1.1'
+
+  action :set_private
+end
+
 log "  Resetting database, then starting database..."
 db DATA_DIR do
-	action [ :reset, :start ]
+  action [ :reset, :start ]
 end
 
 rs_utils_marker :end
