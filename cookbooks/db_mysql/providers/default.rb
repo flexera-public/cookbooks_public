@@ -93,8 +93,6 @@ end
 action :pre_backup_check do
   @db = init(new_resource)
   @db.pre_backup_check
-  # TODO: used for replication
-  # @db.write_mysql_backup_info
 end
 
 action :post_backup_cleanup do
