@@ -2,22 +2,6 @@
   "suggestions": {
   },
   "attributes": {
-    "db_mysql/backup/slave/minute": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_slave_backup",
-        "db_mysql::setup_master_backup",
-        "db_mysql::do_disable_backup",
-        "db_mysql::do_enable_backup"
-      ],
-      "display_name": "Slave Backup Cron Minute",
-      "description": "Defines the minute of the hour when the backup EBS snapshot will be taken of the Slave database.  Backups of the Slave are taken hourly.  By default, a minute will be randomly chosen at launch time.  Uses standard crontab format. (Ex: 30) for the 30th minute of the hour."
-    },
     "db_mysql/dump/prefix": {
       "required": "optional",
       "calculated": false,
@@ -91,22 +75,6 @@
       "display_name": "Storage Account Id",
       "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID. For Rackspace Cloud Files, use your Rackspace login Username."
     },
-    "db_mysql/backup/master/minute": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_slave_backup",
-        "db_mysql::setup_master_backup",
-        "db_mysql::do_disable_backup",
-        "db_mysql::do_enable_backup"
-      ],
-      "display_name": "Master Backup Cron Minute",
-      "description": "Defines the minute of the hour when the backup EBS snapshot will be taken of the Master database.  Backups of the Master are taken daily.  By default, a minute will be randomly chosen at launch time.  The time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'.  Uses standard crontab format. (Ex: 30) for the 30th minute of the hour."
-    },
     "db_mysql/dump": {
       "required": "optional",
       "calculated": false,
@@ -132,38 +100,6 @@
       ],
       "display_name": "MySQL Binlog Destination",
       "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory. Ex: /mnt/mysql-binlogs/mysql-bin"
-    },
-    "db_mysql/backup/slave/hour": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_slave_backup",
-        "db_mysql::setup_master_backup",
-        "db_mysql::do_disable_backup",
-        "db_mysql::do_enable_backup"
-      ],
-      "display_name": "Slave Backup Cron Hour",
-      "description": "By default, backup EBS Snapshots of the Slave database are taken hourly. (Ex: *)"
-    },
-    "db_mysql/backup/master/hour": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::setup_slave_backup",
-        "db_mysql::setup_master_backup",
-        "db_mysql::do_disable_backup",
-        "db_mysql::do_enable_backup"
-      ],
-      "display_name": "Master Backup Cron Hour",
-      "description": "Defines the hour of the day when the backup EBS snapshot will be taken of the Master database.  Backups of the Master are taken daily.  By default, an hour will be randomly chosen at launch time.  The time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'.  Uses standard crontab format. (Ex: 23) for 11pm."
     },
     "db_mysql/dump/storage_account_secret": {
       "required": "optional",
@@ -256,13 +192,11 @@
     "db_mysql::do_tag_as_master": "USE WITH CAUTION! Tag server with master tags and set master DNS to this server.",
     "db_mysql::do_dump_export": "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)",
     "db_mysql::setup_replication_privileges": "Set up privileges for MySQL replication slaves.",
-    "db_mysql::setup_slave_backup": "Set up crontab MySQL backup job with the slave frequency and rotation.",
     "db_mysql::do_restore_and_become_master": "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master.",
     "db_mysql::request_master_deny": "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to deny connections from the server's private IP address.  This script should be run on a slave when it stops replicating.",
     "db_mysql::do_init_slave": "Initialize MySQL Slave",
     "db_mysql::setup_continuous_export": "Schedules the daily run of do_dump_export.",
     "db_mysql::setup_master_dns": "USE WITH CAUTION! Set master DNS to this server's IP",
-    "db_mysql::setup_master_backup": "Set up crontab MySQL backup job with the master frequency and rotation.",
     "db_mysql::request_master_allow": "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to allow connections from the server's private IP address.  This script should be run on a slave before it sets up replication."
   },
   "groupings": {

@@ -12,8 +12,8 @@ rs_utils_marker :begin
 include_recipe "db::do_restore"
 include_recipe "db_mysql::setup_replication_privileges"
 include_recipe "db_mysql::do_tag_as_master"
-include_recipe "db_mysql::setup_master_backup"
 # kick-off first backup so that slaves can init from this master
 include_recipe "db::do_backup"
+include_recipe "db::do_backup_schedule_enable"
 
 rs_utils_marker :end

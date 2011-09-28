@@ -134,3 +134,27 @@ attribute "db/backup/secondary_container",
   :description => "Container for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud. For example, you can specify the name of an AWS S3 bucket or Rackspace CloudFiles container.",
   :required => true,
   :recipes => [ "db::do_secondary_backup", "db::do_secondary_restore" ]
+
+attribute "db/backup/master/hour",
+  :display_name => "Master Backup Cron Hour",
+  :description => "Defines the hour of the day when the backup EBS snapshot will be taken of the Master database.  Backups of the Master are taken daily.  By default, an hour will be randomly chosen at launch time.  The time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'.  Uses standard crontab format. (Ex: 23) for 11pm.",
+  :required => false,
+  :recipes => [ 'db::do_backup_schedule_enable' ]
+
+attribute "db/backup/slave/hour",
+  :display_name => "Slave Backup Cron Hour",
+  :description => "By default, backup EBS Snapshots of the Slave database are taken hourly. (Ex: *)",
+  :required => false,
+  :recipes => [ 'db::do_backup_schedule_enable' ]
+
+attribute "db/backup/master/minute",
+  :display_name => "Master Backup Cron Minute",
+  :description => "Defines the minute of the hour when the backup EBS snapshot will be taken of the Master database.  Backups of the Master are taken daily.  By default, a minute will be randomly chosen at launch time.  The time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'.  Uses standard crontab format. (Ex: 30) for the 30th minute of the hour.",
+  :required => false,
+  :recipes => [ 'db::do_backup_schedule_enable' ]
+
+attribute "db/backup/slave/minute",
+  :display_name => "Slave Backup Cron Minute",
+  :description => "Defines the minute of the hour when the backup EBS snapshot will be taken of the Slave database.  Backups of the Slave are taken hourly.  By default, a minute will be randomly chosen at launch time.  Uses standard crontab format. (Ex: 30) for the 30th minute of the hour.",
+  :required => false,
+  :recipes => [ 'db::do_backup_schedule_enable' ]

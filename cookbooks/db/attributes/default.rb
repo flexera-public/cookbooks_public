@@ -33,3 +33,22 @@ set_unless[:db][:replication][:password] = nil
 set_unless[:db][:backup][:lineage] = ""
 
 set_unless[:db][:backup][:force] = false
+
+# Calculate recommended backup times for master/slave
+
+set_unless[:db][:backup][:master][:minute] = 5 + rand(54) # backup starts random time between 5-59
+set_unless[:db][:backup][:master][:hour] = rand(23) # once a day, random hour
+
+user_set = true if db[:backup][:slave] && db[:backup][:slave][:minute]
+set_unless[:db][:backup][:slave][:minute] = 5 + rand(54) # backup starts random time between 5-59
+
+if db[:backup][:slave][:minute] == db[:backup][:master][:minute]
+  log_msg = "WARNING: detected master and slave backups collision."
+  unless user_set
+    db[:backup][:slave][:minute] = db[:backup][:slave][:minute].to_i / 2
+    log_msg += "  Changing slave minute to avoid collision: #{db[:backup][:slave][:minute]}"
+  end
+  Chef::Log.info log_msg
+end
+
+set_unless[:db][:backup][:slave][:hour] = "*" # every hour

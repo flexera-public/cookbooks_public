@@ -31,12 +31,12 @@ snap_lineage = node[:db][:backup][:lineage]
 raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?
 
 # TODO: fix for LAMP
-if node[:db_mysql][:this_is_master]
-  hour = node[:db_mysql][:backup][:master][:hour]
-  minute = node[:db_mysql][:backup][:master][:minute]
+if node[:db][:this_is_master]
+  hour = node[:db][:backup][:master][:hour]
+  minute = node[:db][:backup][:master][:minute]
 else
-  hour = node[:db_mysql][:backup][:slave][:hour]
-  minute = node[:db_mysql][:backup][:slave][:minute]
+  hour = node[:db][:backup][:slave][:hour]
+  minute = node[:db][:backup][:slave][:minute]
 end
 
 block_device DATA_DIR do

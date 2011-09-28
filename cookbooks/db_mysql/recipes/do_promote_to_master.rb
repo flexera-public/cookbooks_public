@@ -65,14 +65,14 @@ end
 
 # Now do the lookup to setup the current_master
 include_recipe 'db_mysql::do_lookup_master'
-include_recipe 'db_mysql::setup_master_backup'
 # used to skip pre_backup_sanity_check
 node[:db][:backup][:force] = true
 include_recipe 'db::do_backup'
 node[:db][:backup][:force] = false
+include_recipe "db::do_backup_schedule_enable"
 
 remote_recipe "enable slave backups on oldmaster" do
-  recipe "db_mysql::setup_slave_backup"
+  recipe "db::do_backup_schedule_enable"
   recipients_tags "rs_dbrepl:master_instance_uuid=#{node[:db_mysql][:current_master_uuid]}"
 end
 
