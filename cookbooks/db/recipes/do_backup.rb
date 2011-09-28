@@ -39,6 +39,10 @@ db DATA_DIR do
   action [ :lock, :write_backup_info ]
 end
 
+log "======== LINEAGE ========="
+log node[:db][:backup][:lineage]
+log "======== LINEAGE ========="
+
 log "  Performing Snapshot..."
 # Requires block_device node[:db][:block_device] to be instantiated
 # previously. Make sure block_device::default recipe has been run.
