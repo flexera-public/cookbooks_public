@@ -27,6 +27,7 @@ r = ruby_block "find current master" do
       my_ip_0 = tags.detect { |i| i =~ /server:private_ip_0/ }
       most_recent = active.sort.last
       collect[most_recent] = my_uuid, my_ip_0
+      Chef::Log.debug "DEBUG: Server collecttion master_servers: active #{active} uuid: #{my_uuid} ip_0: #{my_ip_0} most_recent #{most_recent} collect #{collect[most_recent]}"
     end
     most_recent_timestamp = collect.keys.sort.last
     current_master_uuid, current_master_ip = collect[most_recent_timestamp]
