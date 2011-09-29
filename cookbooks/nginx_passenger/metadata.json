@@ -8,7 +8,7 @@
   "attributes": {
   },
   "recipes": {
-    "default": "Installs nginx-passenger"
+    "nginx_passenger::default": "Installs nginx-passenger"
   },
   "providing": {
   },
