@@ -11,7 +11,7 @@ when "ubuntu","debian"
 		code <<-EOF
 		echo "deb http://apt.brightbox.net hardy main" >> /etc/apt/sources.list.d/passenger
 		apt-get update
-		apt-get install nginx-brightbox
+		apt-get install nginx-brightbox -y
 		EOF
 	end
 when "centos","rhel"
@@ -23,4 +23,9 @@ when "centos","rhel"
 		yum install -y nginx-passenger
 		EOF
 	end
+end
+
+service "nginx" do
+  supports :status => true, :restart => true, :reload => true
+  action [ :enable, :start ]
 end
