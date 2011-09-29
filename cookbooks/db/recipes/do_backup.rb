@@ -46,8 +46,6 @@ log "======== LINEAGE ========="
 log "  Performing Snapshot..."
 # Requires block_device node[:db][:block_device] to be instantiated
 # previously. Make sure block_device::default recipe has been run.
-# TODO: add as master so that a new slave after promotion can kick off a backup
-# without waiting for DNS and tags to propagate.  MVP??
 block_device DATA_DIR do
   lineage node[:db][:backup][:lineage]
   action :snapshot
