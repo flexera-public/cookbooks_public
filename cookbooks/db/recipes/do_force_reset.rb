@@ -23,11 +23,19 @@
 
 rs_utils_marker :begin
 
+log "  Brute force tear down of the setup....."
 DATA_DIR = node[:db][:data_dir]
 
 log "  Stopping database..."
 db DATA_DIR do
-  action :stop
+  action :stop 
+end
+
+log "  Make sure the DB is really stopped (hack around occasional stop failure)..."
+bash "Kill the DB" do
+  code <<-EOH
+  pkill -f -9 mysql
+  EOH
 end
 
 log "  Resetting block device..."
