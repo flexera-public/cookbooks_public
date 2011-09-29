@@ -105,6 +105,7 @@ template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/et
   cookbook 'db_mysql'
 end
 
+include_recipe "db::do_backup"
 include_recipe "db::do_backup_schedule_enable"
 
 rs_utils_marker :end
