@@ -33,6 +33,7 @@ action :load do
 
   begin
     Timeout::timeout(new_resource.timeout) do
+      delay = 1
       while true
         collection_resource.run_action(:load)
         collection = node[:server_collection][new_resource.name]
@@ -43,8 +44,9 @@ action :load do
           end
         end
 
-        Chef::Log.info "not all tags for #{new_resource.tags.inspect} exist; retrying"
-        sleep 2
+        delay = RightScale::System::Helper.calculate_exponential_backoff(delay)
+        Chef::Log.info "not all tags for #{new_resource.tags.inspect} exist; retrying in #{delay} seconds..."
+        sleep delay
       end
     end
   rescue Timeout::Error => e
