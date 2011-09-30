@@ -1,5 +1,4 @@
 # Cookbook Name:: db
-# Recipe:: setup_monitoring
 #
 # Copyright (c) 2011 RightScale Inc
 #
