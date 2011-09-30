@@ -18,13 +18,9 @@ log "Tagging server with #{unique_tag}"
 right_link_tag unique_tag
 
 log "Waiting for tags to exist..."
-COLLECTION_NAME = "master_servers"
-wait_for_tag active_tag do
-  collection_name COLLECTION_NAME
-end
-
-wait_for_tag unique_tag do
-  collection_name COLLECTION_NAME
+rs_utils_server_collection "master_servers" do
+  tags [active_tag, unique_tag]
+  empty_ok false
 end
 
 include_recipe "db_mysql::setup_master_dns"

@@ -38,6 +38,7 @@ action :load do
         collection_resource.run_action(:load)
         collection = node[:server_collection][new_resource.name]
 
+        break if new_resource.empty_ok && collection.empty?
         break if !collection.empty? && collection.all? do |id, tags|
           new_resource.tags.all? do |prefix|
             tags.detect {|tag| RightScale::Utils::Helper.matches_tag_wildcard?(prefix, tag)}

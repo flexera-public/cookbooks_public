@@ -27,6 +27,7 @@ actions :load
 attribute :tags, :kind_of => [String, Array]
 attribute :agent_ids, :kind_of => [String, Array]
 attribute :timeout, :default => 60, :kind_of => Integer
+attribute :empty_ok, :default => true, :kind_of => Boolean
 
 # Defines a default action
 def initialize(*args)
