@@ -25,15 +25,16 @@
 require 'timeout'
 
 action :load do
+  collection_resource = server_collection new_resource.name do
+    tags new_resource.tags
+    agent_ids new_resource.agent_ids
+    action :nothing
+  end
+
   begin
     Timeout::timeout(new_resource.timeout) do
       while true
-        server_collection new_resource.name do
-          tags new_resource.tags
-          agent_ids new_resource.agent_ids
-          action :nothing
-        end.run_action(:load)
-
+        collection_resource.run_action(:load)
         collection = node[:server_collection][new_resource.name]
 
         break if !collection.empty? && collection.all? do |id, tags|
