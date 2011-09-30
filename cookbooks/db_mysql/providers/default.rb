@@ -60,11 +60,11 @@ end
 action :write_backup_info do
   masterstatus = Hash.new
   masterstatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS')
-  masterstatus['Master_IP'] = node[:db_mysql][:current_master_ip]
-  masterstatus['Master_instance_uuid'] = node[:db_mysql][:current_master_uuid]
+  masterstatus['Master_IP'] = node[:db][:current_master_ip]
+  masterstatus['Master_instance_uuid'] = node[:db][:current_master_uuid]
   slavestatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS')
   slavestatus ||= Hash.new
-  if node[:db_mysql][:this_is_master]
+  if node[:db][:this_is_master]
     Chef::Log.info "Backing up Master info"
   else
     Chef::Log.info "Backing up slave replication status"
@@ -377,8 +377,7 @@ action :promote do
 
   RightScale::Database::MySQL::Helper.do_query(node, "SET GLOBAL READ_ONLY=0", 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
   newmasterstatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS', 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
-#  node[:db_mysql][:previous_master] = newmasterstatus['Master_Host']
-  previous_master = node[:db_mysql][:current_master_ip]
+  previous_master = node[:db][:current_master_ip]
   raise "FATAL: could not determine master host from slave status" if previous_master.nil?
   Chef::Log.info "host: #{previous_master}}"
   #Chef::Log.info "host: #{previous_master} user: #{node[:db][:admin][:user]}, pass: #{node[:db][:admin][:password]}"

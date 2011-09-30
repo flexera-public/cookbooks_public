@@ -15,9 +15,9 @@ end
 r.run_action(:load)
 
 # Finds the current master and sets the node attribs for 
-#   node[:db_mysql][:current_master_uuid]
-#   node[:db_mysql][:current_master_ip]
-#   node[:db_mysql][:this_is_master]
+#   node[:db][:current_master_uuid]
+#   node[:db][:current_master_ip]
+#   node[:db][:this_is_master]
 r = ruby_block "find current master" do
   block do
     collect = {}
@@ -37,23 +37,23 @@ r = ruby_block "find current master" do
     current_master_uuid, current_master_ip = collect[most_recent_timestamp]
     if current_master_uuid =~ /#{node[:rightscale][:instance_uuid]}/
       Chef::Log.info "THIS instance is the current master"
-      node[:db_mysql][:this_is_master] = true
+      node[:db][:this_is_master] = true
     else
-      node[:db_mysql][:this_is_master] = false
+      node[:db][:this_is_master] = false
     end
     if current_master_uuid
-      node[:db_mysql][:current_master_uuid] = current_master_uuid.split(/=/, 2).last.chomp
+      node[:db][:current_master_uuid] = current_master_uuid.split(/=/, 2).last.chomp
     else
-      node[:db_mysql][:current_master_uuid] = nil
+      node[:db][:current_master_uuid] = nil
       Chef::Log.info "No current master db found"
     end
     if current_master_ip
-      node[:db_mysql][:current_master_ip] = current_master_ip.split(/=/, 2).last.chomp
+      node[:db][:current_master_ip] = current_master_ip.split(/=/, 2).last.chomp
     else
-      node[:db_mysql][:current_master_ip] = nil
+      node[:db][:current_master_ip] = nil
       Chef::Log.info "No current master ip found"
     end
-    Chef::Log.info "found current master: #{node[:db_mysql][:current_master_uuid]} ip: #{node[:db_mysql][:current_master_ip]} active at #{most_recent_timestamp}" if current_master_uuid && current_master_ip
+    Chef::Log.info "found current master: #{node[:db][:current_master_uuid]} ip: #{node[:db][:current_master_ip]} active at #{most_recent_timestamp}" if current_master_uuid && current_master_ip
   end
 end
 r.run_action(:create)

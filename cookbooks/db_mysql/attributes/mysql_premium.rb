@@ -7,6 +7,3 @@
 
 set_unless[:db_mysql][:backup][:slave][:max_allowed_lag] = 60
 
-set_unless[:db_mysql][:this_is_master] = false
-set_unless[:db_mysql][:current_master_uuid] = nil
-set_unless[:db_mysql][:current_master_ip] = nil

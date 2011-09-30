@@ -10,7 +10,7 @@
 rs_utils_marker :begin
 
 include_recipe "db_mysql::do_lookup_master"
-raise "No master DB found" unless node[:db_mysql][:current_master_ip] && node[:db_mysql][:current_master_uuid] 
+raise "No master DB found" unless node[:db][:current_master_ip] && node[:db][:current_master_uuid] 
 include_recipe "db_mysql::request_master_allow"
 include_recipe "db::do_restore"
 
@@ -71,8 +71,8 @@ ruby_block "validate_backup" do
     master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
     raise "Position and file not saved!" unless master_info['Master_instance_uuid']
     # Check that the snapshot is from the current master or a slave associated with the current master
-    if master_info['Master_instance_uuid'] != node[:db_mysql][:current_master_uuid]
-      raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_uuid']} != current master: #{node[:db_mysql][:current_master_uuid]}"
+    if master_info['Master_instance_uuid'] != node[:db][:current_master_uuid]
+      raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_uuid']} != current master: #{node[:db][:current_master_uuid]}"
     end
   end
 end
