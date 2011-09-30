@@ -9,6 +9,8 @@
 
 rs_utils_marker :begin
 
+raise 'Database already restored.  To over write existing database run do_force_reset before this recipe' if node[:db][:db_restored] 
+
 include_recipe "db_mysql::do_lookup_master"
 raise "No master DB found" unless node[:db][:current_master_ip] && node[:db][:current_master_uuid] 
 include_recipe "db_mysql::request_master_allow"
@@ -107,5 +109,11 @@ end
 
 include_recipe "db::do_backup"
 include_recipe "db::do_backup_schedule_enable"
+
+ruby_block "Setting db_restored state to true" do
+  block do
+    node[:db][:db_restored] = true
+  end
+end
 
 rs_utils_marker :end

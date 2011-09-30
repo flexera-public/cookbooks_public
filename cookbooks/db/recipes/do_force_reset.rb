@@ -64,6 +64,12 @@ sys_dns "cleaning dns" do
   action :set_private
 end
 
+ruby_block "Setting db_restored state to false" do
+  block do
+    node[:db][:db_restored] = false
+  end
+end
+
 log "  Resetting database, then starting database..."
 db DATA_DIR do
   action [ :reset, :start ]
