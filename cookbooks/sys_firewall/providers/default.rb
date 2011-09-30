@@ -59,7 +59,9 @@ action :update do
   
     rs_utils_server_collection collection_name do
       tags [tag, ip_tag]
-      only_if tag
+      only_if do
+        tag != nil
+      end
     end
     
     ruby_block 'Register all currently active app servers' do
