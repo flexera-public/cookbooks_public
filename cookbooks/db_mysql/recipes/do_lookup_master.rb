@@ -9,8 +9,9 @@
 
 rs_utils_marker :begin
 
-r = server_collection "master_servers" do
-  tags [ "rs_dbrepl:" ]
+r = rs_utils_server_collection "master_servers" do
+  tags ['rs_dbrepl:master_active', 'rs_dbrepl:master_instance_uuid']
+  action :nothing
 end
 r.run_action(:load)
 
@@ -22,10 +23,6 @@ r = ruby_block "find current master" do
   block do
     collect = {}
     node[:server_collection]["master_servers"].each do |id, tags|
-      Chef::Log.info "======== TAGS ========"
-      Chef::Log.info id
-      Chef::Log.info tags
-      Chef::Log.info "======== TAGS ========"
       active = tags.select { |s| s =~ /rs_dbrepl:master_active/ }
       my_uuid = tags.detect { |u| u =~ /rs_dbrepl:master_instance_uuid/ }
       my_ip_0 = tags.detect { |i| i =~ /server:private_ip_0/ }
