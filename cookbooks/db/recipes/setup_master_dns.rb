@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: db_mysql
+# Cookbook Name:: db
 # Recipe:: setup_master_dns
 #
 # Copyright 2011, RightScale, Inc.

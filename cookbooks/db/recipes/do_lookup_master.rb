@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: db_mysql
+# Cookbook Name:: db
 # Recipe:: do_lookup_master
 #
 # Copyright 2011, RightScale, Inc.

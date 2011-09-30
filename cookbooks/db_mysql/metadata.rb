@@ -16,22 +16,6 @@ provides "db_mysql_gzipfile_backup(db_name, file_path)"
 provides "db_mysql_gzipfile_restore(db_name, file_path)"
 
 recipe  "db_mysql::default", "Runs the client 'db::install_server' recipes."
-recipe  "db_mysql::do_dump_import", "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)"
-recipe  "db_mysql::do_dump_export", "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)"
-recipe  "db_mysql::setup_continuous_export", "Schedules the daily run of do_dump_export."
-
-# == Master/Slave Recipes
-recipe "db_mysql::default", "Installs dbtools"
-recipe "db_mysql::do_restore_and_become_master", "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
-recipe "db_mysql::do_init_slave", "Initialize MySQL Slave"
-recipe "db_mysql::do_tag_as_master", "USE WITH CAUTION! Tag server with master tags and set master DNS to this server."
-recipe "db_mysql::do_lookup_master", "Use tags to lookup current master and save in the node"
-recipe "db_mysql::do_promote_to_master", "Promote a replicating slave to master"
-recipe "db_mysql::setup_master_dns", "USE WITH CAUTION! Set master DNS to this server's IP"
-recipe "db_mysql::setup_replication_privileges", "Set up privileges for MySQL replication slaves."
-recipe "db_mysql::request_master_allow", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to allow connections from the server's private IP address.  This script should be run on a slave before it sets up replication."
-recipe "db_mysql::request_master_deny", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to deny connections from the server's private IP address.  This script should be run on a slave when it stops replicating."
-
 
 attribute "db_mysql",
   :display_name => "General Database Options",

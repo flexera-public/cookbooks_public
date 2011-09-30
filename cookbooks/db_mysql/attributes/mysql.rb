@@ -21,12 +21,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#
-# Required attributes
-#
-set_unless[:db_mysql][:server_id] = Time.now.to_i
 
-#
 # Recommended attributes
 #
 set_unless[:db_mysql][:server_usage] = "dedicated"  # or "shared"

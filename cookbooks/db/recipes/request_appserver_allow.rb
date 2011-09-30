@@ -23,12 +23,12 @@
 
 rs_utils_marker :begin
 
-sys_firewall "Request all database open ports to this application server" do
+log "Request all database open ports to this application server"
+db node[:db][:data_dir] do
   machine_tag "database:active=true"
-  port 3306 # mysql only for now
   enable true
   ip_addr node[:cloud][:private_ips][0]
-  action :update_request
+  action :allow_request
 end
 
 rs_utils_marker :end

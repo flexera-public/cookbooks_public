@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: db_mysql
+# Cookbook Name:: db
 # Recipe:: do_tag_as_master
 #
 # Copyright 2011, RightScale, Inc.
@@ -27,6 +27,6 @@ wait_for_tag unique_tag do
   collection_name COLLECTION_NAME
 end
 
-include_recipe "db_mysql::setup_master_dns"
+include_recipe "db::setup_master_dns"
 
 rs_utils_marker :end
