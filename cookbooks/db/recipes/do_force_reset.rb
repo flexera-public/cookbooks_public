@@ -34,7 +34,7 @@ end
 log "  Make sure the DB is really stopped (hack around occasional stop failure)..."
 bash "Kill the DB" do
   code <<-EOH
-  pkill -f -9 mysql
+  pkill -9 -f mysql
   EOH
 end
 
