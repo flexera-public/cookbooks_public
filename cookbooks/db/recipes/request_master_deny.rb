@@ -38,7 +38,7 @@ db node[:db][:data_dir] do
   machine_tag "rs_dbrepl:master_instance_uuid=#{master_uuid}"
   enable false
   ip_addr node[:cloud][:private_ips][0]
-  action :allow_request
+  action :firewall_update_request
 end
 
 rs_utils_marker :end

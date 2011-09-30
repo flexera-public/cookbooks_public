@@ -27,7 +27,7 @@ log "Opening database port(s) to all application servers"
 db node[:db][:data_dir] do
   machine_tag "appserver:active=true"
   enable true
-  action :allow
+  action :firewall_update
 end
 
 rs_utils_marker :end

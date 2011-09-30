@@ -59,20 +59,19 @@ end
 
 action :firewall_update_request do
   sys_firewall "Request database open port 3306 (MySQL) to this server" do
-    machine_tag "rs_dbrepl:master_instance_uuid=#{node[:db][:current_master_uuid]}"
+    machine_tag new_resource.machine_tag
     port 3306 
-    enable true
-    ip_addr node[:cloud][:private_ips][0]
+    enable new_resource.enable
+    ip_addr new_resource.ip_addr
     action :update_request
   end
 end
 
 action :firewall_update do
   sys_firewall "Request database open port 3306 (MySQL) to this server" do
-    machine_tag "rs_dbrepl:master_instance_uuid=#{node[:db][:current_master_uuid]}"
+    machine_tag new_resource.machine_tag
     port 3306 
-    enable true
-    ip_addr node[:cloud][:private_ips][0]
+    enable new_resource.enable
     action :update
   end
 end
@@ -277,7 +276,7 @@ action :install_server do
     group "root"
     mode "0644"
     variables(
-      :server_id => node[:rightscale][:instance_uuid]
+      :server_id => mycnf_uuid
     )
     cookbook 'db_mysql'
   end
@@ -404,7 +403,7 @@ action :promote do
     group "root"
     mode "0644"
     variables(
-      :server_id => node[:rightscale][:instance_uuid]
+      :server_id => mycnf_uuid
     )
     cookbook 'db_mysql'
   end
@@ -491,7 +490,7 @@ action :promote do
 end
 
 
-action :enable_replication
+action :enable_replication do
 
   ruby_block "wipe_existing_runtime_config" do
     block do
@@ -501,9 +500,9 @@ action :enable_replication
       files_to_delete.each do |file|
         expand = Dir.glob(::File.join(data_dir,file))
         unless expand.empty?
-  	expand.each do |exp_file|
-  	  FileUtils.rm_rf(exp_file)
-  	end
+        	expand.each do |exp_file|
+        	  FileUtils.rm_rf(exp_file)
+        	end
         end
       end
     end
@@ -522,7 +521,7 @@ action :enable_replication
     group "root"
     mode "0644"
     variables(
-      :server_id => node[:rightscale][:instance_uuid]
+      :server_id => mycnf_uuid
     )
     cookbook 'db_mysql'
   end
@@ -579,7 +578,7 @@ action :enable_replication
     group "root"
     mode "0644"
     variables(
-      :server_id => node[:rightscale][:instance_uuid]
+      :server_id => mycnf_uuid
     )
     cookbook 'db_mysql'
   end
