@@ -34,6 +34,15 @@ db DATA_DIR do
   action [ :pre_backup_check ]
 end
 
+# == Aquire the backup lock or die
+#
+# This lock is released in the 'backup.rb' script for now.
+# See below for more information about 'backup.rb'
+#
+block_device DATA_DIR do
+  action :backup_lock_take
+end
+
 log "  Performing lock DB and write backup info file..."
 db DATA_DIR do
   action [ :lock, :write_backup_info ]

@@ -26,16 +26,9 @@ rs_utils_marker :begin
 log "  Brute force tear down of the setup....."
 DATA_DIR = node[:db][:data_dir]
 
-log "  Stopping database..."
+log "  Resetting the database..."
 db DATA_DIR do
-  action :stop 
-end
-
-log "  Make sure the DB is really stopped (hack around occasional stop failure)..."
-bash "Kill the DB" do
-  code <<-EOH
-  killall -s 9 -q -r 'mysql.*' || true
-  EOH
+  action :reset
 end
 
 log "  Resetting block device..."
@@ -44,11 +37,9 @@ block_device DATA_DIR do
   action :reset
 end
 
-log "  Cleaning stuff..."
-bash "cleaning stuff" do
+log "  Remove tags..."
+bash "remove tags" do
   code <<-EOH
-  rm -f #{node[:rs_utils][:db_backup_file]} #{::File.join('/var/lock', DATA_DIR.gsub('/', '_') + '.lock')} /var/run/rightscale_tools_database_lock.pid
-  rmdir #{DATA_DIR}
   rs_tag -r 'rs_dbrepl:*'
   EOH
 end
