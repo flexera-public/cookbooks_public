@@ -33,6 +33,8 @@ action :load do
 
   begin
     Timeout::timeout(new_resource.timeout) do
+      all_tags = new_resource.tags.collect
+      all_tags += new_resource.secondary_tags if new_resource.secondary_tags
       delay = 1
       while true
         collection_resource.run_action(:load)
@@ -40,7 +42,7 @@ action :load do
 
         break if new_resource.empty_ok && collection.empty?
         break if !collection.empty? && collection.all? do |id, tags|
-          new_resource.tags.all? do |prefix|
+          all_tags.all? do |prefix|
             tags.detect {|tag| RightScale::Utils::Helper.matches_tag_wildcard?(prefix, tag)}
           end
         end

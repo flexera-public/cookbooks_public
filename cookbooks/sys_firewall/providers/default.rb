@@ -58,7 +58,8 @@ action :update do
     end
   
     rs_utils_server_collection collection_name do
-      tags [tag, ip_tag]
+      tags tag
+      secondary_tags ip_tag
       only_if do
         tag != nil
       end

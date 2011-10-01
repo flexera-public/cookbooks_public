@@ -25,6 +25,7 @@
 actions :load
 
 attribute :tags, :kind_of => [String, Array]
+attribute :secondary_tags, :kind_of => [String, Array]
 attribute :agent_ids, :kind_of => [String, Array]
 attribute :timeout, :default => 60, :kind_of => Integer
 attribute :empty_ok, :default => true, :equal_to => [true, false]
