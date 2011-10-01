@@ -25,7 +25,7 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
-include_recipe "db_mysql::do_lookup_master"
+include_recipe "db::do_lookup_master"
 
 snap_lineage = node[:db][:backup][:lineage]
 raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?

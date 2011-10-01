@@ -26,7 +26,7 @@ rs_utils_marker :begin
 DATA_DIR = node[:db][:data_dir]
 
 # Make sure the node variables related to master are set on this instance
-include_recipe 'db_mysql::do_lookup_master'
+include_recipe 'db::do_lookup_master'
 
 log "  Performing pre-backup check..." 
 db DATA_DIR do
