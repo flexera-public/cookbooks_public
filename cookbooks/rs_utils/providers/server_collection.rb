@@ -34,7 +34,7 @@ action :load do
   begin
     Timeout::timeout(new_resource.timeout) do
       all_tags = new_resource.tags.collect
-      all_tags += new_resource.secondary_tags if new_resource.secondary_tags
+      all_tags += new_resource.secondary_tags.collect if new_resource.secondary_tags
       delay = 1
       while true
         collection_resource.run_action(:load)
