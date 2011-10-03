@@ -1,5 +1,4 @@
 # Cookbook Name:: db
-# Recipe:: install_server
 #
 # Copyright (c) 2011 RightScale Inc
 #

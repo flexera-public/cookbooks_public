@@ -42,11 +42,25 @@ recipe  "db::do_force_reset", "Resets the database back to a pristine state. WAR
 # == Database Firewall Recipes
 # 
 recipe "db::do_appservers_allow", "Allows connections from all application servers in the deployment that are tagged with appserver:active=true tag. This script should be run on a database server so that it will accept connections from application servers."
+
 recipe "db::do_appservers_deny", "Denies connections from all application servers in the deployment that are tagged with appserver:active=true tag.  This script can be run on a database server to deny connections from all application servers in the deployment."
 
 recipe "db::request_appserver_allow", "Sends a request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with the database:active=true tag. This should be run on an application server before attempting a database connection."
 
 recipe "db::request_appserver_deny", "Sends a request to deny connections from the caller's private IP address to all database servers in the deployment that are tagged with the database:active=true tag. This should be run on an application server upon decommissioning."
+
+
+# == Master/Slave Recipes
+#
+recipe "db::do_restore_and_become_master", "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
+recipe "db::do_init_slave", "Initialize MySQL Slave"
+recipe "db::do_tag_as_master", "USE WITH CAUTION! Tag server with master tags and set master DNS to this server."
+recipe "db::do_lookup_master", "Use tags to lookup current master and save in the node"
+recipe "db::do_promote_to_master", "Promote a replicating slave to master"
+recipe "db::setup_master_dns", "USE WITH CAUTION! Set master DNS to this server's IP"
+recipe "db::setup_replication_privileges", "Set up privileges for MySQL replication slaves."
+recipe "db::request_master_allow", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to allow connections from the server's private IP address.  This script should be run on a slave before it sets up replication."
+recipe "db::request_master_deny", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to deny connections from the server's private IP address.  This script should be run on a slave when it stops replicating."
 
 
 # == Common Database Attributes

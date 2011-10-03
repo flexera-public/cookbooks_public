@@ -23,11 +23,17 @@ module RightScale
   module Database
     module MySQL
       module Helper
-	require 'timeout'
-	require 'yaml'
+        
+      	require 'timeout'
+      	require 'yaml'
 
-	SNAPSHOT_POSITION_FILENAME = 'rs_snapshot_position.yaml'
-	DEFAULT_CRITICAL_TIMEOUT = 7
+      	SNAPSHOT_POSITION_FILENAME = 'rs_snapshot_position.yaml'
+      	DEFAULT_CRITICAL_TIMEOUT = 7
+
+        def mycnf_uuid
+          node[:db_mysql][:mycnf_uuid] ||= Time.new.to_i
+          node[:db_mysql][:mycnf_uuid]
+        end
 
         def init(new_resource)
           begin

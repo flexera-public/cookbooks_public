@@ -1,4 +1,4 @@
-# Cookbook Name:: db_mysql
+# Cookbook Name:: db
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -23,11 +23,11 @@
 
 rs_utils_marker :begin
 
-sys_firewall "Open this database's ports to all appservers" do
+log "Closing database port(s) to all application servers"
+db node[:db][:data_dir] do
   machine_tag "appserver:active=true"
-  port 3306 # mysql only for now
   enable false
-  action :update
+  action :firewall_update
 end
 
 rs_utils_marker :end

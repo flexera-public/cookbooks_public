@@ -23,28 +23,19 @@
 
 rs_utils_marker :begin
 
-DATA_DIR = node[:db][:data_dir]
+raise 'Database already restored.  To over write existing database run do_force_reset before this recipe' if node[:db][:db_restored] 
 
-include_recipe "db::do_lookup_master"
+include_recipe "db::do_restore"
+include_recipe "db::setup_replication_privileges"
+include_recipe "db::do_tag_as_master"
+# kick-off first backup so that slaves can init from this master
+include_recipe "db::do_backup"
+include_recipe "db::do_backup_schedule_enable"
 
-snap_lineage = node[:db][:backup][:lineage]
-raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?
-
-# TODO: fix for LAMP
-if node[:db][:this_is_master]
-  hour = node[:db][:backup][:master][:hour]
-  minute = node[:db][:backup][:master][:minute]
-else
-  hour = node[:db][:backup][:slave][:hour]
-  minute = node[:db][:backup][:slave][:minute]
-end
-
-block_device DATA_DIR do
-  lineage snap_lineage
-  cron_backup_recipe "#{self.cookbook_name}::do_backup"
-  cron_backup_hour hour.to_s
-  cron_backup_minute minute.to_s
-  action :backup_schedule_enable
+ruby_block "Setting db_restored state to true" do
+  block do
+    node[:db][:db_restored] = true
+  end
 end
 
 rs_utils_marker :end

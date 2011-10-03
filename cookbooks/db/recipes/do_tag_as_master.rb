@@ -23,28 +23,24 @@
 
 rs_utils_marker :begin
 
-DATA_DIR = node[:db][:data_dir]
+active_tag = "rs_dbrepl:master_active=#{Time.now.strftime("%Y%m%d%H%M%S")}"
+log "Tagging server with #{active_tag}"
+right_link_tag active_tag
 
-include_recipe "db::do_lookup_master"
+unique_tag = "rs_dbrepl:master_instance_uuid=#{node[:rightscale][:instance_uuid]}"
+log "Tagging server with #{unique_tag}"
+right_link_tag unique_tag
 
-snap_lineage = node[:db][:backup][:lineage]
-raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?
-
-# TODO: fix for LAMP
-if node[:db][:this_is_master]
-  hour = node[:db][:backup][:master][:hour]
-  minute = node[:db][:backup][:master][:minute]
-else
-  hour = node[:db][:backup][:slave][:hour]
-  minute = node[:db][:backup][:slave][:minute]
+log "Waiting for tags to exist..."
+COLLECTION_NAME = "master_servers"
+wait_for_tag active_tag do
+  collection_name COLLECTION_NAME
 end
 
-block_device DATA_DIR do
-  lineage snap_lineage
-  cron_backup_recipe "#{self.cookbook_name}::do_backup"
-  cron_backup_hour hour.to_s
-  cron_backup_minute minute.to_s
-  action :backup_schedule_enable
+wait_for_tag unique_tag do
+  collection_name COLLECTION_NAME
 end
+
+include_recipe "db::setup_master_dns"
 
 rs_utils_marker :end

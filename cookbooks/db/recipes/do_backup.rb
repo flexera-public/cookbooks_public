@@ -26,11 +26,10 @@ rs_utils_marker :begin
 DATA_DIR = node[:db][:data_dir]
 
 # Make sure the node variables related to master are set on this instance
-include_recipe 'db_mysql::do_lookup_master'
-log "  Performing pre-backup check..." unless node[:db][:backup][:force] == true
+include_recipe 'db::do_lookup_master'
+
+log "  Performing pre-backup check..." 
 db DATA_DIR do
-  # Skip checks if force is used.
-  not_if node[:db][:backup][:force]
   action [ :pre_backup_check ]
 end
 
@@ -48,11 +47,7 @@ db DATA_DIR do
   action [ :lock, :write_backup_info ]
 end
 
-log "======== LINEAGE ========="
-log node[:db][:backup][:lineage]
-log "======== LINEAGE ========="
-
-log "  Performing Snapshot..."
+log "  Performing Snapshot with lineage #{node[:db][:backup][:lineage]}.."
 # Requires block_device node[:db][:block_device] to be instantiated
 # previously. Make sure block_device::default recipe has been run.
 block_device DATA_DIR do
@@ -66,8 +61,6 @@ db DATA_DIR do
 end
 
 log "  Performing Backup of lineage #{node[:db][:backup][:lineage]} and post-backup cleanup..."
-# Requires block_device node[:db][:block_device] to be instantiated
-# previously. Make sure block_device::default recipe has been run.
 
 if node[:cloud][:provider] == "rackspace"
   account_id = node[:block_device][:rackspace_user]
@@ -77,6 +70,7 @@ else
   account_secret = node[:block_device][:aws_secret_access_key]
 end
 
+# TODO: add comment why we fork this process
 bash "backup.rb" do
   environment ({ 
     'STORAGE_ACCOUNT_ID' => account_id,
