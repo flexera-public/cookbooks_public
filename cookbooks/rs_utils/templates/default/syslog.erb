@@ -21,7 +21,7 @@ options {
 
 source s_sys {
     file ("/proc/kmsg" log_prefix("kernel: "));
-    unix-stream ("/dev/log");
+    unix-dgram ("/dev/log");
     internal();
     udp(ip(127.0.0.1) port(514));
 };
