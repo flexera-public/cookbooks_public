@@ -94,3 +94,17 @@ log { source(s_sys); filter(f_filter11); destination(d_dhcp); };
 #log { source(s_sys); filter(f_filter6); destination(d_spol); };
 #filter f_filter7   { facility(local7); };
 #log { source(s_sys); filter(f_filter7); destination(d_boot); };
+
+<% if node[:platform] == 'ubuntu' -%>
+destination df_syslog { file("/var/log/syslog"); };
+
+# all messages except from the auth and authpriv facilities
+filter f_syslog { not facility(auth, authpriv); };
+
+# *.*;auth,authpriv.none          -/var/log/syslog
+log {
+        source(s_all);
+        filter(f_syslog);
+        destination(df_syslog);
+};
+<% end -%>
