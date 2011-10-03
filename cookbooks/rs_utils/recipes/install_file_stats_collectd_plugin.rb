@@ -46,7 +46,7 @@ directory ::File.join(node[:rs_utils][:collectd_lib], "plugins") do
   recursive true
 end
 
-remote_file(::File.join(node[:rs_utils][:collectd_lib], "plugins", 'file-stats.rb')) do
+file(::File.join(node[:rs_utils][:collectd_lib], "plugins", 'file-stats.rb')) do
   source "file-stats.rb"
   mode "0755"
   notifies :restart, resources(:service => "collectd")
