@@ -32,7 +32,7 @@ log "Tagging server with #{unique_tag}"
 right_link_tag unique_tag
 
 log "Waiting for tags to exist..."
-rs_utils_server_collection "master_servers" do
+rs_utils_server_collection "wait_for_master_servers" do
   tags [active_tag, unique_tag]
   empty_ok false
 end
