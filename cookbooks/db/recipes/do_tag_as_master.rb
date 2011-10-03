@@ -37,6 +37,12 @@ rs_utils_server_collection "wait_for_master_servers" do
   empty_ok false
 end
 
+# == Double check tags
+#   Possible work around for tag inconsistency betweem tag calls
+#
+include_recipe 'db::do_lookup_master'
+raise "Inconsistent tags" unless node[:db][:this_is_master]
+
 include_recipe "db::setup_master_dns"
 
 rs_utils_marker :end
