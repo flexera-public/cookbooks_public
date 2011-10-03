@@ -1,5 +1,7 @@
 # Cookbook Name:: db
 #
+# Cookbook Name:: db
+#
 # Copyright (c) 2011 RightScale Inc
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -23,28 +25,20 @@
 
 rs_utils_marker :begin
 
-DATA_DIR = node[:db][:data_dir]
-
+# == Lookup current master
+#
 include_recipe "db::do_lookup_master"
+master_ip = node[:db][:current_master_ip]
+master_uuid = node[:db][:current_master_uuid]
+raise "No master DB found" unless master_ip && master_uuid
 
-snap_lineage = node[:db][:backup][:lineage]
-raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?
-
-# TODO: fix for LAMP
-if node[:db][:this_is_master]
-  hour = node[:db][:backup][:master][:hour]
-  minute = node[:db][:backup][:master][:minute]
-else
-  hour = node[:db][:backup][:slave][:hour]
-  minute = node[:db][:backup][:slave][:minute]
-end
-
-block_device DATA_DIR do
-  lineage snap_lineage
-  cron_backup_recipe "#{self.cookbook_name}::do_backup"
-  cron_backup_hour hour.to_s
-  cron_backup_minute minute.to_s
-  action :backup_schedule_enable
+# == Request firewall closed
+#
+db node[:db][:data_dir] do
+  machine_tag "rs_dbrepl:master_instance_uuid=#{master_uuid}"
+  enable false
+  ip_addr node[:cloud][:private_ips][0]
+  action :firewall_update_request
 end
 
 rs_utils_marker :end

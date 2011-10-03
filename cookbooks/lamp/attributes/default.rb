@@ -23,5 +23,5 @@
 
 # LAMP should always listen on localhost
 set[:db_mysql][:bind_address] = "localhost"
-set[:app][:port] = "80"
+set[:app][:port] = 80
 

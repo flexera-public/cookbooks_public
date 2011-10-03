@@ -33,7 +33,7 @@ define :rs_utils_marker do
   if ( location =~ /^stop$/ ) then location = "end" end
 
   if location =~ /^start|end$/
-    log "========================= #{recipe_name} : #{location.upcase} ========================="
+    log "======== #{recipe_name} : #{location.upcase} ========"
   else
     log "unknown marker"
   end

@@ -21,30 +21,30 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-rs_utils_marker :begin
-
 DATA_DIR = node[:db][:data_dir]
 
+rs_utils_marker :begin
+
+raise 'Database already restored.  To over write existing database run do_force_reset before this recipe' if node[:db][:db_restored] 
+
 include_recipe "db::do_lookup_master"
+raise "No master DB found" unless node[:db][:current_master_ip] && node[:db][:current_master_uuid] 
 
-snap_lineage = node[:db][:backup][:lineage]
-raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?
+include_recipe "db::request_master_allow"
 
-# TODO: fix for LAMP
-if node[:db][:this_is_master]
-  hour = node[:db][:backup][:master][:hour]
-  minute = node[:db][:backup][:master][:minute]
-else
-  hour = node[:db][:backup][:slave][:hour]
-  minute = node[:db][:backup][:slave][:minute]
+include_recipe "db::do_restore"
+
+db DATA_DIR do
+  action :enable_replication
 end
 
-block_device DATA_DIR do
-  lineage snap_lineage
-  cron_backup_recipe "#{self.cookbook_name}::do_backup"
-  cron_backup_hour hour.to_s
-  cron_backup_minute minute.to_s
-  action :backup_schedule_enable
+include_recipe "db::do_backup"
+include_recipe "db::do_backup_schedule_enable"
+
+ruby_block "Setting db_restored state to true" do
+  block do
+    node[:db][:db_restored] = true
+  end
 end
 
 rs_utils_marker :end

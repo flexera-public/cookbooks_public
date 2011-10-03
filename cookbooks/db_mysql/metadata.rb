@@ -5,8 +5,10 @@ description      "Installs/configures a MySQL database server with automated bac
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
 
+depends "sys_dns"
 depends "db"
 depends "rs_utils"
+depends "block_device"
 
 provides "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)"
 provides "db_mysql_set_privileges(type, username, password, db_name)"
@@ -14,10 +16,6 @@ provides "db_mysql_gzipfile_backup(db_name, file_path)"
 provides "db_mysql_gzipfile_restore(db_name, file_path)"
 
 recipe  "db_mysql::default", "Runs the client 'db::install_server' recipes."
-recipe  "db_mysql::do_dump_import", "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)"
-recipe  "db_mysql::do_dump_export", "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)"
-recipe  "db_mysql::setup_continuous_export", "Schedules the daily run of do_dump_export."
-
 
 attribute "db_mysql",
   :display_name => "General Database Options",
@@ -86,4 +84,3 @@ attribute "db_mysql/dump/prefix",
   :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.  Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp.",
   :required => false,
   :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::setup_continuous_export"  ]
-

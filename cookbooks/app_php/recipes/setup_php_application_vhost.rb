@@ -33,14 +33,14 @@ apache_site "000-default" do
   enable false
 end
 
-node[:apache][:listen_ports] << node[:app][:port] unless node[:apache][:listen_ports].include?(node[:app][:port])
+php_port = node[:app][:port].to_s
+node[:apache][:listen_ports] << php_port unless node[:apache][:listen_ports].include?(php_port)
 
 template "#{node[:apache][:dir]}/ports.conf" do
   cookbook "apache2"
   source "ports.conf.erb"
   variables :apache_listen_ports => node[:apache][:listen_ports]
   notifies :restart, resources(:service => "apache2")
-#  notifies :restart, resources(:service => "apache2"), :immediately
 end
 
 # == Configure apache vhost for PHP

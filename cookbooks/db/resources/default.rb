@@ -51,6 +51,11 @@ attribute :privilege_username, :kind_of => String
 attribute :privilege_password, :kind_of => String
 attribute :privilege_database, :kind_of => String, :default => "*.*" # All databases
 
+# == Firewall options
+attribute :enable, :equal_to => [ true, false ], :default => true
+attribute :ip_addr, :kind_of => String
+attribute :machine_tag, :kind_of => String, :regex => /^([^:]+):(.+)=.+/
+
 
 # = General Database Actions
 #
@@ -104,6 +109,15 @@ add_action :unlock
 #
 add_action :reset
 
+# == Firewall Update 
+# Updates database firewall rules.
+#
+add_action :firewall_update
+
+# == Firewall Update Request
+# Sends a remote_recipe that requests a database updates it's firewall rules.
+#
+add_action :firewall_update_request
          
 # == Move Data Directory
 # Relocate the database data directory
@@ -136,6 +150,10 @@ add_action :pre_backup_check
 # any temporary files created from the :pre_backup_check action. 
 #
 add_action :post_backup_cleanup
+
+# == Write Backup Info
+# TODO
+add_action :write_backup_info
  
 # == Pre-restore Check
 # Verify the database is in a good state before preforming a restore.
@@ -192,6 +210,18 @@ add_action :install_server
 # database.
 #
 add_action :setup_monitoring
+
+# == Enable Replication
+# Configures and start a slave replicating from master
+add_action :enable_replication
+
+# == Promote
+# TODO
+add_action :promote
+
+# == Grant Replication Slave
+# TODO
+add_action :grant_replication_slave
 
 
 actions @action_list

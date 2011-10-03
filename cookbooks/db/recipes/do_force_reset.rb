@@ -23,11 +23,19 @@
 
 rs_utils_marker :begin
 
+log "  Brute force tear down of the setup....."
 DATA_DIR = node[:db][:data_dir]
 
 log "  Stopping database..."
 db DATA_DIR do
-  action :stop
+  action :stop 
+end
+
+log "  Make sure the DB is really stopped (hack around occasional stop failure)..."
+bash "Kill the DB" do
+  code <<-EOH
+  killall -s 9 -q -r 'mysql.*' || true
+  EOH
 end
 
 log "  Resetting block device..."
@@ -36,9 +44,35 @@ block_device DATA_DIR do
   action :reset
 end
 
-log "  Resetting database, then starting database..."
-db DATA_DIR do
-	action [ :reset, :start ]
+log "  Cleaning stuff..."
+bash "cleaning stuff" do
+  code <<-EOH
+  rm -f #{node[:rs_utils][:db_backup_file]} #{::File.join('/var/lock', DATA_DIR.gsub('/', '_') + '.lock')} /var/run/rightscale_tools_database_lock.pid
+  rmdir #{DATA_DIR}
+  rs_tag -r 'rs_dbrepl:*'
+  EOH
 end
 
-rs_utils_marker :begin
+sys_dns "cleaning dns" do
+  provider "sys_dns_#{node[:sys_dns][:choice]}"
+
+  id node[:sys_dns][:id]
+  user node[:sys_dns][:user]
+  password node[:sys_dns][:password]
+  address '1.1.1.1'
+
+  action :set_private
+end
+
+ruby_block "Setting db_restored state to false" do
+  block do
+    node[:db][:db_restored] = false
+  end
+end
+
+log "  Resetting database, then starting database..."
+db DATA_DIR do
+  action [ :reset, :start ]
+end
+
+rs_utils_marker :end

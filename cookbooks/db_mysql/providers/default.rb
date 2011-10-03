@@ -39,7 +39,7 @@ end
 
 action :lock do
   @db = init(new_resource)
-  @db.unlock
+  @db.lock
 end
 
 action :unlock do
@@ -55,6 +55,46 @@ end
 action :reset do
   @db = init(new_resource)
   @db.reset
+end
+
+action :firewall_update_request do
+  sys_firewall "Request database open port 3306 (MySQL) to this server" do
+    machine_tag new_resource.machine_tag
+    port 3306 
+    enable new_resource.enable
+    ip_addr new_resource.ip_addr
+    action :update_request
+  end
+end
+
+action :firewall_update do
+  sys_firewall "Request database open port 3306 (MySQL) to this server" do
+    machine_tag new_resource.machine_tag
+    port 3306 
+    enable new_resource.enable
+    action :update
+  end
+end
+
+
+action :write_backup_info do
+  masterstatus = Hash.new
+  masterstatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS')
+  masterstatus['Master_IP'] = node[:db][:current_master_ip]
+  masterstatus['Master_instance_uuid'] = node[:db][:current_master_uuid]
+  slavestatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS')
+  slavestatus ||= Hash.new
+  if node[:db][:this_is_master]
+    Chef::Log.info "Backing up Master info"
+  else
+    Chef::Log.info "Backing up slave replication status"
+    masterstatus['File'] = slavestatus['Relay_Master_Log_File']
+    masterstatus['Position'] = slavestatus['Exec_Master_Log_Pos']
+  end
+  Chef::Log.info "Saving master info...:\n#{masterstatus.to_yaml}"
+  ::File.open(::File.join(node[:db][:data_dir], RightScale::Database::MySQL::Helper::SNAPSHOT_POSITION_FILENAME), ::File::CREAT|::File::TRUNC|::File::RDWR) do |out|
+    YAML.dump(masterstatus, out)
+  end
 end
 
 action :pre_restore_check do
@@ -73,13 +113,11 @@ end
 action :pre_backup_check do
   @db = init(new_resource)
   @db.pre_backup_check
-  # TODO: used for replication
-  # @db.write_mysql_backup_info
 end
 
 action :post_backup_cleanup do
   @db = init(new_resource)
-  @db.clean_backup_info
+  @db.post_backup_steps
 end
 
 action :set_privileges do
@@ -238,7 +276,7 @@ action :install_server do
     group "root"
     mode "0644"
     variables(
-      :server_id => node[:db_mysql][:server_id]
+      :server_id => mycnf_uuid
     )
     cookbook 'db_mysql'
   end
@@ -330,5 +368,218 @@ action :setup_monitoring do
       level :warn
     end
 
+  end
+end
+
+action :grant_replication_slave do
+  require 'mysql'
+
+  Chef::Log.info "GRANT REPLICATION SLAVE to #{node[:db][:replication][:user]}"
+  con = Mysql.new('localhost', 'root')
+  con.query("GRANT REPLICATION SLAVE ON *.* TO '#{node[:db][:replication][:user]}'@'%' IDENTIFIED BY '#{node[:db][:replication][:password]}'")
+  con.query("FLUSH PRIVILEGES")
+  con.close
+end
+
+action :promote do
+  
+  x = node[:db_mysql][:log_bin]
+  logbin_dir = x.gsub(/#{::File.basename(x)}$/, "")
+  directory logbin_dir do
+    action :create
+    recursive true
+    owner 'mysql'
+    group 'mysql'
+  end
+
+  # Set read/write in my.cnf
+  node[:db_mysql][:tunable][:read_only] = 0
+  # Enable binary logging in my.cnf
+  node[:db_mysql][:log_bin_enabled] = true
+
+  template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
+    source "my.cnf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables(
+      :server_id => mycnf_uuid
+    )
+    cookbook 'db_mysql'
+  end
+  
+  service "mysql" do
+    action :start
+    only_if do
+      log_bin = RightScale::Database::MySQL::Helper.do_query(node, "show variables like 'log_bin'", 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+      if log_bin['Value'] == 'OFF'
+	Chef::Log.info "Detected binlogs were disabled, restarting service to enable them for Master takeover."
+	true
+      else
+	false
+      end
+    end
+  end
+
+  RightScale::Database::MySQL::Helper.do_query(node, "SET GLOBAL READ_ONLY=0", 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+  newmasterstatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS', 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+  previous_master = node[:db][:current_master_ip]
+  raise "FATAL: could not determine master host from slave status" if previous_master.nil?
+  Chef::Log.info "host: #{previous_master}}"
+  #Chef::Log.info "host: #{previous_master} user: #{node[:db][:admin][:user]}, pass: #{node[:db][:admin][:password]}"
+
+  # PHASE1: contains non-critical old master operations, if a timeout or
+  # error occurs we continue promotion assuming the old master is dead.
+  begin
+    # OLDMASTER: query with terminate (STOP SLAVE)
+    RightScale::Database::MySQL::Helper.do_query(node, 'STOP SLAVE', previous_master, RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT, 2)
+
+    # OLDMASTER: flush_and_lock_db
+    RightScale::Database::MySQL::Helper.do_query(node, 'FLUSH TABLES WITH READ LOCK', previous_master, 5, 12)
+
+
+    # OLDMASTER:
+    masterstatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS', previous_master, RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+
+    # OLDMASTER: unconfigure source of replication
+    RightScale::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST=''", previous_master, RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+
+    master_file=masterstatus['File']
+    master_position=masterstatus['Position']
+    Chef::Log.info "Retrieved master info...File: " + master_file + " position: " + master_position
+
+    Chef::Log.info "Waiting for slave to catch up with OLDMASTER (if alive).."
+    # NEWMASTER localhost:
+    RightScale::Database::MySQL::Helper.do_query(node, "SELECT MASTER_POS_WAIT('#{master_file}',#{master_position})")
+  rescue => e
+    Chef::Log.info "WARNING: caught exception #{e} during non-critical operations on the OLD MASTER"
+  end
+
+  # PHASE2: reset and promote this slave to master
+  # Critical operations on newmaster, if a failure occurs here we allow it to halt promote operations
+  Chef::Log.info "Promoting slave.."
+  RightScale::Database::MySQL::Helper.do_query(node, 'RESET MASTER')
+
+  newmasterstatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS')
+  newmaster_file=newmasterstatus['File']
+  newmaster_position=newmasterstatus['Position']
+  Chef::Log.info "Retrieved new master info...File: " + newmaster_file + " position: " + newmaster_position
+
+  Chef::Log.info "Stopping slave and misconfiguring master"
+  RightScale::Database::MySQL::Helper.do_query(node, "STOP SLAVE")
+  RightScale::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST=''")
+  action_grant_replication_slave
+  RightScale::Database::MySQL::Helper.do_query(node, 'SET GLOBAL READ_ONLY=0')
+
+  # PHASE3: more non-critical operations, have already made assumption oldmaster is dead
+  begin
+    unless previous_master.nil?
+      #unlocking oldmaster
+      RightScale::Database::MySQL::Helper.do_query(node, 'UNLOCK TABLES', previous_master)
+      SystemTimer.timeout_after(RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT) do
+	#demote oldmaster
+        Chef::Log.info "Calling reconfigure replication with host: #{previous_master} ip: #{node[:cloud][:private_ips][0]} file: #{newmaster_file} position: #{newmaster_position}"
+	RightScale::Database::MySQL::Helper.reconfigure_replication(node, previous_master, node[:cloud][:private_ips][0], newmaster_file, newmaster_position)
+      end
+    end
+  rescue Timeout::Error => e
+    Chef::Log.info("WARNING: rescuing SystemTimer exception #{e}, continuing with promote")
+  rescue => e
+    Chef::Log.info("WARNING: rescuing exception #{e}, continuing with promote")
+  end
+end
+
+
+action :enable_replication do
+
+  ruby_block "wipe_existing_runtime_config" do
+    block do
+      Chef::Log.info "Wiping existing runtime config files"
+      data_dir = ::File.join(node[:db][:data_dir], 'mysql')
+      files_to_delete = [ "master.info","relay-log.info","mysql-bin.*","*relay-bin.*"]
+      files_to_delete.each do |file|
+        expand = Dir.glob(::File.join(data_dir,file))
+        unless expand.empty?
+        	expand.each do |exp_file|
+        	  FileUtils.rm_rf(exp_file)
+        	end
+        end
+      end
+    end
+  end
+
+  # disable binary logging
+  node[:db_mysql][:log_bin_enabled] = false
+
+  # we refactored setup_my_cnf into db::install_server, we might want to break that out again?
+  # Setup my.cnf
+  template_source = "my.cnf.erb"
+
+  template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
+    source template_source
+    owner "root"
+    group "root"
+    mode "0644"
+    variables(
+      :server_id => mycnf_uuid
+    )
+    cookbook 'db_mysql'
+  end
+
+  # empty out the binary log dir
+  directory ::File.dirname(node[:db_mysql][:log_bin]) do
+    action [:delete, :create]
+    recursive true
+    owner 'mysql'
+    group 'mysql'
+  end
+
+  # ensure_db_started
+  # service provider uses the status command to decide if it
+  # has to run the start command again.
+  10.times do
+    service "mysql" do
+      action :start
+    end
+  end
+
+  # checks for valid backup and that current master matches backup
+  ruby_block "validate_backup" do
+    block do
+      master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
+      raise "Position and file not saved!" unless master_info['Master_instance_uuid']
+      # Check that the snapshot is from the current master or a slave associated with the current master
+      if master_info['Master_instance_uuid'] != node[:db][:current_master_uuid]
+        raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_uuid']} != current master: #{node[:db][:current_master_uuid]}"
+      end
+    end
+  end
+
+  ruby_block "reconfigure_replication" do
+    block do
+      master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
+      newmaster_host = master_info['Master_IP']
+      newmaster_logfile = master_info['File']
+      newmaster_position = master_info['Position'] 
+      RightScale::Database::MySQL::Helper.reconfigure_replication(node, 'localhost', newmaster_host, newmaster_logfile, newmaster_position)
+    end
+  end
+
+  ruby_block "do_query" do
+    block do
+      RightScale::Database::MySQL::Helper.do_query(node, "SET GLOBAL READ_ONLY=1")
+    end
+  end
+
+  node[:db_mysql][:tunable][:read_only] = 1
+  template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
+    source template_source
+    owner "root"
+    group "root"
+    mode "0644"
+    variables(
+      :server_id => mycnf_uuid
+    )
+    cookbook 'db_mysql'
   end
 end

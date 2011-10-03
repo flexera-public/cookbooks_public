@@ -24,8 +24,6 @@ require "timeout"
     
 action :update do
   
-  rs_utils_marker :begin
-  
   # Set local variables from attributes
   port = new_resource.port ? new_resource.port : new_resource.name
   raise "ERROR: port must be set" if port == ""
@@ -152,13 +150,10 @@ action :update do
             
   end # else
   
-  rs_utils_marker :end
-
 end # action
 
 action :update_request do
   
-  rs_utils_marker :begin
 
   # Deal with attributes
   port = new_resource.port ? new_resource.port : new_resource.name
@@ -187,7 +182,5 @@ action :update_request do
     attributes attrs
   end 
 
-  rs_utils_marker :end
-  
 end
 
