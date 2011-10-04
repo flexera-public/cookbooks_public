@@ -56,7 +56,7 @@ end
 #TODO can we check DNS - we know that will be ready in TTL (60 seconds) and then wait
 # until the tags match what good old relliable DNS says
 bash "sleep waiting for tags to be really there" do
-  code <<- EOH
+  code <<-EOH
   sleep 60
   EOH
 end
