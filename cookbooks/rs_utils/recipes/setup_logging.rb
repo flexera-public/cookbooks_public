@@ -81,11 +81,11 @@ if "#{node[:rightscale][:servers][:lumberjack][:hostname]}" != "" && node[:rs_ut
 
   # == Set up log file rotation
   #
-  cookbook_file "/etc/logrotate.conf" do
+  remote_file "/etc/logrotate.conf" do
     source "logrotate.conf"
   end
   
-  cookbook_file node[:rs_utils][:logrotate_config] do
+  remote_file node[:rs_utils][:logrotate_config] do
     source "logrotate.d.syslog"
   end
   
