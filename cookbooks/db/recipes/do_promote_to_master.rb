@@ -25,24 +25,10 @@ rs_utils_marker :begin
 
 # == Verify initalized database
 # Check the node state to verify that we have correctly initialized this server.
+#
 db_state_assert :slave
 
-# == Initial checks 
-#
-# Make sure we are not already master. 
-# 
-ruby_block "slave check" do
-  block do
-    raise "FATAL: this instance is already a master!" if node[:db][:this_is_master]
-    # The master could be terminated.  Warn the user and plow ahead and try to become master.
-    Chef::Log.warn "WARNING: Unable to lookup current master server UUID" unless node[:db][:current_master_uuid]
-    Chef::Log.warn "WARNING: Unable to lookup current master server IP" unless node[:db][:current_master_ip]
-  end
-end
-
 # == Open port for slave replication by old-master
-#
-# TODO determine if the old master is still up and we should open the port to it
 #
 sys_firewall "Open port 3306 to the old master which is becoming a slave" do
   port 3306
@@ -51,9 +37,9 @@ sys_firewall "Open port 3306 to the old master which is becoming a slave" do
   action :update
 end
 
-# == Change the tags, but, leave the current_master* from last db::do_lookup_master node attributes so they can be used for "previous" master
+# == Promote to master
+# Do promote, but do not change master tags or node state yet.
 #
-include_recipe 'db::do_tag_as_master'
 include_recipe "db::setup_replication_privileges"
 
 db node[:db][:data_dir] do
@@ -69,11 +55,13 @@ remote_recipe "enable slave backups on oldmaster" do
   recipients_tags "rs_dbrepl:master_instance_uuid=#{node[:db][:current_master_uuid]}"
 end
 
-# == Schedule master backups
-# Now do the lookup to setup the current_master in the node
-# then enable the backups locally.
+# == Tag as master
+# Changes master status tags and node state
 #
-include_recipe 'db::do_lookup_master'
+include_recipe 'db::do_tag_as_master' 
+
+# == Schedule master backups
+#
 include_recipe 'db::do_backup'
 include_recipe "db::do_backup_schedule_enable"
 
