@@ -25,7 +25,10 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
-include_recipe "db::do_lookup_master"
+master_ip = node[:db][:current_master_ip]
+master_uuid = node[:db][:current_master_uuid]
+raise "No master DB set.  Is this slave initialized?" unless master_ip && master_uuid
+is_initialized_check
 
 snap_lineage = node[:db][:backup][:lineage]
 raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?

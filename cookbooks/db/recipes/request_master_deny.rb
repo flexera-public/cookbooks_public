@@ -25,12 +25,9 @@
 
 rs_utils_marker :begin
 
-# == Lookup current master
-#
-include_recipe "db::do_lookup_master"
 master_ip = node[:db][:current_master_ip]
 master_uuid = node[:db][:current_master_uuid]
-raise "No master DB found" unless master_ip && master_uuid
+raise "No master DB set.  Is this slave initialized?" unless master_ip && master_uuid
 
 # == Request firewall closed
 #
