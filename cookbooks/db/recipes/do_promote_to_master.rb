@@ -23,9 +23,9 @@
 
 rs_utils_marker :begin
 
-# == Find current master
-#
-include_recipe 'db::do_lookup_master'
+# == Verify initalized database
+# Check the node state to verify that we have correctly initialized this server.
+db_state_assert :slave
 
 # == Initial checks 
 #

@@ -21,52 +21,25 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-rs_utils_marker :begin
-
-log "  Brute force tear down of the setup....."
-DATA_DIR = node[:db][:data_dir]
-
-log "  Resetting the database..."
-db DATA_DIR do
-  action :reset
-end
-
-log "  Resetting block device..."
-block_device DATA_DIR do
-  lineage node[:db][:backup][:lineage]
-  action :reset
-end
-
-log "  Remove tags..."
-bash "remove tags" do
-  code <<-EOH
-  rs_tag -r 'rs_dbrepl:*'
-  EOH
-end
-
-sys_dns "cleaning dns" do
-  provider "sys_dns_#{node[:sys_dns][:choice]}"
-
-  id node[:sys_dns][:id]
-  user node[:sys_dns][:user]
-  password node[:sys_dns][:password]
-  address '1.1.1.1'
-
-  action :set_private
-end
-
-ruby_block "Reset db node state" do
-  block do
-    node[:db][:db_restored] = false
-    node[:db][:this_is_master] = false
-    node[:db][:current_master_uuid] = nil
-    node[:db][:current_master_ip] = nil
+# == Verify database node state
+# Make sure our current_master values are set
+# Fail if we think we are a slave, but node state thinks we are a master
+# == Params
+# name(String):: Assert the type of server we thing we are. Can be :slave, :master, :either
+# == Exceptions
+# raises Excaption if we are not the server type (:slave or :master) that we expect
+#
+define :db_state_assert do
+  
+  ruby_block "check database node state" do
+    block do
+      type = params[:name]
+      master_ip = node[:db][:current_master_ip]
+      master_uuid = node[:db][:current_master_uuid]
+      raise "No master DB set.  Is this database initialized as a #{type.to_s}?" unless master_ip && master_uuid
+      raise "FATAL: this slave thinks its master!" if node[:db][:this_is_master] && type == :slave
+      raise "FATAL: this server is not a master!" if (node[:db][:this_is_master] == false) && type == :master
+    end
   end
-end
 
-log "  Resetting database, then starting database..."
-db DATA_DIR do
-  action [ :reset, :start ]
 end
-
-rs_utils_marker :end

@@ -24,13 +24,13 @@
 rs_utils_marker :begin
 
 # == Set master DNS
-#   Do this first so that DNS can propagate while the recipe runs
+# Do this first so that DNS can propagate while the recipe runs
 #
 include_recipe "db::setup_master_dns"
 
 # == Set master tags
-#   tag the server with the master tags rs_dbrepl:master_active 
-#   and rs_dbrepl:master_instance_uuid
+# Tag the server with the master tags rs_dbrepl:master_active 
+# and rs_dbrepl:master_instance_uuid
 #
 active_tag = "rs_dbrepl:master_active=#{Time.now.strftime("%Y%m%d%H%M%S")}"
 log "Tagging server with #{active_tag}"
@@ -42,8 +42,12 @@ right_link_tag unique_tag
 
 # == Set master node variables
 #
-node[:db][:current_master_uuid] = node[:rightscale][:instance_uuid]
-node[:db][:current_master_ip] = node[:cloud][:private_ips][0]
-node[:db][:this_is_master] = true
+ruby_block "initialize master state" do 
+  block do 
+    node[:db][:current_master_uuid] = node[:rightscale][:instance_uuid]
+    node[:db][:current_master_ip] = node[:cloud][:private_ips][0]
+    node[:db][:this_is_master] = true
+  end
+end
 
 rs_utils_marker :end

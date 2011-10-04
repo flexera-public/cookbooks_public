@@ -25,14 +25,14 @@
 
 rs_utils_marker :begin
 
-master_ip = node[:db][:current_master_ip]
-master_uuid = node[:db][:current_master_uuid]
-raise "No master DB set.  Is this slave initialized?" unless master_ip && master_uuid
+# == Verify initalized database
+# Check the node state to verify that we have correctly initialized this server.
+db_state_assert :slave
 
 # == Request firewall closed
 #
 db node[:db][:data_dir] do
-  machine_tag "rs_dbrepl:master_instance_uuid=#{master_uuid}"
+  machine_tag "rs_dbrepl:master_instance_uuid=#{node[:db][:current_master_uuid]}"
   enable false
   ip_addr node[:cloud][:private_ips][0]
   action :firewall_update_request
