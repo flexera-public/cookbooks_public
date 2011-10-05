@@ -55,6 +55,17 @@ remote_recipe "enable slave backups on oldmaster" do
   recipients_tags "rs_dbrepl:master_instance_uuid=#{node[:db][:current_master_uuid]}"
 end
 
+# == Demote old master
+#
+remote_recipe "demote master" do
+  recipe "db::handle_demote_master"
+  attributes :remote_recipe => {
+                :new_master_ip => node[:cloud][:private_ips][0],
+                :new_master_uuid => node[:rightscale][:instance_uuid]
+              }
+  recipients_tags "rs_dbrepl:master_instance_uuid=#{node[:db][:current_master_uuid]}"
+end
+
 # == Tag as master
 # Changes master status tags and node state
 #

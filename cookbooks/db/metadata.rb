@@ -62,6 +62,8 @@ recipe "db::setup_replication_privileges", "Set up privileges for MySQL replicat
 recipe "db::request_master_allow", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to allow connections from the server's private IP address.  This script should be run on a slave before it sets up replication."
 recipe "db::request_master_deny", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to deny connections from the server's private IP address.  This script should be run on a slave when it stops replicating."
 
+recipe "db::handle_demote_master", "Remote recipe executed by do_promote_to_master. DO NOT RUN."
+
 
 # == Common Database Attributes
 #

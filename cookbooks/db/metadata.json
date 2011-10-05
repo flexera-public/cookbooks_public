@@ -264,6 +264,7 @@
     "suggestions": {
     },
     "recipes": {
+      "db::handle_demote_master": "Remote recipe executed by do_promote_to_master. DO NOT RUN.",
       "db::do_tag_as_master": "USE WITH CAUTION! Tag server with master tags and set master DNS to this server.",
       "db::do_restore": "Restores the database from the most recently completed backup available in persistent storage of the current cloud.",
       "db::do_init_slave": "Initialize MySQL Slave",
