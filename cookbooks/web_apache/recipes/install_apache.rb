@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 package "apache2" do
   case node[:platform]
   when "centos","redhat","fedora","suse"
@@ -105,3 +107,4 @@ end
 # Log resource submitted to opscode. http://tickets.opscode.com/browse/CHEF-923
 log "Started the apache server."
 
+rs_utils_marker :end
