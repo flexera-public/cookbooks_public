@@ -24,12 +24,13 @@
 rs_utils_marker :begin
 
 # == Set master DNS
-#   Do this first so that DNS can propagate while waiting for tags to show up
+# Do this first so that DNS can propagate while the recipe runs
 #
 include_recipe "db::setup_master_dns"
 
 # == Set master tags
-#   tag the server with the master tags rs_dbrepl:master_active and rs_dbrepl:master_instance_uuid
+# Tag the server with the master tags rs_dbrepl:master_active 
+# and rs_dbrepl:master_instance_uuid
 #
 active_tag = "rs_dbrepl:master_active=#{Time.now.strftime("%Y%m%d%H%M%S")}"
 log "Tagging server with #{active_tag}"
@@ -39,41 +40,14 @@ unique_tag = "rs_dbrepl:master_instance_uuid=#{node[:rightscale][:instance_uuid]
 log "Tagging server with #{unique_tag}"
 right_link_tag unique_tag
 
-# == Wait for tags
-#   Tags are not instantly available - need to wait for them.
+# == Set master node variables
 #
-log "Waiting for tags to exist..."
-rs_utils_server_collection "wait_for_master_servers" do
-  tags [active_tag, unique_tag]
-  empty_ok false
+ruby_block "initialize master state" do 
+  block do 
+    node[:db][:current_master_uuid] = node[:rightscale][:instance_uuid]
+    node[:db][:current_master_ip] = node[:cloud][:private_ips][0]
+    node[:db][:this_is_master] = true
+  end
 end
-
-# == Sleep hoping tags will show up
-#   There is no deterministic way to check if a tag has propagated to all servers.
-#   This sleep is an attempt give enough time for the tags to become "consistent".
-#
-#TODO make sure this is the best way to sleep
-#TODO can we check DNS - we know that will be ready in TTL (60 seconds) and then wait
-# until the tags match what good old relliable DNS says
-bash "sleep waiting for tags to be really there" do
-  code <<-EOH
-  sleep 60
-  EOH
-end
-
-# == Double check tags
-#   The tag service will give a differnet answer depending on what server filled
-#   the request.  You never really know if all tag servers are going to return
-#   the same information.
-#   With the sleep the hope is that the tag is available.  This check will give a
-#   clear error message if the tag has not propagated.
-#   HOWEVER - this only tells you that two servers agree.  Which is a weak quroam
-#   when you have 10's of servers spread all over the world.
-#   And 60 seconds is a guess - it could be an hour before things become consistent.
-#   Deal with it.
-#
-
-include_recipe 'db::do_lookup_master'
-raise "Inconsistent tags" unless node[:db][:this_is_master]
 
 rs_utils_marker :end

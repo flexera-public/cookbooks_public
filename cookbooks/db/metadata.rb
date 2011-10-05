@@ -54,13 +54,15 @@ recipe "db::request_appserver_deny", "Sends a request to deny connections from t
 #
 recipe "db::do_restore_and_become_master", "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
 recipe "db::do_init_slave", "Initialize MySQL Slave"
+recipe "db::do_init_slave_at_boot", "Initialize MySQL Slave at boot."
 recipe "db::do_tag_as_master", "USE WITH CAUTION! Tag server with master tags and set master DNS to this server."
-recipe "db::do_lookup_master", "Use tags to lookup current master and save in the node"
 recipe "db::do_promote_to_master", "Promote a replicating slave to master"
 recipe "db::setup_master_dns", "USE WITH CAUTION! Set master DNS to this server's IP"
 recipe "db::setup_replication_privileges", "Set up privileges for MySQL replication slaves."
 recipe "db::request_master_allow", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to allow connections from the server's private IP address.  This script should be run on a slave before it sets up replication."
 recipe "db::request_master_deny", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to deny connections from the server's private IP address.  This script should be run on a slave when it stops replicating."
+
+recipe "db::handle_demote_master", "Remote recipe executed by do_promote_to_master. DO NOT RUN."
 
 
 # == Common Database Attributes
@@ -110,6 +112,12 @@ attribute "db/application/password",
   :description => "The password of the database user that has 'user' privileges.",
   :required => true,
   :recipes => [ "db::default", "db::setup_privileges_application" ]
+  
+attribute "db/init_slave_at_boot",
+  :display_name => "Init Slave at Boot",
+  :description => "Set to 'True' for the instance to initialize the database server as a slave at boot time.   Set to 'False' if there is no Master-DB server running. ",
+  :required => true,
+  :recipes => [ "db::do_init_slave_at_boot" ]
 
 
 # == Backup/Restore 

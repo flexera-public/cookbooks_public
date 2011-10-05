@@ -25,8 +25,9 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
-# Make sure the node variables related to master are set on this instance
-include_recipe 'db::do_lookup_master'
+# == Verify initalized database
+# Check the node state to verify that we have correctly initialized this server.
+db_state_assert :either
 
 log "  Performing pre-backup check..." 
 db DATA_DIR do
