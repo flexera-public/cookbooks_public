@@ -45,13 +45,6 @@ attribute "rs_utils/private_ssh_key",
  :required => "required",
  :recipes => [ "rs_utils::setup_ssh" ]
 
-attribute "rs_utils/db_backup_file",
-  :display_name => "DB backup file",
-  :description => "An optionally specified file path for the DB backup time stamp. Ex: /var/run/db-backup",
-  :required => "optional",
-  :default => "/var/run/db-backup",
-  :recipes => [ "rs_utils::install_file_stats_collectd_plugin"  ]
-
 attribute "rs_utils/short_hostname",
   :display_name => "Short Hostname",
   :description => "The short hostname that you would like this node to have. Ex: kryten",
