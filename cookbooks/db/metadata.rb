@@ -116,7 +116,8 @@ attribute "db/application/password",
 attribute "db/init_slave_at_boot",
   :display_name => "Init Slave at Boot",
   :description => "Set to 'True' for the instance to initialize the database server as a slave at boot time.   Set to 'False' if there is no Master-DB server running. ",
-  :required => true,
+  :default => "false",
+  :choice => [ "true", "false" ],
   :recipes => [ "db::do_init_slave_at_boot" ]
 
 
