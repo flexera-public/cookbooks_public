@@ -61,7 +61,7 @@ end
 
 ruby_block "add_collectd_gauges" do
   block do
-    types_file = ::File.join(node[:rs_utils][:collectd_lib], 'types.db')
+    types_file = ::File.join(node[:rs_utils][:collectd_share], 'types.db')
     typesdb = IO.read(types_file)
     unless typesdb.include?('gague-age') && typesdb.include?('gague-size')
       typesdb += "\ngauge-age          seconds:GAUGE:0:200000000\ngauge-size          bytes:GAUGE:0:200000000\n"
