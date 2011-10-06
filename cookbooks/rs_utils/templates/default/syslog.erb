@@ -26,6 +26,7 @@ source s_sys {
     udp(ip(127.0.0.1) port(514));
 };
 
+
 destination d_cons { file("/dev/console"); };
 destination d_mesg { file("/var/log/messages"); };
 destination d_auth { file("/var/log/secure"); };
@@ -103,7 +104,7 @@ filter f_syslog { not facility(auth, authpriv); };
 
 # *.*;auth,authpriv.none          -/var/log/syslog
 log {
-        source(s_all);
+        source(s_sys);
         filter(f_syslog);
         destination(df_syslog);
 };
