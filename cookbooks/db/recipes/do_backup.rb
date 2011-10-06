@@ -71,7 +71,7 @@ else
   account_secret = node[:block_device][:aws_secret_access_key]
 end
 
-# TODO: add comment why we fork this process
+log "  Forking background process to complete backup... (see /var/log/messages for results)"
 bash "backup.rb" do
   environment ({ 
     'STORAGE_ACCOUNT_ID' => account_id,
