@@ -81,25 +81,25 @@ attribute "db/admin/user",
   :display_name => "Database Admin Username",
   :description => "The username of the database user that has 'admin' privileges.",
   :required => true,
-  :recipes => [ "db::default", "db::do_backup", "db::setup_privileges_admin" ]
+  :recipes => [ "db::install_server", "db::setup_privileges_admin" ]
 
 attribute "db/admin/password",
   :display_name => "Database Admin Password",
   :description => "The password of the database user that has 'admin' privileges.",
   :required => true,
-  :recipes => [ "db::default", "db::do_backup", "db::setup_privileges_admin" ]
+  :recipes => [ "db::install_server", "db::setup_privileges_admin" ]
 
 attribute "db/replication/user",
   :display_name => "Database Replication Username",
   :description => "The username of the database user that has 'replciation' privileges.",
   :required => true,
-  :recipes => [ "db::default" ]
+  :recipes => [ "db::setup_replication_privilege", "db::do_restore_and_become_master", "db::do_promote_to_master" ]
 
 attribute "db/replication/password",
   :display_name => "Database Replication Password",
   :description => "The password of the database user that has 'replciation' privileges.",
   :required => true,
-  :recipes => [ "db::default" ]
+  :recipes => [ "db::setup_replication_privilege", "db::do_restore_and_become_master", "db::do_promote_to_master" ]
 
 attribute "db/application/user",
   :display_name => "Database Application Username",
@@ -127,7 +127,9 @@ attribute "db/backup/lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular database.",
   :required => true,
   :recipes => [
-    "db::default",
+    "db::do_init_slave",
+    "db::do_promote_to_master",
+    "db::do_restore_and_become_master",
     "db::do_backup",
     "db::do_restore",
     "db::do_backup_schedule_enable",
