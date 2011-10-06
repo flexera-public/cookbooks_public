@@ -28,9 +28,12 @@ service "apache2" do
   action :nothing
 end
 
-#TODO:
-# condition for ubuntu
-package "mod_ssl"
+package "mod_ssl" do
+  case node[:platform]
+  when 'ubuntu'
+    action :nothing
+  end
+end
 
 # == Setup Apache vhost on following ports
 https_port = "443"
