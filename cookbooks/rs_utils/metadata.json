@@ -1,142 +1,160 @@
 {
-    "version": "0.0.1",
-    "groupings": {
-    },
-    "long_description": "= RightScale Utilities Cookbook (Beta)\n\n== DESCRIPTION:\n\nBase recipes used to setup services used by the RightScale Cloud Management Platform\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage\n\n== SETUP:\n\n== USAGE:\n\nRun the rs_utils::default recipe to perform common server configuration steps  \nsuch as enabling monitoring and logging on the RightScale Dashboard.\n\n== KNWON LIMITATIONS:\n\n== DEFINITIONS\n\nrs_utils_enable_collectd_plugin\n---------------------------------------------\n* Accepts only one parameter \"name\" which is the name of the collectd plugin to enable\n* The plugin name is added to node[:rs_utils][:plugin_list_ary] which is used to create the list of plugins in the /etc/collectd/collectd.conf file\n* The node[:rs_utils][:plugin_list_ary] will have any plugins listed in node[:rs_utils][:plugin_list] merged into it.  This is to support any legacy recipes as well as allow the input to be manipulated in the RS dashboard.\n\nSyntax:\n\n```rs_utils_enable_collectd_plugin \"curl_json\"```\n\n\nrs_utils_monitor_process\n------------------------------------\n* Accepts only one parameter, \"name\" which is the name of the process to monitor\n* The process name is added to node[:rs_utils][:process_list_ary] which is used to create the list of processes in the /etc/collectd/conf/processes.conf file\n* The node[:rs_utils][:process_list_ary] will have any processes listed in node[:rs_utils][:process_list] merged into it.  This is to support any legacy recipes as well as allow the input to be manipulated in the RS dashboard.\n\nSyntax:\n\n```rs_utils_monitor_process \"nginx\"```\n\n\nrs_utils_marker\n------------------------------------\n* Accepts only one parameter, \"location\" which can be :start or :end.  Can also be :begin, :stop, and the string versions.\n* Used to log the start and end of a recipe using the 'log' chef resource.  Should be added at the beginning and end of a recipe.\n* Log marker: ========================= recipe::name : START/END =========================\n\nSyntax:\n\n```rs_utils_marker :start```\n```rs_utils_marker :end```\n",
-    "attributes": {
-      "rs_utils/search_suffix": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
+  "groupings": {
 
-        ],
-        "default": "",
-        "type": "string",
-        "recipes": [
-          "rs_utils::setup_hostname"
-        ],
-        "description": "The domain search suffix you would like this node to have. Ex: domain.suf.",
-        "display_name": "Domain Search Suffix"
-      },
-      "rs_utils/timezone": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
+  },
+  "recommendations": {
 
-        ],
-        "default": "UTC",
-        "type": "string",
-        "recipes": [
-          "rs_utils::setup_timezone",
-          "rs_utils::default"
-        ],
-        "description": "Sets the system time to the timezone of the specified input, which must be a valid zoneinfo/tz database entry.  If the input is 'unset' the timezone will use the 'localtime' that's defined in your RightScale account under Settings -> User Settings -> Preferences tab.  You can find a list of valid examples from the timezone pulldown bar in the Preferences tab. The server will not be updated for daylight savings time.  Ex: US/Pacific, US/Eastern",
-        "display_name": "Timezone"
-      },
-      "rs_utils/domain_name": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
+  },
+  "maintainer": "RightScale, Inc.",
+  "description": "Enable instance Monitoring and logging in the RightScale dashboard.",
+  "suggestions": {
 
-        ],
-        "default": "",
-        "type": "string",
-        "recipes": [
-          "rs_utils::setup_hostname"
-        ],
-        "description": "The domain name that you would like this node to have. Ex: domain.suf",
-        "display_name": "Domain Name"
-      },
-      "rs_utils/process_list": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
+  },
+  "attributes": {
+    "rs_utils/search_suffix": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
 
-        ],
-        "default": "",
-        "type": "string",
-        "recipes": [
-          "rs_utils::install_mysql_collectd_plugin",
-          "rs_utils::setup_monitoring",
-          "rs_utils::default"
-        ],
-        "description": "A space-separated list of additional processes to monitor in the RightScale Dashboard.  Ex: sshd crond",
-        "display_name": "Process List"
-      },
-      "rs_utils/process_match_list": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "rs_utils::setup_hostname"
+      ],
+      "display_name": "Domain Search Suffix",
+      "description": "The domain search suffix you would like this node to have. Ex: domain.suf."
+    },
+    "rs_utils/timezone": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+        "US/Central",
+        "Europe/London",
+        "Europe/Helsinki",
+        "localtime",
+        "GMT",
+        "Europe/Paris",
+        "US/Eastern",
+        "Europe/Moscow",
+        "US/Mountain",
+        "UTC",
+        "US/Pacific"
+      ],
+      "default": "UTC",
+      "type": "string",
+      "recipes": [
+        "rs_utils::setup_timezone",
+        "rs_utils::default"
+      ],
+      "display_name": "Timezone",
+      "description": "Sets the system time to the timezone of the specified input, which must be a valid zoneinfo/tz database entry.  If the input is 'unset' the timezone will use the 'localtime' that's defined in your RightScale account under Settings -> User Settings -> Preferences tab.  You can find a list of valid examples from the timezone pulldown bar in the Preferences tab. The server will not be updated for daylight savings time.  Ex: US/Pacific, US/Eastern"
+    },
+    "rs_utils/domain_name": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
 
-        ],
-        "default": "",
-        "type": "string",
-        "recipes": [
-          "rs_utils::install_mysql_collectd_plugin",
-          "rs_utils::setup_monitoring",
-          "rs_utils::default"
-        ],
-        "description": "A space-separated list of pairs used to match the name(s) of additional processes to monitor in the RightScale Dashboard.  Paired arguments are passed in using the following syntax 'name/regex'. Ex: ssh/ssh* cron/cron*",
-        "display_name": "Process Match List"
-      },
-      "rs_utils/short_hostname": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "rs_utils::setup_hostname"
+      ],
+      "display_name": "Domain Name",
+      "description": "The domain name that you would like this node to have. Ex: domain.suf"
+    },
+    "rs_utils/process_list": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
 
-        ],
-        "default": null,
-        "type": "string",
-        "recipes": [
-          "rs_utils::setup_hostname"
-        ],
-        "description": "The short hostname that you would like this node to have. Ex: kryten",
-        "display_name": "Short Hostname"
-      },
-      "rs_utils/private_ssh_key": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "rs_utils::install_mysql_collectd_plugin",
+        "rs_utils::setup_monitoring",
+        "rs_utils::default"
+      ],
+      "display_name": "Process List",
+      "description": "A space-separated list of additional processes to monitor in the RightScale Dashboard.  Ex: sshd crond"
+    },
+    "rs_utils/process_match_list": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
 
-        ],
-        "type": "string",
-        "recipes": [
-          "rs_utils::setup_ssh"
-        ],
-        "description": "The private SSH key of another instance that gets installed on this instance.  Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key",
-        "display_name": "Private SSH Key"
-      }
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "rs_utils::install_mysql_collectd_plugin",
+        "rs_utils::setup_monitoring",
+        "rs_utils::default"
+      ],
+      "display_name": "Process Match List",
+      "description": "A space-separated list of pairs used to match the name(s) of additional processes to monitor in the RightScale Dashboard.  Paired arguments are passed in using the following syntax 'name/regex'. Ex: ssh/ssh* cron/cron*"
     },
-    "recommendations": {
+    "rs_utils/short_hostname": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": null,
+      "type": "string",
+      "recipes": [
+        "rs_utils::setup_hostname"
+      ],
+      "display_name": "Short Hostname",
+      "description": "The short hostname that you would like this node to have. Ex: kryten"
     },
-    "dependencies": {
-    },
-    "maintainer": "RightScale, Inc.",
-    "suggestions": {
-    },
-    "recipes": {
-      "rs_utils::setup_server_tags": "Sets machine tags that are common to all RightScale managed servers.",
-      "rs_utils::setup_monitoring": "Installs and configures RightScale dashboard monitoring features.",
-      "rs_utils::setup_logging": "Installs and configures RightScale's dashboard logging features.",
-      "rs_utils::install_file_stats_collectd_plugin": "Installs the file-stats.rb collectd plugin for monitoring support.  It is also used for mysql binary backup alerting.",
-      "rs_utils::setup_timezone": "Sets the system timezone.",
-      "rs_utils::setup_mail": "Set up basic mail support.",
-      "rs_utils::default": "Installs the utilities that are required for RightScale support.",
-      "rs_utils::install_mysql_collectd_plugin": "Installs the mysql collectd plugin for monitoring support.",
-      "rs_utils::install_tools": "Installs RightScale's instance tools.",
-      "rs_utils::setup_hostname": "Sets the system hostname.",
-      "rs_utils::setup_ssh": "Installs the private ssh key."
-    },
-    "maintainer_email": "support@rightscale.com",
-    "conflicting": {
-    },
-    "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
-    "providing": {
-    },
-    "name": "rs_utils",
-    "replacing": {
-    },
-    "platforms": {
-    },
-    "description": "Enable instance Monitoring and logging in the RightScale dashboard."
+    "rs_utils/private_ssh_key": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "rs_utils::setup_ssh"
+      ],
+      "display_name": "Private SSH Key",
+      "description": "The private SSH key of another instance that gets installed on this instance.  Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key"
+    }
+  },
+  "maintainer_email": "support@rightscale.com",
+  "long_description": "= RightScale Utilities Cookbook (Beta)\n\n== DESCRIPTION:\n\nBase recipes used to setup services used by the RightScale Cloud Management Platform\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage\n\n== SETUP:\n\n== USAGE:\n\nRun the rs_utils::default recipe to perform common server configuration steps  \nsuch as enabling monitoring and logging on the RightScale Dashboard.\n\n== KNWON LIMITATIONS:\n\n== DEFINITIONS\n\nrs_utils_enable_collectd_plugin\n---------------------------------------------\n* Accepts only one parameter \"name\" which is the name of the collectd plugin to enable\n* The plugin name is added to node[:rs_utils][:plugin_list_ary] which is used to create the list of plugins in the /etc/collectd/collectd.conf file\n* The node[:rs_utils][:plugin_list_ary] will have any plugins listed in node[:rs_utils][:plugin_list] merged into it.  This is to support any legacy recipes as well as allow the input to be manipulated in the RS dashboard.\n\nSyntax:\n\n```rs_utils_enable_collectd_plugin \"curl_json\"```\n\n\nrs_utils_monitor_process\n------------------------------------\n* Accepts only one parameter, \"name\" which is the name of the process to monitor\n* The process name is added to node[:rs_utils][:process_list_ary] which is used to create the list of processes in the /etc/collectd/conf/processes.conf file\n* The node[:rs_utils][:process_list_ary] will have any processes listed in node[:rs_utils][:process_list] merged into it.  This is to support any legacy recipes as well as allow the input to be manipulated in the RS dashboard.\n\nSyntax:\n\n```rs_utils_monitor_process \"nginx\"```\n\n\nrs_utils_marker\n------------------------------------\n* Accepts only one parameter, \"location\" which can be :start or :end.  Can also be :begin, :stop, and the string versions.\n* Used to log the start and end of a recipe using the 'log' chef resource.  Should be added at the beginning and end of a recipe.\n* Log marker: ========================= recipe::name : START/END =========================\n\nSyntax:\n\n```rs_utils_marker :start```\n```rs_utils_marker :end```\n",
+  "conflicting": {
+
+  },
+  "recipes": {
+    "rs_utils::setup_server_tags": "Sets machine tags that are common to all RightScale managed servers.",
+    "rs_utils::setup_monitoring": "Installs and configures RightScale dashboard monitoring features.",
+    "rs_utils::setup_logging": "Installs and configures RightScale's dashboard logging features.",
+    "rs_utils::install_file_stats_collectd_plugin": "Installs the file-stats.rb collectd plugin for monitoring support.  It is also used for mysql binary backup alerting.",
+    "rs_utils::setup_timezone": "Sets the system timezone.",
+    "rs_utils::setup_mail": "Set up basic mail support.",
+    "rs_utils::default": "Installs the utilities that are required for RightScale support.",
+    "rs_utils::install_mysql_collectd_plugin": "Installs the mysql collectd plugin for monitoring support.",
+    "rs_utils::install_tools": "Installs RightScale's instance tools.",
+    "rs_utils::setup_hostname": "Sets the system hostname.",
+    "rs_utils::setup_ssh": "Installs the private ssh key."
+  },
+  "platforms": {
+
+  },
+  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "providing": {
+
+  },
+  "name": "rs_utils",
+  "replacing": {
+
+  },
+  "version": "0.0.1",
+  "dependencies": {
+
   }
+}
