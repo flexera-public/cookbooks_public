@@ -31,6 +31,7 @@ action :update do
   to_enable = new_resource.enable
   ip_addr = new_resource.ip_addr
   tag = new_resource.machine_tag
+  ip_tag = "server:private_ip_0"
   collection_name = new_resource.collection
   
   # We only support ip_addr or tags, however, ip_addr defaults to 'any' so reconcile here
@@ -56,8 +57,12 @@ action :update do
       action :nothing
     end
   
-    server_collection collection_name do
+    rs_utils_server_collection collection_name do
       tags tag
+      secondary_tags ip_tag
+      only_if do
+        tag != nil
+      end
     end
     
     ruby_block 'Register all currently active app servers' do
@@ -69,54 +74,9 @@ action :update do
 
         # Add tagged servers
         if tag
-          begin            
-            ip_tag = "server:private_ip_0"
-            timeout_sec = 60 
-            delay_sec = 1
-            status = Timeout::timeout(timeout_sec) do  
-              done = false
-              until done      
-                all_tags_exist = true
-                done = true
-      
-                valid_ip_regex = '(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])'
-                done = true
-      
-                # Grab private_ip of all tagged servers
-                Chef::Log.info "Loop through server collection for servers with #{tag} tag..."
-      
-                node[:server_collection][collection_name].each do |_, tags|              
-                  # Use regex to extract
-                  tags.detect { |t| t =~ /^#{ip_tag}=(#{valid_ip_regex})$/ }
-                  match = Regexp.last_match
-                  if match 
-                    client_ip = match[1]
-                    ip_list << client_ip unless ip_list.include?(client_ip)
-                    Chef::Log.info "  Found server with #{tag} tag. IP=#{client_ip}"
-                  else
-                     Chef::Log.warn("  Tag '#{ip_tag}' not found for server. Skipping...")
-                     all_tags_exist = false
-                     next
-                  end
-                end
-      
-                unless all_tags_exist
-                  Chef::Log.error("Server with #{tag} tag does not contain #{ip_tag}.")
-
-                  delay_sec = RightScale::System::Helper.calculate_exponential_backoff(delay_sec)
-                  Chef::Log.info("Retrying in #{delay_sec} seconds...") 
-                  sleep(delay_sec)
-
-                  RightScale::System::Helper.requery_server_collection(tag, collection_name, node, @run_context)
-              
-                  done = false 
-                  all_tags_exist = true # inoccent until proven guilty
-                end
-     
-              end # until
-            end # timeout
-          rescue Timeout::Error => e
-            Chef::Log.error "Unable to find #{ip_tag} after #{timeout_sec} seconds. Not adding rule."
+          valid_ip_regex = '(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])'
+          ip_list = node[:server_collection][collection_name].collect do |_, tags|
+            RightScale::Utils::Helper.get_tag_value(ip_tag, tags, valid_ip_regex)
           end
         end # if tag
                   

@@ -22,6 +22,17 @@ attribute "rs_utils/timezone",
   :display_name => "Timezone",
   :description => "Sets the system time to the timezone of the specified input, which must be a valid zoneinfo/tz database entry.  If the input is 'unset' the timezone will use the 'localtime' that's defined in your RightScale account under Settings -> User Settings -> Preferences tab.  You can find a list of valid examples from the timezone pulldown bar in the Preferences tab. The server will not be updated for daylight savings time.  Ex: US/Pacific, US/Eastern",
   :required => "optional",
+  :choice => ["US/Central", \
+              "Europe/London", \
+              "Europe/Helsinki", \
+              "localtime", \
+              "GMT", \
+              "Europe/Paris", \
+              "US/Eastern", \
+              "Europe/Moscow", \
+              "US/Mountain", \
+              "UTC", \
+              "US/Pacific"],
   :default => "UTC",
   :recipes => [ "rs_utils::setup_timezone", "rs_utils::default" ]
   
@@ -44,13 +55,6 @@ attribute "rs_utils/private_ssh_key",
  :description => "The private SSH key of another instance that gets installed on this instance.  Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key",
  :required => "required",
  :recipes => [ "rs_utils::setup_ssh" ]
-
-attribute "rs_utils/db_backup_file",
-  :display_name => "DB backup file",
-  :description => "An optionally specified file path for the DB backup time stamp. Ex: /var/run/db-backup",
-  :required => "optional",
-  :default => "/var/run/db-backup",
-  :recipes => [ "rs_utils::install_file_stats_collectd_plugin"  ]
 
 attribute "rs_utils/short_hostname",
   :display_name => "Short Hostname",

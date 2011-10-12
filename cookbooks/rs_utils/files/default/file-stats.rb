@@ -43,13 +43,15 @@ loop do
       size = File.size(f)
       now = Time.now
       age = (now - File.mtime(f)).to_i
-      base = File.basename(f, '.*').gsub(/-/, '_')
-      print "PUTVAL #{hostname}/file-#{base}/gauge-size interval=#{sample_interval} #{now.to_i}:#{size}\n"
-      print "PUTVAL #{hostname}/file-#{base}/gauge-age interval=#{sample_interval} #{now.to_i}:#{age}\n"
+    else
+      size="NaN"
+      age="NaN"
     end
+    base = File.basename(f, '.*').gsub(/-/, '_')
+    print "PUTVAL #{hostname}/file-#{base}/gauge-size interval=#{sample_interval} #{now.to_i}:#{size}\n"
+    print "PUTVAL #{hostname}/file-#{base}/gauge-age interval=#{sample_interval} #{now.to_i}:#{age}\n"
   end
 
   STDOUT.flush
   sleep sample_interval
 end
-

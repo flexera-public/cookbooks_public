@@ -25,7 +25,9 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
-include_recipe "db::do_lookup_master"
+# == Verify initalized database
+# Check the node state to verify that we have correctly initialized this server.
+db_state_assert :either
 
 snap_lineage = node[:db][:backup][:lineage]
 raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?

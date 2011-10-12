@@ -1,4 +1,5 @@
-# Cookbook Name:: db
+# Cookbook Name:: rs_utils
+# Resource:: rs_utils_server_collection
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -21,52 +22,16 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-rs_utils_marker :begin
+actions :load
 
-log "  Brute force tear down of the setup....."
-DATA_DIR = node[:db][:data_dir]
+attribute :tags, :kind_of => [String, Array]
+attribute :secondary_tags, :kind_of => [String, Array]
+attribute :agent_ids, :kind_of => [String, Array]
+attribute :timeout, :default => 60, :kind_of => Integer
+attribute :empty_ok, :default => true, :equal_to => [true, false]
 
-log "  Resetting the database..."
-db DATA_DIR do
-  action :reset
+# Defines a default action
+def initialize(*args)
+  super
+  @action = :load
 end
-
-log "  Resetting block device..."
-block_device DATA_DIR do
-  lineage node[:db][:backup][:lineage]
-  action :reset
-end
-
-log "  Remove tags..."
-bash "remove tags" do
-  code <<-EOH
-  rs_tag -r 'rs_dbrepl:*'
-  EOH
-end
-
-sys_dns "cleaning dns" do
-  provider "sys_dns_#{node[:sys_dns][:choice]}"
-
-  id node[:sys_dns][:id]
-  user node[:sys_dns][:user]
-  password node[:sys_dns][:password]
-  address '1.1.1.1'
-
-  action :set_private
-end
-
-ruby_block "Reset db node state" do
-  block do
-    node[:db][:db_restored] = false
-    node[:db][:this_is_master] = false
-    node[:db][:current_master_uuid] = nil
-    node[:db][:current_master_ip] = nil
-  end
-end
-
-log "  Resetting database, then starting database..."
-db DATA_DIR do
-  action [ :reset, :start ]
-end
-
-rs_utils_marker :end

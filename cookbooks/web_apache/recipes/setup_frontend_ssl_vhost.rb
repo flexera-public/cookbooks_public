@@ -22,14 +22,18 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
 service "apache2" do
   action :nothing
 end
 
-#TODO:
-# condition for ubuntu
-package "mod_ssl"
+package "mod_ssl" do
+  case node[:platform]
+  when 'ubuntu'
+    action :nothing
+  end
+end
 
 # == Setup Apache vhost on following ports
 https_port = "443"
@@ -122,3 +126,5 @@ web_app "#{node[:web_apache][:application_name]}.frontend.http" do
   server_name node[:web_apache][:server_name]
   notifies :restart, resources(:service => "apache2"), :immediately
 end
+
+rs_utils_marker :end

@@ -23,50 +23,25 @@
 
 rs_utils_marker :begin
 
-log "  Brute force tear down of the setup....."
-DATA_DIR = node[:db][:data_dir]
-
-log "  Resetting the database..."
-db DATA_DIR do
-  action :reset
+# == Clear master tags
+#
+unique_tag = "rs_dbrepl:master_instance_uuid=#{node[:rightscale][:instance_uuid]}"
+log "  Clear tag #{unique_tag}"
+right_link_tag unique_tag do
+  action :remove
 end
 
-log "  Resetting block device..."
-block_device DATA_DIR do
-  lineage node[:db][:backup][:lineage]
-  action :reset
-end
-
-log "  Remove tags..."
-bash "remove tags" do
-  code <<-EOH
-  rs_tag -r 'rs_dbrepl:*'
-  EOH
-end
-
-sys_dns "cleaning dns" do
-  provider "sys_dns_#{node[:sys_dns][:choice]}"
-
-  id node[:sys_dns][:id]
-  user node[:sys_dns][:user]
-  password node[:sys_dns][:password]
-  address '1.1.1.1'
-
-  action :set_private
-end
-
-ruby_block "Reset db node state" do
-  block do
-    node[:db][:db_restored] = false
+# == Set master node variables
+#
+master_ip = node[:remote_recipe][:new_master_ip]
+master_uuid = node[:remote_recipe][:new_master_uuid]
+log "  Setting up new master uuid:#{master_uuid} ip:#{master_ip}"
+ruby_block "set slave state" do 
+  block do 
+    node[:db][:current_master_uuid] = master_uuid
+    node[:db][:current_master_ip] = master_ip
     node[:db][:this_is_master] = false
-    node[:db][:current_master_uuid] = nil
-    node[:db][:current_master_ip] = nil
   end
-end
-
-log "  Resetting database, then starting database..."
-db DATA_DIR do
-  action [ :reset, :start ]
 end
 
 rs_utils_marker :end

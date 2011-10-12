@@ -25,12 +25,22 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
-# Make sure the node variables related to master are set on this instance
-include_recipe 'db::do_lookup_master'
+# == Verify initalized database
+# Check the node state to verify that we have correctly initialized this server.
+db_state_assert :either
 
 log "  Performing pre-backup check..." 
 db DATA_DIR do
   action [ :pre_backup_check ]
+end
+
+# == Aquire the backup lock or die
+#
+# This lock is released in the 'backup.rb' script for now.
+# See below for more information about 'backup.rb'
+#
+block_device DATA_DIR do
+  action :backup_lock_take
 end
 
 log "  Performing lock DB and write backup info file..."
@@ -61,7 +71,7 @@ else
   account_secret = node[:block_device][:aws_secret_access_key]
 end
 
-# TODO: add comment why we fork this process
+log "  Forking background process to complete backup... (see /var/log/messages for results)"
 bash "backup.rb" do
   environment ({ 
     'STORAGE_ACCOUNT_ID' => account_id,

@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
+
 service "apache2" do
   action :nothing
 end
@@ -51,3 +53,5 @@ web_app "#{node[:web_apache][:application_name]}.frontend" do
   vhost_port php_port
   server_name node[:web_apache][:server_name]
 end
+
+rs_utils_marker :end
