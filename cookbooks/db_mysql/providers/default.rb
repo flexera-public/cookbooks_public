@@ -314,6 +314,13 @@ action :install_server do
     cookbook 'db_mysql'
   end
 
+  # Disable the "check_for_crashed_tables" if ubuntu
+  #
+  if node[:platform] == "ubuntu"
+    execute "sed -i 's/^.*check_for_crashed_tables.*/  #check_for_crashed_tables;/g' /etc/mysql/debian-start"
+  end
+
+
   ## == Setup log rotation
   ##
   #rs_utils_logrotate_app "mysql-server" do
@@ -342,7 +349,7 @@ action :setup_monitoring do
   arch = node[:kernel][:machine]
   arch = "i386" if arch == "i686"
 
-  if node[:platform] == 'centos'
+  if node[:platform] == 'centos' 
 
     TMP_FILE = "/tmp/collectd.rpm"
 
@@ -359,6 +366,13 @@ action :setup_monitoring do
       backup false
       source "mysql_collectd_plugin.conf.erb"
       notifies :restart, resources(:service => "collectd")
+      cookbook 'db_mysql'
+    end
+
+  elsif node[:platform] == 'ubuntu'
+
+    remote_file ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
+      source "collectd-plugin-mysql.conf"
       cookbook 'db_mysql'
     end
 
