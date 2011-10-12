@@ -349,7 +349,7 @@ action :setup_monitoring do
   arch = node[:kernel][:machine]
   arch = "i386" if arch == "i686"
 
-  if node[:platform] == 'centos' 
+  if node[:platform] == 'centos'
 
     TMP_FILE = "/tmp/collectd.rpm"
 
