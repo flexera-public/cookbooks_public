@@ -211,6 +211,18 @@ action :install_server do
      end
   end unless node[:db_mysql][:packages_uninstall] == ""
 
+  # Ubuntu requires deactivating upstart from starting mysql.
+  if node[:platform] == "ubuntu"
+    bash 'deactivate swapfile' do
+      only_if { File.exists?("/etc/init/mysql.conf") }
+      code <<-eof
+        pkill mysqld
+        mv /etc/init/mysql.conf /etc/init/mysql.conf.disabled
+      eof
+    end
+  end
+  
+
   service "mysql" do
     #service_name value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "mysqld"}, "default" => "mysql")
     supports :status => true, :restart => true, :reload => true
