@@ -204,6 +204,12 @@ action :install_server do
     package p
   end unless node[:db_mysql][:packages_install] == ""
 
+  # Stop MySQL
+  service "mysql" do
+    supports :status => true, :restart => true, :reload => true
+    action :stop
+  end
+
   # Uninstall other packages we don't
   node[:db_mysql][:packages_uninstall].each do |p|
      package p do
@@ -223,27 +229,11 @@ action :install_server do
     end
   end
 
-  service "mysql" do
-    #service_name value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "mysqld"}, "default" => "mysql")
-    supports :status => true, :restart => true, :reload => true
-    action :stop
-  end
-
   # Create MySQL server system tables
   touchfile = ::File.expand_path "~/.mysql_installed"
   execute "/usr/bin/mysql_install_db ; touch #{touchfile}" do
     creates touchfile
   end
-
-  # == Configure system for MySQL
-  #
-
-  # Stop MySQL
-  service "mysql" do
-    supports :status => true, :restart => true, :reload => true
-    action :stop
-  end
-
 
   # moves mysql default db to storage location, removes ib_logfiles for re-config of innodb_log_file_size
   touchfile = ::File.expand_path "~/.mysql_dbmoved"
