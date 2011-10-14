@@ -204,7 +204,7 @@ action :install_server do
     package p
   end unless node[:db_mysql][:packages_install] == ""
 
-  # Stop MySQL
+  # Stop MySQL to allow custom configuration
   service "mysql" do
     supports :status => true, :restart => true, :reload => true
     action :stop
@@ -271,7 +271,6 @@ action :install_server do
 
   # Setup my.cnf
   template_source = "my.cnf.erb"
-
   template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
     source template_source
     owner "root"
