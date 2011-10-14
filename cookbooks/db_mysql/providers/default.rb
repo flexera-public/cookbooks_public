@@ -315,10 +315,20 @@ action :install_server do
     cookbook 'db_mysql'
   end
 
-  # Disable the "check_for_crashed_tables" if ubuntu
+
+  # == specific configs for ubuntu
+  #  - set config file localhost access w/ root and no password
+  #  - disable the 'check_for_crashed_tables'.
   #
+
   if node[:platform] == "ubuntu"
-    execute "sed -i 's/^.*check_for_crashed_tables.*/  #check_for_crashed_tables;/g' /etc/mysql/debian-start"
+    bash 'ubuntu config' do
+      code <<-eof
+        sed -i "s/user.*/user = root/g" /etc/mysql/debian.cnf
+        sed -i "s/password.*/password = /g" /etc/mysql/debian.cnf
+        sed -i 's/^.*check_for_crashed_tables.*/  #check_for_crashed_tables;/g' /etc/mysql/debian-start
+      eof
+    end
   end
 
 
