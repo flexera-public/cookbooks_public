@@ -14,7 +14,7 @@ server 1.pool.ntp.org
 server 2.pool.ntp.org
 server 3.pool.ntp.org
 <% else -%>
-<% node[:ntp][:servers]split(',').each do |ntpserver| -%>
+<% node[:ntp][:servers].split(',').each do |ntpserver| -%>
   server <%= ntpserver %> burst iburst
 <% end -%>
 <% end -%>
