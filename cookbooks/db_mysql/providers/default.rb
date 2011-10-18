@@ -220,7 +220,7 @@ action :install_server do
   # Ubuntu requires deactivating upstart from starting mysql.
   if node[:platform] == "ubuntu"
     ubuntu_mysql_upstart_conf = "/etc/init/mysql.conf"
-    bash 'deactivate swapfile' do
+    bash 'disable mysql upstart' do
       only_if { ::File.exists?(ubuntu_mysql_upstart_conf) }
       code <<-eof
         pkill mysqld
@@ -309,7 +309,7 @@ action :install_server do
   #
   # Timeouts enabled.
   #
-  template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/init.d/mysql"}, "default" => "/etc/init.d/mysql") do
+  template "/etc/init.d/mysql" do
     source "init-mysql.erb"
     mode "0755"
     cookbook 'db_mysql'
@@ -321,14 +321,16 @@ action :install_server do
   #  - disable the 'check_for_crashed_tables'.
   #
 
-  if node[:platform] == "ubuntu"
-    bash 'ubuntu config' do
-      code <<-eof
-        sed -i "s/user.*/user = root/g" /etc/mysql/debian.cnf
-        sed -i "s/password.*/password = /g" /etc/mysql/debian.cnf
-        sed -i 's/^.*check_for_crashed_tables.*/  #check_for_crashed_tables;/g' /etc/mysql/debian-start
-      eof
-    end
+  remote_file "/etc/mysql/debian.cnf" do
+    only_if { node[:platform] == "ubuntu" }
+    source "debian.cnf"
+    cookbook 'db_mysql'
+  end
+
+  remote_file "/etc/mysql/debian-start" do
+    only_if { node[:platform] == "ubuntu" }
+    source "debian-start"
+    cookbook 'db_mysql'
   end
 
 
