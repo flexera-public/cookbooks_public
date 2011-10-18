@@ -52,7 +52,7 @@ recipe "db::request_appserver_deny", "Sends a request to deny connections from t
 
 # == Master/Slave Recipes
 #
-recipe "db::do_init_and_become_master", "Start bare MySQL database.  Tag as Master.  Set Master DNS. Kick of a fresh backup from this master"
+recipe "db::do_init_and_become_master", "Start bare MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master"
 recipe "db::do_restore_and_become_master", "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
 recipe "db::do_init_slave", "Initialize MySQL Slave"
 recipe "db::do_init_slave_at_boot", "Initialize MySQL Slave at boot."
@@ -94,13 +94,13 @@ attribute "db/replication/user",
   :display_name => "Database Replication Username",
   :description => "The username of the database user that has 'replciation' privileges.",
   :required => true,
-  :recipes => [ "db::setup_replication_privilege", "db::do_restore_and_become_master", "db::do_promote_to_master" ]
+  :recipes => [ "db::setup_replication_privilege", "db::do_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master" ]
 
 attribute "db/replication/password",
   :display_name => "Database Replication Password",
   :description => "The password of the database user that has 'replciation' privileges.",
   :required => true,
-  :recipes => [ "db::setup_replication_privilege", "db::do_restore_and_become_master", "db::do_promote_to_master" ]
+  :recipes => [ "db::setup_replication_privilege", "db::do_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master" ]
 
 attribute "db/application/user",
   :display_name => "Database Application Username",
@@ -132,6 +132,7 @@ attribute "db/backup/lineage",
     "db::do_init_slave",
     "db::do_promote_to_master",
     "db::do_restore_and_become_master",
+    "db::do_init_and_become_master",
     "db::do_backup",
     "db::do_restore",
     "db::do_backup_schedule_enable",

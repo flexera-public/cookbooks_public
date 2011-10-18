@@ -30,10 +30,4 @@ include_recipe "db::setup_replication_privileges"
 include_recipe "db::do_backup"
 include_recipe "db::do_backup_schedule_enable"
 
-ruby_block "Setting db_restored state to true" do
-  block do
-    node[:db][:db_restored] = true
-  end
-end
-
 rs_utils_marker :end
