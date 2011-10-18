@@ -323,12 +323,14 @@ action :install_server do
 
   remote_file "/etc/mysql/debian.cnf" do
     only_if { node[:platform] == "ubuntu" }
+    mode "0600"
     source "debian.cnf"
     cookbook 'db_mysql'
   end
 
   remote_file "/etc/mysql/debian-start" do
     only_if { node[:platform] == "ubuntu" }
+    mode "0755"
     source "debian-start"
     cookbook 'db_mysql'
   end
