@@ -48,7 +48,7 @@ log "  Update time using ntpdate and ntp server #{first_ntp_server}..."
 bash "update time" do
   code <<-EOH
     # TODO retry list of servers until succeed or all fail
-    ntpdate first_ntp_server
+    ntpdate #{first_ntp_server}
   EOH
 end
 
