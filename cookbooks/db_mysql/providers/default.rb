@@ -362,40 +362,32 @@ action :setup_monitoring do
   arch = node[:kernel][:machine]
   arch = "i386" if arch == "i686"
 
-  if node[:platform] == 'centos'
-
-    TMP_FILE = "/tmp/collectd.rpm"
-
-    remote_file TMP_FILE do
-      source "collectd-mysql-4.10.0-4.el5.#{arch}.rpm"
-      cookbook 'db_mysql'
-    end
-
-    package TMP_FILE do
-      source TMP_FILE
-    end
-
-    template ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
-      backup false
-      source "mysql_collectd_plugin.conf.erb"
-      notifies :restart, resources(:service => "collectd")
-      cookbook 'db_mysql'
-    end
-
-  elsif node[:platform] == 'ubuntu'
-
-    remote_file ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
-      source "collectd-plugin-mysql.conf"
-      cookbook 'db_mysql'
-    end
-
-  else
-
-    log "WARNING: attempting to install collectd-mysql on unsupported platform #{node[:platform]}, continuing.." do
-      level :warn
-    end
-
+  # Centos specific items
+  TMP_FILE = "/tmp/collectd.rpm"
+  remote_file TMP_FILE do
+    only_if { node[:platform] == "centos" }
+    source "collectd-mysql-4.10.0-4.el5.#{arch}.rpm"
+    cookbook 'db_mysql'
   end
+  package TMP_FILE do
+    only_if { node[:platform] == "centos" }
+    source TMP_FILE
+  end
+
+  cookbook_file ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
+    mode "0644"
+    backup false
+    source "collectd-plugin-mysql.conf"
+    notifies :restart, resources(:service => "collectd")
+    cookbook 'db_mysql'
+  end
+
+  # Send warning if not centos or ubuntu
+  log "WARNING: attempting to install collectd-mysql on unsupported platform #{node[:platform]}, continuing.." do
+    only_if { node[:platform] != "centos" && node[:platform] != "ubuntu" }
+    level :warn
+  end
+
 end
 
 action :grant_replication_slave do
