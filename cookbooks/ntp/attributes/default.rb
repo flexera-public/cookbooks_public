@@ -6,4 +6,4 @@ when "redhat","centos","fedora"
 end
 
 default[:ntp][:is_server] = false
-default[:ntp][:servers] = ["time.nist.gov", "ntp.ubuntu.com", "0.centos.pool.ntp.org", "1.centos.pool.ntp.org", "2.centos.pool.ntp.org"]
+default[:ntp][:servers] = ["time.rightscale.com", "ec2-us-east.time.rightscale.com", "ec2-us-west.time.rightscale.com" ]

@@ -1,3 +1,5 @@
+tinker panic 0 dispersion 1.000
+
 driftfile /var/lib/ntp/ntp.drift
 statsdir /var/log/ntpstats/
 
@@ -13,7 +15,7 @@ server 2.pool.ntp.org
 server 3.pool.ntp.org
 <% else -%>
 <% node[:ntp][:servers].each do |ntpserver| -%>
-  server <%= ntpserver %>
+  server <%= ntpserver %> burst iburst
 <% end -%>
 <% end -%>
 restrict default kod notrap nomodify nopeer noquery

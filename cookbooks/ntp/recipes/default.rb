@@ -30,19 +30,25 @@ package "ntp" do
   action :install
 end
 
-# Rackspace sepcific work around for incorrect wallclock time
-bash "Disabling Rackspace wall clock and fixing time with ntpdate" do
-  only_if node[:cloud][:provider] == "rackspace"
+service node[:ntp][:service] do
+  action :stop
+end
+
+is_xen = ::File.exist?("/proc/sys/xen")
+log "  Configure Xen for independent wall clock..." if is_xen
+bash "independent wallclock" do
+  only_if { is_xen }
   code <<-EOH
-    service ntpd stop
     echo 1 > /proc/sys/xen/independent_wallclock
-    ntpdate pool.ntp.org
-    service ntpd stop
   EOH
 end
 
-service node[:ntp][:service] do
-  action :start
+log "  Update time using ntpdate..."
+#TODO Need to specify the ntp server to sync against via input
+bash "update time" do
+  code <<-EOH
+    ntpdate pool.ntp.org
+  EOH
 end
 
 template "/etc/ntp.conf" do
@@ -53,4 +59,7 @@ template "/etc/ntp.conf" do
   notifies :restart, resources(:service => node[:ntp][:service])
 end
 
+service node[:ntp][:service] do
+  action :start
+end
 rs_utils_marker :end

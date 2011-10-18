@@ -26,9 +26,9 @@ end
 #   :description => "Set to true if this is an NTP server",
 #   :default => "false"
 # 
-# attribute "ntp/servers",
-#   :display_name => "NTP Servers",
-#   :description => "Array of servers we should talk to",
-#   :type => "array",
-#   :default => ["0.pool.ntp.org", "1.pool.ntp.org"]
+attribute "ntp/servers",
+   :display_name => "NTP Servers",
+   :description => "Array of servers we should talk to",
+   :type => "array",
+   :default => ["time.rightscale.com", "ec2-us-east.time.rightscale.com", "ec2-us-west.time.rightscale.com" ]
 
