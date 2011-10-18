@@ -43,11 +43,12 @@ bash "independent wallclock" do
   EOH
 end
 
-log "  Update time using ntpdate..."
-#TODO Need to specify the ntp server to sync against via input
+first_ntp_server = node[:ntp][:servers].split(',')[0].strip
+log "  Update time using ntpdate and ntp server #{first_ntp_server}..."
 bash "update time" do
   code <<-EOH
-    ntpdate pool.ntp.org
+    # TODO retry list of servers until succeed or all fail
+    ntpdate first_ntp_server
   EOH
 end
 

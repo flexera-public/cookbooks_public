@@ -29,6 +29,6 @@ end
 attribute "ntp/servers",
    :display_name => "NTP Servers",
    :description => "Array of servers we should talk to",
-   :type => "array",
-   :default => ["time.rightscale.com", "ec2-us-east.time.rightscale.com", "ec2-us-west.time.rightscale.com" ]
+   :type => "string",
+   :default => "time.rightscale.com, ec2-us-east.time.rightscale.com, ec2-us-west.time.rightscale.com"
 

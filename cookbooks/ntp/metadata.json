@@ -8,12 +8,8 @@
       "choice": [
 
       ],
-      "default": [
-        "time.rightscale.com",
-        "ec2-us-east.time.rightscale.com",
-        "ec2-us-west.time.rightscale.com"
-      ],
-      "type": "array",
+      "default": "time.rightscale.com, ec2-us-east.time.rightscale.com, ec2-us-west.time.rightscale.com",
+      "type": "string",
       "recipes": [
 
       ],
