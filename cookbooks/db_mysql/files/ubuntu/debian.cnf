@@ -1,4 +1,4 @@
-utomatically generated for Debian scripts. DO NOT TOUCH!
+# Automatically generated for Debian scripts. DO NOT TOUCH!
 [client]
 host     = localhost
 user = root
