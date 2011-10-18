@@ -17,6 +17,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+rs_utils_marker :begin
+
 case node[:platform] 
 when "ubuntu","debian"
   package "ntpdate" do
@@ -50,3 +52,5 @@ template "/etc/ntp.conf" do
   mode 0644
   notifies :restart, resources(:service => node[:ntp][:service])
 end
+
+rs_utils_marker :end
