@@ -171,7 +171,7 @@
       ],
       "type": "string",
       "recipes": [
-        "db::setup_replication_privilege",
+        "db::setup_replication_privileges",
         "db::do_restore_and_become_master",
         "db::do_init_and_become_master",
         "db::do_promote_to_master",
@@ -214,7 +214,7 @@
       ],
       "type": "string",
       "recipes": [
-        "db::setup_replication_privilege",
+        "db::setup_replication_privileges",
         "db::do_restore_and_become_master",
         "db::do_init_and_become_master",
         "db::do_promote_to_master",
