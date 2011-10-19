@@ -94,13 +94,13 @@ attribute "db/replication/user",
   :display_name => "Database Replication Username",
   :description => "The username of the database user that has 'replciation' privileges.",
   :required => true,
-  :recipes => [ "db::setup_replication_privilege", "db::do_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master" ]
+  :recipes => [ "db::setup_replication_privilege", "db::do_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master", "db::do_init_slave" ]
 
 attribute "db/replication/password",
   :display_name => "Database Replication Password",
   :description => "The password of the database user that has 'replciation' privileges.",
   :required => true,
-  :recipes => [ "db::setup_replication_privilege", "db::do_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master" ]
+  :recipes => [ "db::setup_replication_privilege", "db::do_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master","db::do_init_slave" ]
 
 attribute "db/application/user",
   :display_name => "Database Application Username",
