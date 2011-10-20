@@ -38,45 +38,44 @@ attribute "db_mysql/log_bin",
 
 
 # == Import/export attributes
-# TODO: these are used by the LAMP template and should be moved into the LAMP cookbook
 #
 attribute "db_mysql/dump",
   :display_name => "Import/Export settings for MySQL dump file management.",
   :type => "hash"
 
 attribute "db_mysql/dump/schema_name",
-  :display_name => "Schema Name",
+  :display_name => "Dump Schema Name",
   :description => "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
   :required => false,
   :recipes => [ "db_mysql::default" ]
 
 attribute "db_mysql/dump/storage_account_provider",
-  :display_name => "Storage Account Provider",
-  :description => "Select the cloud infrastructure where the backup will be saved. For Amazon S3, use ec2.  For Rackspace Cloud Files, use rackspace.",
-  :choice => ["ec2", "rackspace"],
-  :required => false,
+  :display_name => "Dump Storage Account Provider",
+  :description => "Location where mysql dump file will be saved.  Used by mysql dump recipes to backup to Amazon S3 or Rackspace Cloud Files.",
+  :default => "S3",
+  :choice => [ "S3", "CloudFiles" ],
   :recipes => [ "db_mysql::default" ]
 
 attribute "db_mysql/dump/storage_account_id",
-  :display_name => "Storage Account Id",
+  :display_name => "Dump Storage Account Id",
   :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID. For Rackspace Cloud Files, use your Rackspace login Username.",
   :required => false,
   :recipes => [ "db_mysql::default" ]
 
 attribute "db_mysql/dump/storage_account_secret",
-  :display_name => "Storage Account Secret",
+  :display_name => "Dump Storage Account Secret",
   :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key.",
   :required => false,
   :recipes => [ "db_mysql::default" ]
 
 attribute "db_mysql/dump/container",
-  :display_name => "Container",
+  :display_name => "Dump Container",
   :description => "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name.",
   :required => false,
   :recipes => [ "db_mysql::default" ]
 
 attribute "db_mysql/dump/prefix",
-  :display_name => "Prefix",
+  :display_name => "Dump Prefix",
   :description => "The prefix that will be used to name/locate the backup of a particular MySQL database.  Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp.",
   :required => false,
   :recipes => [ "db_mysql::default"  ]
