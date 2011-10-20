@@ -590,9 +590,9 @@ CLOUD = (node[:db][:backup][:secondary_location] == "CloudFiles") ? "rackspace" 
 
   schema_name = node[:db_mysql][:dump][:schema_name]
   dumpfile    = node[:db_mysql][:tmpdir] + "/" + node[:db_mysql][:dump][:prefix] + ".gz"
-  key         = "#{prefix}-#{Time.now.strftime("%Y%m%d%H%M")}.gz"
+  key         = "#{node[:db_mysql][:dump][:prefix]}-#{Time.now.strftime("%Y%m%d%H%M")}.gz"
   container   = node[:db_mysql][:dump][:container]
-  cloud = ( node[:db_mysql][:dump][:storage_account_provider] == "CloudFiles" ) ? "rackspace" : "ec2"
+  cloud       = ( node[:db_mysql][:dump][:storage_account_provider] == "CloudFiles" ) ? "rackspace" : "ec2"
 
   execute "Write the mysql DB backup file" do
     command "mysqldump --single-transaction -u root #{schema_name} | gzip -c > #{dumpfile}"
