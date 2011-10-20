@@ -1,6 +1,5 @@
-#
-# Cookbook Name:: db_mysql
-# Definition:: do_dump_export
+# Cookbook Name:: db
+# 
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -23,29 +22,10 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+rs_utils_marker :begin
 
-temp_dir = node[:db_mysql][:tmpdir]
-schema_name = node[:db_mysql][:dump][:schema_name]
-
-cloud = node[:db_mysql][:dump][:storage_account_provider] unless node[:db_mysql][:dump][:storage_account_provider] == ""
-cloud ||= node[:cloud][:provider]
-
-container = node[:db_mysql][:dump][:container]
-prefix = node[:db_mysql][:dump][:prefix]
-dumpfile = "#{temp_dir}/#{prefix}.gz"
-
-execute "Write the mysql DB backup file" do
-  command "mysqldump --single-transaction -u root #{schema_name} | gzip -c > #{dumpfile}"
+db node[:db][:data_dir] do
+  action :export_dump
 end
 
-key = "#{prefix}-#{Time.now.strftime("%Y%m%d%H%M")}.gz"
-
-execute "Upload MySQL dumpfile to Remote Object Store" do
-  command "/opt/rightscale/sandbox/bin/mc_sync.rb put --cloud #{cloud} " +
-          "--container #{container} --dest #{key} --source #{dumpfile}"
-  environment ({ 
-    'STORAGE_ACCOUNT_ID' => node[:db_mysql][:dump][:storage_account_id],
-    'STORAGE_ACCOUNT_SECRET' => node[:db_mysql][:dump][:storage_account_secret],
-  })
-
-end
+rs_utils_marker :end

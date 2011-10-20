@@ -1,5 +1,14 @@
 {
+  "groupings": {
+
+  },
+  "recommendations": {
+
+  },
+  "maintainer": "RightScale, Inc.",
+  "description": "Installs/configures a MySQL database server with automated backups.",
   "suggestions": {
+
   },
   "attributes": {
     "db_mysql/dump/prefix": {
@@ -10,9 +19,7 @@
       ],
       "type": "string",
       "recipes": [
-        "db_mysql::do_dump_import",
-        "db_mysql::do_dump_export",
-        "db_mysql::setup_continuous_export"
+        "db_mysql::default"
       ],
       "display_name": "Prefix",
       "description": "The prefix that will be used to name/locate the backup of a particular MySQL database.  Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp."
@@ -25,9 +32,7 @@
       ],
       "type": "string",
       "recipes": [
-        "db_mysql::do_dump_import",
-        "db_mysql::do_dump_export",
-        "db_mysql::setup_continuous_export"
+        "db_mysql::default"
       ],
       "display_name": "Container",
       "description": "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name."
@@ -41,9 +46,7 @@
       ],
       "type": "string",
       "recipes": [
-        "db_mysql::do_dump_import",
-        "db_mysql::do_dump_export",
-        "db_mysql::setup_continuous_export"
+        "db_mysql::default"
       ],
       "display_name": "Storage Account Provider",
       "description": "Select the cloud infrastructure where the backup will be saved. For Amazon S3, use ec2.  For Rackspace Cloud Files, use rackspace."
@@ -68,9 +71,7 @@
       ],
       "type": "string",
       "recipes": [
-        "db_mysql::do_dump_import",
-        "db_mysql::do_dump_export",
-        "db_mysql::setup_continuous_export"
+        "db_mysql::default"
       ],
       "display_name": "Storage Account Id",
       "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID. For Rackspace Cloud Files, use your Rackspace login Username."
@@ -109,9 +110,7 @@
       ],
       "type": "string",
       "recipes": [
-        "db_mysql::do_dump_import",
-        "db_mysql::do_dump_export",
-        "db_mysql::setup_continuous_export"
+        "db_mysql::default"
       ],
       "display_name": "Storage Account Secret",
       "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key."
@@ -124,9 +123,7 @@
       ],
       "type": "string",
       "recipes": [
-        "db_mysql::do_dump_import",
-        "db_mysql::do_dump_export",
-        "db_mysql::setup_continuous_export"
+        "db_mysql::default"
       ],
       "display_name": "Schema Name",
       "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema"
@@ -147,9 +144,26 @@
       "description": "Use 'dedicated' if the mysql config file allocates all existing resources of the machine.  Use 'shared' if the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example."
     }
   },
+  "maintainer_email": "support@rightscale.com",
+  "long_description": "= RightScale Database Manager for MySQL (Beta) \n\n== DESCRIPTION:\n\nProvides the MySQL implementation of the 'db' resource to install and \nmanage MySQL database stand-alone servers and clients.\n\n\n== DETAILS\n\nThe 'db' implementation is defined by a Lightweight Provider, which can be \nfound in the providers/default.rb file.\n\nThe majority of the functionality of the MySQL provider is encapsulated \nin the premium rightscale_tools gem, however, there are currently a handful\nof recipes that can be used without it. See 'Public Recipes' in the USAGE\nsection below.\n\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage \n\n* Tested on CentOS 5.6 RightImage\n\n* Supports MySQL 5.1 \n\n* Needs RightScale Premium ServerTemplate tools gem installed on system.\n  This gem is only available for paid RightScale customers.\n  Please contact sales@rightscale.com to upgrade you account.\n\n\n== SETUP:\n\n* Place db::default recipe into your runlist to setup the db resource.  When\n  using a RightScale ServerTemplate, this will also automatically add the \n  common database attributes to your ServerTemplate inputs.\n   \n* Also, place the db_mysql::default recipe into your runlist to load the\n  MySQL provider, tuning parameters, as well as other MySQL specific \n  attributes in as inputs.\n\n== USAGE:\n\n=== Basic usage\nOnce setup, use the recipes in the 'db' cookbook to install and manage your\nMySQL database servers and clients.  See the db/README.rdoc for usage \ndetails.\n\n\n=== MySQL Tuning and my.cnf\n\nCustom tuning parameters can be applied by overriding the mysql_tuning.rb\nattributes file.  For more information and an example override repository\nplease see:\n\n  https://github.com/ekargard/cookbooks_override/tree/master/cookbooks/db_mysql\n  \n\n=== Public Recipes\nHere is the list of db recipes that can be used without the preimum \nrightscale_tools gem:\n\n* db::default\n* db::install_client\n* db::install_server\n* db::setup_monitoring\n* db::setup_privileges_admin\n* db::setup_privileges_application\n* db::do_appserver_allow\n* db::do_appserver_deny\n* db::request_appserver_allow\n* db::request_appserver_deny\n\nThese recipes are used by the RightScale LAMP ServerTemplate.\n\n\n== KNOWN LIMITATIONS\n\n* none\n\n\n   \n\n",
   "conflicting": {
+
   },
-  "description": "Installs/configures a MySQL database server with automated backups.",
+  "recipes": {
+    "db_mysql::default": "Runs the client 'db::install_server' recipes."
+  },
+  "platforms": {
+
+  },
+  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "providing": {
+
+  },
+  "name": "db_mysql",
+  "replacing": {
+
+  },
+  "version": "0.0.1",
   "dependencies": {
     "sys_dns": [
 
@@ -163,36 +177,5 @@
     "rs_utils": [
 
     ]
-  },
-  "providing": {
-    "db_mysql_restore(url, branch, user, credentials, file_path, schema_name, tmp_dir)": [
-
-    ],
-    "db_mysql_gzipfile_restore(db_name, file_path)": [
-
-    ],
-    "db_mysql_gzipfile_backup(db_name, file_path)": [
-
-    ],
-    "db_mysql_set_privileges(type, username, password, db_name)": [
-
-    ]
-  },
-  "maintainer": "RightScale, Inc.",
-  "replacing": {
-  },
-  "version": "0.0.1",
-  "maintainer_email": "support@rightscale.com",
-  "name": "db_mysql",
-  "recipes": {
-    "db_mysql::default": "Runs the client 'db::install_server' recipes."
-  },
-  "groupings": {
-  },
-  "long_description": "= RightScale Database Manager for MySQL (Beta) \n\n== DESCRIPTION:\n\nProvides the MySQL implementation of the 'db' resource to install and \nmanage MySQL database stand-alone servers and clients.\n\n\n== DETAILS\n\nThe 'db' implementation is defined by a Lightweight Provider, which can be \nfound in the providers/default.rb file.\n\nThe majority of the functionality of the MySQL provider is encapsulated \nin the premium rightscale_tools gem, however, there are currently a handful\nof recipes that can be used without it. See 'Public Recipes' in the USAGE\nsection below.\n\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage \n\n* Tested on CentOS 5.6 RightImage\n\n* Supports MySQL 5.1 \n\n* Needs RightScale Premium ServerTemplate tools gem installed on system.\n  This gem is only available for paid RightScale customers.\n  Please contact sales@rightscale.com to upgrade you account.\n\n\n== SETUP:\n\n* Place db::default recipe into your runlist to setup the db resource.  When\n  using a RightScale ServerTemplate, this will also automatically add the \n  common database attributes to your ServerTemplate inputs.\n   \n* Also, place the db_mysql::default recipe into your runlist to load the\n  MySQL provider, tuning parameters, as well as other MySQL specific \n  attributes in as inputs.\n\n== USAGE:\n\n=== Basic usage\nOnce setup, use the recipes in the 'db' cookbook to install and manage your\nMySQL database servers and clients.  See the db/README.rdoc for usage \ndetails.\n\n\n=== MySQL Tuning and my.cnf\n\nCustom tuning parameters can be applied by overriding the mysql_tuning.rb\nattributes file.  For more information and an example override repository\nplease see:\n\n  https://github.com/ekargard/cookbooks_override/tree/master/cookbooks/db_mysql\n  \n\n=== Public Recipes\nHere is the list of db recipes that can be used without the preimum \nrightscale_tools gem:\n\n* db::default\n* db::install_client\n* db::install_server\n* db::setup_monitoring\n* db::setup_privileges_admin\n* db::setup_privileges_application\n* db::do_appserver_allow\n* db::do_appserver_deny\n* db::request_appserver_allow\n* db::request_appserver_deny\n\nThese recipes are used by the RightScale LAMP ServerTemplate.\n\n\n== KNOWN LIMITATIONS\n\n* none\n\n\n   \n\n",
-  "recommendations": {
-  },
-  "platforms": {
-  },
-  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
+  }
 }

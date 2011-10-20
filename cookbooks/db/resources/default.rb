@@ -223,6 +223,10 @@ add_action :promote
 # TODO
 add_action :grant_replication_slave
 
+# == Grant Replication Slave
+# TODO
+add_action :export_dump
+
 
 actions @action_list
 

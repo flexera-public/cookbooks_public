@@ -521,7 +521,7 @@ action :enable_replication do
     group "root"
     mode "0644"
     variables(
-      :server_id => mycnf_uuid
+      :server_id => eycnf_uuid
     )
     cookbook 'db_mysql'
   end
@@ -583,3 +583,31 @@ action :enable_replication do
     cookbook 'db_mysql'
   end
 end
+
+action :export_dump do
+
+  schema_name = node[:db_mysql][:dump][:schema_name]
+  dumpfile    = node[:db_mysql][:tmpdir] + "/" + node[:db_mysql][:dump][:prefix] + ".gz"
+  key         = "#{prefix}-#{Time.now.strftime("%Y%m%d%H%M")}.gz"
+  container   = node[:db_mysql][:dump][:container]
+  node[:db_mysql][:dump][:storage_account_provider] == "" ? cloud = node[:cloud][:provider] : cloud = node[:db_mysql][:dump][:storage_account_provider] 
+
+  execute "Write the mysql DB backup file" do
+    command "mysqldump --single-transaction -u root #{schema_name} | gzip -c > #{dumpfile}"
+  end
+
+  execute "Upload MySQL dumpfile to Remote Object Store" do
+    command "/opt/rightscale/sandbox/bin/mc_sync.rb put --cloud #{cloud} --container #{container} --dest #{key} --source #{dumpfile}"
+    environment ({
+      'STORAGE_ACCOUNT_ID'     => node[:db_mysql][:dump][:storage_account_id],
+      'STORAGE_ACCOUNT_SECRET' => node[:db_mysql][:dump][:storage_account_secret]
+    })
+  end
+
+end
+
+#action :import_dump do
+#end
+
+#action :setup_continuous_export_dump do
+#end
