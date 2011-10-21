@@ -228,3 +228,9 @@ attribute "db/dump/prefix",
   :description => "The prefix that will be used to name/locate the backup of a particular db dump.  Defines the prefix of the dump filename that will be used to name the backup database dumpfile along with a timestamp.",
   :required => "required",
   :recipes => [ "db::do_dump_export", "db::do_dump_import" ]
+
+attribute "db/dump/database_name",
+  :display_name => "Dump Schema/Database Name",
+  :description => "Enter the name of the database name/schema to create/restore a dump from/for. Ex: mydbschema",
+  :required => "required",
+  :recipes => [ "db::do_dump_import", "db::do_dump_export" ]

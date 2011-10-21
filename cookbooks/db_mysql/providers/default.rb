@@ -587,22 +587,22 @@ end
 
 action :generate_dump_file do
 
-  schema_name = ( node[:db_mysql][:dump][:schema_name] == "" ) ? "--all-databases" : node[:db_mysql][:dump][:schema_name]
+  db_name     = new_resource.db_name
   dumpfile    = new_resource.dumpfile
 
   execute "Write the mysql DB backup file" do
-    command "mysqldump --single-transaction -u root #{schema_name} | gzip -c > #{dumpfile}"
+    command "mysqldump --single-transaction -u root #{db_name} | gzip -c > #{dumpfile}"
   end
 
 end
 
 action :restore_from_dump_file do
   
-  schema_name = node[:db_mysql][:dump][:schema_name]
+  db_name     = new_resource.db_name
   dumpfile    = new_resource.dumpfile
 
   bash "Import MySQL dump file: #{dumpfile}" do
-    not_if "echo \"show databases\" | mysql | grep -q  \"^#{schema_name}$\""
+    not_if "echo \"show databases\" | mysql | grep -q  \"^#{db_name}$\""
     user "root"
     code <<-EOH
       set -e
@@ -611,8 +611,8 @@ action :restore_from_dump_file do
         echo "ERROR: MySQL dumpfile not found! File: '#{dumpfile}'" 
         exit 1
       fi 
-      mysqladmin -u root create #{schema_name} 
-      gunzip < #{dumpfile} | mysql -u root -b #{schema_name}
+      mysqladmin -u root create #{db_name} 
+      gunzip < #{dumpfile} | mysql -u root -b #{db_name}
     EOH
   end
 

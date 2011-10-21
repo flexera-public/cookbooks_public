@@ -111,6 +111,20 @@
       "display_name": "Secondary Backup Location",
       "description": "Location for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud. For example, you can specify the name of an AWS S3 bucket or Rackspace CloudFiles container."
     },
+    "db/dump/database_name": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db::do_dump_import",
+        "db::do_dump_export"
+      ],
+      "display_name": "Dump Schema/Database Name",
+      "description": "Enter the name of the database name/schema to create/restore a dump from/for. Ex: mydbschema"
+    },
     "db/dump": {
       "required": "optional",
       "calculated": false,
