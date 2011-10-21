@@ -41,7 +41,7 @@
       "description": "The password of the database user that has 'user' privileges."
     },
     "db/dump/container": {
-      "required": "recommended",
+      "required": "required",
       "calculated": false,
       "choice": [
 
@@ -152,7 +152,7 @@
       "description": "The username of the database user that has 'admin' privileges."
     },
     "db/dump/storage_account_secret": {
-      "required": "recommended",
+      "required": "required",
       "calculated": false,
       "choice": [
 
@@ -165,7 +165,7 @@
       "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key."
     },
     "db/dump/prefix": {
-      "required": "recommended",
+      "required": "required",
       "calculated": false,
       "choice": [
 
@@ -246,7 +246,7 @@
       "display_name": "General Database Options"
     },
     "db/dump/storage_account_id": {
-      "required": "recommended",
+      "required": "required",
       "calculated": false,
       "choice": [
 
@@ -277,7 +277,7 @@
       "description": "The username of the database user that has 'replciation' privileges."
     },
     "db/dump/storage_account_provider": {
-      "required": "optional",
+      "required": "required",
       "calculated": false,
       "choice": [
         "S3",

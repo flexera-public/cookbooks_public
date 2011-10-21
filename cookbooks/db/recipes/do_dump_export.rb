@@ -30,11 +30,13 @@ dumpfilepath = "/tmp/#{dumpfilename}"
 container   = node[:db][:dump][:container]
 cloud       = ( node[:db][:dump][:storage_account_provider] == "CloudFiles" ) ? "rackspace" : "ec2"
 
+# Execute the command to create the dumpfile
 db node[:db][:data_dir] do
   dumpfile dumpfilepath
   action :generate_dump_file
 end
 
+# Upload the files to ROS
 execute "Upload dumpfile to Remote Object Store" do
   command "/opt/rightscale/sandbox/bin/mc_sync.rb put --cloud #{cloud} --container #{container} --dest #{dumpfilename} --source #{dumpfilepath}"
   environment ({
@@ -43,5 +45,9 @@ execute "Upload dumpfile to Remote Object Store" do
   })
 end
 
+# Delete the local file
+file dumpfilepath do
+  action :delete
+end
 
 rs_utils_marker :end
