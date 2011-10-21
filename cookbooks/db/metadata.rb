@@ -192,10 +192,6 @@ attribute "db/backup/slave/minute",
 
 # == Import/export attributes
 #
-attribute "db/dump",
-  :display_name => "Import/Export settings for DB dump file management.",
-  :type => "hash"
-
 attribute "db/dump/storage_account_provider",
   :display_name => "Dump Storage Account Provider",
   :description => "Location where dump file will be saved.  Used by dump recipes to backup to Amazon S3 or Rackspace Cloud Files.",
