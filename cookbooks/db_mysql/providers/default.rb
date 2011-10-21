@@ -596,8 +596,27 @@ action :generate_dump_file do
 
 end
 
-#action :import_dump do
-#end
+action :restore_from_dump_file do
+  
+  schema_name = node[:db_mysql][:dump][:schema_name]
+  dumpfile    = new_resource.dumpfile
+
+  bash "Import MySQL dump file: #{dumpfile}" do
+    not_if "echo \"show databases\" | mysql | grep -q  \"^#{schema_name}$\""
+    user "root"
+    code <<-EOH
+      set -e
+      if [ ! -f #{dumpfile} ] 
+      then 
+        echo "ERROR: MySQL dumpfile not found! File: '#{dumpfile}'" 
+        exit 1
+      fi 
+      mysqladmin -u root create #{schema_name} 
+      gunzip < #{dumpfile} | mysql -u root -b #{schema_name}
+    EOH
+  end
+
+end
 
 #action :setup_continuous_export_dump do
 #end
