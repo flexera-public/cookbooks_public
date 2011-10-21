@@ -56,6 +56,9 @@ attribute :enable, :equal_to => [ true, false ], :default => true
 attribute :ip_addr, :kind_of => String
 attribute :machine_tag, :kind_of => String, :regex => /^([^:]+):(.+)=.+/
 
+# == Import/Export options
+attribute :dumpfile, :kind_of => String
+
 
 # = General Database Actions
 #
@@ -131,6 +134,10 @@ add_action :firewall_update_request
 # location.
 #
 add_action :move_data_dir      
+
+
+# == Generate dump file
+add_action :generate_dump_file
 
 # == Pre-backup Check
 # Verify the database is in a good state for taking a snapshot.
@@ -222,11 +229,6 @@ add_action :promote
 # == Grant Replication Slave
 # TODO
 add_action :grant_replication_slave
-
-# == Grant Replication Slave
-# TODO
-add_action :export_dump
-
 
 actions @action_list
 

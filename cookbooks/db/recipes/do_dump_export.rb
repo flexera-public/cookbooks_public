@@ -31,7 +31,7 @@ container   = node[:db][:dump][:container]
 cloud       = ( node[:db][:dump][:storage_account_provider] == "CloudFiles" ) ? "rackspace" : "ec2"
 
 db node[:db][:data_dir] do
-  dumpfilelocation dumpfilepath
+  dumpfile dumpfilepath
   action :generate_dump_file
 end
 

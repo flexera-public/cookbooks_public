@@ -587,9 +587,8 @@ end
 
 action :generate_dump_file do
 
-  
   schema_name = node[:db_mysql][:dump][:schema_name]
-  dumpfile    = new_resource.dumpfilelocation
+  dumpfile    = new_resource.dumpfile
 
   execute "Write the mysql DB backup file" do
     command "mysqldump --single-transaction -u root #{schema_name} | gzip -c > #{dumpfile}"
