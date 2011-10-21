@@ -11,47 +11,6 @@
 
   },
   "attributes": {
-    "db_mysql/dump/prefix": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::default"
-      ],
-      "display_name": "Dump Prefix",
-      "description": "The prefix that will be used to name/locate the backup of a particular MySQL database.  Defines the prefix of the MySQL dump filename that will be used to name the backup database dumpfile along with a timestamp."
-    },
-    "db_mysql/dump/container": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::default"
-      ],
-      "display_name": "Dump Container",
-      "description": "The cloud storage location where the MySQL dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name."
-    },
-    "db_mysql/dump/storage_account_provider": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-        "S3",
-        "CloudFiles"
-      ],
-      "default": "S3",
-      "type": "string",
-      "recipes": [
-        "db_mysql::default"
-      ],
-      "display_name": "Dump Storage Account Provider",
-      "description": "Location where mysql dump file will be saved.  Used by mysql dump recipes to backup to Amazon S3 or Rackspace Cloud Files."
-    },
     "db_mysql": {
       "required": "optional",
       "calculated": false,
@@ -63,19 +22,6 @@
 
       ],
       "display_name": "General Database Options"
-    },
-    "db_mysql/dump/storage_account_id": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::default"
-      ],
-      "display_name": "Dump Storage Account Id",
-      "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID. For Rackspace Cloud Files, use your Rackspace login Username."
     },
     "db_mysql/dump": {
       "required": "optional",
@@ -102,19 +48,6 @@
       ],
       "display_name": "MySQL Binlog Destination",
       "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory. Ex: /mnt/mysql-binlogs/mysql-bin"
-    },
-    "db_mysql/dump/storage_account_secret": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db_mysql::default"
-      ],
-      "display_name": "Dump Storage Account Secret",
-      "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key."
     },
     "db_mysql/dump/schema_name": {
       "required": "optional",

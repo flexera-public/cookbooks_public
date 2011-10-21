@@ -24,8 +24,24 @@
 
 rs_utils_marker :begin
 
+dumpfilename = node[:db][:dump][:prefix] + "-" + Time.now.strftime("%Y%m%d%H%M") + ".gz"
+dumpfilepath = "/tmp/#{dumpfilename}"
+
+container   = node[:db][:dump][:container]
+cloud       = ( node[:db][:dump][:storage_account_provider] == "CloudFiles" ) ? "rackspace" : "ec2"
+
 db node[:db][:data_dir] do
-  action :export_dump
+  dumpfilelocation dumpfilepath
+  action :generate_dump_file
 end
+
+execute "Upload dumpfile to Remote Object Store" do
+  command "/opt/rightscale/sandbox/bin/mc_sync.rb put --cloud #{cloud} --container #{container} --dest #{dumpfilename} --source #{dumpfilepath}"
+  environment ({
+    'STORAGE_ACCOUNT_ID' => node[:db][:dump][:storage_account_id],
+    'STORAGE_ACCOUNT_SECRET' => node[:db][:dump][:storage_account_secret]
+  })
+end
+
 
 rs_utils_marker :end

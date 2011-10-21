@@ -188,3 +188,41 @@ attribute "db/backup/slave/minute",
   :description => "Defines the minute of the hour when the backup EBS snapshot will be taken of the Slave database.  Backups of the Slave are taken hourly.  By default, a minute will be randomly chosen at launch time.  Uses standard crontab format. (Ex: 30) for the 30th minute of the hour.",
   :required => false,
   :recipes => [ 'db::do_backup_schedule_enable' ]
+
+
+# == Import/export attributes
+#
+attribute "db/dump",
+  :display_name => "Import/Export settings for DB dump file management.",
+  :type => "hash"
+
+attribute "db/dump/storage_account_provider",
+  :display_name => "Dump Storage Account Provider",
+  :description => "Location where dump file will be saved.  Used by dump recipes to backup to Amazon S3 or Rackspace Cloud Files.",
+  :default => "S3",
+  :choice => [ "S3", "CloudFiles" ],
+  :recipes => [ "db::do_dump_export" ]
+
+attribute "db/dump/storage_account_id",
+  :display_name => "Dump Storage Account Id",
+  :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID. For Rackspace Cloud Files, use your Rackspace login Username.",
+  :required => false,
+  :recipes => [ "db::do_dump_export" ]
+
+attribute "db/dump/storage_account_secret",
+  :display_name => "Dump Storage Account Secret",
+  :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key.",
+  :required => false,
+  :recipes => [ "db::do_dump_export" ]
+
+attribute "db_mysql/dump/container",
+  :display_name => "Dump Container",
+  :description => "The cloud storage location where the dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name.",
+  :required => false,
+  :recipes => [ "db::do_dump_export" ]
+
+attribute "db/dump/prefix",
+  :display_name => "Dump Prefix",
+  :description => "The prefix that will be used to name/locate the backup of a particular db dump.  Defines the prefix of the dump filename that will be used to name the backup database dumpfile along with a timestamp.",
+  :required => false,
+  :recipes => [ "db::do_dump_export" ]

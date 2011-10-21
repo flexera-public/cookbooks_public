@@ -342,8 +342,8 @@ action :setup_monitoring do
   arch = node[:kernel][:machine]
   arch = "i386" if arch == "i686"
 
+  # Ubuntu specific
   if node[:platform] == 'centos'
-
     TMP_FILE = "/tmp/collectd.rpm"
 
     remote_file TMP_FILE do
@@ -355,20 +355,21 @@ action :setup_monitoring do
       source TMP_FILE
     end
 
-    template ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
-      backup false
-      source "mysql_collectd_plugin.conf.erb"
-      notifies :restart, resources(:service => "collectd")
-      cookbook 'db_mysql'
-    end
+  end
 
-  else
+  template ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
+    backup false
+    source "mysql_collectd_plugin.conf.erb"
+    notifies :restart, resources(:service => "collectd")
+    cookbook 'db_mysql'
+  end
 
-    log "WARNING: attempting to install collectd-mysql on unsupported platform #{node[:platform]}, continuing.." do
+  if ( node[:platform] != 'centos' && node[:platform] != 'ubuntu' )
+    log "WARNING: attempted to install collectd-mysql on unsupported platform #{node[:platform]}, continuing..." do
       level :warn
     end
-
   end
+
 end
 
 action :grant_replication_slave do
@@ -584,26 +585,14 @@ action :enable_replication do
   end
 end
 
-action :export_dump do
+action :generate_dump_file do
 
-CLOUD = (node[:db][:backup][:secondary_location] == "CloudFiles") ? "rackspace" : "ec2"
-
+  
   schema_name = node[:db_mysql][:dump][:schema_name]
-  dumpfile    = node[:db_mysql][:tmpdir] + "/" + node[:db_mysql][:dump][:prefix] + ".gz"
-  key         = "#{node[:db_mysql][:dump][:prefix]}-#{Time.now.strftime("%Y%m%d%H%M")}.gz"
-  container   = node[:db_mysql][:dump][:container]
-  cloud       = ( node[:db_mysql][:dump][:storage_account_provider] == "CloudFiles" ) ? "rackspace" : "ec2"
+  dumpfile    = new_resource.dumpfilelocation
 
   execute "Write the mysql DB backup file" do
     command "mysqldump --single-transaction -u root #{schema_name} | gzip -c > #{dumpfile}"
-  end
-
-  execute "Upload MySQL dumpfile to Remote Object Store" do
-    command "/opt/rightscale/sandbox/bin/mc_sync.rb put --cloud #{cloud} --container #{container} --dest #{key} --source #{dumpfile}"
-    environment ({
-      'STORAGE_ACCOUNT_ID'     => node[:db_mysql][:dump][:storage_account_id],
-      'STORAGE_ACCOUNT_SECRET' => node[:db_mysql][:dump][:storage_account_secret]
-    })
   end
 
 end
