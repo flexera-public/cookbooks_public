@@ -25,7 +25,7 @@
 rs_utils_marker :begin
 
 # Check variables and log/skip if not set
-skip, reason = true, "DB/Schema name not provided"           if node[:db][:dump][:db_name] == ""
+skip, reason = true, "DB/Schema name not provided"           if node[:db][:dump][:database_name] == ""
 skip, reason = true, "Prefix not provided"                   if node[:db][:dump][:prefix] == ""
 skip, reason = true, "Storage account provider not provided" if node[:db][:dump][:storage_account_provider] == ""
 skip, reason = true, "Container not provided"                if node[:db][:dump][:container] == ""
@@ -34,7 +34,7 @@ if skip
   log "Skipping import: #{reason}"
 else
 
-  db_name      = node[:db][:dump][:db_name]
+  db_name      = node[:db][:dump][:database_name]
   prefix       = node[:db][:dump][:prefix]
   dumpfilepath = "/tmp/" + prefix + ".gz"
   container    = node[:db][:dump][:container]
@@ -52,6 +52,7 @@ else
 
   # Restore the dump file to db. 
   db node[:db][:data_dir] do
+    dumpfile dumpfilepath
     db_name db_name
     action :restore_from_dump_file
   end
