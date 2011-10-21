@@ -38,7 +38,8 @@ recipe  "db::do_secondary_restore", "Restores the database from the most recentl
 
 recipe  "db::do_force_reset", "Resets the database back to a pristine state. WARNING: Execution of this script will delete any data in your database!"
 
-recipe  "db::do_dump_export", "Creates a mysql dump file and uploads it to an ROS."
+recipe  "db::do_dump_export", "Creates a dump file and uploads it to an ROS."
+recipe  "db::do_dump_import", "Retrieves a dump file from ROS and imports it into DB."
 
 
 # == Database Firewall Recipes
