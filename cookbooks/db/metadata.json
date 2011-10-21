@@ -11,19 +11,6 @@
 
   },
   "attributes": {
-    "db_mysql/dump/container": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db::do_dump_export"
-      ],
-      "display_name": "Dump Container",
-      "description": "The cloud storage location where the dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name."
-    },
     "db/init_slave_at_boot": {
       "required": "optional",
       "calculated": false,
@@ -52,6 +39,19 @@
       ],
       "display_name": "Database Application Password",
       "description": "The password of the database user that has 'user' privileges."
+    },
+    "db/dump/container": {
+      "required": "recommended",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db::do_dump_export"
+      ],
+      "display_name": "Dump Container",
+      "description": "The cloud storage location where the dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name."
     },
     "db/admin/password": {
       "required": "required",
@@ -152,7 +152,7 @@
       "description": "The username of the database user that has 'admin' privileges."
     },
     "db/dump/storage_account_secret": {
-      "required": "optional",
+      "required": "recommended",
       "calculated": false,
       "choice": [
 
@@ -165,7 +165,7 @@
       "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key."
     },
     "db/dump/prefix": {
-      "required": "optional",
+      "required": "recommended",
       "calculated": false,
       "choice": [
 
@@ -246,7 +246,7 @@
       "display_name": "General Database Options"
     },
     "db/dump/storage_account_id": {
-      "required": "optional",
+      "required": "recommended",
       "calculated": false,
       "choice": [
 
