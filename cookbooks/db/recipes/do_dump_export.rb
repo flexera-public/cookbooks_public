@@ -47,6 +47,7 @@ end
 
 # Delete the local file
 file dumpfilepath do
+  backup false
   action :delete
 end
 
