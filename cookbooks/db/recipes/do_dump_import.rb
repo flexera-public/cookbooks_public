@@ -24,7 +24,7 @@
 
 rs_utils_marker :begin
 
-
+# Check variables and log/skip if not set
 skip, reason = true, "Prefix not provided"                   if node[:db][:dump][:prefix] == ""
 skip, reason = true, "Storage account provider not provided" if node[:db][:dump][:storage_account_provider] == ""
 skip, reason = true, "Container not provided"                if node[:db][:dump][:container] == ""
@@ -33,10 +33,12 @@ if skip
   log "Skipping import: #{reason}"
 else
 
-  dumpfilepath = "/tmp/" + node[:db][:dump][:prefix] + ".gz"
+  prefix       = node[:db][:dump][:prefix]
+  dumpfilepath = "/tmp/" + prefix + ".gz"
   container    = node[:db][:dump][:container]
   cloud        = ( node[:db][:dump][:storage_account_provider] == "CloudFiles" ) ? "rackspace" : "ec2"
-  
+
+  # Obtain the dumpfile from ROS 
   execute "Download dumpfile from Remote Object Store" do
     command "/opt/rightscale/sandbox/bin/mc_sync.rb get --cloud #{cloud} --container #{container} --dest #{dumpfilepath} --source #{prefix} --latest"
     creates dumpfilepath
@@ -45,11 +47,19 @@ else
       'STORAGE_ACCOUNT_SECRET' => node[:db][:dump][:storage_account_secret]
     })
   end
-  
+
+  # Restore the dump file to db. 
   db node[:db][:data_dir] do
     dumpfile dumpfilepath
     action :restore_from_dump_file
   end
+
+  # Delete the local file.
+  file dumpfilepath do
+    backup false
+    action :delete
+  end
+
 
 end
 

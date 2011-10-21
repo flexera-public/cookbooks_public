@@ -42,4 +42,4 @@ attribute "db_mysql/dump/schema_name",
   :display_name => "Dump Schema Name",
   :description => "Enter the name of the MySQL database schema to create a dump from.  If ignored, all databases will be dumped (--all-databases). Ex: mydbschema",
   :required => false,
-  :recipes => [ "db_mysql::default" ]
+  :recipes => [ "db_mysql::default", "db::do_dump_import", "db::do_dump_export" ]
