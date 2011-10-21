@@ -587,7 +587,7 @@ end
 
 action :generate_dump_file do
 
-  schema_name = node[:db_mysql][:dump][:schema_name]
+  schema_name = ( node[:db_mysql][:dump][:schema_name] == "" ) ? "--all-databases" : node[:db_mysql][:dump][:schema_name]
   dumpfile    = new_resource.dumpfile
 
   execute "Write the mysql DB backup file" do
