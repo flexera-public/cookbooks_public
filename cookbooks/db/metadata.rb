@@ -200,7 +200,6 @@ attribute "db/dump",
 attribute "db/dump/storage_account_provider",
   :display_name => "Dump Storage Account Provider",
   :description => "Location where dump file will be saved.  Used by dump recipes to backup to Amazon S3 or Rackspace Cloud Files.",
-  :default => "S3",
   :required => "required",
   :choice => [ "S3", "CloudFiles" ],
   :recipes => [ "db::do_dump_export" ]
