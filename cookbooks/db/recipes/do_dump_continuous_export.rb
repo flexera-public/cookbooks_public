@@ -28,7 +28,7 @@ skip, reason = true, "DB/Schema name not provided"           if node[:db][:dump]
 skip, reason = true, "Prefix not provided"                   if node[:db][:dump][:prefix] == ""
 skip, reason = true, "Storage account provider not provided" if node[:db][:dump][:storage_account_provider] == ""
 skip, reason = true, "Storage Account ID not provided"       if node[:db][:dump][:storage_account_id] == ""
-skip, reason = true, "Storage Account password not provided" if node[:db][:dump][:storage_account_secret]
+skip, reason = true, "Storage Account password not provided" if node[:db][:dump][:storage_account_secret] == ""
 skip, reason = true, "Container not provided"                if node[:db][:dump][:container] == ""
 
 if skip
