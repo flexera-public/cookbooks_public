@@ -49,7 +49,8 @@
       "type": "string",
       "recipes": [
         "db::do_dump_export",
-        "db::do_dump_import"
+        "db::do_dump_import",
+        "db::do_dump_continuous_export"
       ],
       "display_name": "Dump Container",
       "description": "The cloud storage location where the dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name."
@@ -119,8 +120,9 @@
       ],
       "type": "string",
       "recipes": [
+        "db::do_dump_export",
         "db::do_dump_import",
-        "db::do_dump_export"
+        "db::do_dump_continuous_export"
       ],
       "display_name": "Dump Schema/Database Name",
       "description": "Enter the name of the database name/schema to create/restore a dump from/for. Ex: mydbschema"
@@ -187,7 +189,8 @@
       "type": "string",
       "recipes": [
         "db::do_dump_export",
-        "db::do_dump_import"
+        "db::do_dump_import",
+        "db::do_dump_continuous_export"
       ],
       "display_name": "Dump Storage Account Secret",
       "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key."
@@ -201,7 +204,8 @@
       "type": "string",
       "recipes": [
         "db::do_dump_export",
-        "db::do_dump_import"
+        "db::do_dump_import",
+        "db::do_dump_continuous_export"
       ],
       "display_name": "Dump Prefix",
       "description": "The prefix that will be used to name/locate the backup of a particular db dump.  Defines the prefix of the dump filename that will be used to name the backup database dumpfile along with a timestamp."
@@ -283,7 +287,8 @@
       "type": "string",
       "recipes": [
         "db::do_dump_export",
-        "db::do_dump_import"
+        "db::do_dump_import",
+        "db::do_dump_continuous_export"
       ],
       "display_name": "Dump Storage Account Id",
       "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID. For Rackspace Cloud Files, use your Rackspace login Username."
@@ -316,7 +321,8 @@
       "type": "string",
       "recipes": [
         "db::do_dump_export",
-        "db::do_dump_import"
+        "db::do_dump_import",
+        "db::do_dump_continuous_export"
       ],
       "display_name": "Dump Storage Account Provider",
       "description": "Location where dump file will be saved.  Used by dump recipes to backup to Amazon S3 or Rackspace Cloud Files."
@@ -387,6 +393,7 @@
     "db::do_init_and_become_master": "Start bare MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master",
     "db::install_server": "Installs and sets up the packages that are required for database servers.",
     "db::do_appservers_allow": "Allows connections from all application servers in the deployment that are tagged with appserver:active=true tag. This script should be run on a database server so that it will accept connections from application servers.",
+    "db::do_dump_continuous_export": "Creates a entry for a daily run of db::do_dump_export.",
     "db::do_dump_import": "Retrieves a dump file from ROS and imports it into DB.",
     "db::do_backup_schedule_enable": "Enables db::do_backup to be run periodically.",
     "db::install_client": "Installs the database client onto the VM so that it can connect to a running server.  It should be set up on all database servers and servers intended to connect to the servers.",
