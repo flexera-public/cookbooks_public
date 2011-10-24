@@ -22,8 +22,6 @@ recipe  "db::setup_monitoring", "Installs the collectd plugin for database monit
 
 # == Common Database Recipes
 #
-recipe  "db::setup_block_device", "Relocates the database data directory onto a block_device that supports snapshot backup and restore functionality. This script should be run on a newly operational server before it get placed into production."
-
 recipe  "db::do_backup", "Creates a backup of the database using persistent storage in the current cloud.  On Rackspace, LVM backups are uploaded to the specified CloudFiles container.  For all other clouds, volume snapshots (like EBS) are used."
 recipe  "db::do_restore", "Restores the database from the most recently completed backup available in persistent storage of the current cloud."
 
@@ -60,9 +58,7 @@ recipe "db::do_init_and_become_master", "Start bare MySQL database.  Tag as Mast
 recipe "db::do_restore_and_become_master", "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
 recipe "db::do_init_slave", "Initialize MySQL Slave"
 recipe "db::do_init_slave_at_boot", "Initialize MySQL Slave at boot."
-recipe "db::do_tag_as_master", "USE WITH CAUTION! Tag server with master tags and set master DNS to this server."
 recipe "db::do_promote_to_master", "Promote a replicating slave to master"
-recipe "db::setup_master_dns", "USE WITH CAUTION! Set master DNS to this server's IP"
 recipe "db::setup_replication_privileges", "Set up privileges for MySQL replication slaves."
 recipe "db::request_master_allow", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to allow connections from the server's private IP address.  This script should be run on a slave before it sets up replication."
 recipe "db::request_master_deny", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to deny connections from the server's private IP address.  This script should be run on a slave when it stops replicating."
@@ -142,7 +138,6 @@ attribute "db/backup/lineage",
     "db::do_restore",
     "db::do_backup_schedule_enable",
     "db::do_backup_schedule_disable",
-    "db::setup_block_device",
     "db::do_force_reset",
     "db::do_secondary_backup",
     "db::do_secondary_restore"

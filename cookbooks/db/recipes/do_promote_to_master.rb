@@ -69,7 +69,7 @@ end
 # == Tag as master
 # Changes master status tags and node state
 #
-include_recipe 'db::do_tag_as_master' 
+db_register_master
 
 # == Schedule master backups
 #

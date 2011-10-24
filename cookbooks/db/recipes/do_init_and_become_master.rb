@@ -23,8 +23,30 @@
 
 rs_utils_marker :begin
 
-include_recipe "db::setup_block_device"
-include_recipe "db::do_tag_as_master"
+DATA_DIR = node[:db][:data_dir]
+
+#TODO add in checks if block device exists and bail out.
+#Current implementation leaves server in a bad state after
+#trying to re-setup the blockdevice
+#
+log "  Stopping database..."
+db DATA_DIR do
+  action :stop
+end
+
+log "  Creating block device..."
+block_device DATA_DIR do
+  lineage node[:db][:backup][:lineage]
+  action :create
+end
+
+log "  Moving database to block device and starting database..."
+db DATA_DIR do
+  action [ :move_data_dir, :start ]
+end
+
+db_register_master
+
 include_recipe "db::setup_replication_privileges"
 # kick-off first backup so that slaves can init from this master
 include_recipe "db::do_backup"
