@@ -84,7 +84,11 @@ db DATA_DIR do
   action :enable_replication
 end
 
-include_recipe "db::do_backup"
+# Force a new backup
+db_do_backup "do force backup" do
+  force true
+end
+
 include_recipe "db::do_backup_schedule_enable"
 
 ruby_block "Setting db_restored state to true" do

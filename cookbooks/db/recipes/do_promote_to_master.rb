@@ -71,9 +71,14 @@ end
 #
 db_register_master
 
+# == force a backup
+#
+db_do_backup "do force backup" do
+  force true
+end
+
 # == Schedule master backups
 #
-include_recipe 'db::do_backup'
 include_recipe "db::do_backup_schedule_enable"
 
 rs_utils_marker :end

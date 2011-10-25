@@ -30,8 +30,11 @@ include_recipe "db::do_restore"
 db_register_master
 
 include_recipe "db::setup_replication_privileges"
-# kick-off first backup so that slaves can init from this master
-include_recipe "db::do_backup"
+# force first backup so that slaves can init from this master
+db_do_backup "do force backup" do
+  force true
+end
+
 include_recipe "db::do_backup_schedule_enable"
 
 ruby_block "Setting db_restored state to true" do
