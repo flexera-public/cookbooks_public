@@ -44,6 +44,14 @@ define :db_do_backup, :force => false do
   if force
     # force has been set, kill chef running do_backup and/or backup.rb script
     log "  backup with force param, kill and remove lock if exists"
+    # TODO
+    # - get lock file, open it, get pid file from it and pkill it
+    # - pgrep /opt/rightscale/sandbox/bin/backup.rb and kill it
+    # - delete the lock file
+  end
+
+  block_device DATA_DIR do
+    action :get_backup_lock_filename
   end
 
   block_device DATA_DIR do
