@@ -72,9 +72,11 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   if ( do_backup_type == "primary")
     destination_cloud = node[:cloud][:provider]
     storage_container = node[:block_device][:storage_container]
+    storage_type      = node[:block_device][:storage_type]
   elsif ( do_backup_type == "secondary")
     destination_cloud = (node[:db][:backup][:secondary_location] == "CloudFiles") ? "rackspace" : "ec2"
     storage_container = node[:db][:backup][:secondary_container]
+    storage_type      = "ros"
   end
 
   if destination_cloud == "rackspace"
@@ -93,7 +95,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
       'STORAGE_ACCOUNT_SECRET' => account_secret
     })
     code <<-EOH
-    /opt/rightscale/sandbox/bin/backup.rb --backuponly --lineage #{node[:db][:backup][:lineage]} --cloud #{destination_cloud} --storage-type #{node[:block_device][:storage_type]} --container #{storage_container} 2>&1 | logger -t rs_db_backup &
+    /opt/rightscale/sandbox/bin/backup.rb --backuponly --lineage #{node[:db][:backup][:lineage]} --cloud #{destination_cloud} --storage-type #{storage_type} --container #{storage_container} 2>&1 | logger -t rs_db_backup &
     EOH
   end
 
