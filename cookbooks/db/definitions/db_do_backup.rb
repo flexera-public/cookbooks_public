@@ -25,7 +25,7 @@ define :db_do_backup, :force => false do
 
   DATA_DIR = node[:db][:data_dir]
 
-  force = params[:force] == true ? true : false
+  do_force = params[:force] == true ? true : false
   
   # == Verify initalized database
   # Check the node state to verify that we have correctly initialized this server.
