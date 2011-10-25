@@ -21,11 +21,12 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-define :db_do_backup, :force => false do
+define :db_do_backup, :force => false, :backup_type => "primary" do
 
   DATA_DIR = node[:db][:data_dir]
 
-  do_force = params[:force] == true ? true : false
+  do_force       = params[:force] == true ? true : false
+  do_backup_type = params[:backup_type] == "primary" ? "primary" : "secondary"
   
   # == Verify initalized database
   # Check the node state to verify that we have correctly initialized this server.
@@ -47,12 +48,12 @@ define :db_do_backup, :force => false do
     force do_force
   end
   
-  log "  Performing lock DB and write backup info file..."
+  log "  Performing (#{do_backup_type} backup) lock DB and write backup info file..."
   db DATA_DIR do
     action [ :lock, :write_backup_info ]
   end
   
-  log "  Performing Snapshot with lineage #{node[:db][:backup][:lineage]}.."
+  log "  Performing (#{do_backup_type} backup)Snapshot with lineage #{node[:db][:backup][:lineage]}.."
   # Requires block_device node[:db][:block_device] to be instantiated
   # previously. Make sure block_device::default recipe has been run.
   block_device DATA_DIR do
@@ -65,9 +66,18 @@ define :db_do_backup, :force => false do
     action :unlock
   end
   
-  log "  Performing Backup of lineage #{node[:db][:backup][:lineage]} and post-backup cleanup..."
-  
-  if node[:cloud][:provider] == "rackspace"
+  log "  Performing (#{do_backup_type})Backup of lineage #{node[:db][:backup][:lineage]} and post-backup cleanup..."
+
+  # Determine if doing primary or secondary backup and obtain correct cloud to store the backup.
+  if ( do_backup_type == "primary")
+    destination_cloud = node[:cloud][:provider]
+    storage_container = node[:block_device][:storage_container]
+  elsif ( do_backup_type == "secondary")
+    destination_cloud = (node[:db][:backup][:secondary_location] == "CloudFiles") ? "rackspace" : "ec2"
+    storage_container = node[:db][:backup][:secondary_container]
+  end
+
+  if destination_cloud == "rackspace"
     account_id = node[:block_device][:rackspace_user]
     account_secret = node[:block_device][:rackspace_secret]
   else
@@ -83,7 +93,7 @@ define :db_do_backup, :force => false do
       'STORAGE_ACCOUNT_SECRET' => account_secret
     })
     code <<-EOH
-    /opt/rightscale/sandbox/bin/backup.rb --backuponly --lineage #{node[:db][:backup][:lineage]} --cloud #{node[:cloud][:provider]} --storage-type #{node[:block_device][:storage_type]} --container #{node[:block_device][:storage_container]} 2>&1 | logger -t rs_db_backup &
+    /opt/rightscale/sandbox/bin/backup.rb --backuponly --lineage #{node[:db][:backup][:lineage]} --cloud #{destination_cloud} --storage-type #{node[:block_device][:storage_type]} --container #{storage_container} 2>&1 | logger -t rs_db_backup &
     EOH
   end
 

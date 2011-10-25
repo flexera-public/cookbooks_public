@@ -25,6 +25,7 @@ rs_utils_marker :begin
 
 db_do_backup "do backup" do
   force false
+  backup_type "primary"
 end
 
 rs_utils_marker :end
