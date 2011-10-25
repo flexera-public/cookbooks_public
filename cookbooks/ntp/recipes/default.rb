@@ -60,6 +60,12 @@ template "/etc/ntp.conf" do
   notifies :restart, resources(:service => node[:ntp][:service])
 end
 
+directory "/var/log/ntpstats" do
+  owner "ntp"
+  group "ntp"
+  mode 0644
+end
+
 service node[:ntp][:service] do
   action :start
 end
