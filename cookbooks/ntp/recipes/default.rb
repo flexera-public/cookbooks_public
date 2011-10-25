@@ -63,7 +63,7 @@ end
 directory "/var/log/ntpstats" do
   owner "ntp"
   group "ntp"
-  mode 0644
+  mode 0755
 end
 
 service node[:ntp][:service] do
