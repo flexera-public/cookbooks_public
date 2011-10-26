@@ -34,6 +34,16 @@ service node[:ntp][:service] do
   action :stop
 end
 
+#
+# NTP doesn't always stop on Ubunut.  Make sure the process is gone
+bash "kill ntp" do
+  only_if { node[:platform] == 'ubuntu' }
+  code <<-EOH
+    pkill -9 -f ntp || true
+  EOH
+end
+
+
 is_xen = ::File.exist?("/proc/sys/xen")
 log "  Configure Xen for independent wall clock..." if is_xen
 bash "independent wallclock" do
