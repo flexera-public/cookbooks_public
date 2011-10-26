@@ -522,7 +522,7 @@ action :enable_replication do
     group "root"
     mode "0644"
     variables(
-      :server_id => eycnf_uuid
+      :server_id => mycnf_uuid
     )
     cookbook 'db_mysql'
   end
