@@ -27,6 +27,9 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
 
   do_force       = params[:force] == true ? true : false
   do_backup_type = params[:backup_type] == "primary" ? "primary" : "secondary"
+
+  # == Check if database is able to be backed up (initialized)
+  raise "Database is not initialized." unless node[:db][:db_initialized]
   
   # == Verify initalized database
   # Check the node state to verify that we have correctly initialized this server.

@@ -69,4 +69,9 @@ db DATA_DIR do
   action [ :reset, :start ]
 end
 
+log "  Setting db_initialized to false..."
+db_state_initialized "db initialzed state false" do
+  state false
+end
+
 rs_utils_marker :end

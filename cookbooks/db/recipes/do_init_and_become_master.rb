@@ -48,11 +48,15 @@ end
 db_register_master
 
 include_recipe "db::setup_replication_privileges"
+
 # 'force' first backup so that slaves can init from this master
 db_do_backup "do force backup" do
   force true
 end
 
 include_recipe "db::do_backup_schedule_enable"
+
+# Set node[:db][:db_initialized] to true.
+db_state_initialized
 
 rs_utils_marker :end

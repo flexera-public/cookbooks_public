@@ -97,4 +97,7 @@ ruby_block "Setting db_restored state to true" do
   end
 end
 
+# set node[:db][:db_initialized] to true
+db_state_initialized
+
 rs_utils_marker :end
