@@ -21,18 +21,31 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-define :db_state_initialized, :state => true do
+define :db_init_status, :expected_state => :initialized, :error_message => "ERROR: your database is not in expected state" do
 
-  current_state = node[:db][:db_initialized]
+  new_state     = params[:name]
+  expected_state = params[:expected_state]
 
-  new_state = params[:state] == false ? false : true
+  # Current valid status: initialized, uninitialized
+  ruby_block "Setting initialization status #{new_state}" do
+    block do
+      current_state = node[:db][:init_status]
 
-  if (current_state == new_state)
-    log "No change needed for initialization state - already #{new_state}"
-  else
-    log "Setting initialization state from #{current_state} to #{new_state}"
-    node[:db][:db_initialized] = new_state
+      case new_state
+      when :set
+        Chef::Log.info "changing status from #{current_state} to initialized"
+        node[:db][:init_status] = :initialized
+      when :reset
+        Chef::Log.info "changing status from #{current_state} to uninitialized"
+        node[:db][:init_status] = :uninitialized
+      when :check
+        Chef::Log.info "checking if database is #{expected_state} (#{current_state})"
+        raise params[:error_message] unless current_state.to_s == expected_state.to_s
+        Chef::Log.info "expected state found"
+      else
+        raise "ERROR: Must specify :set,:reset, or :check"
+      end
+    end
   end
 
-end
-
+end 

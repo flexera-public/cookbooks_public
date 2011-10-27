@@ -597,12 +597,17 @@ action :generate_dump_file do
 end
 
 action :restore_from_dump_file do
-  
+ 
   db_name     = new_resource.db_name
   dumpfile    = new_resource.dumpfile
+  db_check    = `mysql -e "SHOW DATABASES LIKE '#{db_name}'"`
+
+  # Check if DB already exists
+  if ! db_check.empty?
+    raise "ERROR: database '#{db_name}' already exists"
+  end
 
   bash "Import MySQL dump file: #{dumpfile}" do
-    not_if "echo \"show databases\" | mysql | grep -q  \"^#{db_name}$\""
     user "root"
     code <<-EOH
       set -e
@@ -617,6 +622,3 @@ action :restore_from_dump_file do
   end
 
 end
-
-#action :setup_continuous_export_dump do
-#end

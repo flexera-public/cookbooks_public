@@ -57,7 +57,6 @@ end
 
 ruby_block "Reset db node state" do
   block do
-    node[:db][:db_restored] = false
     node[:db][:this_is_master] = false
     node[:db][:current_master_uuid] = nil
     node[:db][:current_master_ip] = nil
@@ -69,9 +68,7 @@ db DATA_DIR do
   action [ :reset, :start ]
 end
 
-log "  Setting db_initialized to false..."
-db_state_initialized "db initialzed state false" do
-  state false
-end
+log "  Resetting init_status ..."
+db_init_status :reset
 
 rs_utils_marker :end

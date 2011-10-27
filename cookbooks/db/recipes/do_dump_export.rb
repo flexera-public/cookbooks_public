@@ -27,12 +27,15 @@ rs_utils_marker :begin
 dumpfilename = node[:db][:dump][:prefix] + "-" + Time.now.strftime("%Y%m%d%H%M") + ".gz"
 dumpfilepath = "/tmp/#{dumpfilename}"
 
+databasename = node[:db][:dump][:database_name]
+
 container   = node[:db][:dump][:container]
 cloud       = ( node[:db][:dump][:storage_account_provider] == "CloudFiles" ) ? "rackspace" : "ec2"
 
 # Execute the command to create the dumpfile
 db node[:db][:data_dir] do
   dumpfile dumpfilepath
+  db_name databasename
   action :generate_dump_file
 end
 

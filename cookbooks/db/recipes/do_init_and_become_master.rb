@@ -25,10 +25,12 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
-#TODO add in checks if block device exists and bail out.
-#Current implementation leaves server in a bad state after
-#trying to re-setup the blockdevice
-#
+Chef::Log.info "  Checking init state should be :uninitialized"
+db_init_status :check do
+  expected_state :uninitialized
+  error_message "Database already initialized.  To over write existing database run do_force_reset before this recipe"
+end
+
 log "  Stopping database..."
 db DATA_DIR do
   action :stop
@@ -45,6 +47,9 @@ db DATA_DIR do
   action [ :move_data_dir, :start ]
 end
 
+Chef::Log.info "  Checking init state should be :uninitialized"
+db_init_status :set
+
 db_register_master
 
 include_recipe "db::setup_replication_privileges"
@@ -55,8 +60,5 @@ db_do_backup "do force backup" do
 end
 
 include_recipe "db::do_backup_schedule_enable"
-
-# Set node[:db][:db_initialized] to true.
-db_state_initialized
 
 rs_utils_marker :end

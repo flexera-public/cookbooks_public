@@ -23,9 +23,13 @@
 
 rs_utils_marker :begin
 
+db_init_status :check
+
 db_do_backup "do backup" do
   force false
   backup_type "primary"
 end
+
+db_init_status :set
 
 rs_utils_marker :end

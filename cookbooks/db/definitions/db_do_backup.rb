@@ -25,12 +25,17 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
 
   DATA_DIR = node[:db][:data_dir]
 
-  do_force       = params[:force] == true ? true : false
-  do_backup_type = params[:backup_type] == "primary" ? "primary" : "secondary"
+  do_force        = params[:force] == true ? true : false
+  do_backup_type  = params[:backup_type] == "primary" ? "primary" : "secondary"
 
   # == Check if database is able to be backed up (initialized)
-  raise "Database is not initialized." unless node[:db][:db_initialized]
-  
+  # must be done in ruby block to expand node during converge not compile
+  Chef::Log.info "Checking db_init_status making sure db ready for backup"
+  db_init_status :check do
+    expected_state :initialized
+    error_message "Database not initialized."
+  end
+
   # == Verify initalized database
   # Check the node state to verify that we have correctly initialized this server.
   db_state_assert :either

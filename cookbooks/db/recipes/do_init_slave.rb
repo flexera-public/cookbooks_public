@@ -25,7 +25,11 @@ DATA_DIR = node[:db][:data_dir]
 
 rs_utils_marker :begin
 
-raise 'Database already restored.  To over write existing database run do_force_reset before this recipe' if node[:db][:db_restored] 
+Chef::Log.info "Checking init state should be :uninitialized"
+db_init_status :check do
+  expected_state :uninitialized
+  error_message "Database already restored.  To over write existing database run do_force_reset before this recipe"
+end
 
 r = rs_utils_server_collection "master_servers" do
   tags ['rs_dbrepl:master_active', 'rs_dbrepl:master_instance_uuid']
@@ -90,14 +94,5 @@ db_do_backup "do force backup" do
 end
 
 include_recipe "db::do_backup_schedule_enable"
-
-ruby_block "Setting db_restored state to true" do
-  block do
-    node[:db][:db_restored] = true
-  end
-end
-
-# set node[:db][:db_initialized] to true
-db_state_initialized
 
 rs_utils_marker :end
