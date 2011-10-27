@@ -25,7 +25,9 @@
 rs_utils_marker :begin
 
 # convert inputs into parameters usable by the firewall_rule definition
-rule_port = node[:sys_firewall][:rule][:port]
+# TODO add support for 'any' and port ranges '80,8000,3000-4000'
+rule_port = node[:sys_firewall][:rule][:port].to_i
+raise "Invalid port specified: #{node[:sys_firewall][:rule][:port]}.  Valid range 1-65536" unless rule_port > 0 and rule_port <= 65536
 rule_ip = node[:sys_firewall][:rule][:ip_address]
 rule_ip = (rule_ip == "" || rule_ip.downcase =~ /any/ ) ? nil : rule_ip 
 rule_protocol = node[:sys_firewall][:rule][:protocol]

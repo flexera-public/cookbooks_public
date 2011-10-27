@@ -16,6 +16,9 @@ provides "db_mysql_gzipfile_backup(db_name, file_path)"
 provides "db_mysql_gzipfile_restore(db_name, file_path)"
 
 recipe  "db_mysql::default", "Runs the client 'db::install_server' recipes."
+recipe  "db_mysql::do_dump_import", "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)"
+recipe  "db_mysql::do_dump_export", "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)"
+recipe  "db_mysql::setup_continuous_export", "Schedules the daily run of do_dump_export."
 
 attribute "db_mysql",
   :display_name => "General Database Options",

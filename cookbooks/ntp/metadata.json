@@ -1,0 +1,50 @@
+{
+  "dependencies": {
+    "rs_utils": ">= 0.0.0"
+  },
+  "name": "ntp",
+  "maintainer_email": "cookbooks@opscode.com",
+  "attributes": {
+    "ntp/servers": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "time.rightscale.com, ec2-us-east.time.rightscale.com, ec2-us-west.time.rightscale.com",
+      "type": "string",
+      "recipes": [
+
+      ],
+      "display_name": "NTP Servers",
+      "description": "Array of servers we should talk to"
+    }
+  },
+  "license": "Apache 2.0",
+  "suggestions": {
+  },
+  "platforms": {
+    "debian": ">= 0.0.0",
+    "fedora": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0",
+    "redhat": ">= 0.0.0"
+  },
+  "maintainer": "Opscode, Inc.",
+  "long_description": "DESCRIPTION\n===========\n\nInstalls and configures ntp, optionally set up a local NTP server.\n\nREQUIREMENTS\n============\n\nShould work on any Red Hat-family or Debian-family Linux distribution.\n\nUSAGE\n=====\n\nSet up the ntp attributes in a role. For example in a base.rb role applied to all nodes:\n\n    name \"base\"\n    description \"Role applied to all systems\"\n    default_attributes(\n      \"ntp\" => {\n        \"servers\" => [\"time.int.example.org\"]\n      }\n    )\n\nThen in an ntpserver.rb role that is applied to NTP servers (e.g., time.int.example.org):\n\n    name \"ntp_server\"\n    description \"Role applied to the system that should be an NTP server.\"\n    default_attributes(\n      \"ntp\" => {\n        \"is_server\" => \"true\",\n        \"servers\" => [\"0.pool.ntp.org\", \"1.pool.ntp.org\"]\n      }\n    )\n\nLICENSE AND AUTHOR\n==================\n\nAuthor:: Joshua Timberman (<joshua@opscode.com>)\n\nCopyright 2009-2011, Opscode, Inc.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.\n",
+  "version": "1.0.0",
+  "recommendations": {
+  },
+  "recipes": {
+    "ntp": "Installs and configures ntp client"
+  },
+  "groupings": {
+  },
+  "conflicting": {
+  },
+  "replacing": {
+  },
+  "description": "Installs and configures ntp as a client or server",
+  "providing": {
+  }
+}

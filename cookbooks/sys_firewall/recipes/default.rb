@@ -55,7 +55,7 @@ log "Setup IP connection tracking limit of #{conn_max}"
 bash "Update net.ipv4.ip_conntrack_max" do
   only_if { node[:platform] == "centos" }
   code <<-EOH 
-    sysctl -w net.ipv4.ip_conntrack_max=#{conn_max}
+    sysctl -e -w net.ipv4.ip_conntrack_max=#{conn_max}
   EOH
 end
 
