@@ -172,7 +172,8 @@
       "db_mysql::do_dump_import": "Initializes the MySQL database with a dumpfile from the specified cloud storage location. (i.e. S3, cloudfiles)",
       "db_mysql::default": "Runs the client 'db::install_server' recipes.",
       "db_mysql::do_dump_export": "Uploads a MySQL dumpfile archive to the specified cloud storage location. (i.e. S3, cloudfiles)",
-      "db_mysql::do_dump_schedule_enable": "Disables the daily run of do_dump_export."
+      "db_mysql::do_dump_schedule_disable": "Disables the daily run of do_dump_export.",
+      "db_mysql::do_dump_schedule_enable": "Schedules the daily run of do_dump_export."
     },
     "maintainer_email": "support@rightscale.com",
     "conflicting": {
