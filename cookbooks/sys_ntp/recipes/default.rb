@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: ntp
+# Cookbook Name:: sys_ntp
 # Recipe:: default
 # Author:: Joshua Timberman (<joshua@opscode.com>)
 #
@@ -30,7 +30,7 @@ package "ntp" do
   action :install
 end
 
-service node[:ntp][:service] do
+service node[:sys_ntp][:service] do
   action :stop
 end
 
@@ -53,7 +53,7 @@ bash "independent wallclock" do
   EOH
 end
 
-first_ntp_server = node[:ntp][:servers].split(',')[0].strip
+first_ntp_server = node[:sys_ntp][:servers].split(',')[0].strip
 log "  Update time using ntpdate and ntp server #{first_ntp_server}..."
 bash "update time" do
   code <<-EOH
@@ -67,7 +67,7 @@ template "/etc/ntp.conf" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => node[:ntp][:service])
+  notifies :restart, resources(:service => node[:sys_ntp][:service])
 end
 
 directory "/var/log/ntpstats" do
@@ -76,7 +76,7 @@ directory "/var/log/ntpstats" do
   mode 0755
 end
 
-service node[:ntp][:service] do
+service node[:sys_ntp][:service] do
   action :start
 end
 rs_utils_marker :end

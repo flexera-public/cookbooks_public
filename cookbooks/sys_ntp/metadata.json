@@ -1,0 +1,62 @@
+{
+    "version": "1.0.0",
+    "groupings": {
+    },
+    "long_description": "DESCRIPTION\n===========\n\nInstalls and configures ntp client.\n\nREQUIREMENTS\n============\n\nShould work on any Red Hat-family or Debian-family Linux distribution.\n\n\n",
+    "attributes": {
+      "sys_ntp/servers": {
+        "required": "optional",
+        "calculated": false,
+        "choice": [
+
+        ],
+        "default": "time.rightscale.com, ec2-us-east.time.rightscale.com, ec2-us-west.time.rightscale.com",
+        "type": "string",
+        "recipes": [
+
+        ],
+        "description": "Array of servers we should talk to",
+        "display_name": "NTP Servers"
+      }
+    },
+    "recommendations": {
+    },
+    "dependencies": {
+      "rs_utils": [
+
+      ]
+    },
+    "maintainer": "Opscode, Inc.",
+    "suggestions": {
+    },
+    "recipes": {
+      "sys_ntp": "Installs and configures ntp client"
+    },
+    "maintainer_email": "cookbooks@opscode.com",
+    "conflicting": {
+    },
+    "license": "Apache 2.0",
+    "providing": {
+    },
+    "name": "sys_ntp",
+    "replacing": {
+    },
+    "platforms": {
+      "debian": [
+
+      ],
+      "fedora": [
+
+      ],
+      "centos": [
+
+      ],
+      "ubuntu": [
+
+      ],
+      "redhat": [
+
+      ]
+    },
+    "description": "Installs and configures ntp as a client or server"
+  }
