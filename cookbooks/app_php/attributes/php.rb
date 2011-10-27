@@ -23,7 +23,6 @@
 
 # == Recommended attributes
 #
-set_unless[:php][:server_name] = "myserver"  
 set_unless[:php][:application_name] = "myapp"
 
 # == Optional attributes
