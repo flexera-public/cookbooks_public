@@ -597,13 +597,17 @@ action :restore_from_dump_file do
  
   db_name     = new_resource.db_name
   dumpfile    = new_resource.dumpfile
-  db_check    = `mysql -e "SHOW DATABASES LIKE '#{db_name}'"`
 
-  # Check if DB already exists
-  if ! db_check.empty?
-    raise "ERROR: database '#{db_name}' already exists"
+  log "  Check if DB already exists"
+  ruby_block "checking existing db" do
+    block do
+      db_check = `mysql -e "SHOW DATABASES LIKE '#{db_name}'"`
+      if ! db_check.empty?
+        raise "ERROR: database '#{db_name}' already exists"
+      end
+    end
   end
-
+  
   bash "Import MySQL dump file: #{dumpfile}" do
     user "root"
     code <<-EOH
