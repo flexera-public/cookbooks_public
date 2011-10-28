@@ -25,7 +25,7 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
-Chef::Log.info "  Checking init state should be :uninitialized"
+log "  Checking init state should be :uninitialized..."
 db_init_status :check do
   expected_state :uninitialized
   error_message "Database already initialized.  To over write existing database run do_force_reset before this recipe"
@@ -47,18 +47,21 @@ db DATA_DIR do
   action [ :move_data_dir, :start ]
 end
 
-Chef::Log.info "  Checking init state should be :uninitialized"
+log "  Checking init state should be :uninitialized..."
 db_init_status :set
 
+log "  Registering as master..."
 db_register_master
 
+log "  Adding replication privileges for this master database..."
 include_recipe "db::setup_replication_privileges"
 
-# 'force' first backup so that slaves can init from this master
+log "  Forcing a backup so slaves can init from this master..."
 db_do_backup "do force backup" do
   force true
 end
 
+log "  Setting up cron to do scheduled backups..."
 include_recipe "db::do_backup_schedule_enable"
 
 rs_utils_marker :end

@@ -54,7 +54,7 @@ recipe "db::request_appserver_deny", "Sends a request to deny connections from t
 
 # == Master/Slave Recipes
 #
-recipe "db::do_init_and_become_master", "Start bare MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master"
+recipe "db::do_init_and_become_master", "Initializes MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
 recipe "db::do_restore_and_become_master", "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
 recipe "db::do_init_slave", "Initialize MySQL Slave"
 recipe "db::do_init_slave_at_boot", "Initialize MySQL Slave at boot."

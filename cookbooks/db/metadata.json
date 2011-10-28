@@ -380,7 +380,7 @@
     "db::default": "Adds the database:active=true tag to your server which identifies it as an database server. The tag is used by application servers to identify active databases. It also loads the required 'db' resources.",
     "db::do_secondary_restore": "Restores the database from the most recently completed backup available in a secondary location.",
     "db::do_backup": "Creates a backup of the database using persistent storage in the current cloud.  On Rackspace, LVM backups are uploaded to the specified CloudFiles container.  For all other clouds, volume snapshots (like EBS) are used.",
-    "db::do_init_and_become_master": "Start bare MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master",
+    "db::do_init_and_become_master": "Initializes MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master.",
     "db::install_server": "Installs and sets up the packages that are required for database servers.",
     "db::do_appservers_allow": "Allows connections from all application servers in the deployment that are tagged with appserver:active=true tag. This script should be run on a database server so that it will accept connections from application servers.",
     "db::do_dump_continuous_export": "Creates a entry for a daily run of db::do_dump_export.",

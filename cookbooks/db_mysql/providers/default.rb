@@ -342,7 +342,6 @@ action :setup_monitoring do
   arch = node[:kernel][:machine]
   arch = "i386" if arch == "i686"
 
-  # Ubuntu specific
   if node[:platform] == 'centos'
     TMP_FILE = "/tmp/collectd.rpm"
 
@@ -354,7 +353,6 @@ action :setup_monitoring do
     package TMP_FILE do
       source TMP_FILE
     end
-
   end
 
   template ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
@@ -369,7 +367,6 @@ action :setup_monitoring do
       level :warn
     end
   end
-
 end
 
 action :grant_replication_slave do
