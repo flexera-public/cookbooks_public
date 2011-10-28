@@ -25,7 +25,7 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
-log "  Checking init state should be :uninitialized..."
+log "  Verify if database state is 'uninitialized'..."
 db_init_status :check do
   expected_state :uninitialized
   error_message "Database already initialized.  To over write existing database run do_force_reset before this recipe"
@@ -47,7 +47,7 @@ db DATA_DIR do
   action [ :move_data_dir, :start ]
 end
 
-log "  Checking init state should be :uninitialized..."
+log "  Setting state of database to be 'initialized'..."
 db_init_status :set
 
 log "  Registering as master..."

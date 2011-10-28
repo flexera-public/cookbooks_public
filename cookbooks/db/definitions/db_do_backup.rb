@@ -21,6 +21,22 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# == Does a snapshot backup of the filesystem containing the database
+# Note that the upload becomes a background job in order to allow other recipes to
+# not wait if the upload takes a long time.
+# Since this backup is a snapshot of a filesystem, it will check if the database has
+# been 'initialized', else it will fail.
+# == Params
+# force(Boolean):: If false, if a backup is currently running, will error out stating so.
+#   If true, if a backup is currently running, will kill that process and take over the lock.
+# backup_type(String):: If 'primary' will do a primary backup using node attributes specific
+#   to the main backup.  If 'secondary' will do a secondary backup using node attributes for
+#   secondary.  Secondary uses 'ROS'.
+# == Exceptions
+# If force is false and a backup is currently running, will raise an exception.
+# If database is not 'initialized', will raise.
+
+
 define :db_do_backup, :force => false, :backup_type => "primary" do
 
   DATA_DIR = node[:db][:data_dir]

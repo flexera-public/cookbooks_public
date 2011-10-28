@@ -68,7 +68,7 @@ db DATA_DIR do
   action [ :reset, :start ]
 end
 
-log "  Resetting init_status ..."
+log "  Setting database state to 'uninitialized'..."
 db_init_status :reset
 
 rs_utils_marker :end

@@ -25,7 +25,7 @@ DATA_DIR = node[:db][:data_dir]
 
 rs_utils_marker :begin
 
-Chef::Log.info "Checking init state should be :uninitialized"
+log "  Checking if state of database is'uninitialized'..."
 db_init_status :check do
   expected_state :uninitialized
   error_message "Database already restored.  To over write existing database run do_force_reset before this recipe"

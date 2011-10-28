@@ -23,13 +23,16 @@
 
 rs_utils_marker :begin
 
+log "  Checking if state of db is 'uninitialized'..."
 db_init_status :check
 
+log "  Run a normal primary backup..."
 db_do_backup "do backup" do
   force false
   backup_type "primary"
 end
 
+log "  Setting database state to 'initialized'..."
 db_init_status :set
 
 rs_utils_marker :end

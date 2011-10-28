@@ -21,6 +21,13 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# == Sets a database server to be a master in a replication db setup.
+# The tasks include setting up DNS, setting tags, and setting node attributes.
+# == Params
+# none
+# == Exceptions
+# none
+
 define :db_register_master do
 
   # == Set master DNS
