@@ -24,7 +24,7 @@
 rs_utils_marker :begin
 
 sys_firewall "Open this appserver's ports to all loadbalancers" do
-  machine_tag "loadbalancer:lb=#{node[:lb_haproxy][:applistener_name]}"
+  machine_tag "loadbalancer:lb=#{node[:lb][:applistener_name]}"
   port node[:app][:port]
   enable true
   action :update
