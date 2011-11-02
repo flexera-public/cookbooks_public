@@ -23,31 +23,45 @@
 
 rs_utils_marker :begin
 
-# == Set master DNS
-# Do this first so that DNS can propagate while the recipe runs
-#
-include_recipe "db::setup_master_dns"
+DATA_DIR = node[:db][:data_dir]
 
-# == Set master tags
-# Tag the server with the master tags rs_dbrepl:master_active 
-# and rs_dbrepl:master_instance_uuid
-#
-active_tag = "rs_dbrepl:master_active=#{Time.now.strftime("%Y%m%d%H%M%S")}"
-log "Tagging server with #{active_tag}"
-right_link_tag active_tag
-
-unique_tag = "rs_dbrepl:master_instance_uuid=#{node[:rightscale][:instance_uuid]}"
-log "Tagging server with #{unique_tag}"
-right_link_tag unique_tag
-
-# == Set master node variables
-#
-ruby_block "initialize master state" do 
-  block do 
-    node[:db][:current_master_uuid] = node[:rightscale][:instance_uuid]
-    node[:db][:current_master_ip] = node[:cloud][:private_ips][0]
-    node[:db][:this_is_master] = true
-  end
+log "  Verify if database state is 'uninitialized'..."
+db_init_status :check do
+  expected_state :uninitialized
+  error_message "Database already initialized.  To over write existing database run do_force_reset before this recipe"
 end
+
+log "  Stopping database..."
+db DATA_DIR do
+  action :stop
+end
+
+log "  Creating block device..."
+block_device DATA_DIR do
+  lineage node[:db][:backup][:lineage]
+  action :create
+end
+
+log "  Moving database to block device and starting database..."
+db DATA_DIR do
+  action [ :move_data_dir, :start ]
+end
+
+log "  Setting state of database to be 'initialized'..."
+db_init_status :set
+
+log "  Registering as master..."
+db_register_master
+
+log "  Adding replication privileges for this master database..."
+include_recipe "db::setup_replication_privileges"
+
+log "  Forcing a backup so slaves can init from this master..."
+db_do_backup "do force backup" do
+  force true
+end
+
+log "  Setting up cron to do scheduled backups..."
+include_recipe "db::do_backup_schedule_enable"
 
 rs_utils_marker :end

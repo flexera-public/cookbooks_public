@@ -1,4 +1,5 @@
 # Cookbook Name:: db
+# 
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -23,26 +24,21 @@
 
 rs_utils_marker :begin
 
-DATA_DIR = node[:db][:data_dir]
+skip, reason = true, "DB/Schema name not provided"           if node[:db][:dump][:database_name] == ""
+skip, reason = true, "Prefix not provided"                   if node[:db][:dump][:prefix] == ""
+skip, reason = true, "Storage account provider not provided" if node[:db][:dump][:storage_account_provider] == ""
+skip, reason = true, "Storage Account ID not provided"       if node[:db][:dump][:storage_account_id] == ""
+skip, reason = true, "Storage Account password not provided" if node[:db][:dump][:storage_account_secret] == ""
+skip, reason = true, "Container not provided"                if node[:db][:dump][:container] == ""
 
-#TODO add in checks if block device exists and bail out.
-#Current implementation leaves server in a bad state after
-#trying to re-setup the blockdevice
-#
-log "  Stopping database..."
-db DATA_DIR do
-  action :stop
-end
-
-log "  Creating block device..."
-block_device DATA_DIR do
-  lineage node[:db][:backup][:lineage]
-  action :create
-end
-
-log "  Moving database to block device and starting database..."
-db DATA_DIR do
-  action [ :move_data_dir, :start ]
+if skip
+  log "Skipping import: #{reason}"
+else
+  cron "db_dump_export" do
+    hour "0"
+    minute "#{5+rand(50)}"
+    command "rs_run_recipe -n db::do_dump_export"
+  end
 end
 
 rs_utils_marker :end

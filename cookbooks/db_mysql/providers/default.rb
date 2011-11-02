@@ -604,3 +604,45 @@ action :enable_replication do
     cookbook 'db_mysql'
   end
 end
+
+action :generate_dump_file do
+
+  db_name     = new_resource.db_name
+  dumpfile    = new_resource.dumpfile
+
+  execute "Write the mysql DB backup file" do
+    command "mysqldump --single-transaction -u root #{db_name} | gzip -c > #{dumpfile}"
+  end
+
+end
+
+action :restore_from_dump_file do
+ 
+  db_name     = new_resource.db_name
+  dumpfile    = new_resource.dumpfile
+
+  log "  Check if DB already exists"
+  ruby_block "checking existing db" do
+    block do
+      db_check = `mysql -e "SHOW DATABASES LIKE '#{db_name}'"`
+      if ! db_check.empty?
+        raise "ERROR: database '#{db_name}' already exists"
+      end
+    end
+  end
+  
+  bash "Import MySQL dump file: #{dumpfile}" do
+    user "root"
+    code <<-EOH
+      set -e
+      if [ ! -f #{dumpfile} ] 
+      then 
+        echo "ERROR: MySQL dumpfile not found! File: '#{dumpfile}'" 
+        exit 1
+      fi 
+      mysqladmin -u root create #{db_name} 
+      gunzip < #{dumpfile} | mysql -u root -b #{db_name}
+    EOH
+  end
+
+end

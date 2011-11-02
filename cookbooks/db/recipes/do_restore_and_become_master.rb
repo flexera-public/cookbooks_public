@@ -23,19 +23,16 @@
 
 rs_utils_marker :begin
 
-raise 'Database already restored.  To over write existing database run do_force_reset before this recipe' if node[:db][:db_restored] 
-
 include_recipe "db::do_restore"
-include_recipe "db::setup_replication_privileges"
-include_recipe "db::do_tag_as_master"
-# kick-off first backup so that slaves can init from this master
-include_recipe "db::do_backup"
-include_recipe "db::do_backup_schedule_enable"
 
-ruby_block "Setting db_restored state to true" do
-  block do
-    node[:db][:db_restored] = true
-  end
+db_register_master
+
+include_recipe "db::setup_replication_privileges"
+# force first backup so that slaves can init from this master
+db_do_backup "do force backup" do
+  force true
 end
+
+include_recipe "db::do_backup_schedule_enable"
 
 rs_utils_marker :end
