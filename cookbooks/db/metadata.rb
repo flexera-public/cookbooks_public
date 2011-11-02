@@ -38,7 +38,8 @@ recipe  "db::do_force_reset", "Resets the database back to a pristine state. WAR
 
 recipe  "db::do_dump_export", "Creates a dump file and uploads it to an ROS."
 recipe  "db::do_dump_import", "Retrieves a dump file from ROS and imports it into DB."
-recipe  "db::do_dump_continuous_export", "Creates a entry for a daily run of db::do_dump_export."
+recipe  "db_mysql::do_dump_schedule_enable", "Schedules the daily run of do_dump_export."
+recipe  "db_mysql::do_dump_schedule_disable", "Disables the daily run of do_dump_export."
 
 
 # == Database Firewall Recipes
@@ -199,34 +200,34 @@ attribute "db/dump/storage_account_provider",
   :description => "Location where dump file will be saved.  Used by dump recipes to backup to Amazon S3 or Rackspace Cloud Files.",
   :required => "required",
   :choice => [ "S3", "CloudFiles" ],
-  :recipes => [ "db::do_dump_export", "db::do_dump_import" ]
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::do_dump_schedule_enable" ]
 
 attribute "db/dump/storage_account_id",
   :display_name => "Dump Storage Account Id",
   :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID. For Rackspace Cloud Files, use your Rackspace login Username.",
   :required => "required",
-  :recipes => [ "db::do_dump_export", "db::do_dump_import" ]
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::do_dump_schedule_enable" ]
 
 attribute "db/dump/storage_account_secret",
   :display_name => "Dump Storage Account Secret",
   :description => "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key.",
   :required => "required",
-  :recipes => [ "db::do_dump_export", "db::do_dump_import" ]
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::do_dump_schedule_enable" ]
 
 attribute "db/dump/container",
   :display_name => "Dump Container",
   :description => "The cloud storage location where the dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name.",
   :required => "required",
-  :recipes => [ "db::do_dump_export", "db::do_dump_import" ]
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::do_dump_schedule_enable" ]
 
 attribute "db/dump/prefix",
   :display_name => "Dump Prefix",
   :description => "The prefix that will be used to name/locate the backup of a particular db dump.  Defines the prefix of the dump filename that will be used to name the backup database dumpfile along with a timestamp.",
   :required => "required",
-  :recipes => [ "db::do_dump_export", "db::do_dump_import" ]
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::do_dump_schedule_enable" ]
 
 attribute "db/dump/database_name",
   :display_name => "Dump Schema/Database Name",
   :description => "Enter the name of the database name/schema to create/restore a dump from/for. Ex: mydbschema",
   :required => "required",
-  :recipes => [ "db::do_dump_export", "db::do_dump_import" ]
+  :recipes => [ "db_mysql::do_dump_import", "db_mysql::do_dump_export", "db_mysql::do_dump_schedule_enable" ]
