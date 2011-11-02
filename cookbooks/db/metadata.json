@@ -41,9 +41,9 @@
         ],
         "type": "string",
         "recipes": [
-          "db_mysql::do_dump_import",
-          "db_mysql::do_dump_export",
-          "db_mysql::do_dump_schedule_enable"
+          "db::do_dump_import",
+          "db::do_dump_export",
+          "db::do_dump_schedule_enable"
         ],
         "description": "The cloud storage location where the dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name.",
         "display_name": "Dump Container"
@@ -113,9 +113,9 @@
         ],
         "type": "string",
         "recipes": [
-          "db_mysql::do_dump_import",
-          "db_mysql::do_dump_export",
-          "db_mysql::do_dump_schedule_enable"
+          "db::do_dump_import",
+          "db::do_dump_export",
+          "db::do_dump_schedule_enable"
         ],
         "description": "Enter the name of the database name/schema to create/restore a dump from/for. Ex: mydbschema",
         "display_name": "Dump Schema/Database Name"
@@ -181,9 +181,9 @@
         ],
         "type": "string",
         "recipes": [
-          "db_mysql::do_dump_import",
-          "db_mysql::do_dump_export",
-          "db_mysql::do_dump_schedule_enable"
+          "db::do_dump_import",
+          "db::do_dump_export",
+          "db::do_dump_schedule_enable"
         ],
         "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_SECRET_ACCESS_KEY. For Rackspace Cloud Files, use your Rackspace account API Key.",
         "display_name": "Dump Storage Account Secret"
@@ -196,9 +196,9 @@
         ],
         "type": "string",
         "recipes": [
-          "db_mysql::do_dump_import",
-          "db_mysql::do_dump_export",
-          "db_mysql::do_dump_schedule_enable"
+          "db::do_dump_import",
+          "db::do_dump_export",
+          "db::do_dump_schedule_enable"
         ],
         "description": "The prefix that will be used to name/locate the backup of a particular db dump.  Defines the prefix of the dump filename that will be used to name the backup database dumpfile along with a timestamp.",
         "display_name": "Dump Prefix"
@@ -278,9 +278,9 @@
         ],
         "type": "string",
         "recipes": [
-          "db_mysql::do_dump_import",
-          "db_mysql::do_dump_export",
-          "db_mysql::do_dump_schedule_enable"
+          "db::do_dump_import",
+          "db::do_dump_export",
+          "db::do_dump_schedule_enable"
         ],
         "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use AWS_ACCESS_KEY_ID. For Rackspace Cloud Files, use your Rackspace login Username.",
         "display_name": "Dump Storage Account Id"
@@ -312,9 +312,9 @@
         ],
         "type": "string",
         "recipes": [
-          "db_mysql::do_dump_import",
-          "db_mysql::do_dump_export",
-          "db_mysql::do_dump_schedule_enable"
+          "db::do_dump_import",
+          "db::do_dump_export",
+          "db::do_dump_schedule_enable"
         ],
         "description": "Location where dump file will be saved.  Used by dump recipes to backup to Amazon S3 or Rackspace Cloud Files.",
         "display_name": "Dump Storage Account Provider"
@@ -383,15 +383,16 @@
       "db::handle_demote_master": "Remote recipe executed by do_promote_to_master. DO NOT RUN.",
       "db::do_restore": "Restores the database from the most recently completed backup available in persistent storage of the current cloud.",
       "db::do_init_slave": "Initialize MySQL Slave",
+      "db::do_dump_schedule_disable": "Disables the daily run of do_dump_export.",
       "db::setup_monitoring": "Installs the collectd plugin for database monitoring support, which is required to enable monitoring and alerting functionality for your servers.",
       "db::do_restore_and_become_master": "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master.",
       "db::request_appserver_allow": "Sends a request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with the database:active=true tag. This should be run on an application server before attempting a database connection.",
+      "db::do_dump_schedule_enable": "Schedules the daily run of do_dump_export.",
       "db::do_dump_export": "Creates a dump file and uploads it to an ROS.",
       "db::request_master_deny": "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to deny connections from the server's private IP address.  This script should be run on a slave when it stops replicating.",
       "db::setup_replication_privileges": "Set up privileges for MySQL replication slaves.",
       "db::do_secondary_backup": "Creates a backup of the database and uploads it to a secondary cloud storage location, which can be used to migrate your database to a different cloud.  For example, you can save a secondary backup to an AWS S3 bucket or a Rackspace CloudFiles container.",
       "db::default": "Adds the database:active=true tag to your server which identifies it as an database server. The tag is used by application servers to identify active databases. It also loads the required 'db' resources.",
-      "db_mysql::do_dump_schedule_disable": "Disables the daily run of do_dump_export.",
       "db::do_secondary_restore": "Restores the database from the most recently completed backup available in a secondary location.",
       "db::do_backup": "Creates a backup of the database using persistent storage in the current cloud.  On Rackspace, LVM backups are uploaded to the specified CloudFiles container.  For all other clouds, volume snapshots (like EBS) are used.",
       "db::do_init_and_become_master": "Initializes MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master.",
@@ -405,7 +406,6 @@
       "db::do_backup_schedule_disable": "Disables db::do_backup from being run periodically.",
       "db::request_master_allow": "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to allow connections from the server's private IP address.  This script should be run on a slave before it sets up replication.",
       "db::do_promote_to_master": "Promote a replicating slave to master",
-      "db_mysql::do_dump_schedule_enable": "Schedules the daily run of do_dump_export.",
       "db::do_init_slave_at_boot": "Initialize MySQL Slave at boot.",
       "db::request_appserver_deny": "Sends a request to deny connections from the caller's private IP address to all database servers in the deployment that are tagged with the database:active=true tag. This should be run on an application server upon decommissioning.",
       "db::do_appservers_deny": "Denies connections from all application servers in the deployment that are tagged with appserver:active=true tag.  This script can be run on a database server to deny connections from all application servers in the deployment.",
