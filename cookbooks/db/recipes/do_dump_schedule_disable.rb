@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: db_mysql
+# Cookbook Name:: db
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -24,7 +24,10 @@
 
 # == remove cron task for export
 #
-cron "rightscale_mysql_dump_export" do
+rs_utils_marker :begin
+
+cron "db_dump_export" do
   action :delete
 end
 
+rs_utils_marker :end

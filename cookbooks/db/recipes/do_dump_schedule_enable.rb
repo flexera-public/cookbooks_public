@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: db_mysql
+# Cookbook Name:: db
 # Definition:: setup_continuous_export
 #
 # Copyright (c) 2011 RightScale Inc
@@ -23,18 +23,24 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-temp_dir = node[:db_mysql][:tmpdir]
-prefix = node[:db_mysql][:dump][:prefix]
-dumpfile = "#{temp_dir}/#{prefix}.gz"
+rs_utils_marker :begin
 
-# == Add cron task for export
-#
-# Runs at a random minute after midnite to avoid traffic spikes.
-#
-cron "rightscale_mysql_dump_export" do
-  hour "0"
-  minute "#{5+rand(50)}"
-  command "rs_run_recipe -n db_mysql::do_dump_export"
-  only_if do ::File.exist?(dumpfile) end
+skip, reason = true, "DB/Schema name not provided"           if node[:db][:dump][:database_name] == ""
+skip, reason = true, "Prefix not provided"                   if node[:db][:dump][:prefix] == ""
+skip, reason = true, "Storage account provider not provided" if node[:db][:dump][:storage_account_provider] == ""
+skip, reason = true, "Storage Account ID not provided"       if node[:db][:dump][:storage_account_id] == ""
+skip, reason = true, "Storage Account password not provided" if node[:db][:dump][:storage_account_secret] == ""
+skip, reason = true, "Container not provided"                if node[:db][:dump][:container] == ""
+
+if skip
+  log "Skipping import: #{reason}"
+else
+  cron "db_dump_export" do
+    hour "0"
+    minute "#{5+rand(50)}"
+    command "rs_run_recipe -n db::do_dump_export"
+  end
 end
+
+rs_utils_marker :end
 
