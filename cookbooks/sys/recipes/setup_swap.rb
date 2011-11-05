@@ -77,23 +77,6 @@ def create_swap(swap_file, swap_size)
 
 end
 
-def check_swap_file(swap_file, swap_size)
-  # Run basic checks on the swap file
-  # These must be done in a block so the checks are done during converge
-  # The swapfile location may get created during boot (on ephemeral LVM)
-  ruby_block 'Check swapfile' do
-    block do
-      fs_size_threshold_percent = 75
-
-      # Determine if swapfile is too big for fs that holds it
-      (fs_total,fs_used) = `df --block-size=1M -P #{File.dirname(swap_file)} |tail -1| awk '{print $2":"$3}'`.split(":")
-      if ( (((fs_used.to_f + swap_size).to_f/fs_total.to_f)*100).to_i > fs_size_threshold_percent )
-        raise "ERROR: swap file size too big - would exceed #{fs_size_threshold_percent} percent of filesystem - currently using #{fs_used} out of #{fs_total} wanting to add #{swap_size} in swap"
-      end
-    end
-  end
-end
-
 # Sanitize user data 'swap_size'
 if ( swap_size !~ /^\d*[.]?\d+$/ )
   raise "ERROR: invalid swap size."
@@ -128,8 +111,20 @@ else
       clean_swap(swap_file)
     end
 
-    # Run checks in a block so they happen during converge
-    check_swap_file(swap_file,swap_size)
+    # Run basic checks on the swap file
+    # These must be done in a block so the checks are done during converge
+    # The swapfile location may get created during boot (on ephemeral LVM)
+    ruby_block 'Check swapfile' do
+      block do
+        fs_size_threshold_percent = 75
+
+        # Determine if swapfile is too big for fs that holds it
+        (fs_total,fs_used) = `df --block-size=1M -P #{File.dirname(swap_file)} |tail -1| awk '{print $2":"$3}'`.split(":")
+        if ( (((fs_used.to_f + swap_size).to_f/fs_total.to_f)*100).to_i > fs_size_threshold_percent )
+          raise "ERROR: swap file size too big - would exceed #{fs_size_threshold_percent} percent of filesystem - currently using #{fs_used} out of #{fs_total} wanting to add #{swap_size} in swap"
+        end
+      end
+    end
 
     # Should now setup swap file
     create_swap(swap_file,swap_size)
