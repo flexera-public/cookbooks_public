@@ -31,9 +31,6 @@
       "type": "string",
       "recipes": [
         "web_apache::default",
-        "web_apache::start",
-        "web_apache::stop",
-        "web_apache::restart",
         "web_apache::install_apache",
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend_http_vhost",
@@ -95,9 +92,6 @@
       "type": "string",
       "recipes": [
         "web_apache::default",
-        "web_apache::start",
-        "web_apache::stop",
-        "web_apache::restart",
         "web_apache::install_apache",
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend_http_vhost",
@@ -116,9 +110,6 @@
       "type": "string",
       "recipes": [
         "web_apache::default",
-        "web_apache::start",
-        "web_apache::stop",
-        "web_apache::restart",
         "web_apache::install_apache",
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend_http_vhost",
@@ -167,15 +158,15 @@
   "recommendations": {
   },
   "recipes": {
+    "web_apache::do_restart": "Runs service apache restart",
     "web_apache::default": "Runs web_apache::install_apache.",
     "web_apache::setup_frontend": "Frontend apache vhost.  Select ssl_enabled for SSL.",
     "web_apache::install_apache": "Installs and configures the Apache2 webserver.",
-    "web_apache::restart": "Runs service apache restart",
     "web_apache::setup_monitoring": "Install collectd-apache for monitoring support",
     "web_apache::setup_frontend_ssl_vhost": "Frontend apache vhost with SSL enabled.",
     "web_apache::setup_frontend_http_vhost": "Frontend apache vhost with SSL enabled.",
-    "web_apache::stop": "Runs service apache stop",
-    "web_apache::start": "Runs service apache start"
+    "web_apache::do_stop": "Runs service apache stop",
+    "web_apache::do_start": "Runs service apache start"
   },
   "groupings": {
   },

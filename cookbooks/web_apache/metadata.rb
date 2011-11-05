@@ -5,9 +5,9 @@ description      "Installs/configures the apache2 webserver"
 version          "0.0.1"
 
 recipe "web_apache::default", "Runs web_apache::install_apache."
-recipe "web_apache::start", "Runs service apache start"
-recipe "web_apache::stop", "Runs service apache stop"
-recipe "web_apache::restart", "Runs service apache restart"
+recipe "web_apache::do_start", "Runs service apache start"
+recipe "web_apache::do_stop", "Runs service apache stop"
+recipe "web_apache::do_restart", "Runs service apache restart"
 recipe "web_apache::install_apache", "Installs and configures the Apache2 webserver."
 recipe "web_apache::setup_frontend", "Frontend apache vhost.  Select ssl_enabled for SSL."
 recipe "web_apache::setup_frontend_ssl_vhost", "Frontend apache vhost with SSL enabled."
@@ -16,13 +16,15 @@ recipe "web_apache::setup_monitoring", "Install collectd-apache for monitoring s
 
 all_recipes = [ 
                 "web_apache::default",  
-                "web_apache::start", 
-                "web_apache::stop", 
-                "web_apache::restart", 
                 "web_apache::install_apache", 
                 "web_apache::setup_frontend_ssl_vhost", 
                 "web_apache::setup_frontend_http_vhost", 
                 "web_apache::setup_frontend"
+              ]
+other_recipes = [ 
+                "web_apache::do_start", 
+                "web_apache::do_stop", 
+                "web_apache::do_restart" 
               ]
 
 depends "apache2"
