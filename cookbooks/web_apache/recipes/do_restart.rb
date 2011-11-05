@@ -25,6 +25,24 @@ rs_utils_marker :begin
 
 log "Restarting apache"
 
+#TODO repeated code - why does platform setup need multiple entries?
+service "apache2" do
+  # If restarted/reloaded too quickly apache has a habit of failing
+  # This may happen with multiple recipes notifying apache to restart - like
+  # during the initial bootstrap.
+  case node[:platform]
+  when "centos","redhat","fedora","suse"
+    service_name "httpd"
+    restart_command "/sbin/service httpd restart && sleep 1"
+    reload_command "/sbin/service httpd reload && sleep 1"
+  when "debian","ubuntu"
+    service_name "apache2"
+    restart_command "service apache2 restart && sleep 1"
+    reload_command "service apache2 reload && sleep 1"
+  end
+  action :nothing
+end
+
 service "apache2" do
   action :restart
 end
