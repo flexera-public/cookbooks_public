@@ -30,8 +30,6 @@ rs_utils_marker :begin
 swap_size = node[:sys][:swap_size]
 swap_file = node[:sys][:swap_file]
 
-fs_size_threshold_percent = 75
-
 def clean_swap(swap_file)
 
   # Turn off swap on swap_file if turned on
@@ -79,6 +77,23 @@ def create_swap(swap_file, swap_size)
 
 end
 
+def check_swap_file(swap_file, swap_size)
+  # Run basic checks on the swap file
+  # These must be done in a block so the checks are done during converge
+  # The swapfile location may get created during boot (on ephemeral LVM)
+  ruby_block 'Check swapfile' do
+    block do
+      fs_size_threshold_percent = 75
+
+      # Determine if swapfile is too big for fs that holds it
+      (fs_total,fs_used) = `df --block-size=1M -P #{File.dirname(swap_file)} |tail -1| awk '{print $2":"$3}'`.split(":")
+      if ( (((fs_used.to_f + swap_size).to_f/fs_total.to_f)*100).to_i > fs_size_threshold_percent )
+        raise "ERROR: swap file size too big - would exceed #{fs_size_threshold_percent} percent of filesystem - currently using #{fs_used} out of #{fs_total} wanting to add #{swap_size} in swap"
+      end
+    end
+  end
+end
+
 # Sanitize user data 'swap_size'
 if ( swap_size !~ /^\d*[.]?\d+$/ )
   raise "ERROR: invalid swap size."
@@ -96,9 +111,8 @@ end
 if (swap_size == 0)
   if ( File.exists?(swap_file) && File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? )
     clean_swap(swap_file)
-  else
-    log "swap creation disabled"
   end
+  log "swap creation disabled"
 else
 
   # For idempotency, check if selected swapfle is in place, it's correct size, and it's on
@@ -107,17 +121,15 @@ else
        File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? )
     log "valid current swap config"
   else
+
     # Check for remnents of swap
     if ( File.exists?(swap_file) || File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? )
       log "swap remnents detected - cleaning"
       clean_swap(swap_file)
     end
 
-    # Determine if swapfile is too big for fs that holds it
-    (fs_total,fs_used) = `df --block-size=1M -P #{File.dirname(swap_file)} |tail -1| awk '{print $2":"$3}'`.split(":")
-    if ( (((fs_used.to_f + swap_size).to_f/fs_total.to_f)*100).to_i > fs_size_threshold_percent )
-      raise "ERROR: swap file size too big - would exceed #{fs_size_threshold_percent} percent of filesystem - currently using #{fs_used} out of #{fs_total} wanting to add #{swap_size} in swap"
-    end
+    # Run checks in a block so they happen during converge
+    check_swap_file(swap_file,swap_size)
 
     # Should now setup swap file
     create_swap(swap_file,swap_size)
