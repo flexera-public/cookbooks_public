@@ -14,7 +14,16 @@ recipe "web_apache::setup_frontend_ssl_vhost", "Frontend apache vhost with SSL e
 recipe "web_apache::setup_frontend_http_vhost", "Frontend apache vhost with SSL enabled."
 recipe "web_apache::setup_monitoring", "Install collectd-apache for monitoring support"
 
-all_recipes = [ "web_apache::default",  "web_apache::install_apache", "web_apache::setup_frontend_ssl_vhost", "web_apache::setup_frontend_http_vhost", "web_apache::setup_frontend"]
+all_recipes = [ 
+                "web_apache::default",  
+                "web_apache::start", 
+                "web_apache::stop", 
+                "web_apache::restart", 
+                "web_apache::install_apache", 
+                "web_apache::setup_frontend_ssl_vhost", 
+                "web_apache::setup_frontend_http_vhost", 
+                "web_apache::setup_frontend"
+              ]
 
 depends "apache2"
 depends "rs_utils"

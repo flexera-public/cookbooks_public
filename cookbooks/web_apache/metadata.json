@@ -31,6 +31,9 @@
       "type": "string",
       "recipes": [
         "web_apache::default",
+        "web_apache::start",
+        "web_apache::stop",
+        "web_apache::restart",
         "web_apache::install_apache",
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend_http_vhost",
@@ -92,6 +95,9 @@
       "type": "string",
       "recipes": [
         "web_apache::default",
+        "web_apache::start",
+        "web_apache::stop",
+        "web_apache::restart",
         "web_apache::install_apache",
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend_http_vhost",
@@ -110,6 +116,9 @@
       "type": "string",
       "recipes": [
         "web_apache::default",
+        "web_apache::start",
+        "web_apache::stop",
+        "web_apache::restart",
         "web_apache::install_apache",
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend_http_vhost",
