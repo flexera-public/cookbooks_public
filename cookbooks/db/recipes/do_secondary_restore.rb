@@ -24,8 +24,6 @@
 rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
-CLOUD = (node[:db][:backup][:secondary_location] == "CloudFiles") ? "rackspace" : "ec2"
-
 
 log "  Running pre-restore checks..."
 db DATA_DIR do
@@ -50,7 +48,9 @@ log "  Performing Restore..."
 # previously. Make sure block_device::default recipe has been run.
 block_device DATA_DIR do
   provider "block_device_ros"
-  cloud CLOUD
+  cloud node[:cloud][:provider]
+  storage_cloud node[:db][:backup][:secondary_location].downcase
+  rackspace_snet node[:block_device][:rackspace_snet]
   lineage node[:db][:backup][:lineage]
   timestamp_override node[:db][:backup][:timestamp_override]
   storage_container node[:db][:backup][:secondary_container]

@@ -60,6 +60,8 @@ log "  Performing Restore..."
 block_device DATA_DIR do
   lineage node[:db][:backup][:lineage]
   timestamp_override node[:db][:backup][:timestamp_override]
+  cloud node[:cloud][:provider]
+  rackspace_snet node[:block_device][:rackspace_snet]
   action :restore
 end
 

@@ -94,32 +94,26 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
 
   # Determine if doing primary or secondary backup and obtain correct cloud to store the backup.
   if ( do_backup_type == "primary")
-    destination_cloud = node[:cloud][:provider]
+    storage_cloud = nil
     storage_container = node[:block_device][:storage_container]
     storage_type      = node[:block_device][:storage_type]
   elsif ( do_backup_type == "secondary")
-    destination_cloud = (node[:db][:backup][:secondary_location] == "CloudFiles") ? "rackspace" : "ec2"
+    storage_cloud = node[:db][:backup][:secondary_location].downcase
     storage_container = node[:db][:backup][:secondary_container]
     storage_type      = "ros"
   end
 
-  if destination_cloud == "rackspace"
-    account_id = node[:block_device][:rackspace_user]
-    account_secret = node[:block_device][:rackspace_secret]
-  else
-    account_id = node[:block_device][:aws_access_key_id]
-    account_secret = node[:block_device][:aws_secret_access_key]
-  end
-  
   log "  Forking background process to complete backup... (see /var/log/messages for results)"
   # backup.rb removes the file lock created from :backup_lock_take
   bash "backup.rb" do
     environment ({ 
-      'STORAGE_ACCOUNT_ID' => account_id,
-      'STORAGE_ACCOUNT_SECRET' => account_secret
+      'STORAGE_ACCOUNT_ID_RACKSPACE' => node[:block_device][:rackspace_user],
+      'STORAGE_ACCOUNT_SECRET_RACKSPACE' => node[:block_device][:rackspace_secret],
+      'STORAGE_ACCOUNT_ID_AWS' => node[:block_device][:aws_access_key_id],
+      'STORAGE_ACCOUNT_SECRET_AWS' => node[:block_device][:aws_secret_access_key]
     })
     code <<-EOH
-    /opt/rightscale/sandbox/bin/backup.rb --backuponly --lineage #{node[:db][:backup][:lineage]} --cloud #{destination_cloud} --storage-type #{storage_type} --container #{storage_container} 2>&1 | logger -t rs_db_backup &
+    /opt/rightscale/sandbox/bin/backup.rb --backuponly --lineage #{node[:db][:backup][:lineage]} --cloud #{node[:cloud][:provider]} #{storage_cloud ? '--storage_cloud ' + storage_cloud : ''} --storage-type #{storage_type} #{node[:block_device][:rackspace_snet] ? '' : '--no-snet'} --container #{storage_container} 2>&1 | logger -t rs_db_backup &
     EOH
   end
 
