@@ -40,7 +40,7 @@ package "librrd4" if node[:platform] == 'ubuntu'
 
 arch = (node[:kernel][:machine] == "x86_64") ? "64" : "i386"
 type = (node[:platform] == 'ubuntu') ? "deb" : "rpm"
-installed_ver = (node[:platform] == "centos") ? `rpm -q --queryformat %{VERSION} collectd`.strip : `dpkg-query --showformat='${Version}' -W collectd`.strip 
+installed_ver = (node[:platform] =~ /redhat|centos/) ? `rpm -q --queryformat %{VERSION} collectd`.strip : `dpkg-query --showformat='${Version}' -W collectd`.strip 
 installed = (installed_ver == "") ? false : true
 log 'Collectd package not installed' unless installed
 log "Checking installed collectd version: installed #{installed_ver}" if installed
@@ -79,7 +79,7 @@ remote_file "/etc/apt/preferences.d/00rightscale" do
 end
 
 # If YUM, lock this collectd package so it can't be updated
-if node[:platform] == "centos"
+if node[:platform] =~ /redhat|centos/
   lockfile = "/etc/yum.repos.d/Epel.repo"
   bash "Lock package - YUM" do
     only_if { `grep -c 'exclude=collectd' /etc/yum.repos.d/Epel.repo`.strip == "0" }
@@ -133,7 +133,7 @@ end
 
 # Patch collectd init script, so it uses collectdmon.  
 # Only needed for CentOS, Ubuntu already does this out of the box.
-if node[:platform] == 'centos'
+if node[:platform] =~ /redhat|centos/
   remote_file "/etc/init.d/collectd" do
     source "collectd-init-centos-with-monitor"
     mode 0755

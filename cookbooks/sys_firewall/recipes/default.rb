@@ -53,7 +53,7 @@ conn_max = (mem_mb >= 2*GB) ? 65536 : 32*mem_mb
 
 log "Setup IP connection tracking limit of #{conn_max}"
 bash "Update net.ipv4.ip_conntrack_max" do
-  only_if { node[:platform] == "centos" }
+  only_if { node[:platform] =~ /redhat|centos/ }
   code <<-EOH 
     sysctl -e -w net.ipv4.ip_conntrack_max=#{conn_max}
   EOH

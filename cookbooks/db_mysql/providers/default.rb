@@ -136,7 +136,7 @@ end
 action :install_client do
 
   # == Install MySQL 5.1 package(s)
-  if node[:platform] == "centos"
+  if node[:platform] =~ /redhat|centos/
 
     # Install MySQL GPG Key (http://download.oracle.com/docs/cd/E17952_01/refman-5.5-en/checking-gpg-signature.html)
     gpgkey = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "mysql_pubkey.asc")
@@ -367,12 +367,12 @@ action :setup_monitoring do
   # Centos specific items
   TMP_FILE = "/tmp/collectd.rpm"
   remote_file TMP_FILE do
-    only_if { node[:platform] == "centos" }
+    only_if { node[:platform] =~ /redhat|centos/ }
     source "collectd-mysql-4.10.0-4.el5.#{arch}.rpm"
     cookbook 'db_mysql'
   end
   package TMP_FILE do
-    only_if { node[:platform] == "centos" }
+    only_if { node[:platform] =~ /redhat|centos/ }
     source TMP_FILE
   end
 
@@ -384,7 +384,7 @@ action :setup_monitoring do
     cookbook 'db_mysql'
   end
 
-  # Send warning if not centos or ubuntu
+  # Send warning if not centos/redhat or ubuntu
   log "WARNING: attempting to install collectd-mysql on unsupported platform #{node[:platform]}, continuing.." do
     only_if { node[:platform] != "centos" && node[:platform] != "ubuntu" }
     level :warn
