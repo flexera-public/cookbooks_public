@@ -71,4 +71,10 @@ end
 log "  Setting database state to 'uninitialized'..."
 db_init_status :reset
 
+log "  Cleaning cron..."
+block_device DATA_DIR do
+  cron_backup_recipe "#{self.cookbook_name}::do_backup"
+  action :backup_schedule_disable
+end
+
 rs_utils_marker :end
