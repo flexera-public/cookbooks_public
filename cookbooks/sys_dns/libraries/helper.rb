@@ -98,6 +98,9 @@ EOF
 </ChangeResourceRecordSetsRequest>
 EOF
         cmd_filename="/tmp/modify.xml"
+
+        @logger.info("Changing IP for '#{hostname}' from '#{current_ip}' to '#{address}'")
+
         File.open(cmd_filename, "w") { |f| f.write modify_cmd }
 
         result = ""
