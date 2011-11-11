@@ -126,7 +126,7 @@ EOF
         if( result =~ /success/ || result =~ /error-record-ip-same/   ) then
           @logger.info("DNSID #{id} set to this instance IP: #{address}")
         else
-          raise "Error setting the DNS, curl exited with code: #{$?}, output: #{result}"
+          raise "Error setting the DNS, curl exited with code: #{$?}, id=#{id}, address:#{address}, output:#{result}"
         end
 
         result
