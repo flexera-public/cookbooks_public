@@ -29,14 +29,6 @@ RS_TOOL_VERSION = "0.4.23"
 RESOURCE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "rightscale_tools_public-#{RS_TOOL_VERSION}.gem")
 RACKSPACE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "right_rackspace-0.0.0.20111110.gem")
 
-# remove the installed version of rest-client so right_api_client can install the version it wants
-r = gem_package 'rest-client' do
-  gem_binary "#{SANDBOX_BIN_DIR}/gem"
-  action :nothing
-end
-r.run_action(:remove)
-Gem.clear_paths
-
 r = gem_package RACKSPACE_GEM do
   gem_binary "#{SANDBOX_BIN_DIR}/gem"
   version "0.0.0"
