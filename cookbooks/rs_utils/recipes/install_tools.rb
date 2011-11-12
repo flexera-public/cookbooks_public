@@ -35,6 +35,7 @@ r = gem_package 'rest-client' do
   action :nothing
 end
 r.run_action(:remove)
+Gem.clear_paths
 
 r = gem_package RACKSPACE_GEM do
   gem_binary "#{SANDBOX_BIN_DIR}/gem"
@@ -49,5 +50,7 @@ r = gem_package RESOURCE_GEM do
   action :nothing
 end
 r.run_action(:install)
+
+Gem.clear_paths
 
 rs_utils_marker :end
