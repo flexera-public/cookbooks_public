@@ -44,17 +44,6 @@ bash "remove tags" do
   EOH
 end
 
-sys_dns "cleaning dns" do
-  provider "sys_dns_#{node[:sys_dns][:choice]}"
-
-  id node[:sys_dns][:id]
-  user node[:sys_dns][:user]
-  password node[:sys_dns][:password]
-  address '1.1.1.1'
-
-  action :set_private
-end
-
 ruby_block "Reset db node state" do
   block do
     node[:db][:this_is_master] = false
