@@ -105,9 +105,11 @@ EOF
 
         result = ""
         # Simple retry loop, sometimes the DNS call will flake out..
-        5.times do
+        5.times do |attempt|
           result = `/opt/rightscale/dns/dnscurl.pl --keyfile #{secrets_filename} --keyname my-aws-account -- -X POST -H "Content-Type: text/xml; charset=UTF-8" --upload-file #{cmd_filename} #{endpoint}hostedzone/#{zone_id}/rrset`
-          break unless result =~ /HttpFailure/
+          break if result =~ /ChangeResourceRecordSetsResponse/
+          @logger.info("DNS change not successful - waiting then retrying - attempt number #{attempt}")
+          sleep 5
         end
 
         if(result =~ /ChangeResourceRecordSetsResponse/ ) then
