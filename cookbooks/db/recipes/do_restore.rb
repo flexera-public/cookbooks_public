@@ -62,6 +62,7 @@ block_device DATA_DIR do
   timestamp_override node[:db][:backup][:timestamp_override]
   cloud node[:cloud][:provider]
   rackspace_snet node[:block_device][:rackspace_snet]
+  volume_size node[:block_device][:volume_size]
   action :restore
 end
 
