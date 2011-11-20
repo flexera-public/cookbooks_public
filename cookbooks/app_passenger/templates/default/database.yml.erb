@@ -1,0 +1,36 @@
+#
+# DB Config file, version 1.
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
+
+<%  case node[:app_passenger][:adapter]
+    when "mysql" %>
+<%= node[:app_passenger][:environment] %>:
+  adapter: <%= node[:app_passenger][:adapter] %>
+  database: <%= node[:app_passenger][:db_schema_name] %>
+  username: <%= node[:db][:admin][:user] %>
+  password: <%= node[:db][:admin][:password] %>
+  host: <%= node[:db][:fqdn] %>
+  encoding: utf8
+  #socket: /var/lib/mysql/mysql.sock
+<%  when "sqlite3","sqlite"%>
+# SQLite version 3.x
+<%= node[:app_passenger][:environment] %>:
+  adapter: <%= node[:app_passenger][:adapter] %>
+  database: <%= node[:app_passenger][:db_schema_name] %>
+  pool: 5
+  timeout: 5000
+<%  when "postgresql"%>
+<%= node[:app_passenger][:environment] %>:
+  adapter: <%= node[:app_passenger][:adapter] %>
+  database: <%= node[:app_passenger][:db_schema_name] %>
+  username: <%= node[:db][:admin][:user] %>
+  password: <%= node[:db][:admin][:password] %>
+<%  else%>
+<%= node[:app_passenger][:environment] %>:
+  adapter: <%= node[:app_passenger][:adapter] %>
+  database: <%= node[:app_passenger][:db_schema_name] %>
+
+<%end%>
