@@ -136,7 +136,7 @@ end
 action :install_client do
 
   # == Install MySQL 5.1 package(s)
-  if node[:platform] == "centos"
+  if node[:platform] =~ /redhat|centos/
 
     # Install MySQL GPG Key (http://download.oracle.com/docs/cd/E17952_01/refman-5.5-en/checking-gpg-signature.html)
     gpgkey = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "mysql_pubkey.asc")
@@ -204,6 +204,12 @@ action :install_server do
     package p
   end unless node[:db_mysql][:packages_install] == ""
 
+  # Stop MySQL to allow custom configuration
+  service "mysql" do
+    supports :status => true, :restart => true, :reload => true
+    action :stop
+  end
+
   # Uninstall other packages we don't
   node[:db_mysql][:packages_uninstall].each do |p|
      package p do
@@ -211,10 +217,16 @@ action :install_server do
      end
   end unless node[:db_mysql][:packages_uninstall] == ""
 
-  service "mysql" do
-    #service_name value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "mysqld"}, "default" => "mysql")
-    supports :status => true, :restart => true, :reload => true
-    action :stop
+  # Ubuntu requires deactivating upstart from starting mysql.
+  if node[:platform] == "ubuntu"
+    ubuntu_mysql_upstart_conf = "/etc/init/mysql.conf"
+    bash 'disable mysql upstart' do
+      only_if { ::File.exists?(ubuntu_mysql_upstart_conf) }
+      code <<-eof
+        pkill mysqld
+        mv #{ubuntu_mysql_upstart_conf} #{ubuntu_mysql_upstart_conf}.disabled
+      eof
+    end
   end
 
   # Create MySQL server system tables
@@ -222,16 +234,6 @@ action :install_server do
   execute "/usr/bin/mysql_install_db ; touch #{touchfile}" do
     creates touchfile
   end
-
-  # == Configure system for MySQL
-  #
-
-  # Stop MySQL
-  service "mysql" do
-    supports :status => true, :restart => true, :reload => true
-    action :stop
-  end
-
 
   # moves mysql default db to storage location, removes ib_logfiles for re-config of innodb_log_file_size
   touchfile = ::File.expand_path "~/.mysql_dbmoved"
@@ -269,7 +271,6 @@ action :install_server do
 
   # Setup my.cnf
   template_source = "my.cnf.erb"
-
   template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
     source template_source
     owner "root"
@@ -308,11 +309,32 @@ action :install_server do
   #
   # Timeouts enabled.
   #
-  template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/init.d/mysql"}, "default" => "/etc/init.d/mysql") do
+  template "/etc/init.d/mysql" do
     source "init-mysql.erb"
     mode "0755"
     cookbook 'db_mysql'
   end
+
+
+  # == specific configs for ubuntu
+  #  - set config file localhost access w/ root and no password
+  #  - disable the 'check_for_crashed_tables'.
+  #
+
+  remote_file "/etc/mysql/debian.cnf" do
+    only_if { node[:platform] == "ubuntu" }
+    mode "0600"
+    source "debian.cnf"
+    cookbook 'db_mysql'
+  end
+
+  remote_file "/etc/mysql/debian-start" do
+    only_if { node[:platform] == "ubuntu" }
+    mode "0755"
+    source "debian-start"
+    cookbook 'db_mysql'
+  end
+
 
   ## == Setup log rotation
   ##
@@ -342,33 +364,32 @@ action :setup_monitoring do
   arch = node[:kernel][:machine]
   arch = "i386" if arch == "i686"
 
-  if node[:platform] == 'centos'
-
-    TMP_FILE = "/tmp/collectd.rpm"
-
-    remote_file TMP_FILE do
-      source "collectd-mysql-4.10.0-4.el5.#{arch}.rpm"
-      cookbook 'db_mysql'
-    end
-
-    package TMP_FILE do
-      source TMP_FILE
-    end
-
-    template ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
-      backup false
-      source "mysql_collectd_plugin.conf.erb"
-      notifies :restart, resources(:service => "collectd")
-      cookbook 'db_mysql'
-    end
-
-  else
-
-    log "WARNING: attempting to install collectd-mysql on unsupported platform #{node[:platform]}, continuing.." do
-      level :warn
-    end
-
+  # Centos specific items
+  TMP_FILE = "/tmp/collectd.rpm"
+  remote_file TMP_FILE do
+    only_if { node[:platform] =~ /redhat|centos/ }
+    source "collectd-mysql-4.10.0-4.el5.#{arch}.rpm"
+    cookbook 'db_mysql'
   end
+  package TMP_FILE do
+    only_if { node[:platform] =~ /redhat|centos/ }
+    source TMP_FILE
+  end
+
+  cookbook_file ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
+    mode "0644"
+    backup false
+    source "collectd-plugin-mysql.conf"
+    notifies :restart, resources(:service => "collectd")
+    cookbook 'db_mysql'
+  end
+
+  # Send warning if not centos/redhat or ubuntu
+  log "WARNING: attempting to install collectd-mysql on unsupported platform #{node[:platform]}, continuing.." do
+    only_if { node[:platform] != "centos" && node[:platform] != "ubuntu" }
+    level :warn
+  end
+
 end
 
 action :grant_replication_slave do
@@ -582,4 +603,46 @@ action :enable_replication do
     )
     cookbook 'db_mysql'
   end
+end
+
+action :generate_dump_file do
+
+  db_name     = new_resource.db_name
+  dumpfile    = new_resource.dumpfile
+
+  execute "Write the mysql DB backup file" do
+    command "mysqldump --single-transaction -u root #{db_name} | gzip -c > #{dumpfile}"
+  end
+
+end
+
+action :restore_from_dump_file do
+ 
+  db_name     = new_resource.db_name
+  dumpfile    = new_resource.dumpfile
+
+  log "  Check if DB already exists"
+  ruby_block "checking existing db" do
+    block do
+      db_check = `mysql -e "SHOW DATABASES LIKE '#{db_name}'"`
+      if ! db_check.empty?
+        raise "ERROR: database '#{db_name}' already exists"
+      end
+    end
+  end
+  
+  bash "Import MySQL dump file: #{dumpfile}" do
+    user "root"
+    code <<-EOH
+      set -e
+      if [ ! -f #{dumpfile} ] 
+      then 
+        echo "ERROR: MySQL dumpfile not found! File: '#{dumpfile}'" 
+        exit 1
+      fi 
+      mysqladmin -u root create #{db_name} 
+      gunzip < #{dumpfile} | mysql -u root -b #{db_name}
+    EOH
+  end
+
 end

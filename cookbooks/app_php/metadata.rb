@@ -22,11 +22,6 @@ attribute "php",
 #
 # optional attributes
 #
-attribute "php/server_name",
-  :display_name => "Server Name",
-  :description => "The fully qualified domain name of the application server used to define your virtual host.",
-  :default => "myserver",
-  :recipes => ["app_php::default" ]
 
 attribute "php/modules_list",
   :display_name => "PHP module packages",

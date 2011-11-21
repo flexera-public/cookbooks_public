@@ -19,7 +19,7 @@ set[:tomcat][:docroot] = "/srv/tomcat6/webapps"
 case platform
 when "ubuntu", "debian"
   set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
-when "centos","fedora","suse"
+when "centos","fedora","suse","redhat"
   set[:tomcat][:package_dependencies] = ["eclipse-ecj",\
                                          "tomcat6",\
                                          "tomcat6-admin-webapps",\

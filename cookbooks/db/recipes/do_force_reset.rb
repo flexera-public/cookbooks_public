@@ -44,20 +44,8 @@ bash "remove tags" do
   EOH
 end
 
-sys_dns "cleaning dns" do
-  provider "sys_dns_#{node[:sys_dns][:choice]}"
-
-  id node[:sys_dns][:id]
-  user node[:sys_dns][:user]
-  password node[:sys_dns][:password]
-  address '1.1.1.1'
-
-  action :set_private
-end
-
 ruby_block "Reset db node state" do
   block do
-    node[:db][:db_restored] = false
     node[:db][:this_is_master] = false
     node[:db][:current_master_uuid] = nil
     node[:db][:current_master_ip] = nil
@@ -67,6 +55,15 @@ end
 log "  Resetting database, then starting database..."
 db DATA_DIR do
   action [ :reset, :start ]
+end
+
+log "  Setting database state to 'uninitialized'..."
+db_init_status :reset
+
+log "  Cleaning cron..."
+block_device DATA_DIR do
+  cron_backup_recipe "#{self.cookbook_name}::do_backup"
+  action :backup_schedule_disable
 end
 
 rs_utils_marker :end

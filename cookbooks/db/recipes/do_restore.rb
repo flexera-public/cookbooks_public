@@ -25,7 +25,10 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
-raise 'Database already restored.  To over write existing database run do_force_reset before this recipe' if node[:db][:db_restored] 
+db_init_status :check do
+  expected_state :uninitialized
+  error_message "Database already restored.  To over write existing database run do_force_reset before this recipe"
+end
 
 log "  Running pre-restore checks..."
 db DATA_DIR do
@@ -57,8 +60,13 @@ log "  Performing Restore..."
 block_device DATA_DIR do
   lineage node[:db][:backup][:lineage]
   timestamp_override node[:db][:backup][:timestamp_override]
+  cloud node[:cloud][:provider]
+  rackspace_snet node[:block_device][:rackspace_snet]
   action :restore
 end
+
+log "  Setting state of database to be 'initialized'..."
+db_init_status :set
 
 log "  Running post-restore cleanup..."
 db DATA_DIR do
@@ -68,18 +76,6 @@ end
 log "  Starting database as master..."
 db DATA_DIR do
   action [ :start, :status ]
-end
-
-# TODO: replication not yet supported
-# log "  Setup replication grants..."
-# db DATA_DIR do
-#   action [ :set_replication_grants ]
-# end
-
-ruby_block "Setting db_restored state to true" do
-  block do
-    node[:db][:db_restored] = true
-  end
 end
 
 rs_utils_marker :end

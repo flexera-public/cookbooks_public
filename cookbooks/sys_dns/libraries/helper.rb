@@ -98,13 +98,18 @@ EOF
 </ChangeResourceRecordSetsRequest>
 EOF
         cmd_filename="/tmp/modify.xml"
+
+        @logger.info("Changing IP for '#{hostname}' from '#{current_ip}' to '#{address}'")
+
         File.open(cmd_filename, "w") { |f| f.write modify_cmd }
 
         result = ""
         # Simple retry loop, sometimes the DNS call will flake out..
-        5.times do
+        5.times do |attempt|
           result = `/opt/rightscale/dns/dnscurl.pl --keyfile #{secrets_filename} --keyname my-aws-account -- -X POST -H "Content-Type: text/xml; charset=UTF-8" --upload-file #{cmd_filename} #{endpoint}hostedzone/#{zone_id}/rrset`
-          break unless result =~ /HttpFailure/
+          break if result =~ /ChangeResourceRecordSetsResponse/
+          @logger.info("DNS change not successful - waiting then retrying - attempt number #{attempt}")
+          sleep 5
         end
 
         if(result =~ /ChangeResourceRecordSetsResponse/ ) then
@@ -123,7 +128,7 @@ EOF
         if( result =~ /success/ || result =~ /error-record-ip-same/   ) then
           @logger.info("DNSID #{id} set to this instance IP: #{address}")
         else
-          raise "Error setting the DNS, curl exited with code: #{$?}, output: #{result}"
+          raise "Error setting the DNS, curl exited with code: #{$?}, id=#{id}, address:#{address}, output:#{result}"
         end
 
         result

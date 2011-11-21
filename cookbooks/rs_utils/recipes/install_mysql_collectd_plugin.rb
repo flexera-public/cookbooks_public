@@ -33,7 +33,7 @@ include_recipe "rs_utils::setup_monitoring"
 log "Installing MySQL collectd plugin"
 
 package "collectd-mysql" do
-  only_if {  node[:platform] == "centos" }
+  only_if {  node[:platform] =~ /redhat|centos/ }
 end
 
 remote_file "#{node[:rs_utils][:collectd_plugin_dir]}/mysql.conf" do

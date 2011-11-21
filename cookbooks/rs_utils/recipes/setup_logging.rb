@@ -54,7 +54,7 @@ if "#{node[:rightscale][:servers][:lumberjack][:hostname]}" != "" && node[:rs_ut
   template "/etc/syslog-ng/syslog-ng.conf" do
     source "syslog.erb"
     variables ({
-      :apache_log_dir => (node[:platform] == "centos") ? "httpd" : "apache2"
+      :apache_log_dir => (node[:platform] =~ /redhat|centos/) ? "httpd" : "apache2"
     })
     notifies :restart, resources(:service => "syslog-ng")
   end

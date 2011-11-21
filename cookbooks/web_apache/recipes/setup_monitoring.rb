@@ -41,7 +41,7 @@ end
 arch = node[:kernel][:machine]
 arch = "i386" if arch == "i686"
 
-if node[:platform] == 'centos'
+if node[:platform] =~ /redhat|centos/
 
   TMP_FILE = "/tmp/collectd-apache.rpm"
 

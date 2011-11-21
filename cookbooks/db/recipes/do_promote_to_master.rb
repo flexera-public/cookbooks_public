@@ -69,11 +69,16 @@ end
 # == Tag as master
 # Changes master status tags and node state
 #
-include_recipe 'db::do_tag_as_master' 
+db_register_master
+
+# == force a backup
+#
+db_do_backup "do force backup" do
+  force true
+end
 
 # == Schedule master backups
 #
-include_recipe 'db::do_backup'
 include_recipe "db::do_backup_schedule_enable"
 
 rs_utils_marker :end

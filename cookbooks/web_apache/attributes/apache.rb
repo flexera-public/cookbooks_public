@@ -44,7 +44,7 @@ set_unless[:apache][:serversignature] = "Off "
 case platform
 when "ubuntu", "debian"
   set[:apache][:config_subdir] = "apache2"
-when "centos", "fedora", "suse"
+when "centos", "fedora", "suse","redhat"
   set[:apache][:config_subdir] = "httpd"
 end
 

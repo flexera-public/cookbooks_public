@@ -32,17 +32,17 @@ set_unless[:db][:replication][:password] = nil
 
 set_unless[:db][:backup][:lineage] = ""
 
-set_unless[:db][:backup][:force] = false
-
 #
 # Server state variables
 #
-set_unless[:db][:db_restored] = false         # A restore operation was performed on this server
+set_unless[:db][:init_status] = :uninitialized  # Checks if DB has been initialezed
 set_unless[:db][:this_is_master] = false
 set_unless[:db][:current_master_uuid] = nil
 set_unless[:db][:current_master_ip] = nil
-# Calculate recommended backup times for master/slave
 
+#
+# Calculate recommended backup times for master/slave
+#
 set_unless[:db][:backup][:master][:minute] = 5 + rand(54) # backup starts random time between 5-59
 set_unless[:db][:backup][:master][:hour] = rand(23) # once a day, random hour
 

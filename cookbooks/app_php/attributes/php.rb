@@ -23,7 +23,6 @@
 
 # == Recommended attributes
 #
-set_unless[:php][:server_name] = "myserver"  
 set_unless[:php][:application_name] = "myapp"
 
 # == Optional attributes
@@ -46,7 +45,7 @@ when "ubuntu", "debian"
   set[:php][:module_dependencies] = [ "proxy_http", "php5"]
   set_unless[:php][:app_user] = "www-data"
   set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
-when "centos","fedora","suse"
+when "centos","fedora","suse","redhat"
   set[:php][:package_dependencies] = ["php53u", "php53u-mysql", "php53u-pear", "php53u-zts"]
   set[:php][:module_dependencies] = [ "proxy", "proxy_http" ]
   set_unless[:php][:app_user] = "apache"

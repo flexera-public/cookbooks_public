@@ -1,3 +1,4 @@
+#
 # Cookbook Name:: db
 #
 # Copyright (c) 2011 RightScale Inc
@@ -21,8 +22,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# == remove cron task for export
+#
 rs_utils_marker :begin
 
-include_recipe "sys_dns::do_set_private"
+cron "db_dump_export" do
+  action :delete
+end
 
 rs_utils_marker :end

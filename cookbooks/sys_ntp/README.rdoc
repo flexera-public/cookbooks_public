@@ -1,0 +1,11 @@
+DESCRIPTION
+===========
+
+Installs and configures ntp client.
+
+REQUIREMENTS
+============
+
+Should work on any Red Hat-family or Debian-family Linux distribution.
+
+
