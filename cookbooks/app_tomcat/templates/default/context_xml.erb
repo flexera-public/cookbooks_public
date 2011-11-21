@@ -32,7 +32,7 @@
     <Valve className="org.apache.catalina.valves.CometConnectionManagerValve" />
     -->
 
-    <Resource name="jdbc/ConnDB" auth="Container" type="javax.sql.DataSource"
+    <Resource name="jdbc/MYSQLDB" auth="Container" type="javax.sql.DataSource"
              maxActive="100" maxIdle="30" maxWait="10000"
              username="<%= @user %>" password="<%= @password %>" driverClassName="com.mysql.jdbc.Driver"
              url="jdbc:mysql://<%= @fqdn %>:3306/<%= @database %>"/>

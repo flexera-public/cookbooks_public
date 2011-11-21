@@ -1,0 +1,42 @@
+{
+  "suggestions": {
+  },
+  "description": "Installs nginx passenger",
+  "conflicting": {
+  },
+  "long_description": "",
+  "attributes": {
+  },
+  "recipes": {
+    "nginx_passenger::default": "Installs nginx-passenger"
+  },
+  "providing": {
+  },
+  "dependencies": {
+  },
+  "maintainer": "RightScale Inc.",
+  "replacing": {
+  },
+  "platforms": {
+    "debian": [
+
+    ],
+    "centos": [
+
+    ],
+    "ubuntu": [
+
+    ],
+    "redhat": [
+
+    ]
+  },
+  "version": "0.9.0",
+  "license": "Apache 2.0",
+  "maintainer_email": "support@rightscale.com",
+  "name": "nginx_passenger",
+  "groupings": {
+  },
+  "recommendations": {
+  }
+}
