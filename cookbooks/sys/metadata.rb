@@ -20,9 +20,9 @@ attribute "sys/reconverge_list",
 
 attribute "sys/swap_size",
   :display_name => "Swap size in GB",
-  :description => "Creates and activates a swap file based on the selected size (in GB).  Select '0' to disable swap. Ex: 0.5, 1, 1.5",
+  :description => "Creates and activates a swap file based on the selected size (in GB).",
   :type => "string",
-  :choice => ["0","0.5","2.0"],
+  :choice => ["0.5","2.0"],
   :required => true,
   :recipes => [ "sys::setup_swap"]
 
