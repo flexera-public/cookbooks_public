@@ -1,6 +1,8 @@
 {
-  "suggestions": {
+  "dependencies": {
   },
+  "name": "rs_utils",
+  "maintainer_email": "support@rightscale.com",
   "attributes": {
     "rs_utils/search_suffix": {
       "required": "optional",
@@ -20,17 +22,19 @@
       "required": "optional",
       "calculated": false,
       "choice": [
+        "UTC",
+        "GMT",
+        "localtime",
+        "US/Eastern",
         "US/Central",
+        "US/Mountain",
+        "US/Pacific",
+        "Asia/Tokyo",
         "Europe/London",
         "Europe/Helsinki",
-        "localtime",
-        "GMT",
         "Europe/Paris",
-        "US/Eastern",
         "Europe/Moscow",
-        "US/Mountain",
-        "UTC",
-        "US/Pacific"
+        ""
       ],
       "default": "UTC",
       "type": "string",
@@ -115,19 +119,16 @@
       "description": "The private SSH key of another instance that gets installed on this instance.  Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key"
     }
   },
-  "conflicting": {
+  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "suggestions": {
   },
-  "description": "Enable instance Monitoring and logging in the RightScale dashboard.",
-  "dependencies": {
-  },
-  "providing": {
+  "platforms": {
   },
   "maintainer": "RightScale, Inc.",
-  "replacing": {
-  },
+  "long_description": "= RightScale Utilities Cookbook (Beta)\n\n== DESCRIPTION:\n\nBase recipes used to setup services used by the RightScale Cloud Management Platform\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage\n\n== SETUP:\n\n== USAGE:\n\nRun the rs_utils::default recipe to perform common server configuration steps  \nsuch as enabling monitoring and logging on the RightScale Dashboard.\n\n== KNWON LIMITATIONS:\n\n== DEFINITIONS\n\nrs_utils_enable_collectd_plugin\n---------------------------------------------\n* Accepts only one parameter \"name\" which is the name of the collectd plugin to enable\n* The plugin name is added to node[:rs_utils][:plugin_list_ary] which is used to create the list of plugins in the /etc/collectd/collectd.conf file\n* The node[:rs_utils][:plugin_list_ary] will have any plugins listed in node[:rs_utils][:plugin_list] merged into it.  This is to support any legacy recipes as well as allow the input to be manipulated in the RS dashboard.\n\nSyntax:\n\n```rs_utils_enable_collectd_plugin \"curl_json\"```\n\n\nrs_utils_monitor_process\n------------------------------------\n* Accepts only one parameter, \"name\" which is the name of the process to monitor\n* The process name is added to node[:rs_utils][:process_list_ary] which is used to create the list of processes in the /etc/collectd/conf/processes.conf file\n* The node[:rs_utils][:process_list_ary] will have any processes listed in node[:rs_utils][:process_list] merged into it.  This is to support any legacy recipes as well as allow the input to be manipulated in the RS dashboard.\n\nSyntax:\n\n```rs_utils_monitor_process \"nginx\"```\n\n\nrs_utils_marker\n------------------------------------\n* Accepts only one parameter, \"location\" which can be :start or :end.  Can also be :begin, :stop, and the string versions.\n* Used to log the start and end of a recipe using the 'log' chef resource.  Should be added at the beginning and end of a recipe.\n* Log marker: ========================= recipe::name : START/END =========================\n\nSyntax:\n\n```rs_utils_marker :start```\n```rs_utils_marker :end```\n",
   "version": "0.0.1",
-  "maintainer_email": "support@rightscale.com",
-  "name": "rs_utils",
+  "recommendations": {
+  },
   "recipes": {
     "rs_utils::setup_server_tags": "Sets machine tags that are common to all RightScale managed servers.",
     "rs_utils::setup_monitoring": "Installs and configures RightScale dashboard monitoring features.",
@@ -143,10 +144,11 @@
   },
   "groupings": {
   },
-  "long_description": "= RightScale Utilities Cookbook (Beta)\n\n== DESCRIPTION:\n\nBase recipes used to setup services used by the RightScale Cloud Management Platform\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage\n\n== SETUP:\n\n== USAGE:\n\nRun the rs_utils::default recipe to perform common server configuration steps  \nsuch as enabling monitoring and logging on the RightScale Dashboard.\n\n== KNWON LIMITATIONS:\n\n== DEFINITIONS\n\nrs_utils_enable_collectd_plugin\n---------------------------------------------\n* Accepts only one parameter \"name\" which is the name of the collectd plugin to enable\n* The plugin name is added to node[:rs_utils][:plugin_list_ary] which is used to create the list of plugins in the /etc/collectd/collectd.conf file\n* The node[:rs_utils][:plugin_list_ary] will have any plugins listed in node[:rs_utils][:plugin_list] merged into it.  This is to support any legacy recipes as well as allow the input to be manipulated in the RS dashboard.\n\nSyntax:\n\n```rs_utils_enable_collectd_plugin \"curl_json\"```\n\n\nrs_utils_monitor_process\n------------------------------------\n* Accepts only one parameter, \"name\" which is the name of the process to monitor\n* The process name is added to node[:rs_utils][:process_list_ary] which is used to create the list of processes in the /etc/collectd/conf/processes.conf file\n* The node[:rs_utils][:process_list_ary] will have any processes listed in node[:rs_utils][:process_list] merged into it.  This is to support any legacy recipes as well as allow the input to be manipulated in the RS dashboard.\n\nSyntax:\n\n```rs_utils_monitor_process \"nginx\"```\n\n\nrs_utils_marker\n------------------------------------\n* Accepts only one parameter, \"location\" which can be :start or :end.  Can also be :begin, :stop, and the string versions.\n* Used to log the start and end of a recipe using the 'log' chef resource.  Should be added at the beginning and end of a recipe.\n* Log marker: ========================= recipe::name : START/END =========================\n\nSyntax:\n\n```rs_utils_marker :start```\n```rs_utils_marker :end```\n",
-  "recommendations": {
+  "conflicting": {
   },
-  "platforms": {
+  "replacing": {
   },
-  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
+  "description": "Enable instance Monitoring and logging in the RightScale dashboard.",
+  "providing": {
+  }
 }

@@ -22,17 +22,21 @@ attribute "rs_utils/timezone",
   :display_name => "Timezone",
   :description => "Sets the system time to the timezone of the specified input, which must be a valid zoneinfo/tz database entry.  If the input is 'unset' the timezone will use the 'localtime' that's defined in your RightScale account under Settings -> User Settings -> Preferences tab.  You can find a list of valid examples from the timezone pulldown bar in the Preferences tab.  Ex: US/Pacific, US/Eastern",
   :required => "optional",
-  :choice => ["US/Central", \
+  :choice => [\
+              "UTC", \
+              "GMT", \
+              "localtime", \
+              "US/Eastern", \
+              "US/Central", \
+              "US/Mountain", \
+              "US/Pacific", \
+              "Asia/Tokyo", \
               "Europe/London", \
               "Europe/Helsinki", \
-              "localtime", \
-              "GMT", \
               "Europe/Paris", \
-              "US/Eastern", \
               "Europe/Moscow", \
-              "US/Mountain", \
-              "UTC", \
-              "US/Pacific"],
+              ""
+             ],
   :default => "UTC",
   :recipes => [ "rs_utils::setup_timezone", "rs_utils::default" ]
   
