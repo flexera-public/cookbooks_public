@@ -27,7 +27,7 @@
 #
 rs_utils_marker :begin
 
-raise "Force reset saftey not off.  Override block_device/force_reset_safety to run this recipe" unless node[:block_device][:force_reset_safety] == "off"
+raise "Force reset saftey not off.  Override db/force_reset_safety to run this recipe" unless node[:db][:force_reset_safety] == "off"
 
 log "  Brute force tear down of the setup..... Hope it works :-)"
 DATA_DIR = node[:db][:data_dir]
