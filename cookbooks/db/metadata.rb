@@ -231,3 +231,12 @@ attribute "db/dump/database_name",
   :description => "Enter the name of the database name/schema to create/restore a dump from/for. Ex: mydbschema",
   :required => "required",
   :recipes => [ "db::do_dump_import", "db::do_dump_export", "db::do_dump_schedule_enable" ]
+
+attribute "db/force_reset_safety",
+  :display_name => "Force reset safety",
+  :description => "Prevents the accidental running of the db::do_force_reset recipe.  This recipe will only run if the input variable is overridden and set to \"off\".",
+  :type => "string",
+  :choice => ["Override the dropdown and set to \"off\" to really run this recipe"],                                                                                                                  
+  :default => "Override the dropdown and set to \"off\" to really run this recipe",                                                                                                                   
+  :required => false,
+  :recipes => [ "db::do_force_reset" ]

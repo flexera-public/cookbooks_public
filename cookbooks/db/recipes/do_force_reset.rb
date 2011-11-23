@@ -21,9 +21,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# Intended for development and testing only
+# Most of the time the server will get reset to an original state, but no garuntees
+# If you really need a server in a garunteed state then (re)launch a new one.
+#
 rs_utils_marker :begin
 
-log "  Brute force tear down of the setup....."
+raise "Force reset saftey not off.  Override block_device/force_reset_safety to run this recipe" unless node[:block_device][:force_reset_safety] == "off"
+
+log "  Brute force tear down of the setup..... Hope it works :-)"
 DATA_DIR = node[:db][:data_dir]
 
 log "  Resetting the database..."
