@@ -28,7 +28,7 @@ attribute "sys/swap_size",
 
 attribute "sys/swap_file",
   :display_name => "Swapfile location",
-  :description => "The location of swap file.  Defaults to '/swapfile'.",
+  :description => "The location of swap file.  Defaults to '/mnt/ephemeral/swapfile'.",
   :type => "string",
-  :default => "/swapfile",
+  :default => "/mnt/ephemeral/swapfile",
   :recipes => [ "sys::setup_swap"]
