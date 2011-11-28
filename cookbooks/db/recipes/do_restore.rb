@@ -35,8 +35,15 @@ db DATA_DIR do
   action :pre_restore_check
 end
 
+if node[:db][:backup][:lineage_override].empty?
+  backup_lineage = node[:db][:backup][:lineage]
+else
+  log "** USING LINEAGE OVERRIDE **"
+  backup_lineage = node[:db][:backup][:lineage_override]
+end
+
 log "======== LINEAGE ========="
-log node[:db][:backup][:lineage]
+log backup_lineage
 log "======== LINEAGE ========="
 
 # ROS restore requires a setup, but VOLUME restore does not.
@@ -44,7 +51,7 @@ log "======== LINEAGE ========="
 if node[:cloud][:provider] == "rackspace"
   log "  Creating block device..."
   block_device DATA_DIR do
-    lineage node[:db][:backup][:lineage]
+    lineage backup_lineage
     action :create
   end
 end
@@ -58,7 +65,7 @@ log "  Performing Restore..."
 # Requires block_device node[:db][:block_device] to be instantiated
 # previously. Make sure block_device::default recipe has been run.
 block_device DATA_DIR do
-  lineage node[:db][:backup][:lineage]
+  lineage backup_lineage
   timestamp_override node[:db][:backup][:timestamp_override]
   cloud node[:cloud][:provider]
   rackspace_snet node[:block_device][:rackspace_snet]
