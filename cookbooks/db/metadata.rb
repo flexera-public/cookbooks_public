@@ -151,7 +151,8 @@ attribute "db/backup/lineage_override",
   :recipes => [
     "db::do_init_slave",
     "db::do_init_slave_at_boot",
-    "db::do_restore"
+    "db::do_restore",
+    "db::do_restore_and_become_master"
   ]
   
 attribute "db/backup/timestamp_override",
