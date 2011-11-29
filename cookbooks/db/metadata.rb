@@ -19,7 +19,6 @@ recipe  "db::install_server", "Installs and sets up the packages that are requir
 
 recipe  "db::setup_monitoring", "Installs the collectd plugin for database monitoring support, which is required to enable monitoring and alerting functionality for your servers."
 
-
 # == Common Database Recipes
 #
 recipe  "db::do_backup", "Creates a backup of the database using persistent storage in the current cloud.  On Rackspace, LVM backups are uploaded to the specified CloudFiles container.  For all other clouds, volume snapshots (like EBS) are used."
@@ -66,6 +65,7 @@ recipe "db::request_master_deny", "Sends a request to the master database server
 
 recipe "db::handle_demote_master", "Remote recipe executed by do_promote_to_master. DO NOT RUN."
 
+recipe "db::do_terminate_server", "Deletes any currently attached volumes from the instance and then terminates the machine."
 
 # == Common Database Attributes
 #
@@ -231,3 +231,12 @@ attribute "db/dump/database_name",
   :description => "Enter the name of the database name/schema to create/restore a dump from/for. Ex: mydbschema",
   :required => "required",
   :recipes => [ "db::do_dump_import", "db::do_dump_export", "db::do_dump_schedule_enable" ]
+
+attribute "db/terminate_safety",
+  :display_name => "Terminate Saftey",
+  :description => "Prevents the accidental running of the db::do_teminate_server recipe.  This recipe will only run if the input variable is overridden and set to \"off\".",
+  :type => "string",
+  :choice => ["Override the dropdown and set to \"off\" to really run this recipe"],
+  :default => "Override the dropdown and set to \"off\" to really run this recipe",
+  :required => false,
+  :recipes => [ "db::do_terminate_server" ]
