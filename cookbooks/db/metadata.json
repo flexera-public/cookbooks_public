@@ -321,6 +321,20 @@
       "display_name": "Database Replication Username",
       "description": "The username of the database user that has 'replciation' privileges."
     },
+    "db/force_safety": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+        "Override the dropdown and set to \"off\" to really run this recipe"
+      ],
+      "default": "Override the dropdown and set to \"off\" to really run this recipe",
+      "type": "string",
+      "recipes": [
+        "db::do_force_reset"
+      ],
+      "display_name": "Force Reset Saftey",
+      "description": "Prevents the accidental running of the db::do_force_reset recipe.  This recipe will only run if the input variable is overridden and set to \"off\"."
+    },
     "db/dump/storage_account_provider": {
       "required": "required",
       "calculated": false,
