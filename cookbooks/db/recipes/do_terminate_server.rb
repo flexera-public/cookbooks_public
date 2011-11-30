@@ -31,7 +31,12 @@ raise "Server terminate saftey not off.  Override db/terminate_safety to run thi
 
 DATA_DIR = node[:db][:data_dir]
 
-log "  Detaach and delete volume..."
+log "  Resetting the database..."
+db DATA_DIR do
+  action :reset
+end
+
+log "  Detach and delete volume..."
 block_device DATA_DIR do
   action :reset
 end
