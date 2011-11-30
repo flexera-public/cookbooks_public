@@ -240,3 +240,14 @@ attribute "db/terminate_safety",
   :default => "Override the dropdown and set to \"off\" to really run this recipe",
   :required => false,
   :recipes => [ "db::do_terminate_server" ]
+
+attribute "db/force_safety",
+  :display_name => "Force Reset Saftey",
+  :description => "Prevents the accidental running of the db::do_force_reset recipe.  This recipe will only run if the input variable is overridden and set to \"off\".",
+  :type => "string",
+  :choice => ["Override the dropdown and set to \"off\" to really run this recipe"],
+  :default => "Override the dropdown and set to \"off\" to really run this recipe",
+  :required => false,
+  :recipes => [ "db::do_force_reset" ]
+
+

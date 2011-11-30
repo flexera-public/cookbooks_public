@@ -21,7 +21,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# Attempt to return the instance to a pristine / newly launched state.
+# This is for development and test purpose and should not be used on
+# production servers.
+# 
 rs_utils_marker :begin
+
+raise "Server terminate saftey not off.  Override db/force_safety to run this recipe" unless node[:db][:force_safety] == "off"
 
 log "  Brute force tear down of the setup....."
 DATA_DIR = node[:db][:data_dir]
