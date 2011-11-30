@@ -568,10 +568,22 @@ action :enable_replication do
   ruby_block "validate_backup" do
     block do
       master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
-      raise "Position and file not saved!" unless master_info['Master_instance_uuid']
       # Check that the snapshot is from the current master or a slave associated with the current master
-      if master_info['Master_instance_uuid'] != node[:db][:current_master_uuid]
-        raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_uuid']} != current master: #{node[:db][:current_master_uuid]}"
+
+      # 11H2 backup
+      if master_info['Master_instance_uuid']
+        if master_info['Master_instance_uuid'] != node[:db][:current_master_uuid]
+          raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_uuid']} != current master: #{node[:db][:current_master_uuid]}"
+        end
+      # 11H1 backup
+      elsif master_info['Master_instance_id']
+        log "  Detected 11H1 snapshot to migrate"
+        if master_info['Master_instance_id'] != node[:db][:current_master_ec2_id]
+          raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_id']} != current master: #{node[:db][:current_master_ec2_id]}"
+        end
+      # File not found or does not contain info
+      else
+        raise "Position and file not saved!"
       end
     end
   end
