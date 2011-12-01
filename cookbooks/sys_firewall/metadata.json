@@ -18,8 +18,8 @@
       "recipes": [
         "sys_firewall::setup_rule"
       ],
-      "description": "Address can either be a network name, a network IP address (with /mask), or a plain IP address.  The mask can either be a network mask or a plain number specifying the number of 1's at the left side of the network mask.  Thus, a mask of 24 is equivalent to 255.255.255.0.  A '!' argument before the address specification inverts the sense of the address.  A value of 'any' allows any IP address (default).",
-      "display_name": "Firewall Rule IP Address"
+      "display_name": "Firewall Rule IP Address",
+      "description": "Address can either be a network name, a network IP address (with /mask), or a plain IP address.  The mask can either be a network mask or a plain number specifying the number of 1's at the left side of the network mask.  Thus, a mask of 24 is equivalent to 255.255.255.0.  A '!' argument before the address specification inverts the sense of the address.  A value of 'any' allows any IP address (default)."
     },
     "sys_firewall/rule/protocol": {
       "required": "optional",
@@ -34,8 +34,8 @@
       "recipes": [
         "sys_firewall::setup_rule"
       ],
-      "description": "Firewall protocol use. Defaults to 'tcp'",
-      "display_name": "Firewall Rule Protocol"
+      "display_name": "Firewall Rule Protocol",
+      "description": "Firewall protocol use. Defaults to 'tcp'"
     },
     "sys_firewall/rule/port": {
       "required": "required",
@@ -47,8 +47,8 @@
       "recipes": [
         "sys_firewall::setup_rule"
       ],
-      "description": "Firewall port to Enable/Disable. (Ex. 8000)",
-      "display_name": "Firewall Rule Port"
+      "display_name": "Firewall Rule Port",
+      "description": "Firewall port to Enable/Disable. (Ex. 8000)"
     },
     "sys_firewall/rule/enable": {
       "required": "optional",
@@ -62,8 +62,8 @@
       "recipes": [
         "sys_firewall::setup_rule"
       ],
-      "description": "Enables/Disables a firewall rule.",
-      "display_name": "Firewall Rule"
+      "display_name": "Firewall Rule",
+      "description": "Enables/Disables a firewall rule."
     },
     "sys_firewall/enabled": {
       "required": "optional",
@@ -77,11 +77,11 @@
       "recipes": [
         "sys_firewall::default"
       ],
-      "description": "Enables iptables firewall for this server which allows port 22, 80 and 443 open by default.  Use sys_firewall::setup_rule recipe to enable/disable extra ports.",
-      "display_name": "Firewall"
+      "display_name": "Firewall",
+      "description": "Enables iptables firewall for this server which allows port 22, 80 and 443 open by default.  Use sys_firewall::setup_rule recipe to enable/disable extra ports."
     }
   },
-  "license": "All rights reserved",
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
   "suggestions": {
   },
   "platforms": {

@@ -18,8 +18,8 @@
       "recipes": [
         "app_tomcat::setup_db_connection"
       ],
-      "description": "Enter the name of the MySQL database to use. Ex: mydatabase",
-      "display_name": "Database Name"
+      "display_name": "Database Name",
+      "description": "Enter the name of the MySQL database to use. Ex: mydatabase"
     },
     "tomcat/code": {
       "required": "optional",
@@ -45,8 +45,8 @@
         "app_tomcat::do_update_code",
         "app_tomcat::default"
       ],
-      "description": "The name of the branch within the git repository where the application code should be pulled from. Ex: mybranch",
-      "display_name": "Repository Branch"
+      "display_name": "Repository Branch",
+      "description": "The name of the branch within the git repository where the application code should be pulled from. Ex: mybranch"
     },
     "tomcat/code/url": {
       "required": "required",
@@ -59,8 +59,8 @@
         "app_tomcat::do_update_code",
         "app_tomcat::default"
       ],
-      "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
-      "display_name": "Repository URL"
+      "display_name": "Repository URL",
+      "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git"
     },
     "tomcat/code/credentials": {
       "required": "optional",
@@ -73,8 +73,8 @@
         "app_tomcat::do_update_code",
         "app_tomcat::default"
       ],
-      "description": "The private SSH key of the git repository.",
-      "display_name": "Repository Credentials"
+      "display_name": "Repository Credentials",
+      "description": "The private SSH key of the git repository."
     },
     "tomcat": {
       "required": "optional",
@@ -89,7 +89,7 @@
       "display_name": "Tomcat Application Settings"
     }
   },
-  "license": "Apache v2.0",
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
   "suggestions": {
   },
   "platforms": {

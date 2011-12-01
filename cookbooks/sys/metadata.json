@@ -18,8 +18,8 @@
         "sys::do_reconverge_list_enable",
         "sys::do_reconverge_list_disable"
       ],
-      "description": "A space-separated list of recipes to run every 15 minutes, which is designed to enforce system consistency.  Ex: app::do_firewall_request_open lb_haproxy::do_attach_all",
-      "display_name": "Reconverge List"
+      "display_name": "Reconverge List",
+      "description": "A space-separated list of recipes to run every 15 minutes, which is designed to enforce system consistency.  Ex: app::do_firewall_request_open lb_haproxy::do_attach_all"
     },
     "sys/swap_file": {
       "required": "optional",
@@ -32,8 +32,8 @@
       "recipes": [
         "sys::setup_swap"
       ],
-      "description": "The location of swap file.  Defaults to '/swapfile'.",
-      "display_name": "Swapfile location"
+      "display_name": "Swapfile location",
+      "description": "The location of swap file.  Defaults to '/swapfile'."
     },
     "sys/swap_size": {
       "required": "required",
@@ -47,11 +47,11 @@
       "recipes": [
         "sys::setup_swap"
       ],
-      "description": "Creates and activates a swap file based on the selected size (in GB).  Select '0' to disable swap. Ex: 0.5, 1, 1.5",
-      "display_name": "Swap size in GB"
+      "display_name": "Swap size in GB",
+      "description": "Creates and activates a swap file based on the selected size (in GB).  Select '0' to disable swap. Ex: 0.5, 1, 1.5"
     }
   },
-  "license": "All rights reserved",
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
   "suggestions": {
   },
   "platforms": {
