@@ -25,6 +25,7 @@
 require 'timeout'
 
 action :load do
+  
   collection_resource = server_collection new_resource.name do
     tags new_resource.tags
     agent_ids new_resource.agent_ids
@@ -55,4 +56,6 @@ action :load do
   rescue Timeout::Error => e
     raise "ERROR: timed out trying to find servers tagged with #{new_resource.tags.inspect}"
   end
+  
 end
+
