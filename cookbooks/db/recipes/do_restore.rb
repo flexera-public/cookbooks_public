@@ -51,7 +51,7 @@ log "======== LINEAGE ========="
 if node[:cloud][:provider] == "rackspace"
   log "  Creating block device..."
   block_device DATA_DIR do
-    lineage backup_lineage
+    lineage node[:db][:backup][:lineage]
     action :create
   end
 end
