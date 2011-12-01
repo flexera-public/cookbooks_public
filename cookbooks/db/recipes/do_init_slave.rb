@@ -53,10 +53,10 @@ r = ruby_block "find current master" do
       # following used for detecting 11H1 DB servers
       ec2_instance_id = tags.detect { |each_ec2_instance_id| each_ec2_instance_id =~ /ec2:instance_id/ }
       most_recent = active.sort.last
-      collect[most_recent] = my_uuid, my_ip_0
+      collect[most_recent] = my_uuid, my_ip_0, ec2_instance_id
     end
     most_recent_timestamp = collect.keys.sort.last
-    current_master_uuid, current_master_ip = collect[most_recent_timestamp]
+    current_master_uuid, current_master_ip, current_master_ec2_id = collect[most_recent_timestamp]
     if current_master_uuid =~ /#{node[:rightscale][:instance_uuid]}/
       Chef::Log.info "THIS instance is the current master"
       node[:db][:this_is_master] = true
@@ -77,9 +77,9 @@ r = ruby_block "find current master" do
     end
 
     # following used for detecting 11H1 DB servers
-    if ec2_instance_id
-      node[:db][:current_master_ec2_id] = ec2_instance_id.split(/=/, 2).last.chomp
-      Chef::Log.info "Detected #{ec2_instance_id} - 11H1 migration"
+    if current_master_ec2_id
+      node[:db][:current_master_ec2_id] = current_master_ec2_id.split(/=/, 2).last.chomp
+      Chef::Log.info "Detected #{current_master_ec2_id} - 11H1 migration"
     else
       node[:db][:current_master_ec2_id] = nil
     end

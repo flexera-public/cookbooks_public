@@ -577,7 +577,7 @@ action :enable_replication do
         end
       # 11H1 backup
       elsif master_info['Master_instance_id']
-        log "  Detected 11H1 snapshot to migrate"
+        Chef::Log.info "  Detected 11H1 snapshot to migrate"
         if master_info['Master_instance_id'] != node[:db][:current_master_ec2_id]
           raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_id']} != current master: #{node[:db][:current_master_ec2_id]}"
         end

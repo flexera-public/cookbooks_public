@@ -48,10 +48,12 @@ log "======== LINEAGE ========="
 
 # ROS restore requires a setup, but VOLUME restore does not.
 # Only Rackpspace uses ROS backups
-block_device DATA_DIR do
-  only_if { node[:cloud][:provider] == "rackspace" }
-  lineage backup_lineage
-  action :create
+if node[:cloud][:provider] == "rackspace"
+  log "  Creating block device..."
+  block_device DATA_DIR do
+    lineage backup_lineage
+    action :create
+  end
 end
 
 log "  Stopping database..."
@@ -79,7 +81,7 @@ db DATA_DIR do
   action :post_restore_cleanup
 end
 
-log "  Starting database as master..."
+log "  Starting database..."
 db DATA_DIR do
   action [ :start, :status ]
 end
