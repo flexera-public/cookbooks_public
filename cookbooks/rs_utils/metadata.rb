@@ -22,17 +22,73 @@ attribute "rs_utils/timezone",
   :display_name => "Timezone",
   :description => "Sets the system time to the timezone of the specified input, which must be a valid zoneinfo/tz database entry.  If the input is 'unset' the timezone will use the 'localtime' that's defined in your RightScale account under Settings -> User Settings -> Preferences tab.  You can find a list of valid examples from the timezone pulldown bar in the Preferences tab.  Ex: US/Pacific, US/Eastern",
   :required => "optional",
-  :choice => ["US/Central", \
-              "Europe/London", \
-              "Europe/Helsinki", \
-              "localtime", \
-              "GMT", \
-              "Europe/Paris", \
-              "US/Eastern", \
-              "Europe/Moscow", \
-              "US/Mountain", \
-              "UTC", \
-              "US/Pacific"],
+  :choice => [ "Africa/Casablanca", \
+               "America/Bogota", \
+               "America/Buenos_Aires", \
+               "America/Caracas", \
+               "America/La_Paz", \
+               "America/Lima", \
+               "America/Mexico_City", \
+               "Asia/Almaty", \
+               "Asia/Baghdad", \
+               "Asia/Baku", \
+               "Asia/Bangkok", \
+               "Asia/Calcutta", \
+               "Asia/Colombo", \
+               "Asia/Dhaka", \
+               "Asia/Hong_Kong", \
+               "Asia/Jakarta", \
+               "Asia/Kabul", \
+               "Asia/Kamchatka", \
+               "Asia/Karachi", \
+               "Asia/Kathmandu", \
+               "Asia/Magadan", \
+               "Asia/Muscat", \
+               "Asia/Riyadh", \
+               "Asia/Seoul", \
+               "Asia/Singapore", \
+               "Asia/Tashkent", \
+               "Asia/Tbilisi", \
+               "Asia/Tehran", \
+               "Asia/Tokyo", \
+               "Asia/Vladivostok", \
+               "Asia/Yakutsk", \
+               "Asia/Yekaterinburg", \
+               "Atlantic/Azores", \
+               "Atlantic/Cape_Verde", \
+               "Australia/Adelaide", \
+               "Australia/Darwin", \
+               "Australia/Perth", \
+               "Brazil/Acre", \
+               "Brazil/DeNoronha", \
+               "Brazil/East", \
+               "Brazil/West", \
+               "Canada/Atlantic", \
+               "Canada/Newfoundland", \
+               "Europe/Brussels", \
+               "Europe/Copenhagen", \
+               "Europe/Kaliningrad", \
+               "Europe/Lisbon", \
+               "Europe/London", \
+               "Europe/Helsinki", \
+               "Europe/Madrid", \
+               "Europe/Moscow", \
+               "Europe/Paris", \
+               "Pacific/Auckland", \
+               "Pacific/Fiji", \
+               "Pacific/Guam", \
+               "Pacific/Kwajalein", \
+               "Pacific/Midway", \
+               "US/Alaska", \
+               "US/Central", \
+               "US/Eastern", \
+               "US/Hawaii", \
+               "US/Mountain", \
+               "US/Pacific", \
+               "US/Samoa", \
+               "GMT", \
+               "UTC", \
+               "localtime"],
   :default => "UTC",
   :recipes => [ "rs_utils::setup_timezone", "rs_utils::default" ]
   
