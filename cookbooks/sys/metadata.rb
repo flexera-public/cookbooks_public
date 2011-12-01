@@ -23,7 +23,7 @@ attribute "sys/swap_size",
   :description => "Creates and activates a swap file based on the selected size (in GB).  Select '0' to disable swap. Ex: 0.5, 1, 1.5",
   :type => "string",
   :choice => ["0","0.5","2.0"],
-  :required => true,
+  :default => "0.5",
   :recipes => [ "sys::setup_swap"]
 
 attribute "sys/swap_file",
