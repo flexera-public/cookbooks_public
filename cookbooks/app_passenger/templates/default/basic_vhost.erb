@@ -1,0 +1,113 @@
+#
+#
+# Apache HTTP-only virtual host Config file, version 1.
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
+<% if !File.exists?("#{node[:app_passenger][:apache][:install_dir]}/ports.conf") %>
+Listen <%=@params[:vhost_port]%>
+<%end%>
+<VirtualHost *:<%=@params[:vhost_port]%>>
+
+ ServerName <%=@params[:server_name] %>
+ UseCanonicalName On
+ DocumentRoot <%=@params[:docroot]%>
+
+<DirectoryMatch  /\.git/|/\.svn/ >
+  Deny from all
+</DirectoryMatch>
+
+<Directory "<%=@params[:docroot]%>">
+  Options FollowSymLinks
+  AllowOverride None
+  Order allow,deny
+  Allow from all
+</Directory>
+
+RewriteEngine On
+# Uncomment for rewrite debugging
+#RewriteLog <%= node[:app_passenger][:apache][:log_dir]%>/<%=@params[:server_name]%>-http_rewrite_log
+#RewriteLogLevel 9
+
+<% node[:app_passenger][:ruby_gem_base_dir]=%x[/opt/ruby-enterprise/bin/gem environment gemdir] %>
+<% node[:app_passenger][:passenger_dir]=%x[/bin/bash -c "ls -d #{node[:app_passenger][:ruby_gem_base_dir].chomp}/gems/passenger*"] %>
+
+#LoadModule deflate_module /usr/lib/apache2/modules/mod_deflate.so
+LoadModule passenger_module <%="#{node[:app_passenger][:passenger_dir].chomp}/ext/apache2/mod_passenger.so"%>
+PassengerRoot <%=node[:app_passenger][:passenger_dir]%>
+PassengerRuby <%=node[:app_passenger][:ruby_bin]%>
+RailsSpawnMethod  <%=node[:app_passenger][:rails_spawn_method]%>
+RailsEnv <%= @params[:rails_env] %>
+
+PassengerAppRoot <%="#{node[:app_passenger][:deploy_dir].chomp}/current"%>
+
+
+<% if (File.exists?("#{node[:app_passenger][:apache][:install_dir]}/modules/libphp5.so"))||(node[:app_passenger][:apache][:php_enable]=="true") %>
+# Load (if necessary) and bind the PHP interpreter to handle files with a .php extension.
+<IfModule !mod_php5.c>
+  LoadModule php5_module modules/libphp5.so
+</IfModule>
+DirectoryIndex default.php index.php
+AddHandler php5-script .php
+AddType text/html .ph
+<% end %>
+
+
+# Enable status page for monitoring purposes
+RewriteCond %{REMOTE_ADDR} ^(127.0.0.1)
+RewriteRule ^(/server-status) $1 [H=server-status,L]
+
+
+<%  if (node[:app_passenger][:apache][:maintenance_page].empty?) %>
+<%    node[:app_passenger][:apache][:maintenance_page]="/system/maintenance.html" %>
+<%  else %>
+<%   node[:app_passenger][:apache][:maintenance_page]=node[:app_passenger][:apache][:maintenance_page].strip %>
+<%  end %>
+
+# Redirects to a maintenance page if the specified file below exists
+# ...but it still allows images to be served
+RewriteCond %{DOCUMENT_ROOT}<%=node[:app_passenger][:apache][:maintenance_page]%> -f
+RewriteCond %{SCRIPT_FILENAME} !<%=node[:app_passenger][:apache][:maintenance_page]%>
+RewriteCond %{SCRIPT_FILENAME} !^(.+).(gif|png|jpg|css|js|swf)$
+RewriteRule ^.*$ <%=node[:app_passenger][:apache][:maintenance_page]%> [L]
+
+
+
+
+<% if (node[:app_passenger][:apache][:serve_local_files]=="true") %>
+# Serve any existing local files directly (except actionable ones)
+RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_FILENAME} !\.php|\.jsp|\.do|\.action$ [NC]
+RewriteRule ^/(.*)$ /$1 [QSA,L]
+
+# Special rule to forward "/" directly to haproxy
+RewriteCond %{DOCUMENT_ROOT}/$ -d
+RewriteRule ^/(.*)$ http://127.0.0.1:85%{REQUEST_URI} [P,QSA,L]
+
+RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} -d
+RewriteRule ^/(.*)$ /$1 [QSA,L]
+<% end %>
+
+
+<% if (!node[:app_passenger][:apache][:target_bind_address].empty?)&&(!node[:app_passenger][:apache][:target_bind_port].empty?) %>
+# Proxy the rest to the load balancer
+RewriteRule ^/(.*)$ http://<%=node[:app_passenger][:apache][:target_bind_address]%>:<%node[:app_passenger][:apache][:target_bind_port]%>%{REQUEST_URI} [P,QSA,L]
+<% end %>
+
+
+# Setup the logs in the appropriate directory
+CustomLog <%= node[:app_passenger][:apache][:log_dir]%>/<%=@params[:server_name]%>-access.log combined
+ErrorLog  <%= node[:app_passenger][:apache][:log_dir]%>/<%=@params[:server_name]%>-error.log
+LogLevel warn
+
+
+# Deflate
+AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/javascript text/css application/x-javascript
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4.0[678] no-gzip
+BrowserMatch bMSIE !no-gzip !gzip-only-text/html
+
+SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
+
+</VirtualHost>

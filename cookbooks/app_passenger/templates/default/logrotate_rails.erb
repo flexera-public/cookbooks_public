@@ -1,0 +1,17 @@
+#
+#
+# Logrotate rails Config file, version 1.
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
+
+/var/log/rails/*log {
+    missingok
+    notifempty
+    nocompress
+    sharedscripts
+    postrotate
+    /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}
