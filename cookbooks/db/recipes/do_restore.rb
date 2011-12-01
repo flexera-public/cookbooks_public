@@ -65,7 +65,8 @@ log "  Performing Restore..."
 # Requires block_device node[:db][:block_device] to be instantiated
 # previously. Make sure block_device::default recipe has been run.
 block_device DATA_DIR do
-  lineage backup_lineage
+  lineage node[:db][:backup][:lineage]
+  lineage_override node[:db][:backup][:lineage_override]
   timestamp_override node[:db][:backup][:timestamp_override]
   cloud node[:cloud][:provider]
   rackspace_snet node[:block_device][:rackspace_snet]
