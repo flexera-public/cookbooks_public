@@ -1,117 +1,177 @@
 {
-  "dependencies": {
-    "db_mysql": ">= 0.0.0",
-    "app": ">= 0.0.0",
-    "repo_git": ">= 0.0.0",
-    "rs_utils": ">= 0.0.0"
-  },
-  "name": "app_tomcat",
-  "maintainer_email": "support@rightscale.com",
-  "attributes": {
-    "tomcat/db_name": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "app_tomcat::setup_db_connection"
-      ],
-      "display_name": "Database Name",
-      "description": "Enter the name of the MySQL database to use. Ex: mydatabase"
+    "recipes": {
+      "app_tomcat::setup_monitoring": "Install collectd monitoring for tomcat.",
+      "app_tomcat::setup_tomcat_configs": "Configure tomcat.",
+      "app_tomcat::setup_db_connection": "Set up the MySQL database db.tomcat connection file.",
+      "app_tomcat::default": "Installs the tomcat application server.",
+      "app_tomcat::do_update_code": "Update application source files from the remote repository."
     },
-    "tomcat/code": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "hash",
-      "recipes": [
-
-      ],
-      "display_name": "Tomcat Application Code"
+    "groupings": {
     },
-    "tomcat/code/branch": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "default": "master",
-      "type": "string",
-      "recipes": [
-        "app_tomcat::do_update_code",
-        "app_tomcat::default"
-      ],
-      "display_name": "Repository Branch",
-      "description": "The name of the branch within the git repository where the application code should be pulled from. Ex: mybranch"
+    "recommendations": {
     },
-    "tomcat/code/url": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "app_tomcat::do_update_code",
-        "app_tomcat::default"
-      ],
-      "display_name": "Repository URL",
-      "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git"
+    "version": "0.1.1",
+    "maintainer": "RightScale, Inc.",
+    "long_description": "= RightScale App Tomcat Cookbook (Beta)\n\n== DESCRIPTION:\n\n== DETAILS:\n\n== REQUIREMENTS:\n\n== SETUP: \n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n",
+    "description": "Installs the tomcat application server.",
+    "suggestions": {
     },
-    "tomcat/code/credentials": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "app_tomcat::do_update_code",
-        "app_tomcat::default"
-      ],
-      "display_name": "Repository Credentials",
-      "description": "The private SSH key of the git repository."
+    "maintainer_email": "support@rightscale.com",
+    "name": "app_tomcat",
+    "conflicting": {
     },
-    "tomcat": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
+    "license": "Apache v2.0",
+    "providing": {
+    },
+    "dependencies": {
+      "db_mysql": [
 
       ],
-      "type": "hash",
-      "recipes": [
+      "app": [
 
       ],
-      "display_name": "Tomcat Application Settings"
+      "rs_utils": [
+
+      ],
+      "repo_git": [
+
+      ]
+    },
+    "platforms": {
+    },
+    "attributes": {
+      "tomcat/db_name": {
+        "calculated": false,
+        "type": "string",
+        "choice": [
+
+        ],
+        "description": "Enter the name of the MySQL database to use. Ex: mydatabase",
+        "display_name": "Database Name",
+        "required": "required",
+        "recipes": [
+          "app_tomcat::setup_db_connection"
+        ]
+      },
+      "tomcat/java": {
+        "calculated": false,
+        "type": "hash",
+        "choice": [
+
+        ],
+        "display_name": "Tomcat java settings",
+        "recipes": [
+
+        ],
+        "required": "optional"
+      },
+      "tomcat/code": {
+        "calculated": false,
+        "type": "hash",
+        "choice": [
+
+        ],
+        "display_name": "Tomcat Application Code",
+        "recipes": [
+
+        ],
+        "required": "optional"
+      },
+      "tomcat/code/branch": {
+        "default": "master",
+        "calculated": false,
+        "type": "string",
+        "choice": [
+
+        ],
+        "description": "The name of the branch within the git repository where the application code should be pulled from. Ex: mybranch",
+        "display_name": "Repository Branch",
+        "required": "optional",
+        "recipes": [
+          "app_tomcat::do_update_code",
+          "app_tomcat::default"
+        ]
+      },
+      "tomcat/java/xmx": {
+        "calculated": false,
+        "type": "string",
+        "choice": [
+
+        ],
+        "description": "The java Xmx argument (i.e. 512m)",
+        "display_name": "Tomcat Java XMX",
+        "required": "optional",
+        "recipes": [
+          "app_tomcat::setup_tomcat_configs"
+        ]
+      },
+      "tomcat/code/root_war": {
+        "calculated": false,
+        "type": "string",
+        "choice": [
+
+        ],
+        "description": "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
+        "display_name": "War file for ROOT",
+        "required": "optional",
+        "recipes": [
+          "app_tomcat::do_update_code"
+        ]
+      },
+      "tomcat/code/url": {
+        "calculated": false,
+        "type": "string",
+        "choice": [
+
+        ],
+        "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
+        "display_name": "Repository URL",
+        "required": "required",
+        "recipes": [
+          "app_tomcat::do_update_code",
+          "app_tomcat::default"
+        ]
+      },
+      "tomcat": {
+        "calculated": false,
+        "type": "hash",
+        "choice": [
+
+        ],
+        "display_name": "Tomcat Application Settings",
+        "recipes": [
+
+        ],
+        "required": "optional"
+      },
+      "tomcat/code/credentials": {
+        "calculated": false,
+        "type": "string",
+        "choice": [
+
+        ],
+        "description": "The private SSH key of the git repository.",
+        "display_name": "Repository Credentials",
+        "required": "optional",
+        "recipes": [
+          "app_tomcat::do_update_code",
+          "app_tomcat::default"
+        ]
+      },
+      "tomcat/java/xms": {
+        "calculated": false,
+        "type": "string",
+        "choice": [
+
+        ],
+        "description": "The java Xms argument (i.e. 512m)",
+        "display_name": "Tomcat Java XMS",
+        "required": "optional",
+        "recipes": [
+          "app_tomcat::setup_tomcat_configs"
+        ]
+      }
+    },
+    "replacing": {
     }
-  },
-  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "suggestions": {
-  },
-  "platforms": {
-  },
-  "maintainer": "RightScale, Inc.",
-  "long_description": "= RightScale App Tomcat Cookbook (Beta)\n\n== DESCRIPTION:\n\n== DETAILS:\n\n== REQUIREMENTS:\n\n== SETUP: \n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n",
-  "version": "0.0.1",
-  "recommendations": {
-  },
-  "recipes": {
-    "app_tomcat::setup_tomcat_application_vhost": "Set up the application vhost on port 8000.",
-    "app_tomcat::setup_db_connection": "Set up the MySQL database db.tomcat connection file.",
-    "app_tomcat::do_update_code": "Update application source files from the remote repository.",
-    "app_tomcat::default": "Installs the tomcat application server."
-  },
-  "groupings": {
-  },
-  "conflicting": {
-  },
-  "replacing": {
-  },
-  "description": "Installs the tomcat application server.",
-  "providing": {
   }
-}

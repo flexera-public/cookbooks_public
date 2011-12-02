@@ -1,10 +1,3 @@
-#
-# Cookbook Name:: app_tomcat
-#
-# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
-# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
-# if applicable, other agreements such as a RightScale Master Subscription Agreement.
-
 # == Recommended attributes
 #
 set_unless[:tomcat][:server_name] = "myserver"  
@@ -26,7 +19,7 @@ set[:tomcat][:docroot] = "/srv/tomcat6/webapps"
 case platform
 when "ubuntu", "debian"
   set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
-when "centos","fedora","suse","redhat"
+when "centos","fedora","suse"
   set[:tomcat][:package_dependencies] = ["eclipse-ecj",\
                                          "tomcat6",\
                                          "tomcat6-admin-webapps",\

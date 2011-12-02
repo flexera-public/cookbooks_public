@@ -1,5 +1,5 @@
 # Cookbook Name:: app_tomcat
-# Recipe:: setup_db_connection
+# Recipe:: setup_tomcat_application_vhost
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,47 +22,50 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# == Setup tomcat Database Connection
-#
-
 rs_utils_marker :begin
 
-template "/etc/tomcat6/context.xml" do
-  source "context_xml.erb"
-  owner "root"
+template "/etc/tomcat6/tomcat6.conf" do
+  action :create
+  source "tomcat6_conf.erb"
   group "root"
-  mode "0644"
-  variables(
-    :user      => node[:db][:application][:user],
-    :password  => node[:db][:application][:password],
-    :fqdn      => node[:db][:fqdn],
-    :database  => node[:tomcat][:db_name]
-  )
-end
-
-template "/etc/tomcat6/web.xml" do
-  source "web_xml.erb"
   owner "root"
-  group "root"
   mode "0644"
 end
 
-# chef 0.8.* uses remote_file, 0.9.* uses cookbook_file
-cookbook_file "/usr/share/tomcat6/lib/jstl-api-1.2.jar" do
-#remote_file "/usr/share/tomcat6/lib/jstl-api-1.2.jar" do
-  source "jstl-api-1.2.jar"
-  owner "root"
+bash "Add optional Java XMS and XMX parameters" do
+  flags "-ex"
+  code <<-EOH
+    tc_conf=/etc/tomcat6/tomcat6.conf
+
+    if [ -z "$(grep "OPTS -Xms" $tc_conf)" ] ; then 
+      xms_val="512m"
+      xmx_val="512m"
+      [ -n "#{node[:tomcat][:java][:xms]}" ] && xms_val="#{node[:tomcat][:java][:xms]}"
+      [ -n "#{node[:tomcat][:java][:xmx]}" ] && xmx_val="#{node[:tomcat][:java][:xmx]}"
+      cat << EOF >> $tc_conf
+# Set the memory allocation size
+CATALINA_OPTS="\$CATALINA_OPTS -Xms$xms_val -Xmx$xmx_val"
+EOF
+    fi
+  EOH
+end
+
+template "/etc/tomcat6/server.xml" do
+  action :create
+  source "server_xml.erb"
   group "root"
+  owner "root"
   mode "0644"
 end
 
-# chef 0.8.* uses remote_file, 0.9.* uses cookbook_file
-cookbook_file "/usr/share/tomcat6/lib/jstl-impl-1.2.jar" do
-#remote_file "/usr/share/tomcat6/lib/jstl-impl-1.2.jar" do
-  source "jstl-impl-1.2.jar"
-  owner "root"
-  group "root"
-  mode "0644"
+template "/etc/logrotate.d/tomcat6" do
+  source "tomcat6_logrotate.conf.erb"
+  variables :tomcat_name => "tomcat6"
+end
+
+service "tomcat6" do
+  supports :status => true, :restart => true
+  action [ :enable, :start ]
 end
 
 rs_utils_marker :end
