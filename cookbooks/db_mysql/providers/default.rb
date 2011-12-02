@@ -5,6 +5,8 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+include RightScale::Database::MySQL::Helper
+
 action :stop do
   @db = init(new_resource)
   @db.stop
