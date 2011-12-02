@@ -87,8 +87,24 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     storage_type      = "ros"
   end
 
-  log "  Forking background process to complete backup... (see /var/log/messages for results)"
   # backup.rb removes the file lock created from :backup_lock_take
+  log "  Forking background process to complete backup... (see /var/log/messages for results)"
+  background_exe = ["/opt/rightscale/sandbox/bin/backup.rb",
+                    "--backuponly",
+                    "--lineage #{node[:db][:backup][:lineage]}",
+                    "--cloud #{node[:cloud][:provider]}",
+                    storage_cloud ? "--storage-cloud #{storage_cloud}":"",
+                    node[:block_device][:rackspace_snet] ? "--no-snet":"",
+                    "--storage-type #{storage_type}",
+                    "--max-snapshots #{node[:block_device][:max_snapshots]}",
+                    "--keep-daily #{node[:block_device][:keep_daily]}",
+                    "--keep-weekly #{node[:block_device][:keep_weekly]}",
+                    "--keep-monthly #{node[:block_device][:keep_monthly]}",
+                    "--keep-yearly #{node[:block_device][:keep_yearly]}",
+                    "--container #{storage_container}",
+                    "2>&1 | logger -t rs_db_backup &"].join(" ")
+
+  log "  background process = '#{background_exe}'"
   bash "backup.rb" do
     environment ({ 
       'STORAGE_ACCOUNT_ID_RACKSPACE' => node[:block_device][:rackspace_user],
@@ -96,8 +112,6 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
       'STORAGE_ACCOUNT_ID_AWS' => node[:block_device][:aws_access_key_id],
       'STORAGE_ACCOUNT_SECRET_AWS' => node[:block_device][:aws_secret_access_key]
     })
-    code <<-EOH
-    /opt/rightscale/sandbox/bin/backup.rb --backuponly --lineage #{node[:db][:backup][:lineage]} --cloud #{node[:cloud][:provider]} #{storage_cloud ? '--storage-cloud ' + storage_cloud : ''} --storage-type #{storage_type} #{node[:block_device][:rackspace_snet] ? '' : '--no-snet'} --max_snapshots #{node[:block_device][:max_snapshots]} --keep_daily #{node[:block_device][:keep_daily]} --keep_weekly #{node[:block_device][:keep_weekly]} --keep_monthly #{node[:block_device][:keep_monthly]} --keep_yearly #{node[:block_device][:keep_yearly]} --container #{storage_container} 2>&1 | logger -t rs_db_backup &
-    EOH
+    code background_exe
   end
 end
