@@ -370,7 +370,7 @@ action :setup_monitoring do
 
   # Send warning if not centos/redhat or ubuntu
   log "WARNING: attempting to install collectd-mysql on unsupported platform #{node[:platform]}, continuing.." do
-    only_if { node[:platform] != "centos" && node[:platform] != "ubuntu" }
+    only_if { node[:platform] != "centos" && node[:platform] != "redhat" && node[:platform] != "ubuntu" }
     level :warn
   end
 

@@ -17,8 +17,8 @@
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend"
       ],
-      "description": "SSL Certificate Key",
-      "display_name": "SSL Certificate Key"
+      "display_name": "SSL Certificate Key",
+      "description": "SSL Certificate Key"
     },
     "web_apache/mpm": {
       "required": "optional",
@@ -36,8 +36,8 @@
         "web_apache::setup_frontend_http_vhost",
         "web_apache::setup_frontend"
       ],
-      "description": "Defines the multi-processing module setting in httpd.conf.  Use 'worker' for Rails/Tomcat/Standalone frontends and 'prefork' for PHP.",
-      "display_name": "Multi-Processing Module"
+      "display_name": "Multi-Processing Module",
+      "description": "Defines the multi-processing module setting in httpd.conf.  Use 'worker' for Rails/Tomcat/Standalone frontends and 'prefork' for PHP."
     },
     "web_apache/ssl_enable": {
       "required": "optional",
@@ -52,8 +52,8 @@
         "web_apache::install_apache",
         "web_apache::setup_frontend"
       ],
-      "description": "Enables SSL ('https')",
-      "display_name": "SSL Enable"
+      "display_name": "SSL Enable",
+      "description": "Enables SSL ('https')"
     },
     "web_apache/ssl_certificate": {
       "required": "optional",
@@ -66,8 +66,8 @@
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend"
       ],
-      "description": "SSL Certificate",
-      "display_name": "SSL Certificate"
+      "display_name": "SSL Certificate",
+      "description": "SSL Certificate"
     },
     "web_apache": {
       "required": "optional",
@@ -79,8 +79,8 @@
       "recipes": [
 
       ],
-      "description": "Apache Web Server",
-      "display_name": "apache hash"
+      "display_name": "apache hash",
+      "description": "Apache Web Server"
     },
     "web_apache/application_name": {
       "required": "optional",
@@ -97,8 +97,8 @@
         "web_apache::setup_frontend_http_vhost",
         "web_apache::setup_frontend"
       ],
-      "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name.",
-      "display_name": "Application Name"
+      "display_name": "Application Name",
+      "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name."
     },
     "web_apache/server_name": {
       "required": "optional",
@@ -115,8 +115,8 @@
         "web_apache::setup_frontend_http_vhost",
         "web_apache::setup_frontend"
       ],
-      "description": "The fully qualified domain name of the application server used to define your virtual host.",
-      "display_name": "Server Name"
+      "display_name": "Server Name",
+      "description": "The fully qualified domain name of the application server used to define your virtual host."
     },
     "web_apache/ssl_certificate_chain": {
       "required": "optional",
@@ -129,8 +129,8 @@
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend"
       ],
-      "description": "SSL Certificate Chain",
-      "display_name": "SSL Certificate Chain"
+      "display_name": "SSL Certificate Chain",
+      "description": "SSL Certificate Chain"
     },
     "web_apache/ssl_passphrase": {
       "required": "optional",
@@ -143,8 +143,8 @@
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend"
       ],
-      "description": "SSL passphrase",
-      "display_name": "SSL passphrase"
+      "display_name": "SSL passphrase",
+      "description": "SSL passphrase"
     }
   },
   "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
@@ -158,12 +158,15 @@
   "recommendations": {
   },
   "recipes": {
+    "web_apache::do_restart": "Runs service apache restart",
     "web_apache::default": "Runs web_apache::install_apache.",
     "web_apache::setup_frontend": "Frontend apache vhost.  Select ssl_enabled for SSL.",
     "web_apache::install_apache": "Installs and configures the Apache2 webserver.",
     "web_apache::setup_monitoring": "Install collectd-apache for monitoring support",
     "web_apache::setup_frontend_ssl_vhost": "Frontend apache vhost with SSL enabled.",
-    "web_apache::setup_frontend_http_vhost": "Frontend apache vhost with SSL enabled."
+    "web_apache::setup_frontend_http_vhost": "Frontend apache vhost with SSL enabled.",
+    "web_apache::do_stop": "Runs service apache stop",
+    "web_apache::do_start": "Runs service apache start"
   },
   "groupings": {
   },

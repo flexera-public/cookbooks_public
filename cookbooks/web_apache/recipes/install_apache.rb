@@ -7,35 +7,14 @@
 
 rs_utils_marker :begin
 
-package "apache2" do
-  case node[:platform]
-  when "centos","redhat","fedora","suse"
-    package_name "httpd"
-  when "debian","ubuntu"
-    package_name "apache2"
-  end
-  action :install
-end
-
-service "apache2" do
-  # If restarted/reloaded too quickly apache has a habit of failing
-  # This may happen with multiple recipes notifying apache to restart - like
-  # during the initial bootstrap.
-  case node[:platform]
-  when "centos","redhat","fedora","suse"
-    service_name "httpd"
-    restart_command "/sbin/service httpd restart && sleep 1"
-    reload_command "/sbin/service httpd reload && sleep 1"
-  when "debian","ubuntu"
-    service_name "apache2"
-    restart_command "service apache2 restart && sleep 1"
-    reload_command "service apache2 reload && sleep 1"
-  end
-  action :nothing
-end
-
 # include the public recipe for basic installation
 include_recipe "apache2"
+
+# Persist apache2 resource to node for use in other run lists
+service "apache2" do
+  action :nothing
+  persist true  
+end
 
 if node[:web_apache][:ssl_enable]
   include_recipe "apache2::mod_ssl"
