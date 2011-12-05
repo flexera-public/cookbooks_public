@@ -7,6 +7,8 @@
 #
 
 /var/log/rails/*log {
+    size 10M
+    rotate 4
     missingok
     notifempty
     nocompress

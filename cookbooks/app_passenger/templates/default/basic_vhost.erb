@@ -43,17 +43,6 @@ RailsEnv <%= @params[:rails_env] %>
 PassengerAppRoot <%="#{node[:app_passenger][:deploy_dir].chomp}/current"%>
 
 
-<% if (File.exists?("#{node[:app_passenger][:apache][:install_dir]}/modules/libphp5.so"))||(node[:app_passenger][:apache][:php_enable]=="true") %>
-# Load (if necessary) and bind the PHP interpreter to handle files with a .php extension.
-<IfModule !mod_php5.c>
-  LoadModule php5_module modules/libphp5.so
-</IfModule>
-DirectoryIndex default.php index.php
-AddHandler php5-script .php
-AddType text/html .ph
-<% end %>
-
-
 # Enable status page for monitoring purposes
 RewriteCond %{REMOTE_ADDR} ^(127.0.0.1)
 RewriteRule ^(/server-status) $1 [H=server-status,L]

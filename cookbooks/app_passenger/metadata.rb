@@ -1,7 +1,7 @@
 maintainer       "RightScale, Inc."
 maintainer_email "support@rightscale.com"
 license          "All rights reserved"
-description      "Installs/Configures app_passenger"
+description      "Installs/Configures Apache Passenger Rails application server"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
 
@@ -15,10 +15,11 @@ depends "db"
 recipe "app_passenger::default", "default cookbook recipe"
 recipe "app_passenger::install_custom_gems", "Custom gems install."
 recipe "app_passenger::install_required_app_gems", "Bundler gems Install. Gemfile must be present in app directory."
-recipe "app_passenger::install_apache_rails_passenger_http_only_vhost", "Install and configure passenger module"
+recipe "app_passenger::install_apache_passenger", "Install and apache passenger module"
+recipe "app_passenger::setup_apache_passenger_vhost", "Configure apache passenger vhost"
 recipe "app_passenger::install_ruby_enterprise_edition", "Install Ruby EE"
 recipe "app_passenger::svn_code_update_and_db_config", "Configures rails deploy environment"
-recipe "app_passenger::install_sqlite3_gem", "Recipe created to fix problems with installation of sqlite3 gem on RHEL based systems."
+
 recipe "app_passenger::run_custom_rails_commands", "Run specific user defined commands Commands will be executed in the app directory. Command path ../rails/bin/"
 recipe "app_passenger::rhel_apache_fix", "Temporary recipe for fixing apache bug on red hat image"
 
@@ -40,14 +41,6 @@ attribute "app_passenger/apache/maintenance_page",
   :display_name => "Apache maintenance page",
   :description => "Maintenance URI to show if the page exists (based on document root). Default: [document root]/system/maintenance.html.  If this file exists, your site will show a &quot;Under Maintenance&quot; page and your site will not be available.",
   :default => "",
-  :recipes => ["app_passenger::install_apache_rails_passenger_http_only_vhost"]
-
-attribute "app_passenger/apache/php_enable",
-  :display_name => "Apache PHP Support",
-  :description => "Enables PHP support for Apache by enabling PHP module.  Required to execute PHP scripts.",
-  :choice => ["true", "false"],
-  :required => false,
-  :default => "false",
   :recipes => ["app_passenger::install_apache_rails_passenger_http_only_vhost"]
 
 attribute "app_passenger/apache/serve_local_files",

@@ -1,11 +1,11 @@
+#
+# Cookbook Name::app_passenger
+#
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
-
-#to initialize DB: inputs when we run recipe on operational instance
-include_recipe "db::default"
 
 # Preparing dirs, required for apache+passenger
 log "INFO: Creating directory for project deployment - #{node[:app_passenger][:deploy_dir]}"
@@ -59,7 +59,7 @@ case node[:app_passenger][:repository][:type]
       recursive true
     end
 #Creating subversion config for run without promts
-log "Creating subversion config"
+log "INFO: Creating subversion config"
     template "/root/.subversion/servers" do
       source "svn_servers.erb"
     end
@@ -107,7 +107,7 @@ log "Creating subversion config"
 
 end
 #creating database template
-log "Generating database.yml"
+log "INFO: Generating database.yml"
 template "#{node[:app_passenger][:deploy_dir].chomp}/current/config/database.yml" do
   owner node[:app_passenger][:apache][:user]
   source "database.yml.erb"
@@ -118,7 +118,7 @@ end
 ENV['RAILS_ENV'] = node[:app_passenger][:project][:environment]
 
 #Creating bash file for manual $RAILS_ENV setup
-log "Creating bash file for manual $RAILS_ENV setup"
+log "INFO: Creating bash file for manual $RAILS_ENV setup"
 template "/etc/profile.d/rails_env.sh" do
   mode '0744'
   source "rails_env.erb"
