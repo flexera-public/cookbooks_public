@@ -56,6 +56,7 @@ recipe "db::request_appserver_deny", "Sends a request to deny connections from t
 #
 recipe "db::do_init_and_become_master", "Initializes MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
 recipe "db::do_restore_and_become_master", "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
+recipe "db::do_secondary_restore_and_become_master", "Restore MySQL database from secondary backup location.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
 recipe "db::do_init_slave", "Initialize MySQL Slave"
 recipe "db::do_init_slave_at_boot", "Initialize MySQL Slave at boot."
 recipe "db::do_promote_to_master", "Promote a replicating slave to master"
@@ -93,15 +94,15 @@ attribute "db/admin/password",
 
 attribute "db/replication/user",
   :display_name => "Database Replication Username",
-  :description => "The username of the database user that has 'replciation' privileges.",
+  :description => "The username of the database user that has 'replication' privileges.",
   :required => true,
-  :recipes => [ "db::setup_replication_privileges", "db::do_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master", "db::do_init_slave", "db::do_init_slave_at_boot" ]
+  :recipes => [ "db::setup_replication_privileges", "db::do_restore_and_become_master", "db::do_secondary_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master", "db::do_init_slave", "db::do_init_slave_at_boot" ]
 
 attribute "db/replication/password",
   :display_name => "Database Replication Password",
   :description => "The password of the database user that has 'replciation' privileges.",
   :required => true,
-  :recipes => [ "db::setup_replication_privileges", "db::do_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master","db::do_init_slave", "db::do_init_slave_at_boot" ]
+  :recipes => [ "db::setup_replication_privileges", "db::do_restore_and_become_master", "db::do_secondary_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master","db::do_init_slave", "db::do_init_slave_at_boot" ]
 
 attribute "db/application/user",
   :display_name => "Database Application Username",
@@ -134,6 +135,7 @@ attribute "db/backup/lineage",
     "db::do_init_slave_at_boot",
     "db::do_promote_to_master",
     "db::do_restore_and_become_master",
+    "db::do_secondary_restore_and_become_master",
     "db::do_init_and_become_master",
     "db::do_backup",
     "db::do_restore",
