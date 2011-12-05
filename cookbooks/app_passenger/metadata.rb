@@ -28,41 +28,41 @@ attribute "app_passenger/apache/port",
   :display_name => "Apache application Port",
   :description => "Apache port number for your application Ex: 8000",
   :default => "8000",
-  :recipes => ["app_passenger::install_apache_rails_passenger_http_only_vhost"]
+  :recipes => ["app_passenger::setup_apache_passenger_vhost"]
 
 attribute "app_passenger/spawn_method",
   :display_name => "Rails spawn method",
   :description => "The  spawn method that Phusion Passenger will use.  The choices are: smart, smart-lv2, and conservative.  Ex: conservative",
   :choice => ["conservative", "smart-lv2", "smart"],
   :default => "conservative",
-  :recipes => ["app_passenger::install_apache_rails_passenger_http_only_vhost"]
+  :recipes => ["app_passenger::setup_apache_passenger_vhost"]
 
 attribute "app_passenger/apache/maintenance_page",
   :display_name => "Apache maintenance page",
   :description => "Maintenance URI to show if the page exists (based on document root). Default: [document root]/system/maintenance.html.  If this file exists, your site will show a &quot;Under Maintenance&quot; page and your site will not be available.",
   :default => "",
-  :recipes => ["app_passenger::install_apache_rails_passenger_http_only_vhost"]
+  :recipes => ["app_passenger::setup_apache_passenger_vhost"]
 
 attribute "app_passenger/apache/serve_local_files",
   :display_name => "Apache serve local Files",
   :description => "This option tells Apache whether it should serve the (static) content itself. Currently, it will omit PHP and TomCat dynamic content, such as *.php, *.action, *.jsp, and *.do    Ex:  true",
   :required => false,
   :default => "true",
-  :recipes => ["app_passenger::install_apache_rails_passenger_http_only_vhost"]
+  :recipes => ["app_passenger::setup_apache_passenger_vhost"]
 
 attribute "app_passenger/apache/target_bind_address",
   :display_name => "Apache target bind address",
   :description => "The IP address that Apache will redirect the requests to. Most likely this will always be set to localhost.",
   :required => false,
   :default => "",
-  :recipes => ["app_passenger::install_apache_rails_passenger_http_only_vhost"]
+  :recipes => ["app_passenger::setup_apache_passenger_vhost"]
 
 attribute "app_passenger/apache/target_bind_port",
   :display_name => "Apache target bind port",
   :description => "The port address that Apache will redirect the requests to.  Default: 85",
   :required => false,
   :default => "",
-  :recipes => ["app_passenger::install_apache_rails_passenger_http_only_vhost"]
+  :recipes => ["app_passenger::setup_apache_passenger_vhost"]
 
 
 attribute "app_passenger/repository/type",
