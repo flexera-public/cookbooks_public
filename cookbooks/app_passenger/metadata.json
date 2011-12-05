@@ -31,7 +31,7 @@
       "description": "Apache port number for your application Ex: 8000",
       "default": "8000",
       "recipes": [
-        "app_passenger::install_apache_rails_passenger_http_only_vhost"
+        "app_passenger::setup_apache_passenger_vhost"
       ],
       "choice": [
 
@@ -50,7 +50,7 @@
       ],
       "default": "conservative",
       "recipes": [
-        "app_passenger::install_apache_rails_passenger_http_only_vhost"
+        "app_passenger::setup_apache_passenger_vhost"
       ],
       "calculated": false,
       "type": "string",
@@ -61,7 +61,7 @@
       "description": "Maintenance URI to show if the page exists (based on document root). Default: [document root]/system/maintenance.html.  If this file exists, your site will show a &quot;Under Maintenance&quot; page and your site will not be available.",
       "default": "",
       "recipes": [
-        "app_passenger::install_apache_rails_passenger_http_only_vhost"
+        "app_passenger::setup_apache_passenger_vhost"
       ],
       "choice": [
 
@@ -76,7 +76,7 @@
       "required": "optional",
       "default": "true",
       "recipes": [
-        "app_passenger::install_apache_rails_passenger_http_only_vhost"
+        "app_passenger::setup_apache_passenger_vhost"
       ],
       "choice": [
 
@@ -90,7 +90,7 @@
       "required": "optional",
       "default": "",
       "recipes": [
-        "app_passenger::install_apache_rails_passenger_http_only_vhost"
+        "app_passenger::setup_apache_passenger_vhost"
       ],
       "choice": [
 
@@ -104,7 +104,7 @@
       "required": "optional",
       "default": "",
       "recipes": [
-        "app_passenger::install_apache_rails_passenger_http_only_vhost"
+        "app_passenger::setup_apache_passenger_vhost"
       ],
       "choice": [
 
