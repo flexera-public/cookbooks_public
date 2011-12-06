@@ -249,5 +249,3 @@ attribute "db/force_safety",
   :default => "Override the dropdown and set to \"off\" to really run this recipe",
   :required => false,
   :recipes => [ "db::do_force_reset" ]
-
-
