@@ -5,14 +5,25 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+# NOTE - any changes here should also be considered for 'do_restore'
+
 rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
+
+db_init_status :check do
+  expected_state :uninitialized
+  error_message "Database already restored.  To over write existing database run do_force_reset before this recipe"
+end
 
 log "  Running pre-restore checks..."
 db DATA_DIR do
   action :pre_restore_check
 end
+
+log "======== LINEAGE ========="
+log node[:db][:backup][:lineage]
+log "======== LINEAGE ========="
 
 # ROS restore requires a setup, but VOLUME restore does not.
 # Since secondary is only ROS we need the folowing create action
