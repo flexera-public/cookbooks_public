@@ -57,7 +57,7 @@ db DATA_DIR do
   action :post_restore_cleanup
 end
 
-log "  Starting database as master..."
+log "  Starting database..."
 db DATA_DIR do
   action [ :start, :status ]
 end
