@@ -31,11 +31,19 @@ attribute "tomcat/db_name",
 attribute "tomcat/code",
   :display_name => "Tomcat Application Code",
   :type => "hash"
-  
+
 attribute "tomcat/java",
   :display_name => "Tomcat java settings",
   :type => "hash"
-  
+
+attribute "tomcat/code/repo_type",
+  :display_name => "Repository Type",
+  :description => "Choose type of Repository: SVN or GIT",
+  :choice => ["git", "svn"],
+  :default => "git",
+  :required => "optional",
+  :recipes => [ "app_tomcat::do_update_code" ]
+
 attribute "tomcat/code/url",
   :display_name => "Repository URL",
   :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
@@ -47,6 +55,20 @@ attribute "tomcat/code/credentials",
   :description => "The private SSH key of the git repository.",
   :required => "optional",
   :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
+
+attribute "tomcat/code/svn_username",
+  :display_name => "SVN username",
+  :description => "The SVN username that is used to checkout the application code from SVN repository..If you use git just change value to $ignore",
+  :required => "optional",
+  :default => "",
+  :recipes => [ "app_tomcat::do_update_code" ]
+
+attribute "tomcat/code/svn_password",
+  :display_name => "SVN password",
+  :description => "The SVN password that is used to checkout the application code from SVN repository..If you use git just change value to $ignore",
+  :required => "optional",
+  :default => "",
+  :recipes => [ "app_tomcat::do_update_code" ]
 
 attribute "tomcat/code/branch",
   :display_name => "Repository Branch",

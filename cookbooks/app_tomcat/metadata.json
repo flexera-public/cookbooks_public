@@ -1,177 +1,212 @@
 {
-    "recipes": {
-      "app_tomcat::setup_monitoring": "Install collectd monitoring for tomcat.",
-      "app_tomcat::setup_tomcat_configs": "Configure tomcat.",
-      "app_tomcat::setup_db_connection": "Set up the MySQL database db.tomcat connection file.",
-      "app_tomcat::default": "Installs the tomcat application server.",
-      "app_tomcat::do_update_code": "Update application source files from the remote repository."
-    },
-    "groupings": {
-    },
-    "recommendations": {
-    },
-    "version": "0.1.1",
-    "maintainer": "RightScale, Inc.",
-    "long_description": "= RightScale App Tomcat Cookbook (Beta)\n\n== DESCRIPTION:\n\n== DETAILS:\n\n== REQUIREMENTS:\n\n== SETUP: \n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n",
-    "description": "Installs the tomcat application server.",
-    "suggestions": {
-    },
-    "maintainer_email": "support@rightscale.com",
-    "name": "app_tomcat",
-    "conflicting": {
-    },
-    "license": "Apache v2.0",
-    "providing": {
-    },
-    "dependencies": {
-      "db_mysql": [
+  "name": "app_tomcat",
+  "description": "Installs the tomcat application server.",
+  "long_description": "= RightScale App Tomcat Cookbook (Beta)\n\n== DESCRIPTION:\n\n== DETAILS:\n\n== REQUIREMENTS:\n\n== SETUP: \n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n",
+  "maintainer": "RightScale, Inc.",
+  "maintainer_email": "support@rightscale.com",
+  "license": "Apache v2.0",
+  "platforms": {
+  },
+  "dependencies": {
+    "app": ">= 0.0.0",
+    "db_mysql": ">= 0.0.0",
+    "repo_git": ">= 0.0.0",
+    "rs_utils": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+    "tomcat": {
+      "display_name": "Tomcat Application Settings",
+      "type": "hash",
+      "choice": [
 
       ],
-      "app": [
-
-      ],
-      "rs_utils": [
-
-      ],
-      "repo_git": [
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
 
       ]
     },
-    "platforms": {
+    "tomcat/db_name": {
+      "display_name": "Database Name",
+      "description": "Enter the name of the MySQL database to use. Ex: mydatabase",
+      "required": "required",
+      "recipes": [
+        "app_tomcat::setup_db_connection"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     },
-    "attributes": {
-      "tomcat/db_name": {
-        "calculated": false,
-        "type": "string",
-        "choice": [
+    "tomcat/code": {
+      "display_name": "Tomcat Application Code",
+      "type": "hash",
+      "choice": [
 
-        ],
-        "description": "Enter the name of the MySQL database to use. Ex: mydatabase",
-        "display_name": "Database Name",
-        "required": "required",
-        "recipes": [
-          "app_tomcat::setup_db_connection"
-        ]
-      },
-      "tomcat/java": {
-        "calculated": false,
-        "type": "hash",
-        "choice": [
+      ],
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
 
-        ],
-        "display_name": "Tomcat java settings",
-        "recipes": [
-
-        ],
-        "required": "optional"
-      },
-      "tomcat/code": {
-        "calculated": false,
-        "type": "hash",
-        "choice": [
-
-        ],
-        "display_name": "Tomcat Application Code",
-        "recipes": [
-
-        ],
-        "required": "optional"
-      },
-      "tomcat/code/branch": {
-        "default": "master",
-        "calculated": false,
-        "type": "string",
-        "choice": [
-
-        ],
-        "description": "The name of the branch within the git repository where the application code should be pulled from. Ex: mybranch",
-        "display_name": "Repository Branch",
-        "required": "optional",
-        "recipes": [
-          "app_tomcat::do_update_code",
-          "app_tomcat::default"
-        ]
-      },
-      "tomcat/java/xmx": {
-        "calculated": false,
-        "type": "string",
-        "choice": [
-
-        ],
-        "description": "The java Xmx argument (i.e. 512m)",
-        "display_name": "Tomcat Java XMX",
-        "required": "optional",
-        "recipes": [
-          "app_tomcat::setup_tomcat_configs"
-        ]
-      },
-      "tomcat/code/root_war": {
-        "calculated": false,
-        "type": "string",
-        "choice": [
-
-        ],
-        "description": "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
-        "display_name": "War file for ROOT",
-        "required": "optional",
-        "recipes": [
-          "app_tomcat::do_update_code"
-        ]
-      },
-      "tomcat/code/url": {
-        "calculated": false,
-        "type": "string",
-        "choice": [
-
-        ],
-        "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
-        "display_name": "Repository URL",
-        "required": "required",
-        "recipes": [
-          "app_tomcat::do_update_code",
-          "app_tomcat::default"
-        ]
-      },
-      "tomcat": {
-        "calculated": false,
-        "type": "hash",
-        "choice": [
-
-        ],
-        "display_name": "Tomcat Application Settings",
-        "recipes": [
-
-        ],
-        "required": "optional"
-      },
-      "tomcat/code/credentials": {
-        "calculated": false,
-        "type": "string",
-        "choice": [
-
-        ],
-        "description": "The private SSH key of the git repository.",
-        "display_name": "Repository Credentials",
-        "required": "optional",
-        "recipes": [
-          "app_tomcat::do_update_code",
-          "app_tomcat::default"
-        ]
-      },
-      "tomcat/java/xms": {
-        "calculated": false,
-        "type": "string",
-        "choice": [
-
-        ],
-        "description": "The java Xms argument (i.e. 512m)",
-        "display_name": "Tomcat Java XMS",
-        "required": "optional",
-        "recipes": [
-          "app_tomcat::setup_tomcat_configs"
-        ]
-      }
+      ]
     },
-    "replacing": {
+    "tomcat/java": {
+      "display_name": "Tomcat java settings",
+      "type": "hash",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "tomcat/code/repo_type": {
+      "display_name": "Repository Type",
+      "description": "Choose type of Repository: SVN or GIT",
+      "choice": [
+        "git",
+        "svn"
+      ],
+      "default": "git",
+      "required": "optional",
+      "recipes": [
+        "app_tomcat::do_update_code"
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "tomcat/code/url": {
+      "display_name": "Repository URL",
+      "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
+      "required": "required",
+      "recipes": [
+        "app_tomcat::do_update_code",
+        "app_tomcat::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "tomcat/code/credentials": {
+      "display_name": "Repository Credentials",
+      "description": "The private SSH key of the git repository.",
+      "required": "optional",
+      "recipes": [
+        "app_tomcat::do_update_code",
+        "app_tomcat::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "tomcat/code/svn_username": {
+      "display_name": "SVN username",
+      "description": "The SVN username that is used to checkout the application code from SVN repository..If you use git just change value to $ignore",
+      "required": "optional",
+      "default": "",
+      "recipes": [
+        "app_tomcat::do_update_code"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "tomcat/code/svn_password": {
+      "display_name": "SVN password",
+      "description": "The SVN password that is used to checkout the application code from SVN repository..If you use git just change value to $ignore",
+      "required": "optional",
+      "default": "",
+      "recipes": [
+        "app_tomcat::do_update_code"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "tomcat/code/branch": {
+      "display_name": "Repository Branch",
+      "description": "The name of the branch within the git repository where the application code should be pulled from. Ex: mybranch",
+      "required": "optional",
+      "default": "master",
+      "recipes": [
+        "app_tomcat::do_update_code",
+        "app_tomcat::default"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "tomcat/code/root_war": {
+      "display_name": "War file for ROOT",
+      "description": "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
+      "required": "optional",
+      "recipes": [
+        "app_tomcat::do_update_code"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "tomcat/java/xms": {
+      "display_name": "Tomcat Java XMS",
+      "description": "The java Xms argument (i.e. 512m)",
+      "required": "optional",
+      "recipes": [
+        "app_tomcat::setup_tomcat_configs"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "tomcat/java/xmx": {
+      "display_name": "Tomcat Java XMX",
+      "description": "The java Xmx argument (i.e. 512m)",
+      "required": "optional",
+      "recipes": [
+        "app_tomcat::setup_tomcat_configs"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
-  }
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "app_tomcat::default": "Installs the tomcat application server.",
+    "app_tomcat::do_update_code": "Update application source files from the remote repository.",
+    "app_tomcat::setup_db_connection": "Set up the MySQL database db.tomcat connection file.",
+    "app_tomcat::setup_tomcat_configs": "Configure tomcat.",
+    "app_tomcat::setup_monitoring": "Install collectd monitoring for tomcat."
+  },
+  "version": "0.1.1"
+}
