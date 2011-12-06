@@ -27,13 +27,13 @@ db DATA_DIR do
   action :stop
 end
 
-log "  Performing Restore..."
+log "  Performing Secondary Restore from #{node[:db][:backup][:secondary_location]}..."
 # Requires block_device DATA_DIR to be instantiated
 # previously. Make sure block_device::default recipe has been run.
 block_device DATA_DIR do
   provider "block_device_ros"
   cloud node[:cloud][:provider]
-  storage_cloud node[:db][:backup][:secondary_location].downcase
+  storage_cloud node[:db][:backup][:secondary_location] ? node[:db][:backup][:secondary_location].downcase : "s3"
   rackspace_snet node[:block_device][:rackspace_snet]
   lineage node[:db][:backup][:lineage]
   timestamp_override node[:db][:backup][:timestamp_override]
