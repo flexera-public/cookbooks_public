@@ -33,7 +33,7 @@ log "  Performing Secondary Restore from #{node[:db][:backup][:secondary_locatio
 block_device DATA_DIR do
   provider "block_device_ros"
   cloud node[:cloud][:provider]
-  storage_cloud node[:db][:backup][:secondary_location] ? node[:db][:backup][:secondary_location].downcase : "s3"
+  storage_cloud node[:db][:backup][:secondary_location].downcase
   rackspace_snet node[:block_device][:rackspace_snet]
   lineage node[:db][:backup][:lineage]
   timestamp_override node[:db][:backup][:timestamp_override]

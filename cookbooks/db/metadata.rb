@@ -150,20 +150,20 @@ attribute "db/backup/timestamp_override",
   :display_name => "Restore Timestamp Override", 
   :description => "An optional variable to restore from a specific timestamp. You must specify a string that matches the timestamp tag on the volume snapshot.  You will need to specify the timestamp that's defined by the snapshot's tag (not the name).  For example, if the snapshot's tag is 'rs_backup:timestamp=1303613371' you would specify '1303613371' for this input.",
   :required => false,
-  :recipes => [ "db::do_restore", "db::do_secondary_restore" ]
+  :recipes => [ "db::do_restore", "db::do_secondary_restore", "db::do_secondary_restore_and_become_master" ]
   
 attribute "db/backup/secondary_location",
   :display_name => "Secondary Backup Location",
   :description => "Location for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud. For example, you can specify the name of an AWS S3 bucket or Rackspace CloudFiles container.",
   :default => "S3",
   :choice => [ "S3", "CloudFiles" ],
-  :recipes => [ "db::do_secondary_backup", "db::do_secondary_restore" ]
+  :recipes => [ "db::do_secondary_backup", "db::do_secondary_restore", "db::do_secondary_restore_and_become_master" ]
 
 attribute "db/backup/secondary_container",
   :display_name => "Secondary Backup Container",
   :description => "Container for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud. For example, you can specify the name of an AWS S3 bucket or Rackspace CloudFiles container.",
   :required => true,
-  :recipes => [ "db::do_secondary_backup", "db::do_secondary_restore" ]
+  :recipes => [ "db::do_secondary_backup", "db::do_secondary_restore", "db::do_secondary_restore_and_become_master" ]
 
 attribute "db/backup/master/hour",
   :display_name => "Master Backup Cron Hour",
