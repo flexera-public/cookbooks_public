@@ -87,6 +87,11 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     storage_type      = "ros"
   end
 
+  # Log that storage rotation is not supported on ROS storage types
+  if ( storage_type.downcase == "ros" )
+    log "  ROS storage type does not support rotation.  Use of rotation inputs will be ignored."
+  end
+
   # backup.rb removes the file lock created from :backup_lock_take
   log "  Forking background process to complete backup... (see /var/log/messages for results)"
   background_exe = ["/opt/rightscale/sandbox/bin/backup.rb",
