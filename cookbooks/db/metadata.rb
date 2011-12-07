@@ -233,7 +233,7 @@ attribute "db/dump/database_name",
   :recipes => [ "db::do_dump_import", "db::do_dump_export", "db::do_dump_schedule_enable" ]
 
 attribute "db/terminate_safety",
-  :display_name => "Terminate Saftey",
+  :display_name => "Terminate Safety",
   :description => "Prevents the accidental running of the db::do_teminate_server recipe.  This recipe will only run if the input variable is overridden and set to \"off\".",
   :type => "string",
   :choice => ["Override the dropdown and set to \"off\" to really run this recipe"],
@@ -242,7 +242,7 @@ attribute "db/terminate_safety",
   :recipes => [ "db::do_terminate_server" ]
 
 attribute "db/force_safety",
-  :display_name => "Force Reset Saftey",
+  :display_name => "Force Reset Safety",
   :description => "Prevents the accidental running of the db::do_force_reset recipe.  This recipe will only run if the input variable is overridden and set to \"off\".",
   :type => "string",
   :choice => ["Override the dropdown and set to \"off\" to really run this recipe"],
