@@ -143,6 +143,17 @@ attribute "db/backup/lineage",
     "db::do_secondary_backup",
     "db::do_secondary_restore"
   ]
+
+attribute "db/backup/lineage_override",
+  :display_name => "Backup Lineage Override",
+  :description => "If defined, it will override the input defined for 'Backup Lineage' (db/backup/lineage) so that you can restore the database from another backup that has as different lineage name.  The most recently completed snapshots will be used unless a specific timestamp value is specified for 'Restore Timestamp Override' (db/backup/timestamp_override).  This input allows you to restore from a different set of snapshots however, the subsequent backups will use 'Backup Lineage' to name the snapshots.   Be sure to remove this input once the new master is operational.",
+  :required => false,
+  :recipes => [
+    "db::do_init_slave",
+    "db::do_init_slave_at_boot",
+    "db::do_restore",
+    "db::do_restore_and_become_master"
+  ]
   
 attribute "db/backup/timestamp_override",
   :display_name => "Restore Timestamp Override", 

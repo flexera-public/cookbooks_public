@@ -26,6 +26,7 @@ r.run_action(:load)
 #   node[:db][:current_master_uuid]
 #   node[:db][:current_master_ip]
 #   node[:db][:this_is_master]
+#   node[:db][:current_master_ec2_id] - for 11H1 migration
 r = ruby_block "find current master" do
   block do
     collect = {}
@@ -33,12 +34,13 @@ r = ruby_block "find current master" do
       active = tags.select { |s| s =~ /rs_dbrepl:master_active/ }
       my_uuid = tags.detect { |u| u =~ /rs_dbrepl:master_instance_uuid/ }
       my_ip_0 = tags.detect { |i| i =~ /server:private_ip_0/ }
+      # following used for detecting 11H1 DB servers
+      ec2_instance_id = tags.detect { |each_ec2_instance_id| each_ec2_instance_id =~ /ec2:instance_id/ }
       most_recent = active.sort.last
-      collect[most_recent] = my_uuid, my_ip_0
-      #Chef::Log.info "DEBUG: Server collection master_servers: active #{active} uuid: #{my_uuid} ip_0: #{my_ip_0} most_recent #{most_recent} collect #{collect[most_recent]}"
+      collect[most_recent] = my_uuid, my_ip_0, ec2_instance_id
     end
     most_recent_timestamp = collect.keys.sort.last
-    current_master_uuid, current_master_ip = collect[most_recent_timestamp]
+    current_master_uuid, current_master_ip, current_master_ec2_id = collect[most_recent_timestamp]
     if current_master_uuid =~ /#{node[:rightscale][:instance_uuid]}/
       Chef::Log.info "THIS instance is the current master"
       node[:db][:this_is_master] = true
@@ -57,6 +59,15 @@ r = ruby_block "find current master" do
       node[:db][:current_master_ip] = nil
       Chef::Log.info "No current master ip found"
     end
+
+    # following used for detecting 11H1 DB servers
+    if current_master_ec2_id
+      node[:db][:current_master_ec2_id] = current_master_ec2_id.split(/=/, 2).last.chomp
+      Chef::Log.info "Detected #{current_master_ec2_id} - 11H1 migration"
+    else
+      node[:db][:current_master_ec2_id] = nil
+    end
+
     Chef::Log.info "found current master: #{node[:db][:current_master_uuid]} ip: #{node[:db][:current_master_ip]} active at #{most_recent_timestamp}" if current_master_uuid && current_master_ip
   end
 end
