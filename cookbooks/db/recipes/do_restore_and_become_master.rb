@@ -5,8 +5,6 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-# NOTE - any changes here should also be considered for 'do_secondary_restore_and_become_master'
-
 rs_utils_marker :begin
 
 include_recipe "db::do_restore"

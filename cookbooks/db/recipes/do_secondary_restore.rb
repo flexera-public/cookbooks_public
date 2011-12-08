@@ -5,8 +5,6 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-# NOTE - any changes here should also be considered for 'do_restore'
-
 rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
