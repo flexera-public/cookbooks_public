@@ -20,7 +20,7 @@ attribute "sys/reconverge_list",
 
 attribute "sys/swap_size",
   :display_name => "Swap size in GB",
-  :description => "Creates and activates a swap file based on the selected size (in GB).  Ex: 0.5, 1.0., 2.0. Note: The swap added by this file will be in addition to any swap defined in the image.",
+  :description => "Creates and activates a swap file based on the selected size (in GB).  Note: The swap added by this file will be in addition to any swap defined in the image.",
   :type => "string",
   :choice => ["0.5", "1.0", "2.0"],
   :default => "0.5",

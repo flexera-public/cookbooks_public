@@ -49,7 +49,7 @@
         "sys::setup_swap"
       ],
       "display_name": "Swap size in GB",
-      "description": "Creates and activates a swap file based on the selected size (in GB).  Ex: 0.5, 1.0., 2.0. Note: The swap added by this file will be in addition to any swap defined in the image."
+      "description": "Creates and activates a swap file based on the selected size (in GB).  Note: The swap added by this file will be in addition to any swap defined in the image."
     }
   },
   "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",

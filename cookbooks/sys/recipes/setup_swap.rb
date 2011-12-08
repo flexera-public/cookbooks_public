@@ -37,7 +37,6 @@ end
 
 def create_swap(swap_file, swap_size)
 
-  # Create swapfile, set it as swap, and turn swap on
   # Make sure swapfile directory exists, create swapfile, set it as swap, and turn swap on
   bash 'create swapfile' do
     not_if { File.exists?(swap_file) }
