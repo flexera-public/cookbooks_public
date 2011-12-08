@@ -99,7 +99,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
                     "--lineage #{node[:db][:backup][:lineage]}",
                     "--cloud #{node[:cloud][:provider]}",
                     storage_cloud ? "--storage-cloud #{storage_cloud}":"",
-                    node[:block_device][:rackspace_snet] == "true" ? "" : "--no-snet",
+                    (node[:block_device][:rackspace_snet] == false)  ? "--no-snet" : "",
                     "--storage-type #{storage_type}",
                     "--max-snapshots #{node[:block_device][:max_snapshots]}",
                     "--keep-daily #{node[:block_device][:keep_daily]}",
