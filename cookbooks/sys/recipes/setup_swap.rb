@@ -38,9 +38,11 @@ end
 def create_swap(swap_file, swap_size)
 
   # Create swapfile, set it as swap, and turn swap on
+  # Make sure swapfile directory exists, create swapfile, set it as swap, and turn swap on
   bash 'create swapfile' do
     not_if { File.exists?(swap_file) }
     code <<-eof
+      mkdir -p `dirname #{swap_file}`
       dd if=/dev/zero of=#{swap_file} bs=1M count=#{swap_size}
       chmod 600 #{swap_file}
       mkswap #{swap_file}
