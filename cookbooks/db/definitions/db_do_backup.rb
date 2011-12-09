@@ -75,7 +75,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   end
   
   log "  Performing (#{do_backup_type})Backup of lineage #{node[:db][:backup][:lineage]} and post-backup cleanup..."
-
+#TODO _ make this use the block device changes for primary and secondary
   # Determine if doing primary or secondary backup and obtain correct cloud to store the backup.
   if ( do_backup_type == "primary")
     storage_cloud = nil

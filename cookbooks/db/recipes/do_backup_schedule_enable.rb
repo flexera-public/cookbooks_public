@@ -18,11 +18,11 @@ raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.e
 
 # TODO: fix for LAMP
 if node[:db][:this_is_master]
-  hour = node[:db][:backup][:master][:hour]
-  minute = node[:db][:backup][:master][:minute]
+  hour = node[:db][:backup][:primary][:master][:hour]
+  minute = node[:db][:backup][:primary][:master][:minute]
 else
-  hour = node[:db][:backup][:slave][:hour]
-  minute = node[:db][:backup][:slave][:minute]
+  hour = node[:db][:backup][:primary][:slave][:hour]
+  minute = node[:db][:backup][:primary][:slave][:minute]
 end
 
 block_device DATA_DIR do
