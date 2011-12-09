@@ -15,6 +15,7 @@
       "db::setup_replication_privileges": "Set up privileges for MySQL replication slaves.",
       "db::do_secondary_backup": "Creates a backup of the database and uploads it to a secondary cloud storage location, which can be used to migrate your database to a different cloud.  For example, you can save a secondary backup to an AWS S3 bucket or a Rackspace CloudFiles container.",
       "db::default": "Adds the database:active=true tag to your server which identifies it as an database server. The tag is used by application servers to identify active databases. It also loads the required 'db' resources.",
+      "db::do_secondary_restore_and_become_master": "Restore MySQL database from secondary backup location.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master.",
       "db::do_secondary_restore": "Restores the database from the most recently completed backup available in a secondary location.",
       "db::do_backup": "Creates a backup of the database using persistent storage in the current cloud.  On Rackspace, LVM backups are uploaded to the specified CloudFiles container.  For all other clouds, volume snapshots (like EBS) are used.",
       "db::do_init_and_become_master": "Initializes MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master.",
@@ -131,7 +132,8 @@
         "type": "string",
         "recipes": [
           "db::do_secondary_backup",
-          "db::do_secondary_restore"
+          "db::do_secondary_restore",
+          "db::do_secondary_restore_and_become_master"
         ],
         "description": "Container for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud. For example, you can specify the name of an AWS S3 bucket or Rackspace CloudFiles container.",
         "display_name": "Secondary Backup Container"
@@ -147,7 +149,8 @@
         "type": "string",
         "recipes": [
           "db::do_secondary_backup",
-          "db::do_secondary_restore"
+          "db::do_secondary_restore",
+          "db::do_secondary_restore_and_become_master"
         ],
         "description": "Location for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud. For example, you can specify the name of an AWS S3 bucket or Rackspace CloudFiles container.",
         "display_name": "Secondary Backup Location"
@@ -262,6 +265,7 @@
           "db::do_init_slave_at_boot",
           "db::do_promote_to_master",
           "db::do_restore_and_become_master",
+          "db::do_secondary_restore_and_become_master",
           "db::do_init_and_become_master",
           "db::do_backup",
           "db::do_restore",
@@ -284,6 +288,7 @@
         "recipes": [
           "db::setup_replication_privileges",
           "db::do_restore_and_become_master",
+          "db::do_secondary_restore_and_become_master",
           "db::do_init_and_become_master",
           "db::do_promote_to_master",
           "db::do_init_slave",
@@ -342,12 +347,13 @@
         "recipes": [
           "db::setup_replication_privileges",
           "db::do_restore_and_become_master",
+          "db::do_secondary_restore_and_become_master",
           "db::do_init_and_become_master",
           "db::do_promote_to_master",
           "db::do_init_slave",
           "db::do_init_slave_at_boot"
         ],
-        "description": "The username of the database user that has 'replciation' privileges.",
+        "description": "The username of the database user that has 'replication' privileges.",
         "display_name": "Database Replication Username"
       },
       "db/force_safety": {
@@ -415,7 +421,8 @@
         "type": "string",
         "recipes": [
           "db::do_restore",
-          "db::do_secondary_restore"
+          "db::do_secondary_restore",
+          "db::do_secondary_restore_and_become_master"
         ],
         "description": "An optional variable to restore from a specific timestamp. You must specify a string that matches the timestamp tag on the volume snapshot.  You will need to specify the timestamp that's defined by the snapshot's tag (not the name).  For example, if the snapshot's tag is 'rs_backup:timestamp=1303613371' you would specify '1303613371' for this input.",
         "display_name": "Restore Timestamp Override"

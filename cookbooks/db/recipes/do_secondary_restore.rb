@@ -9,10 +9,19 @@ rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
 
+db_init_status :check do
+  expected_state :uninitialized
+  error_message "Database already restored.  To over write existing database run do_force_reset before this recipe"
+end
+
 log "  Running pre-restore checks..."
 db DATA_DIR do
   action :pre_restore_check
 end
+
+log "======== LINEAGE ========="
+log node[:db][:backup][:lineage]
+log "======== LINEAGE ========="
 
 # ROS restore requires a setup, but VOLUME restore does not.
 # Since secondary is only ROS we need the folowing create action
@@ -27,7 +36,7 @@ db DATA_DIR do
   action :stop
 end
 
-log "  Performing Restore..."
+log "  Performing Secondary Restore from #{node[:db][:backup][:secondary_location]}..."
 # Requires block_device DATA_DIR to be instantiated
 # previously. Make sure block_device::default recipe has been run.
 block_device DATA_DIR do
@@ -41,6 +50,9 @@ block_device DATA_DIR do
   persist false
   action :restore
 end
+
+log "  Setting state of database to be 'initialized'..."
+db_init_status :set
 
 log "  Running post-restore cleanup..."
 db DATA_DIR do
