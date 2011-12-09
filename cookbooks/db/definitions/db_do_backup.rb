@@ -47,8 +47,8 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   
   # == Aquire the backup lock or die
   #
-  # This lock is released in the 'backup.rb' script for now.
-  # See below for more information about 'backup.rb'
+  # This lock is released in the 'backup' script for now.
+  # See below for more information about 'backup'
   # if 'force' is true, kills pid and removes locks
   #
   block_device DATA_DIR do
@@ -88,8 +88,8 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   end
 
   log "  Forking background process to complete backup... (see /var/log/messages for results)"
-  # backup.rb removes the file lock created from :backup_lock_take
-  bash "backup.rb" do
+  # backup removes the file lock created from :backup_lock_take
+  bash "backup" do
     environment ({ 
       'STORAGE_ACCOUNT_ID_RACKSPACE' => node[:block_device][:rackspace_user],
       'STORAGE_ACCOUNT_SECRET_RACKSPACE' => node[:block_device][:rackspace_secret],
@@ -97,7 +97,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
       'STORAGE_ACCOUNT_SECRET_AWS' => node[:block_device][:aws_secret_access_key]
     })
     code <<-EOH
-    /opt/rightscale/sandbox/bin/backup.rb --backuponly --lineage #{node[:db][:backup][:lineage]} --cloud #{node[:cloud][:provider]} #{storage_cloud ? '--storage-cloud ' + storage_cloud : ''} --storage-type #{storage_type} #{node[:block_device][:rackspace_snet] ? '' : '--no-snet'} --container #{storage_container} 2>&1 | logger -t rs_db_backup &
+    /opt/rightscale/sandbox/bin/backup --backuponly --lineage #{node[:db][:backup][:lineage]} --cloud #{node[:cloud][:provider]} #{storage_cloud ? '--storage-cloud ' + storage_cloud : ''} --storage-type #{storage_type} #{node[:block_device][:rackspace_snet] ? '' : '--no-snet'} --container #{storage_container} 2>&1 | logger -t rs_db_backup &
     EOH
   end
 
