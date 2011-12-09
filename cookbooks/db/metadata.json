@@ -21,22 +21,6 @@
       "display_name": "Master Backup Cron Hour",
       "description": "Defines the hour of the day when the backup EBS snapshot will be taken of the Master database.  Backups of the Master are taken daily.  By default, an hour will be randomly chosen at launch time.  The time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'.  Uses standard crontab format. (Ex: 23) for 11pm."
     },
-    "db/backup/secondary/cloud": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-        "S3",
-        "CloudFiles"
-      ],
-      "default": "S3",
-      "type": "string",
-      "recipes": [
-        "db::do_secondary_backup",
-        "db::do_secondary_restore"
-      ],
-      "display_name": "Secondary Backup Cloud",
-      "description": "Location for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud. For example, you can specify the name of an AWS S3 bucket or Rackspace CloudFiles container."
-    },
     "db/init_slave_at_boot": {
       "required": "optional",
       "calculated": false,
@@ -94,20 +78,6 @@
       ],
       "display_name": "Dump Container",
       "description": "The cloud storage location where the dump file will be saved to or restored from. For Amazon S3, use the bucket name.  For Rackspace Cloud Files, use the container name."
-    },
-    "db/backup/secondary/container": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "db::do_secondary_backup",
-        "db::do_secondary_restore"
-      ],
-      "display_name": "Secondary Backup Container",
-      "description": "Container for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud. For example, you can specify the name of an AWS S3 bucket or Rackspace CloudFiles container."
     },
     "db/admin/password": {
       "required": "required",

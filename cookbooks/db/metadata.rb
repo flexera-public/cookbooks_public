@@ -150,19 +150,6 @@ attribute "db/backup/timestamp_override",
   :required => false,
   :recipes => [ "db::do_primary_restore", "db::do_secondary_restore" ]
   
-attribute "db/backup/secondary/cloud",
-  :display_name => "Secondary Backup Cloud",
-  :description => "Location for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud. For example, you can specify the name of an AWS S3 bucket or Rackspace CloudFiles container.",
-  :default => "S3",
-  :choice => [ "S3", "CloudFiles" ],
-  :recipes => [ "db::do_secondary_backup", "db::do_secondary_restore" ]
-
-attribute "db/backup/secondary/container",
-  :display_name => "Secondary Backup Container",
-  :description => "Container for secondary backups. Used by db::do_secondary_backup and db::do_secondary_restore to backup to persistent storage outside of the current cloud. For example, you can specify the name of an AWS S3 bucket or Rackspace CloudFiles container.",
-  :required => true,
-  :recipes => [ "db::do_secondary_backup", "db::do_secondary_restore" ]
-
 attribute "db/backup/primary/master/cron/hour",
   :display_name => "Master Backup Cron Hour",
   :description => "Defines the hour of the day when the backup EBS snapshot will be taken of the Master database.  Backups of the Master are taken daily.  By default, an hour will be randomly chosen at launch time.  The time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'.  Uses standard crontab format. (Ex: 23) for 11pm.",
