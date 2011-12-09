@@ -75,7 +75,6 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   end
   
   log "  Performing (#{do_backup_type})Backup of lineage #{node[:db][:backup][:lineage]} and post-backup cleanup..."
-#TODO _ make this use the block device changes for primary and secondary
   # Determine if doing primary or secondary backup and obtain correct cloud to store the backup.
   if ( do_backup_type == "primary")
     storage_cloud = nil
@@ -87,19 +86,36 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     storage_type      = "ros"
   end
 
+  # Log that storage rotation is not supported on ROS storage types
+  if ( storage_type.downcase == "ros" )
+    log "  ROS storage type does not support rotation.  Use of rotation inputs will be ignored."
+  end
+
+  # backup.rb removes the file lock created from :backup_lock_take
   log "  Forking background process to complete backup... (see /var/log/messages for results)"
-  # backup removes the file lock created from :backup_lock_take
-  bash "backup" do
+  background_exe = ["/opt/rightscale/sandbox/bin/backup.rb",
+                    "--backuponly",
+                    "--lineage #{node[:db][:backup][:lineage]}",
+                    "--cloud #{node[:cloud][:provider]}",
+                    storage_cloud ? "--storage-cloud #{storage_cloud}":"",
+                    (node[:block_device][:rackspace_snet] == false)  ? "--no-snet" : "",
+                    "--storage-type #{storage_type}",
+                    "--max-snapshots #{node[:block_device][:max_snapshots]}",
+                    "--keep-daily #{node[:block_device][:keep_daily]}",
+                    "--keep-weekly #{node[:block_device][:keep_weekly]}",
+                    "--keep-monthly #{node[:block_device][:keep_monthly]}",
+                    "--keep-yearly #{node[:block_device][:keep_yearly]}",
+                    "--container #{storage_container}",
+                    "2>&1 | logger -t rs_db_backup &"].join(" ")
+
+  log "  background process = '#{background_exe}'"
+  bash "backup.rb" do
     environment ({ 
       'STORAGE_ACCOUNT_ID_RACKSPACE' => node[:block_device][:rackspace_user],
       'STORAGE_ACCOUNT_SECRET_RACKSPACE' => node[:block_device][:rackspace_secret],
       'STORAGE_ACCOUNT_ID_AWS' => node[:block_device][:aws_access_key_id],
       'STORAGE_ACCOUNT_SECRET_AWS' => node[:block_device][:aws_secret_access_key]
     })
-    code <<-EOH
-    /opt/rightscale/sandbox/bin/backup --backuponly --lineage #{node[:db][:backup][:lineage]} --cloud #{node[:cloud][:provider]} #{storage_cloud ? '--storage-cloud ' + storage_cloud : ''} --storage-type #{storage_type} #{node[:block_device][:rackspace_snet] ? '' : '--no-snet'} --container #{storage_container} 2>&1 | logger -t rs_db_backup &
-    EOH
+    code background_exe
   end
-
 end
-
