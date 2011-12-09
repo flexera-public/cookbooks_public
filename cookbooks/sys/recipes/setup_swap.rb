@@ -37,10 +37,11 @@ end
 
 def create_swap(swap_file, swap_size)
 
-  # Create swapfile, set it as swap, and turn swap on
+  # Make sure swapfile directory exists, create swapfile, set it as swap, and turn swap on
   bash 'create swapfile' do
     not_if { File.exists?(swap_file) }
     code <<-eof
+      mkdir -p `dirname #{swap_file}`
       dd if=/dev/zero of=#{swap_file} bs=1M count=#{swap_size}
       chmod 600 #{swap_file}
       mkswap #{swap_file}
@@ -99,7 +100,9 @@ else
         fs_size_threshold_percent = 75
 
         # Determine if swapfile is too big for fs that holds it
-        (fs_total,fs_used) = `df --block-size=1M -P #{File.dirname(swap_file)} |tail -1| awk '{print $2":"$3}'`.split(":")
+        swap_dir=File.dirname(swap_file)
+        FileUtils.mkdir_p(swap_dir) unless swap_dir == "/"
+        (fs_total,fs_used) = `df --block-size=1M -P #{swap_dir} |tail -1| awk '{print $2":"$3}'`.chomp.split(":")
         if ( (((fs_used.to_f + swap_size).to_f/fs_total.to_f)*100).to_i > fs_size_threshold_percent )
           raise "ERROR: swap file size too big - would exceed #{fs_size_threshold_percent} percent of filesystem - currently using #{fs_used} out of #{fs_total} wanting to add #{swap_size} in swap"
         end
