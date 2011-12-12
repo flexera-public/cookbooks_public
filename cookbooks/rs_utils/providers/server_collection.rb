@@ -27,11 +27,11 @@ action :load do
         break if new_resource.empty_ok && collection.empty?
         break if !collection.empty? && collection.all? do |id, tags|
           all_tags.all? do |prefix|
-            tags.detect {|tag| RightScale::Utils::Helper.matches_tag_wildcard?(prefix, tag)}
+            tags.detect {|tag| RightScaleTools::Utils::Helper.matches_tag_wildcard?(prefix, tag)}
           end
         end
 
-        delay = RightScale::System::Helper.calculate_exponential_backoff(delay)
+        delay = RightScaleTools::System::Helper.calculate_exponential_backoff(delay)
         Chef::Log.info "not all tags for #{new_resource.tags.inspect} exist; retrying in #{delay} seconds..."
         sleep delay
       end
