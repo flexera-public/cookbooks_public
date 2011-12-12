@@ -7,7 +7,7 @@
 
 rs_utils_marker :begin
 
-include_recipe "db::do_restore"
+include_recipe "db::do_primary_restore"
 
 db_register_master
 
@@ -17,6 +17,6 @@ db_do_backup "do force backup" do
   force true
 end
 
-include_recipe "db::do_backup_schedule_enable"
+include_recipe "db::do_primary_backup_schedule_enable"
 
 rs_utils_marker :end
