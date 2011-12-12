@@ -17,7 +17,7 @@ Requires a VM launched from a RightScale managed RightImage
 Run the rs_utils::default recipe to perform common server configuration steps  
 such as enabling monitoring and logging on the RightScale Dashboard.
 
-== KNWON LIMITATIONS:
+== KNOWN LIMITATIONS:
 
 == DEFINITIONS
 
