@@ -61,7 +61,7 @@ action :update do
         if tag
           valid_ip_regex = '(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])'
           ip_list = node[:server_collection][collection_name].collect do |_, tags|
-            RightScale::Tools::Utils::Helper.get_tag_value(ip_tag, tags, valid_ip_regex)
+            RightScale::Utils::Helper.get_tag_value(ip_tag, tags, valid_ip_regex)
           end
         end # if tag
                   
@@ -74,7 +74,7 @@ action :update do
           rule << "_#{ip.gsub('/','_')}_#{protocol}" 
                     
           # Programatically execute template resource
-          RightScale::Tools::System::Helper.run_template(
+          RightScale::System::Helper.run_template(
                 "/etc/iptables.d/#{rule}",    # target_file
                 "iptables_port.erb",          # source
                 "sys_firewall",               # cookbook
