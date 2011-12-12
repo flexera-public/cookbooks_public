@@ -57,7 +57,8 @@ recipe "db::request_appserver_deny", "Sends a request to deny connections from t
 recipe "db::do_init_and_become_master", "Initializes MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
 recipe "db::do_primary_restore_and_become_master", "Restore MySQL database.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
 recipe "db::do_secondary_restore_and_become_master", "Restore MySQL database from secondary backup location.  Tag as Master.  Set Master DNS.  Kick off a fresh backup from this master."
-recipe "db::do_init_slave", "Initialize MySQL Slave"
+recipe "db::do_primary_init_slave", "Initialize MySQL Slave from primary backup location"
+recipe "db::do_secondary_init_slave", "Initialize MySQL Slave from secondary backup location"
 recipe "db::do_init_slave_at_boot", "Initialize MySQL Slave at boot."
 recipe "db::do_promote_to_master", "Promote a replicating slave to master"
 recipe "db::setup_replication_privileges", "Set up privileges for MySQL replication slaves."
@@ -96,13 +97,13 @@ attribute "db/replication/user",
   :display_name => "Database Replication Username",
   :description => "The username of the database user that has 'replication' privileges.",
   :required => true,
-  :recipes => [ "db::setup_replication_privileges", "db::do_primary_restore_and_become_master", "db::do_secondary_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master", "db::do_init_slave", "db::do_init_slave_at_boot" ]
+  :recipes => [ "db::setup_replication_privileges", "db::do_primary_restore_and_become_master", "db::do_secondary_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master", "db::do_primary_init_slave", "db::do_secondary_init_slave", "db::do_init_slave_at_boot" ]
 
 attribute "db/replication/password",
   :display_name => "Database Replication Password",
   :description => "The password of the database user that has 'replciation' privileges.",
   :required => true,
-  :recipes => [ "db::setup_replication_privileges", "db::do_primary_restore_and_become_master", "db::do_secondary_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master", "db::do_init_slave", "db::do_init_slave_at_boot" ]
+  :recipes => [ "db::setup_replication_privileges", "db::do_primary_restore_and_become_master", "db::do_secondary_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master", "db::do_primary_init_slave", "db::do_secondary_init_slave", "db::do_init_slave_at_boot" ]
 
 attribute "db/application/user",
   :display_name => "Database Application Username",
@@ -131,7 +132,8 @@ attribute "db/backup/lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular database.",
   :required => true,
   :recipes => [
-    "db::do_init_slave",
+    "db::do_primary_init_slave",
+    "db::do_secondary_init_slave",
     "db::do_init_slave_at_boot",
     "db::do_promote_to_master",
     "db::do_primary_restore_and_become_master",
@@ -151,7 +153,8 @@ attribute "db/backup/lineage_override",
   :description => "If defined, it will override the input defined for 'Backup Lineage' (db/backup/lineage) so that you can restore the database from another backup that has as different lineage name.  The most recently completed snapshots will be used unless a specific timestamp value is specified for 'Restore Timestamp Override' (db/backup/timestamp_override).  This input allows you to restore from a different set of snapshots however, the subsequent backups will use 'Backup Lineage' to name the snapshots.   Be sure to remove this input once the new master is operational.",
   :required => false,
   :recipes => [
-    "db::do_init_slave",
+    "db::do_primary_init_slave",
+    "db::do_secondary_init_slave",
     "db::do_init_slave_at_boot",
     "db::do_restore",
     "db::do_restore_and_become_master"
