@@ -27,7 +27,7 @@ end
 
 block_device DATA_DIR do
   lineage snap_lineage
-  cron_backup_recipe "#{self.cookbook_name}::do_backup"
+  cron_backup_recipe "#{self.cookbook_name}::do_primary_backup"
   cron_backup_hour hour.to_s
   cron_backup_minute minute.to_s
   action :backup_schedule_enable

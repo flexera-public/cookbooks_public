@@ -53,7 +53,7 @@ db_init_status :reset
 
 log "  Cleaning cron..."
 block_device DATA_DIR do
-  cron_backup_recipe "#{self.cookbook_name}::do_backup"
+  cron_backup_recipe "#{self.cookbook_name}::do_primary_backup"
   action :backup_schedule_disable
 end
 

@@ -46,6 +46,6 @@ db_do_backup "do force backup" do
 end
 
 log "  Setting up cron to do scheduled backups..."
-include_recipe "db::do_backup_schedule_enable"
+include_recipe "db::do_primary_backup_schedule_enable"
 
 rs_utils_marker :end

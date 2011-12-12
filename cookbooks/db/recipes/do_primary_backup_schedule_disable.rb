@@ -10,7 +10,7 @@ rs_utils_marker :begin
 DATA_DIR = node[:db][:data_dir]
 
 block_device DATA_DIR do
-  cron_backup_recipe "#{self.cookbook_name}::do_backup"
+  cron_backup_recipe "#{self.cookbook_name}::do_primary_backup"
   action :backup_schedule_disable
 end
 
