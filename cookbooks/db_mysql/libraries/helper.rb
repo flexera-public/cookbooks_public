@@ -29,7 +29,7 @@ module RightScale
             Chef::Log.warn("Please contact Rightscale to upgrade your account.")
           end
           mount_point = new_resource.name
-          RightScaleTools::Tools::Database.factory(:mysql, new_resource.user, new_resource.password, mount_point, Chef::Log)
+          RightScale::Tools::Tools::Database.factory(:mysql, new_resource.user, new_resource.password, mount_point, Chef::Log)
         end
 
 	def self.load_replication_info(node)
@@ -79,15 +79,15 @@ module RightScale
 
         def self.reconfigure_replication(node, hostname = 'localhost', newmaster_host = nil, newmaster_logfile=nil, newmaster_position=nil)
 # These must be passed and not read from a file
-#          master_info = RightScaleTools::Database::MySQL::Helper.load_replication_info(node)
+#          master_info = RightScale::Tools::Database::MySQL::Helper.load_replication_info(node)
 #          newmaster_host = master_info['Master_IP']
 #          newmaster_logfile = master_info['File']
 #          newmaster_position = master_info['Position']
           Chef::Log.info "Configuring with #{newmaster_host} logfile #{newmaster_logfile} position #{newmaster_position}"
 
           # legacy did this twice, looks like slave stop can fail once (only throws warning if slave is already stopped)
-          RightScaleTools::Database::MySQL::Helper.do_query(node, "STOP SLAVE", hostname)
-          RightScaleTools::Database::MySQL::Helper.do_query(node, "STOP SLAVE", hostname)
+          RightScale::Tools::Database::MySQL::Helper.do_query(node, "STOP SLAVE", hostname)
+          RightScale::Tools::Database::MySQL::Helper.do_query(node, "STOP SLAVE", hostname)
 
           cmd = "CHANGE MASTER TO MASTER_HOST='#{newmaster_host}'"
           cmd = cmd +          ", MASTER_LOG_FILE='#{newmaster_logfile}'"
@@ -96,12 +96,12 @@ module RightScale
           # don't log replication user and password
           cmd = cmd +          ", MASTER_USER='#{node[:db][:replication][:user]}'"
           cmd = cmd +          ", MASTER_PASSWORD='#{node[:db][:replication][:password]}'"
-          RightScaleTools::Database::MySQL::Helper.do_query(node, cmd, hostname)
+          RightScale::Tools::Database::MySQL::Helper.do_query(node, cmd, hostname)
 
-          RightScaleTools::Database::MySQL::Helper.do_query(node, "START SLAVE", hostname)
+          RightScale::Tools::Database::MySQL::Helper.do_query(node, "START SLAVE", hostname)
           started=false
           10.times do
-            row = RightScaleTools::Database::MySQL::Helper.do_query(node, "SHOW SLAVE STATUS", hostname)
+            row = RightScale::Tools::Database::MySQL::Helper.do_query(node, "SHOW SLAVE STATUS", hostname)
             slave_IO = row["Slave_IO_Running"].strip.downcase
             slave_SQL = row["Slave_SQL_Running"].strip.downcase
             if( slave_IO == "yes" and slave_SQL == "yes" ) then

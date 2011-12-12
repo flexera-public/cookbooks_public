@@ -5,7 +5,7 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-include RightScaleTools::Database::MySQL::Helper
+include RightScale::Tools::Database::MySQL::Helper
 
 action :stop do
   @db = init(new_resource)
@@ -65,10 +65,10 @@ end
 
 action :write_backup_info do
   masterstatus = Hash.new
-  masterstatus = RightScaleTools::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS')
+  masterstatus = RightScale::Tools::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS')
   masterstatus['Master_IP'] = node[:db][:current_master_ip]
   masterstatus['Master_instance_uuid'] = node[:db][:current_master_uuid]
-  slavestatus = RightScaleTools::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS')
+  slavestatus = RightScale::Tools::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS')
   slavestatus ||= Hash.new
   if node[:db][:this_is_master]
     Chef::Log.info "Backing up Master info"
@@ -78,7 +78,7 @@ action :write_backup_info do
     masterstatus['Position'] = slavestatus['Exec_Master_Log_Pos']
   end
   Chef::Log.info "Saving master info...:\n#{masterstatus.to_yaml}"
-  ::File.open(::File.join(node[:db][:data_dir], RightScaleTools::Database::MySQL::Helper::SNAPSHOT_POSITION_FILENAME), ::File::CREAT|::File::TRUNC|::File::RDWR) do |out|
+  ::File.open(::File.join(node[:db][:data_dir], RightScale::Tools::Database::MySQL::Helper::SNAPSHOT_POSITION_FILENAME), ::File::CREAT|::File::TRUNC|::File::RDWR) do |out|
     YAML.dump(masterstatus, out)
   end
 end
@@ -418,7 +418,7 @@ action :promote do
   service "mysql" do
     action :start
     only_if do
-      log_bin = RightScaleTools::Database::MySQL::Helper.do_query(node, "show variables like 'log_bin'", 'localhost', RightScaleTools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+      log_bin = RightScale::Tools::Database::MySQL::Helper.do_query(node, "show variables like 'log_bin'", 'localhost', RightScale::Tools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
       if log_bin['Value'] == 'OFF'
 	Chef::Log.info "Detected binlogs were disabled, restarting service to enable them for Master takeover."
 	true
@@ -428,8 +428,8 @@ action :promote do
     end
   end
 
-  RightScaleTools::Database::MySQL::Helper.do_query(node, "SET GLOBAL READ_ONLY=0", 'localhost', RightScaleTools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
-  newmasterstatus = RightScaleTools::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS', 'localhost', RightScaleTools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+  RightScale::Tools::Database::MySQL::Helper.do_query(node, "SET GLOBAL READ_ONLY=0", 'localhost', RightScale::Tools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+  newmasterstatus = RightScale::Tools::Database::MySQL::Helper.do_query(node, 'SHOW SLAVE STATUS', 'localhost', RightScale::Tools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
   previous_master = node[:db][:current_master_ip]
   raise "FATAL: could not determine master host from slave status" if previous_master.nil?
   Chef::Log.info "host: #{previous_master}}"
@@ -439,17 +439,17 @@ action :promote do
   # error occurs we continue promotion assuming the old master is dead.
   begin
     # OLDMASTER: query with terminate (STOP SLAVE)
-    RightScaleTools::Database::MySQL::Helper.do_query(node, 'STOP SLAVE', previous_master, RightScaleTools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT, 2)
+    RightScale::Tools::Database::MySQL::Helper.do_query(node, 'STOP SLAVE', previous_master, RightScale::Tools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT, 2)
 
     # OLDMASTER: flush_and_lock_db
-    RightScaleTools::Database::MySQL::Helper.do_query(node, 'FLUSH TABLES WITH READ LOCK', previous_master, 5, 12)
+    RightScale::Tools::Database::MySQL::Helper.do_query(node, 'FLUSH TABLES WITH READ LOCK', previous_master, 5, 12)
 
 
     # OLDMASTER:
-    masterstatus = RightScaleTools::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS', previous_master, RightScaleTools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+    masterstatus = RightScale::Tools::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS', previous_master, RightScale::Tools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
 
     # OLDMASTER: unconfigure source of replication
-    RightScaleTools::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST=''", previous_master, RightScaleTools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
+    RightScale::Tools::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST=''", previous_master, RightScale::Tools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
 
     master_file=masterstatus['File']
     master_position=masterstatus['Position']
@@ -457,7 +457,7 @@ action :promote do
 
     Chef::Log.info "Waiting for slave to catch up with OLDMASTER (if alive).."
     # NEWMASTER localhost:
-    RightScaleTools::Database::MySQL::Helper.do_query(node, "SELECT MASTER_POS_WAIT('#{master_file}',#{master_position})")
+    RightScale::Tools::Database::MySQL::Helper.do_query(node, "SELECT MASTER_POS_WAIT('#{master_file}',#{master_position})")
   rescue => e
     Chef::Log.info "WARNING: caught exception #{e} during non-critical operations on the OLD MASTER"
   end
@@ -465,28 +465,28 @@ action :promote do
   # PHASE2: reset and promote this slave to master
   # Critical operations on newmaster, if a failure occurs here we allow it to halt promote operations
   Chef::Log.info "Promoting slave.."
-  RightScaleTools::Database::MySQL::Helper.do_query(node, 'RESET MASTER')
+  RightScale::Tools::Database::MySQL::Helper.do_query(node, 'RESET MASTER')
 
-  newmasterstatus = RightScaleTools::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS')
+  newmasterstatus = RightScale::Tools::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS')
   newmaster_file=newmasterstatus['File']
   newmaster_position=newmasterstatus['Position']
   Chef::Log.info "Retrieved new master info...File: " + newmaster_file + " position: " + newmaster_position
 
   Chef::Log.info "Stopping slave and misconfiguring master"
-  RightScaleTools::Database::MySQL::Helper.do_query(node, "STOP SLAVE")
-  RightScaleTools::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST=''")
+  RightScale::Tools::Database::MySQL::Helper.do_query(node, "STOP SLAVE")
+  RightScale::Tools::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST=''")
   action_grant_replication_slave
-  RightScaleTools::Database::MySQL::Helper.do_query(node, 'SET GLOBAL READ_ONLY=0')
+  RightScale::Tools::Database::MySQL::Helper.do_query(node, 'SET GLOBAL READ_ONLY=0')
 
   # PHASE3: more non-critical operations, have already made assumption oldmaster is dead
   begin
     unless previous_master.nil?
       #unlocking oldmaster
-      RightScaleTools::Database::MySQL::Helper.do_query(node, 'UNLOCK TABLES', previous_master)
-      SystemTimer.timeout_after(RightScaleTools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT) do
+      RightScale::Tools::Database::MySQL::Helper.do_query(node, 'UNLOCK TABLES', previous_master)
+      SystemTimer.timeout_after(RightScale::Tools::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT) do
 	#demote oldmaster
         Chef::Log.info "Calling reconfigure replication with host: #{previous_master} ip: #{node[:cloud][:private_ips][0]} file: #{newmaster_file} position: #{newmaster_position}"
-	RightScaleTools::Database::MySQL::Helper.reconfigure_replication(node, previous_master, node[:cloud][:private_ips][0], newmaster_file, newmaster_position)
+	RightScale::Tools::Database::MySQL::Helper.reconfigure_replication(node, previous_master, node[:cloud][:private_ips][0], newmaster_file, newmaster_position)
       end
     end
   rescue Timeout::Error => e
@@ -553,7 +553,7 @@ action :enable_replication do
   # checks for valid backup and that current master matches backup
   ruby_block "validate_backup" do
     block do
-      master_info = RightScaleTools::Database::MySQL::Helper.load_replication_info(node)
+      master_info = RightScale::Tools::Database::MySQL::Helper.load_replication_info(node)
       # Check that the snapshot is from the current master or a slave associated with the current master
 
       # 11H2 backup
@@ -576,17 +576,17 @@ action :enable_replication do
 
   ruby_block "reconfigure_replication" do
     block do
-      master_info = RightScaleTools::Database::MySQL::Helper.load_replication_info(node)
+      master_info = RightScale::Tools::Database::MySQL::Helper.load_replication_info(node)
       newmaster_host = master_info['Master_IP']
       newmaster_logfile = master_info['File']
       newmaster_position = master_info['Position'] 
-      RightScaleTools::Database::MySQL::Helper.reconfigure_replication(node, 'localhost', newmaster_host, newmaster_logfile, newmaster_position)
+      RightScale::Tools::Database::MySQL::Helper.reconfigure_replication(node, 'localhost', newmaster_host, newmaster_logfile, newmaster_position)
     end
   end
 
   ruby_block "do_query" do
     block do
-      RightScaleTools::Database::MySQL::Helper.do_query(node, "SET GLOBAL READ_ONLY=1")
+      RightScale::Tools::Database::MySQL::Helper.do_query(node, "SET GLOBAL READ_ONLY=1")
     end
   end
 
