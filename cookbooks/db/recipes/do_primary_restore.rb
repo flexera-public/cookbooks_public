@@ -8,6 +8,7 @@
 rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
+NICKNAME = node[:block_device][:nickname]
 
 db_init_status :check do
   expected_state :uninitialized
@@ -30,16 +31,6 @@ log "======== LINEAGE ========="
 log backup_lineage
 log "======== LINEAGE ========="
 
-# ROS restore requires a setup, but VOLUME restore does not.
-# Only Rackpspace uses ROS backups
-if node[:cloud][:provider] == "rackspace"
-  log "  Creating block device..."
-  block_device DATA_DIR do
-    lineage node[:db][:backup][:lineage]
-    action :create
-  end
-end
-
 log "  Stopping database..."
 db DATA_DIR do
   action :stop
@@ -48,14 +39,12 @@ end
 log "  Performing Restore..."
 # Requires block_device node[:db][:block_device] to be instantiated
 # previously. Make sure block_device::default recipe has been run.
-block_device DATA_DIR do
+block_device NICKNAME do
   lineage node[:db][:backup][:lineage]
   lineage_override node[:db][:backup][:lineage_override]
   timestamp_override node[:db][:backup][:timestamp_override]
-  cloud node[:cloud][:provider]
-  rackspace_snet node[:block_device][:rackspace_snet]
   volume_size node[:block_device][:volume_size]
-  action :restore
+  action :primary_restore
 end
 
 log "  Setting state of database to be 'initialized'..."

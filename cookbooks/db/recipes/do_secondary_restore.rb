@@ -8,6 +8,7 @@
 rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
+NICKNAME = node[:block_device][:nickname]
 
 db_init_status :check do
   expected_state :uninitialized
@@ -19,17 +20,16 @@ db DATA_DIR do
   action :pre_restore_check
 end
 
-log "======== LINEAGE ========="
-log node[:db][:backup][:lineage]
-log "======== LINEAGE ========="
-
-# ROS restore requires a setup, but VOLUME restore does not.
-# Since secondary is only ROS we need the folowing create action
-log "  Creating block device..."
-block_device DATA_DIR do
-  lineage node[:db][:backup][:lineage]
-  action :create
+if node[:db][:backup][:lineage_override].empty?
+  backup_lineage = node[:db][:backup][:lineage]
+else
+  log "** USING LINEAGE OVERRIDE **"
+  backup_lineage = node[:db][:backup][:lineage_override]
 end
+
+log "======== LINEAGE ========="
+log backup_lineage
+log "======== LINEAGE ========="
 
 log "  Stopping database..."
 db DATA_DIR do
@@ -39,16 +39,12 @@ end
 log "  Performing Secondary Restore from #{node[:db][:backup][:secondary_location]}..."
 # Requires block_device DATA_DIR to be instantiated
 # previously. Make sure block_device::default recipe has been run.
-block_device DATA_DIR do
-  provider "block_device_ros"
-  cloud node[:cloud][:provider]
-  storage_cloud node[:db][:backup][:secondary_location].downcase
-  rackspace_snet node[:block_device][:rackspace_snet]
+block_device NICKNAME do
   lineage node[:db][:backup][:lineage]
+  lineage_override node[:db][:backup][:lineage_override]
   timestamp_override node[:db][:backup][:timestamp_override]
-  storage_container node[:db][:backup][:secondary_container]
-  persist false
-  action :restore
+  volume_size node[:block_device][:volume_size]
+  action :secondary_restore
 end
 
 log "  Setting state of database to be 'initialized'..."

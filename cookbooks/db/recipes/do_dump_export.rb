@@ -24,7 +24,7 @@ end
 
 # Upload the files to ROS
 execute "Upload dumpfile to Remote Object Store" do
-  command "/opt/rightscale/sandbox/bin/mc_sync.rb put --cloud #{cloud} --container #{container} --dest #{dumpfilename} --source #{dumpfilepath}"
+  command "/opt/rightscale/sandbox/bin/ros_util put --cloud #{cloud} --container #{container} --dest #{dumpfilename} --source #{dumpfilepath}"
   environment ({
     'STORAGE_ACCOUNT_ID' => node[:db][:dump][:storage_account_id],
     'STORAGE_ACCOUNT_SECRET' => node[:db][:dump][:storage_account_secret]

@@ -77,7 +77,7 @@ raise "No master DB found" unless node[:db][:current_master_ip] && node[:db][:cu
 
 include_recipe "db::request_master_allow"
 
-include_recipe "db::do_restore"
+include_recipe "db::do_primary_restore"
 
 db DATA_DIR do
   action :enable_replication
@@ -88,6 +88,6 @@ db_do_backup "do force backup" do
   force true
 end
 
-include_recipe "db::do_backup_schedule_enable"
+include_recipe "db::do_primary_backup_schedule_enable"
 
 rs_utils_marker :end

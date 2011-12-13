@@ -25,7 +25,7 @@ else
 
   # Obtain the dumpfile from ROS 
   execute "Download dumpfile from Remote Object Store" do
-    command "/opt/rightscale/sandbox/bin/mc_sync.rb get --cloud #{cloud} --container #{container} --dest #{dumpfilepath} --source #{prefix} --latest"
+    command "/opt/rightscale/sandbox/bin/ros_util get --cloud #{cloud} --container #{container} --dest #{dumpfilepath} --source #{prefix} --latest"
     creates dumpfilepath
     environment ({
       'STORAGE_ACCOUNT_ID' => node[:db][:dump][:storage_account_id],

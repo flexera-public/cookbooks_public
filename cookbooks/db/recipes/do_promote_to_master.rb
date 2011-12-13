@@ -35,7 +35,7 @@ end
 # changes current_master from old to new. 
 # 
 remote_recipe "enable slave backups on oldmaster" do
-  recipe "db::do_backup_schedule_enable"
+  recipe "db::do_primary_backup_schedule_enable"
   recipients_tags "rs_dbrepl:master_instance_uuid=#{node[:db][:current_master_uuid]}"
 end
 
@@ -63,6 +63,6 @@ end
 
 # == Schedule master backups
 #
-include_recipe "db::do_backup_schedule_enable"
+include_recipe "db::do_primary_backup_schedule_enable"
 
 rs_utils_marker :end
