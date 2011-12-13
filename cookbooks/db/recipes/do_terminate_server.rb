@@ -27,9 +27,10 @@
 #
 rs_utils_marker :begin
 
-raise "Server terminate saftey not off.  Override db/terminate_safety to run this recipe" unless node[:db][:terminate_safety] == "off"
+raise "Server terminate safety not off.  Override db/terminate_safety to run this recipe" unless node[:db][:terminate_safety] == "off"
 
 DATA_DIR = node[:db][:data_dir]
+NICKNAME = node[:block_device][:nickname]
 
 log "  Resetting the database..."
 db DATA_DIR do
@@ -37,7 +38,7 @@ db DATA_DIR do
 end
 
 log "  Detach and delete volume..."
-block_device DATA_DIR do
+block_device NICKNAME do
   action :reset
 end
 

@@ -7,7 +7,7 @@
 
 rs_utils_marker :begin
 
-DATA_DIR = node[:db][:data_dir]
+NICKNAME = node[:block_device][:nickname]
 
 # == Verify initalized database
 # Check the node state to verify that we have correctly initialized this server.
@@ -16,7 +16,6 @@ db_state_assert :either
 snap_lineage = node[:db][:backup][:lineage]
 raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?
 
-# TODO: fix for LAMP
 if node[:db][:this_is_master]
   hour = node[:db][:backup][:primary][:master][:hour]
   minute = node[:db][:backup][:primary][:master][:minute]
@@ -25,7 +24,7 @@ else
   minute = node[:db][:backup][:primary][:slave][:minute]
 end
 
-block_device DATA_DIR do
+block_device NICKNAME do
   lineage snap_lineage
   cron_backup_recipe "#{self.cookbook_name}::do_primary_backup"
   cron_backup_hour hour.to_s

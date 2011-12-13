@@ -23,8 +23,8 @@
 
 define :db_do_backup, :force => false, :backup_type => "primary" do
 
-  nickname = node[:block_device][:nickname]
-  data_dir = node[:db][:data_dir]
+  NICKNAME = node[:block_device][:nickname]
+  DATA_DIR = node[:db][:data_dir]
 
   do_force        = params[:force] == true ? true : false
   do_backup_type  = params[:backup_type] == "primary" ? "primary" : "secondary"
@@ -42,7 +42,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   db_state_assert :either
   
   log "  Performing pre-backup check..." 
-  db data_dir do
+  db DATA_DIR do
     action :pre_backup_check
   end
   
@@ -52,31 +52,31 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   # See below for more information about 'backup'
   # if 'force' is true, kills pid and removes locks
   #
-  block_device nickname do
+  block_device NICKNAME do
     action :backup_lock_take
     force do_force
   end
   
   log "  Performing (#{do_backup_type} backup) lock DB and write backup info file..."
-  db data_dir do
+  db DATA_DIR do
     action [ :lock, :write_backup_info ]
   end
   
   log "  Performing (#{do_backup_type} backup)Snapshot with lineage #{node[:db][:backup][:lineage]}.."
   # Requires block_device node[:db][:block_device] to be instantiated
   # previously. Make sure block_device::default recipe has been run.
-  block_device nickname do
+  block_device NICKNAME do
     lineage node[:db][:backup][:lineage]
     action :snapshot
   end
   
   log "  Performing unlock DB..."
-  db data_dir do
+  db DATA_DIR do
     action :unlock
   end
   
   log "  Performing (#{do_backup_type})Backup of lineage #{node[:db][:backup][:lineage]} and post-backup cleanup..."
-  cloud node[:cloud][:provider]
+  cloud = node[:cloud][:provider]
   # Log that storage rotation is not supported on ROS storage types
   if ( cloud == "Rackspace" )
     log "  ROS storage type (Eg: Rackspace) does not support rotation.  Use of rotation inputs will be ignored."
@@ -89,9 +89,9 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   background_exe = ["/opt/rightscale/sandbox/bin/backup.rb",
                     "--backuponly",
                     "--lineage #{node[:db][:backup][:lineage]}",
-                    "--nickname #{nickname}",
-                    "--mount-point #{data_dir}",
-                    "--cloud #{node[:cloud][:provider]}",
+                    "--nickname #{NICKNAME}",
+                    "--mount-point #{DATA_DIR}",
+                    "--cloud #{cloud}",
                     secondary_storage_cloud ? "--secondary_storage-cloud #{secondary_storage_cloud}":"",
                     secondary_storage_container ? "--secondary_storage-container #{secondary_storage_container}":"",
                     (node[:block_device][:rackspace_snet] == false)  ? "--no-snet" : "",
@@ -105,18 +105,11 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   log "  background process = '#{background_exe}'"
   bash "backup.rb" do
     environment ({ 
-                   "PRIMARY_STORAGE_KEY" => node[:block_device[:backup][:primary][:cred][:user],
-                   "PRIMARY_STORAGE_SECRET" => node[:block_device[:backup][:primary][:cred][:user],
-                   "SECONDARY_STORAGE_KEY" => node[:block_device[:backup][:secondary][:cred][:user],
-                   "SECONDARY_STORAGE_SECRET" => node[:block_device[:backup][:secondary][:cred][:user]
+                   "PRIMARY_STORAGE_KEY" => node[:block_device][:backup][:primary][:cred][:user],
+                   "PRIMARY_STORAGE_SECRET" => node[:block_device][:backup][:primary][:cred][:user],
+                   "SECONDARY_STORAGE_KEY" => node[:block_device][:backup][:secondary][:cred][:user],
+                   "SECONDARY_STORAGE_SECRET" => node[:block_device][:backup][:secondary][:cred][:user]
                 })
-
-
-      'STORAGE_ACCOUNT_ID_RACKSPACE' => node[:block_device][:rackspace_user],
-      'STORAGE_ACCOUNT_SECRET_RACKSPACE' => node[:block_device][:rackspace_secret],
-      'STORAGE_ACCOUNT_ID_AWS' => node[:block_device][:aws_access_key_id],
-      'STORAGE_ACCOUNT_SECRET_AWS' => node[:block_device][:aws_secret_access_key]
-    })
     code background_exe
   end
 end

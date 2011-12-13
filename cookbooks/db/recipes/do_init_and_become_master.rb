@@ -8,6 +8,7 @@
 rs_utils_marker :begin
 
 DATA_DIR = node[:db][:data_dir]
+NICKNAME = node[:block_device][:nickname]
 
 log "  Verify if database state is 'uninitialized'..."
 db_init_status :check do
@@ -21,7 +22,7 @@ db DATA_DIR do
 end
 
 log "  Creating block device..."
-block_device DATA_DIR do
+block_device NICKNAME do
   lineage node[:db][:backup][:lineage]
   action :create
 end

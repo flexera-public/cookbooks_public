@@ -16,6 +16,7 @@ raise "Force reset safety not off.  Override db/force_safety to run this recipe"
 log "  Brute force tear down of the setup....."
 
 DATA_DIR = node[:db][:data_dir]
+NICKNAME = node[:block_device][:nickname]
 
 log "  Resetting the database..."
 db DATA_DIR do
@@ -23,7 +24,7 @@ db DATA_DIR do
 end
 
 log "  Resetting block device..."
-block_device DATA_DIR do
+block_device NICKNAME do
   lineage node[:db][:backup][:lineage]
   action :reset
 end
@@ -52,7 +53,7 @@ log "  Setting database state to 'uninitialized'..."
 db_init_status :reset
 
 log "  Cleaning cron..."
-block_device DATA_DIR do
+block_device NICKNAME do
   cron_backup_recipe "#{self.cookbook_name}::do_primary_backup"
   action :backup_schedule_disable
 end

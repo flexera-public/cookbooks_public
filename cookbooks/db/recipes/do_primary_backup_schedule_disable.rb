@@ -7,9 +7,9 @@
 
 rs_utils_marker :begin
 
-DATA_DIR = node[:db][:data_dir]
+NICKNAME = node[:block_device][:nickname]
 
-block_device DATA_DIR do
+block_device NICKNAME do
   cron_backup_recipe "#{self.cookbook_name}::do_primary_backup"
   action :backup_schedule_disable
 end
