@@ -43,7 +43,14 @@ block_device NICKNAME do
   lineage node[:db][:backup][:lineage]
   lineage_override node[:db][:backup][:lineage_override]
   timestamp_override node[:db][:backup][:timestamp_override]
+
   volume_size node[:block_device][:volume_size]
+
+  secondary_cloud node[:block_device][:backup][:secondary][:cloud]
+  secondary_container node[:block_device][:backup][:secondary][:container]
+  secondary_user node[:block_device][:backup][:secondary][:cred][:user]
+  secondary_secret node[:block_device][:backup][:secondary][:cred][:secret]
+
   action :secondary_restore
 end
 
