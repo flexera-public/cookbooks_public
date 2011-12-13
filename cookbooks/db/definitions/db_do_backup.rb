@@ -82,33 +82,43 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     log "  ROS storage type (Eg: Rackspace) does not support rotation.  Use of rotation inputs will be ignored."
   end
 
-  secondary_storage_cloud = node[:block_device][:backup][:secondary][:cloud]
-  secondary_storage_container = node[:block_device][:backup][:secondary][:container]
+  # If doing a secondary backup, set variables needed for this.
+  if do_backup_type == "secondary"
+    secondary_storage_cloud = node[:block_device][:backup][:secondary][:cloud]
+    if node[:block_device][:backup][:secondary][:cloud] =~ /aws/i
+      secondary_storage_cloud = "s3"
+    elsif node[:block_device][:backup][:secondary][:cloud] =~ /rackspace/i
+      secondary_storage_cloud = "cloudfiles"
+    end
+    secondary_storage_container = node[:block_device][:backup][:secondary][:container]
+  end
+
   # backup.rb removes the file lock created from :backup_lock_take
   log "  Forking background process to complete backup... (see /var/log/messages for results)"
-  background_exe = ["/opt/rightscale/sandbox/bin/backup.rb",
+  background_exe = ["/opt/rightscale/sandbox/bin/backup",
                     "--backuponly",
                     "--lineage #{node[:db][:backup][:lineage]}",
                     "--nickname #{NICKNAME}",
                     "--mount-point #{DATA_DIR}",
                     "--cloud #{cloud}",
-                    secondary_storage_cloud ? "--secondary_storage-cloud #{secondary_storage_cloud}":"",
-                    secondary_storage_container ? "--secondary_storage-container #{secondary_storage_container}":"",
+                    "--backup-type #{do_backup_type}",
+                    secondary_storage_cloud && do_backup_type == "secondary" ? "--secondary-storage-cloud #{secondary_storage_cloud}":"",
+                    secondary_storage_container && do_backup_type == "secondary" ? "--secondary-storage-container #{secondary_storage_container}":"",
                     (node[:block_device][:rackspace_snet] == false)  ? "--no-snet" : "",
-                    "--max-snapshots #{node[:block_device][:backup][:primary][:keep][:max_snapshots]}",
-                    "--keep-daily #{node[:block_device][:backup][:primary][:keep][:keep_daily]}",
-                    "--keep-weekly #{node[:block_device][:backup][:primary][:keep][:keep_weekly]}",
-                    "--keep-monthly #{node[:block_device][:backup][:primary][:keep][:keep_monthly]}",
-                    "--keep-yearly #{node[:block_device][:backup][:primary][:keep][:keep_yearly]}",
+                    node[:block_device][:backup][:primary][:keep][:max_snapshots] ? "--max-snapshots #{node[:block_device][:backup][:primary][:keep][:max_snapshots]}" : "",
+                    node[:block_device][:backup][:primary][:keep][:keep_daily]    ? "--keep-daily #{node[:block_device][:backup][:primary][:keep][:keep_daily]}"       : "",
+                    node[:block_device][:backup][:primary][:keep][:keep_weekly]   ? "--keep-weekly #{node[:block_device][:backup][:primary][:keep][:keep_weekly]}"     : "",
+                    node[:block_device][:backup][:primary][:keep][:keep_monthly]  ? "--keep-monthly #{node[:block_device][:backup][:primary][:keep][:keep_monthly]}"   : "",
+                    node[:block_device][:backup][:primary][:keep][:keep_yearly]   ? "--keep-yearly #{node[:block_device][:backup][:primary][:keep][:keep_yearly]}"     : "",
                     "2>&1 | logger -t rs_db_backup &"].join(" ")
 
   log "  background process = '#{background_exe}'"
   bash "backup.rb" do
     environment ({ 
-                   "PRIMARY_STORAGE_KEY" => node[:block_device][:backup][:primary][:cred][:user],
-                   "PRIMARY_STORAGE_SECRET" => node[:block_device][:backup][:primary][:cred][:user],
-                   "SECONDARY_STORAGE_KEY" => node[:block_device][:backup][:secondary][:cred][:user],
-                   "SECONDARY_STORAGE_SECRET" => node[:block_device][:backup][:secondary][:cred][:user]
+                   "PRIMARY_STORAGE_KEY"      => node[:block_device][:backup][:primary][:cred][:user],
+                   "PRIMARY_STORAGE_SECRET"   => node[:block_device][:backup][:primary][:cred][:secret],
+                   "SECONDARY_STORAGE_KEY"    => node[:block_device][:backup][:secondary][:cred][:user],
+                   "SECONDARY_STORAGE_SECRET" => node[:block_device][:backup][:secondary][:cred][:secret]
                 })
     code background_exe
   end
