@@ -8,7 +8,7 @@
 action :set_private do
   log "==================== sys_dns(:set_private) DNSMadeEasy BEGIN ==================== "
 
-  RightScale::Tools::DnsTools::DME.new(Chef::Log).action_set(new_resource.id, new_resource.user, new_resource.password, new_resource.address)
+  RightScale::DnsTools::DME.new(Chef::Log).action_set(new_resource.id, new_resource.user, new_resource.password, new_resource.address)
 
   log "==================== sys_dns(:set_private) DNSMadeEasy   END ==================== "
 end
