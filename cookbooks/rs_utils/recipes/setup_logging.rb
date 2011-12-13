@@ -62,10 +62,12 @@ end
 #
 cookbook_file "/etc/logrotate.conf" do
   source "logrotate.conf"
+  backup false
 end
 
 cookbook_file node[:rs_utils][:logrotate_config] do
   source "logrotate.d.syslog"
+  backup false
 end
 
 # == Fix /var/log/boot.log issue
