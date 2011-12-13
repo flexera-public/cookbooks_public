@@ -36,6 +36,13 @@ db DATA_DIR do
   action :stop
 end
 
+secondary_storage_cloud = node[:block_device][:backup][:secondary][:cloud]
+if secondary_storage_cloud =~ /aws/i
+  secondary_storage_cloud = "s3"
+elsif secondary_storage_cloud =~ /rackspace/i
+  secondary_storage_cloud = "cloudfiles"
+end
+
 log "  Performing Secondary Restore from #{node[:db][:backup][:secondary_location]}..."
 # Requires block_device DATA_DIR to be instantiated
 # previously. Make sure block_device::default recipe has been run.
@@ -46,7 +53,7 @@ block_device NICKNAME do
 
   volume_size node[:block_device][:volume_size]
 
-  secondary_cloud node[:block_device][:backup][:secondary][:cloud]
+  secondary_cloud secondary_storage_cloud
   secondary_container node[:block_device][:backup][:secondary][:container]
   secondary_user node[:block_device][:backup][:secondary][:cred][:user]
   secondary_secret node[:block_device][:backup][:secondary][:cred][:secret]
