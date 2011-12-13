@@ -23,12 +23,12 @@ attribute "sys_dns/id",
 
 attribute "sys_dns/user",
   :display_name => "DNS User",
-  :description => "The username that is used to access and modify your DNS A Records. For DNSMadeEasy and DynDNS, enter your username. (Ex: myUsername)  For AwsDNS, enter your AWS Access Key ID.  (Ex: 1JHQQ4KVEVM1JHQQ4KVE)",
+  :description => "The user name that is used to access and modify your DNS A Records. For DNS Made Easy and DynDNS, enter your username (e.g., cred:DNS_USER). For Amazon DNS, enter your Amazon access key ID (e.g., cred:AWS_ACCESS_KEY_ID)",
   :required => "required",
   :recipes => ["sys_dns::do_set_private", "sys_dns::default"]
 
 attribute "sys_dns/password",
   :display_name => "DNS Password",
-  :description => "The password that is used to access and modify your DNS A Records. For DNSMadeEasy and DynDNS, enter your password. (Ex: myPassw0rd)  For AwsDNS, enter your AWS Secret Access Key. (Ex: XVdxPgOM4auGcMlPz61XVdxPgOM4auGcMlPz6)",
+  :description => "The password that is used to access and modify your DNS A Records. For DNS Made Easy and DynDNS, enter your password (e.g., cred:DNS_PASSWORD). For Amazon DNS, enter your AWS secret access key (e.g., cred:AWS_SECRET_ACCESS_KEY)",  
   :required => "required",
   :recipes => ["sys_dns::do_set_private", "sys_dns::default"]
