@@ -1,3 +1,8 @@
 .DS_Store
 *.swp
 *.swo
+.idea
+/.git
+.DEV_TEMP
+.gitignore
+chefignore
