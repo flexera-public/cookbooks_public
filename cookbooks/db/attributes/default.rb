@@ -28,19 +28,19 @@ set_unless[:db][:current_master_ip] = nil
 #
 # Calculate recommended backup times for master/slave
 #
-set_unless[:db][:backup][:primary][:master][:minute] = 5 + rand(54) # backup starts random time between 5-59
-set_unless[:db][:backup][:primary][:master][:hour] = rand(23) # once a day, random hour
+set_unless[:db][:backup][:primary][:master][:cron][:minute] = 5 + rand(54) # backup starts random time between 5-59
+set_unless[:db][:backup][:primary][:master][:cron][:hour] = rand(23) # once a day, random hour
 
-user_set = true if db[:backup][:primary][:slave] && db[:backup][:primary][:slave][:minute]
-set_unless[:db][:backup][:primary][:slave][:minute] = 5 + rand(54) # backup starts random time between 5-59
+user_set = true if db[:backup][:primary][:slave] && db[:backup][:primary][:slave][:cron] && db[:backup][:primary][:slave][:cron][:minute]
+set_unless[:db][:backup][:primary][:slave][:cron][:minute] = 5 + rand(54) # backup starts random time between 5-59
 
-if db[:backup][:primary][:slave][:minute] == db[:backup][:primary][:master][:minute]
+if db[:backup][:primary][:slave][:cron][:minute] == db[:backup][:primary][:master][:cron][:minute]
   log_msg = "WARNING: detected master and slave backups collision."
   unless user_set
-    db[:backup][:primary][:slave][:minute] = db[:backup][:primary][:slave][:minute].to_i / 2
-    log_msg += "  Changing slave minute to avoid collision: #{db[:backup][:slave][:minute]}"
+    db[:backup][:primary][:slave][:cron][:minute] = db[:backup][:primary][:slave][:cron][:minute].to_i / 2
+    log_msg += "  Changing slave minute to avoid collision: #{db[:backup][:slave][:cron][:minute]}"
   end
   Chef::Log.info log_msg
 end
 
-set_unless[:db][:backup][:primary][:slave][:hour] = "*" # every hour
+set_unless[:db][:backup][:primary][:slave][:cron][:hour] = "*" # every hour

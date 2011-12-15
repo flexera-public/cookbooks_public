@@ -17,11 +17,11 @@ snap_lineage = node[:db][:backup][:lineage]
 raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.empty?
 
 if node[:db][:this_is_master]
-  hour = node[:db][:backup][:primary][:master][:hour]
-  minute = node[:db][:backup][:primary][:master][:minute]
+  hour = node[:db][:backup][:primary][:master][:cron][:hour]
+  minute = node[:db][:backup][:primary][:master][:cron][:minute]
 else
-  hour = node[:db][:backup][:primary][:slave][:hour]
-  minute = node[:db][:backup][:primary][:slave][:minute]
+  hour = node[:db][:backup][:primary][:slave][:cron][:hour]
+  minute = node[:db][:backup][:primary][:slave][:cron][:minute]
 end
 
 block_device NICKNAME do
