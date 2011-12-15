@@ -51,6 +51,9 @@ log "Node IP: #{node_ip}"
 log 'Configure /etc/hosts'
 template "/etc/hosts" do
   source "hosts.erb"
+  owner "root"
+  group "root"
+  mode "0644"
   variables(
     :node_ip => node_ip,
     :hosts_list => hosts_list
@@ -81,6 +84,9 @@ if "#{node.rs_utils.search_suffix}" != "" then
 end
 template "/etc/resolv.conf" do
   source "resolv.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
   variables(
     :nameserver => nameserver,
     :domain => domain,
