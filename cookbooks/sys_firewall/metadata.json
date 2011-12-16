@@ -41,7 +41,7 @@
       "display_name": "Firewall Rule Protocol",
       "description": "Firewall protocol use. Defaults to 'tcp'"
     },
-    "sys_firewall/rule/enable": {
+    "sys_firewall/rule/enables": {
       "required": "optional",
       "calculated": false,
       "choice": [
@@ -53,7 +53,7 @@
       "recipes": [
         "sys_firewall::setup_rule"
       ],
-      "display_name": "Firewall Rules",
+      "display_name": "Firewall Rule",
       "description": "Enables/Disables a firewall rule."
     },
     "sys_firewall/rule/port": {
