@@ -29,7 +29,7 @@ attribute "sys_firewall/rule/port",
   
 attribute "sys_firewall/rule/enable",
   :display_name => "Firewall Rule",
-  :description => "Enable/Disable a firewall rule.",
+  :description => 'Enable/Disable a firewall rule.',
   :choice => ["enable", "disable"],
   :default => "enable",
   :recipes => [ "sys_firewall::setup_rule" ]
@@ -43,7 +43,7 @@ attribute "sys_firewall/rule/protocol",
 
 attribute "sys_firewall/rule/ip_address",  
   :display_name => "Firewall Rule IP Address",  
-  :description => "Address can either be a network name, a network IP address (with /mask), or a plain IP address.  The mask can either be a network mask or a plain number specifying the number of 1's at the left side of the network mask.  Thus, a mask of 24 is equivalent to 255.255.255.0.  A '!' argument before the address specification inverts the sense of the address.  A value of 'any' allows any IP address (default).",
+  :description => "Test/hello Address can either be a network name, a network IP address (with /mask), or a plain IP address.  The mask can either be a network mask or a plain number specifying the number of 1's at the left side of the network mask.  Thus, a mask of 24 is equivalent to 255.255.255.0.  A '!' argument before the address specification inverts the sense of the address.  A value of 'any' allows any IP address (default).",
   :required => "optional",
   :default => "any",
   :recipes => [ "sys_firewall::setup_rule" ]
