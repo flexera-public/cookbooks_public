@@ -20,11 +20,17 @@ end
 # We make the changes needed for centos, but using the default main.cf 
 # config everywhere else
 #
-remote_file "/etc/postfix/main.cf" do
+cookbook_file "/etc/postfix/main.cf" do
   only_if { node[:platform] =~ /centos|redhat/ }
   backup 5
   source "postfix.main.cf"
-#  notifies :restart, resources(:service => "postfix")
+end
+
+# On CentOS 5.6 and RedHat 5.6, default MTA is sendmail.
+# Change default MTA to postfix.
+execute "set_postfix_default_mta" do
+  only_if { node[:platform] =~ /centos|redhat/ }
+  command "alternatives --set mta /usr/sbin/sendmail.postfix"
 end
 
 # On CentOS 5.4 postfix is not started and chef tries to 'stop' it.  This throws an error.
@@ -48,7 +54,7 @@ directory "/var/spool/oldmail" do
   group "mail"
 end
 
-remote_file "/etc/logrotate.d/mail" do
+cookbook_file "/etc/logrotate.d/mail" do
   source "mail"
 end
 
