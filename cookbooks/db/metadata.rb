@@ -67,7 +67,7 @@ recipe "db::request_master_deny", "Sends a request to the master database server
 
 recipe "db::handle_demote_master", "Remote recipe executed by do_promote_to_master. DO NOT RUN."
 
-recipe "db::do_terminate_server", "Deletes any currently attached volumes from the instance and then terminates the machine."
+recipe "db::do_delete_volumes_and_terminate_server", "Deletes any currently attached volumes from the instance and then terminates the machine."
 
 # == Common Database Attributes
 #
@@ -242,7 +242,7 @@ attribute "db/terminate_safety",
   :choice => ["Override the dropdown and set to \"off\" to really run this recipe"],
   :default => "Override the dropdown and set to \"off\" to really run this recipe",
   :required => false,
-  :recipes => [ "db::do_terminate_server" ]
+  :recipes => [ "db::do_delete_volumes_and_terminate_server" ]
 
 attribute "db/force_safety",
   :display_name => "Force Reset Safety",
