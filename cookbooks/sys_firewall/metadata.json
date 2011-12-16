@@ -54,7 +54,7 @@
         "sys_firewall::setup_rule"
       ],
       "display_name": "Firewall Rule",
-      "description": "Enables/Disables a firewall rule."
+      "description": "Enables or disables a firewall rule."
     },
     "sys_firewall/rule/port": {
       "required": "required",
@@ -67,7 +67,7 @@
         "sys_firewall::setup_rule"
       ],
       "display_name": "Firewall Rule Port",
-      "description": "Firewall port to Enable/Disable. (Ex. 8000)"
+      "description": "Firewall port to Enable or Disable. (Ex. 8000)"
     },
     "sys_firewall/enabled": {
       "required": "optional",
