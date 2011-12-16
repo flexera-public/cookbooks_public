@@ -22,8 +22,9 @@ end
 #
 cookbook_file "/etc/postfix/main.cf" do
   only_if { node[:platform] =~ /centos|redhat/ }
-  backup 5
   source "postfix.main.cf"
+  mode "0644"
+  backup 5
 end
 
 # On CentOS 5.6 and RedHat 5.6, default MTA is sendmail.
