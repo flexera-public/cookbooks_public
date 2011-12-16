@@ -38,7 +38,7 @@ if db[:backup][:primary][:slave][:cron][:minute] == db[:backup][:primary][:maste
   log_msg = "WARNING: detected master and slave backups collision."
   unless user_set
     db[:backup][:primary][:slave][:cron][:minute] = db[:backup][:primary][:slave][:cron][:minute].to_i / 2
-    log_msg += "  Changing slave minute to avoid collision: #{db[:backup][:slave][:cron][:minute]}"
+    log_msg += "  Changing slave minute to avoid collision: #{db[:backup][:primary][:slave][:cron][:minute]}"
   end
   Chef::Log.info log_msg
 end
