@@ -32,60 +32,55 @@ module RightScale
           RightScale::Tools::Database.factory(:mysql, new_resource.user, new_resource.password, mount_point, Chef::Log)
         end
 
-	def self.load_replication_info(node)
-	  loadfile = ::File.join(node[:db][:data_dir], SNAPSHOT_POSITION_FILENAME)
-	  Chef::Log.info "Loading replication information from #{loadfile}"
-	  YAML::load_file(loadfile)
-	end
+      	def self.load_replication_info(node)
+      	  loadfile = ::File.join(node[:db][:data_dir], SNAPSHOT_POSITION_FILENAME)
+      	  Chef::Log.info "Loading replication information from #{loadfile}"
+      	  YAML::load_file(loadfile)
+      	end
 
-	def self.get_mysql_handle(node, hostname = 'localhost')
-	  info_msg = "MySQL connection to #{hostname}"
-	  info_msg << ": opening NEW MySQL connection."
-	  con = Mysql.new(hostname, node[:db][:admin][:user], node[:db][:admin][:password])
-	  Chef::Log.info info_msg
-	  # this raises if the connection has gone away
-	  con.ping
-	  return con
-	end
+      	def self.get_mysql_handle(node, hostname = 'localhost')
+      	  info_msg = "MySQL connection to #{hostname}"
+      	  info_msg << ": opening NEW MySQL connection."
+      	  con = Mysql.new(hostname, node[:db][:admin][:user], node[:db][:admin][:password])
+      	  Chef::Log.info info_msg
+      	  # this raises if the connection has gone away
+      	  con.ping
+      	  return con
+      	end
 
-	def self.do_query(node, query, hostname = 'localhost', timeout = nil, tries = 1)
-	  require 'mysql'
+      	def self.do_query(node, query, hostname = 'localhost', timeout = nil, tries = 1)
+      	  require 'mysql'
 
-	  while(1) do
-	    begin
-	      info_msg = "Doing SQL Query: HOST=#{hostname}, QUERY=#{query}"
-	      info_msg << ", TIMEOUT=#{timeout}" if timeout
-	      info_msg << ", NUM_TRIES=#{tries}" if tries > 1
-	      Chef::Log.info info_msg
-	      result = nil
-	      if timeout
-		SystemTimer.timeout_after(timeout) do
-		  con = get_mysql_handle(node, hostname)
-		  result = con.query(query)
-		end
-	      else
-		con = get_mysql_handle(node, hostname)
-		result = con.query(query)
-	      end
-	      return result.fetch_hash if result
-	      return result
-	    rescue Timeout::Error => e
-	      Chef::Log.info("Timeout occured during mysql query:#{e}")
-	      tries -= 1
-	      raise "FATAL: retry count reached" if tries == 0
-	    end
-	  end
-	end
+      	  while(1) do
+      	    begin
+      	      info_msg = "Doing SQL Query: HOST=#{hostname}, QUERY=#{query}"
+      	      info_msg << ", TIMEOUT=#{timeout}" if timeout
+      	      info_msg << ", NUM_TRIES=#{tries}" if tries > 1
+      	      Chef::Log.info info_msg
+      	      result = nil
+      	      if timeout
+      		      SystemTimer.timeout_after(timeout) do
+            		  con = get_mysql_handle(node, hostname)
+            		  result = con.query(query)
+            		end
+      	      else
+            		con = get_mysql_handle(node, hostname)
+            		result = con.query(query)
+      	      end
+      	      return result.fetch_hash if result
+      	      return result
+      	    rescue Timeout::Error => e
+      	      Chef::Log.info("Timeout occured during mysql query:#{e}")
+      	      tries -= 1
+      	      raise "FATAL: retry count reached" if tries == 0
+      	    end
+      	  end
+      	end
 
         def self.reconfigure_replication(node, hostname = 'localhost', newmaster_host = nil, newmaster_logfile=nil, newmaster_position=nil)
-# These must be passed and not read from a file
-#          master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
-#          newmaster_host = master_info['Master_IP']
-#          newmaster_logfile = master_info['File']
-#          newmaster_position = master_info['Position']
           Chef::Log.info "Configuring with #{newmaster_host} logfile #{newmaster_logfile} position #{newmaster_position}"
 
-          # legacy did this twice, looks like slave stop can fail once (only throws warning if slave is already stopped)
+          # The slave stop can fail once (only throws warning if slave is already stopped)
           RightScale::Database::MySQL::Helper.do_query(node, "STOP SLAVE", hostname)
           RightScale::Database::MySQL::Helper.do_query(node, "STOP SLAVE", hostname)
 

@@ -91,8 +91,6 @@ end
 action :post_restore_cleanup do
   @db = init(new_resource)
   @db.symlink_datadir("/var/lib/mysql", node[:db][:data_dir])
-  # TODO: used for replication
-  # @db.post_restore_sanity_check
   @db.post_restore_cleanup
 end
 
@@ -306,7 +304,6 @@ action :install_server do
   #  - set config file localhost access w/ root and no password
   #  - disable the 'check_for_crashed_tables'.
   #
-
   remote_file "/etc/mysql/debian.cnf" do
     only_if { node[:platform] == "ubuntu" }
     mode "0600"
@@ -320,18 +317,6 @@ action :install_server do
     source "debian-start"
     cookbook 'db_mysql'
   end
-
-
-  ## == Setup log rotation
-  ##
-  #rs_utils_logrotate_app "mysql-server" do
-  #  template "mysql-server.logrotate.erb"
-  #  cookbook "db_mysql"
-  #  path ["/var/log/mysql*.log", "/var/log/mysql*.err" ]
-  #  frequency "daily"
-  #  rotate 7
-  #  create "640 mysql adm"
-  #end
 
   # == Start MySQL
   #
