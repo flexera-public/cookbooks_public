@@ -30,10 +30,15 @@ block_device NICKNAME do
 end
 
 log "  Remove tags..."
-bash "remove tags" do
-  code <<-EOH
-  rs_tag -r 'rs_dbrepl:*'
-  EOH
+tags_to_remove = `rs_tag --list | grep rs_dbrepl`
+tags_to_remove.each do |each_tag|
+  each_tag = each_tag.strip.chomp.chomp(',').gsub(/^\"|\"$/, '')
+  log "  Remove #{each_tag}..."
+  bash "remove tags" do
+    code <<-EOH
+    rs_tag -r '#{each_tag}'
+    EOH
+  end
 end
 
 ruby_block "Reset db node state" do
