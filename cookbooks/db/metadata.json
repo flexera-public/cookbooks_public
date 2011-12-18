@@ -321,24 +321,6 @@
         "description": "In order to write the dump file to the specified cloud storage location, you need to provide cloud authentication credentials. For Amazon S3, use your Amazon access key ID (e.g., cred:AWS_ACCESS_KEY_ID). For Rackspace Cloud Files, use your Rackspace login username (e.g., cred:RACKSPACE_USERNAME).",
         "display_name": "Dump Storage Account ID"
       },
-      "db/restore/primary/volume_size": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "db::do_primary_init_slave",
-          "db::do_init_slave_at_boot",
-          "db::do_primary_restore_and_become_master",
-          "db::do_init_and_become_master",
-          "db::do_primary_restore",
-          "db::do_primary_restore"
-        ],
-        "description": "Defines the total size of the data volume (in GB).  This is used to increase your database storage capacity upon restore, typically used when initializing a slave.  This value is passed to the underlying block_device resource which is resposible for the resize. Please see the 'volume_size' input Storage Toolbox ServerTemplate (of in the block_device cookbook) for more information. Ignored on clouds that do not support volumes (e.g., Rackspace).",
-        "display_name": "Database Backup Lineage"
-      },
       "db/replication/user": {
         "required": "required",
         "calculated": false,

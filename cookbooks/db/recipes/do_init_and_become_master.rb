@@ -24,7 +24,6 @@ end
 log "  Creating block device..."
 block_device NICKNAME do
   lineage node[:db][:backup][:lineage]
-  volume_size node[:db][:restore][:primary][:volume_size]
   action :create
 end
 
