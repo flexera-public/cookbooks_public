@@ -166,6 +166,19 @@ attribute "db/backup/timestamp_override",
   :required => false,
   :recipes => [ "db::do_primary_restore", "db::do_secondary_restore", "do_primary_restore_and_become_master", "do_secondary_restore_and_become_master" ]
   
+attribute "db/restore/primary/volume_size",
+  :display_name => "Database Backup Lineage",
+  :description => "Defines the total size of the data volume (in GB).  This is used to increase your database storage capacity upon restore, typically used when initializing a slave.  This value is passed to the underlying block_device resource which is resposible for the resize. Please see the 'volume_size' input Storage Toolbox ServerTemplate (of in the block_device cookbook) for more information. Ignored on clouds that do not support volumes (e.g., Rackspace).",
+  :required => true,
+  :recipes => [
+    "db::do_primary_init_slave",
+    "db::do_init_slave_at_boot",
+    "db::do_primary_restore_and_become_master",
+    "db::do_init_and_become_master",
+    "db::do_primary_restore",
+    "db::do_primary_restore"
+  ]
+  
 attribute "db/backup/primary/master/cron/hour",
   :display_name => "Master Backup Cron Hour",
   :description => "Defines the hour of the day when the primary backup will be taken of the master database. Backups of the master are taken daily. By default, an hour will be randomly chosen at launch time. Otherwise, the time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'. Uses standard crontab format (e.g., 23 for 11:00 PM).",

@@ -43,7 +43,7 @@ block_device NICKNAME do
   lineage node[:db][:backup][:lineage]
   lineage_override node[:db][:backup][:lineage_override]
   timestamp_override node[:db][:backup][:timestamp_override]
-  volume_size node[:block_device][:volume_size]
+  volume_size node[:db][:restore][:primary][:volume_size]
   action :primary_restore
 end
 
