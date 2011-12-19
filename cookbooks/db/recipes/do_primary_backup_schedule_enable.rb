@@ -19,11 +19,14 @@ raise "ERROR: 'Backup Lineage' required for scheduled process" if snap_lineage.e
 if node[:db][:this_is_master]
   hour = node[:db][:backup][:primary][:master][:cron][:hour]
   minute = node[:db][:backup][:primary][:master][:cron][:minute]
+  type = "Master"
 else
   hour = node[:db][:backup][:primary][:slave][:cron][:hour]
   minute = node[:db][:backup][:primary][:slave][:cron][:minute]
+  type = "Slave"
 end
 
+log "  Setting up #{type} primary backup cron job to run at hour: #{hour} and minute #{minute}"
 block_device NICKNAME do
   lineage snap_lineage
   cron_backup_recipe "#{self.cookbook_name}::do_primary_backup"

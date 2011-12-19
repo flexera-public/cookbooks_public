@@ -28,19 +28,19 @@ set_unless[:db][:current_master_ip] = nil
 #
 # Calculate recommended backup times for master/slave
 #
-set_unless[:db][:backup][:primary][:master][:cron][:minute] = 5 + rand(54) # backup starts random time between 5-59
-set_unless[:db][:backup][:primary][:master][:cron][:hour] = rand(23) # once a day, random hour
+#  Offset the start time by random number.  Skip the minutes near the exact hour and 1/2 hour.  This is done to prevent
+#  overloading the API and cloud providers (such as amazon).  If every rightscale server sent a request at the same
+#  time to perform a snapshot it would be a huge usage spike.  The random start time evens this spike out.
+#  
 
-user_set = true if db[:backup][:primary][:slave] && db[:backup][:primary][:slave][:cron] && db[:backup][:primary][:slave][:cron][:minute]
-set_unless[:db][:backup][:primary][:slave][:cron][:minute] = 5 + rand(54) # backup starts random time between 5-59
+# Generate random minute
+#  Master and slave backup times are staggered by 30 minutes.
+cron_min = 5 + rand(24)
+# Master backup every 4 hours at a random minute between 5-29
+set_unless[:db][:backup][:primary][:master][:cron][:hour] = "*/4"
+set_unless[:db][:backup][:primary][:master][:cron][:minute] = cron_min
 
-if db[:backup][:primary][:slave][:cron][:minute] == db[:backup][:primary][:master][:cron][:minute]
-  log_msg = "WARNING: detected master and slave backups collision."
-  unless user_set
-    db[:backup][:primary][:slave][:cron][:minute] = db[:backup][:primary][:slave][:cron][:minute].to_i / 2
-    log_msg += "  Changing slave minute to avoid collision: #{db[:backup][:primary][:slave][:cron][:minute]}"
-  end
-  Chef::Log.info log_msg
-end
-
+# Slave backup every hour at a random minute 30 minutes offset from the master.
 set_unless[:db][:backup][:primary][:slave][:cron][:hour] = "*" # every hour
+set_unless[:db][:backup][:primary][:slave][:cron][:minute] = cron_min + 30
+
