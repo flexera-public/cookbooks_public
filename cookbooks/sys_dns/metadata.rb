@@ -5,6 +5,8 @@ description      "Installs/Configures sys_dns"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1"
 
+depends "rs_utils"
+
 recipe "sys_dns::default", "Installs Amazon's dnscurl.pl utility."
 recipe "sys_dns::do_set_private", "Sets the dynamic DNS entry to the first private IP of the server."
 
