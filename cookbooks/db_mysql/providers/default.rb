@@ -418,7 +418,6 @@ action :promote do
   previous_master = node[:db][:current_master_ip]
   raise "FATAL: could not determine master host from slave status" if previous_master.nil?
   Chef::Log.info "host: #{previous_master}}"
-  #Chef::Log.info "host: #{previous_master} user: #{node[:db][:admin][:user]}, pass: #{node[:db][:admin][:password]}"
 
   # PHASE1: contains non-critical old master operations, if a timeout or
   # error occurs we continue promotion assuming the old master is dead.
@@ -601,20 +600,21 @@ end
 
 action :restore_from_dump_file do
  
-  db_name     = new_resource.db_name
-  dumpfile    = new_resource.dumpfile
+  db_name   = new_resource.db_name
+  dumpfile  = new_resource.dumpfile
+  db_check  = `mysql -e "SHOW DATABASES LIKE '#{db_name}'"`
 
   log "  Check if DB already exists"
   ruby_block "checking existing db" do
     block do
-      db_check = `mysql -e "SHOW DATABASES LIKE '#{db_name}'"`
       if ! db_check.empty?
-        raise "ERROR: database '#{db_name}' already exists"
+        Chef::Log.warn "WARNING: database '#{db_name}' already exists. No changes will be made to existing database."
       end
     end
   end
   
   bash "Import MySQL dump file: #{dumpfile}" do
+    only_if { db_check.empty? }
     user "root"
     code <<-EOH
       set -e
