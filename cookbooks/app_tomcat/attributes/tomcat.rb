@@ -21,14 +21,15 @@ set[:tomcat][:docroot] = "/srv/tomcat6/webapps"
 #
 case platform
   when "ubuntu", "debian"                                       #tomcat6 tomcat6-admin tomcat6-common tomcat6-user
-    set[:tomcat][:package_dependencies] = ["eclipse-ecj",\
+    set[:tomcat][:package_dependencies] = ["ecj-gcj",\
+                                         "java-gcj-compat-dev",\
                                          "tomcat6",\
                                          "tomcat6-admin",\
                                          "tomcat6-common",\
-                                         "tomcat-user",\
-                                         "mysql-connector-java"]
+                                         "tomcat6-user ",\
+                                         "libmysql-java"]
     set[:tomcat][:module_dependencies] = [ "proxy", "proxy_http" ]
-    set_unless[:tomcat][:app_user] = "tomcat"
+    set_unless[:tomcat][:app_user] = "tomcat6"
     set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
   when "centos","fedora","suse"
     set[:tomcat][:package_dependencies] = ["eclipse-ecj",\
