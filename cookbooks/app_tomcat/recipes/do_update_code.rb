@@ -65,7 +65,6 @@ if (! node[:delete_docroot_executed])
         svn_username node[:tomcat][:code][:svn_username]
         svn_password node[:tomcat][:code][:svn_password]
         destination node[:tomcat][:docroot]
-        user node[:tomcat][:app_user]
         action :sync
       end
 
