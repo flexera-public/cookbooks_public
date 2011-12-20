@@ -31,7 +31,7 @@ case node[:platform]
   when "ubuntu", "debian"
   #tomcat6 tomcat6-admin tomcat6-common tomcat6-user
     set[:tomcat][:package_dependencies] = ["ecj-gcj",\
-                                         "java-gcj-compat-dev",\
+                                        # "java-gcj-compat-dev",\
                                          "tomcat6",\
                                          "tomcat6-admin",\
                                          "tomcat6-common",\
