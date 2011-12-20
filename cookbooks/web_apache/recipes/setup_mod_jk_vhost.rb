@@ -18,7 +18,7 @@ if !File.exists?("#{etc_apache}/conf.d/mod_jk.conf")
   case node[:platform]
     when "ubuntu", "debian"
 
-      ubuntu_p = ["apache2-mpm-prefork", "apache2-prefork-dev", "libapr1-dev", "apache2-dev"]
+      ubuntu_p = ["apache2-mpm-prefork", "apache2-prefork-dev", "libapr1-dev"]
 
       ubuntu_p.each do |p|
         package p
