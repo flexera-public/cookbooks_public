@@ -28,8 +28,11 @@ rs_utils_enable_collectd_plugin 'exec'
 if !File.exists?("/usr/share/java/collectd.jar")
   # rebuild the collectd configuration file if necessary
   include_recipe "rs_utils::setup_monitoring"
-  
-  if node[:platform] == 'centos'
+
+
+
+
+#  if node[:platform] == 'centos'
     
     cookbook_file "/usr/share/java/collectd.jar" do
       source "collectd.jar"
@@ -51,15 +54,15 @@ EOF
     action [ :stop ]
   end
 
-  sleep 3
+  sleep 5
 
   service "tomcat6" do
     action [ :start ]
   end
 
-  else
-    Chef::Log.info "WARNING: attempting to install collectd-tomcat on unsupported platform #{node[:platform]}."
-  end
+#  else
+#    Chef::Log.info "WARNING: attempting to install collectd-tomcat on unsupported platform #{node[:platform]}."
+#  end
 else
   log("Collectd plugin for Tomcat already installed, skipping...")
 end

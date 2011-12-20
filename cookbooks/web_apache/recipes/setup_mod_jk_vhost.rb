@@ -1,27 +1,10 @@
 # Cookbook Name:: web_apache
 # Recipe:: setup_mod_jk_vhost
 #
-# Copyright (c) 2011 RightScale Inc
 #
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
 rs_utils_marker :begin
 
 etc_apache = "/etc/#{node[:apache][:config_subdir]}"
@@ -29,9 +12,40 @@ etc_apache = "/etc/#{node[:apache][:config_subdir]}"
 #check if mod_jk is installed
 if !File.exists?("#{etc_apache}/conf.d/mod_jk.conf")
 
-arch = node[:kernel][:machine]
-connectors_source = "tomcat-connectors-1.2.32-src.tar.gz"
+  arch = node[:kernel][:machine]
+  connectors_source = "tomcat-connectors-1.2.32-src.tar.gz"
+####################################################
+  case node[:platform]
+    when "ubuntu", "debian"
 
+      ubuntu_p = ["apache2-mpm-prefork", "apache2-prefork-dev", "libapr1-dev", "apache2-dev"]
+
+      ubuntu_p.each do |p|
+        package p
+      end
+
+    when "centos","fedora","suse","redhat"
+
+      if arch == "x86_64"
+        bash "install_remove" do
+          code <<-EOH
+            yum install apr-devel.x86_64 -y
+            yum remove apr-devel.i386 -y
+          EOH
+        end
+      end
+
+      package "httpd-devel" do
+        options "-y"
+      end
+
+  end
+
+  cookbook_file "/tmp/#{connectors_source}" do
+    source "#{connectors_source}"
+  end
+###################################################
+=begin
 if arch == "x86_64"
   bash "install_remove" do
     code <<-EOH
@@ -45,11 +59,15 @@ if node[:platform] == 'centos'
   remote_file "/tmp/#{connectors_source}" do
     source "#{connectors_source}"
   end
+
   package "httpd-devel" do
     action :install
     options "-y"
   end
+
 end
+=end
+###################################################
 
 bash "install_tomcat_connectors" do
   flags "-ex"

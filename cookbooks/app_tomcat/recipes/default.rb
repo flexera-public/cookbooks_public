@@ -1,26 +1,9 @@
 # Cookbook Name:: app_tomcat
 # Recipe:: default
 #
-# Copyright (c) 2011 RightScale Inc
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
 
@@ -34,12 +17,17 @@ rs_utils_marker :begin
     package p
 
     # eclipse-ecj and symlink must be installed FIRST
-    if p=="eclipse-ecj"
+    if p=="eclipse-ecj" || "ecj-gcj"
       # ln -sf /usr/share/java/eclipse-ecj.jar /usr/share/java/ecj.jar
-      # todo: if /usr/share/java/ecj.jar exists delete first
+      # to-do: if /usr/share/java/ecj.jar exists delete first
+      file "/usr/share/java/ecj.jar" do
+        action :delete
+      end
+
       link "/usr/share/java/ecj.jar" do
         to "/usr/share/java/eclipse-ecj.jar"
       end
+
     end
   end
 
@@ -50,7 +38,11 @@ rs_utils_marker :begin
   
   ## Link mysql-connector plugin to Tomcat6 lib
   # ln -sf /usr/share/java/mysql-connector-java.jar /usr/share/tomcat6/lib/mysql-connector-java.jar
-  # todo: if /usr/share/tomcat6/lib/mysql-connector-java.jar exists delete it first
+  # to-do: if /usr/share/tomcat6/lib/mysql-connector-java.jar exists delete it first
+  file "/usr/share/tomcat6/lib/mysql-connector-java.jar" do
+    action :delete
+  end
+
   link "/usr/share/tomcat6/lib/mysql-connector-java.jar" do
     to "/usr/share/java/mysql-connector-java.jar"
   end
@@ -66,8 +58,8 @@ rs_utils_marker :begin
   # Moving tomcat logs to mnt
   if ! File.directory?("/mnt/log/tomcat6") 
     directory "/mnt/log/tomcat6" do
-      owner "tomcat"
-      group "tomcat"
+      owner node[:tomcat][:app_user]
+      group node[:tomcat][:app_user]
       mode "0755"
       action :create
       recursive true
