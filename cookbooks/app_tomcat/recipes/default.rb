@@ -32,7 +32,7 @@ rs_utils_marker :begin
   end
 
   execute "alternatives" do
-    command "alternatives --auto java"
+    command "#{node[:tomcat][:alternatives_cmd]}"
     action :run
   end
   

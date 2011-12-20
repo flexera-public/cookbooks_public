@@ -40,7 +40,7 @@ case node[:platform]
     set[:tomcat][:module_dependencies] = [ "proxy", "proxy_http" ]
     set_unless[:tomcat][:app_user] = "tomcat6"
     set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
-
+    set[:tomcat][:alternatives_cmd] = "update-alternatives  --auto java"
   when "centos","fedora","suse"
     set[:tomcat][:package_dependencies] = ["eclipse-ecj",\
                                          "tomcat6",\
@@ -51,4 +51,5 @@ case node[:platform]
     set[:tomcat][:module_dependencies] = [ "proxy", "proxy_http" ]
     set_unless[:tomcat][:app_user] = "tomcat"
     set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
+    set[:tomcat][:alternatives_cmd] = "alternatives --auto java"
 end
