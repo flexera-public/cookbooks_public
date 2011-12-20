@@ -35,7 +35,7 @@ case node[:platform]
                                          "tomcat6",\
                                          "tomcat6-admin",\
                                          "tomcat6-common",\
-                                         "tomcat6-user ",\
+                                         "tomcat6-user",\
                                          "libmysql-java"]
     set[:tomcat][:module_dependencies] = [ "proxy", "proxy_http" ]
     set_unless[:tomcat][:app_user] = "tomcat6"
