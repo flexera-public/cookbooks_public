@@ -24,7 +24,7 @@ CATALINA_TMPDIR="/var/tmp/tomcat6"
 #JAVA_OPTS="-Djava.library.path=/usr/lib"
 
 # What user should run tomcat
-TOMCAT_USER="tomcat"
+TOMCAT_USER="<%=node[:tomcat][:app_user]%>"
 
 # You can change your tomcat locale here
 #LANG="en_US"
