@@ -18,26 +18,12 @@ if !File.exists?("#{etc_apache}/conf.d/mod_jk.conf")
   case node[:platform]
     when "ubuntu", "debian"
 
-      ubuntu_p = ["apache2-mpm-prefork", "apache2-threaded-dev", "libapr1-dev"]
+      ubuntu_p = ["apache2-mpm-prefork", "apache2-threaded-dev", "libapr1-dev", "libapache2-mod-jk"]
 
       ubuntu_p.each do |p|
         package p
 
 
-bash "install_tomcat_connectors" do
-  flags "-ex"
-  code <<-EOH
-    cd /tmp
-    mkdir -p /tmp/tc-unpack
-    tar xzf #{connectors_source} -C /tmp/tc-unpack --strip-components=1
-
-    cd tc-unpack/native
-    ./buildconf.sh
-    ./configure --with-apxs=/usr/bin/apxs2 --quiet
-    make -s
-    su -c 'make install'
-  EOH
-end
 
       end
 
