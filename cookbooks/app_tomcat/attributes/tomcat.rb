@@ -36,7 +36,9 @@ case node[:platform]
                                          "tomcat6-admin",\
                                          "tomcat6-common",\
                                          "tomcat6-user",\
-                                         "libmysql-java"]
+                                         "libmysql-java",\
+                                         "libtcnative-1"
+    ]
     set[:tomcat][:module_dependencies] = [ "proxy", "proxy_http" ]
     set_unless[:tomcat][:app_user] = "tomcat6"
     set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
