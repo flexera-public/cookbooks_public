@@ -47,10 +47,18 @@ Chef::Log.info("You did not provide branch informaiton -- setting to default.") 
 
     #cloning from SVN
     when "svn"
-
+      #Creating SVN config
       directory "/root/.subversion/" do
         recursive true
       end
+
+      #Creating Tomcat DocRoot
+      directory "#{node[:tomcat][:docroot]}" do
+        recursive true
+        user node[:tomcat][:app_user]
+        not_if do (File.exists?("#{node[:tomcat][:docroot]}")) end
+      end
+
 
   #Create subversion config for run without promts
   log "Creating subversion config"
