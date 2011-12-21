@@ -33,12 +33,12 @@ Chef::Log.warn("WARNING: You did not provide credentials for your code repositor
 Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{node[:tomcat][:code][:branch]}" == "")
 
 # Execute once, on first boot
-if (! node[:delete_docroot_executed])
-  log("Deleting the original docroot")
-  directory "#{node[:tomcat][:docroot]}" do
-    recursive true
-    action :delete
-  end
+#if (! node[:delete_docroot_executed])
+#  log("Deleting the original docroot")
+#  directory "#{node[:tomcat][:docroot]}" do
+#    recursive true
+#    action :delete
+#  end
 
   log("Cloning repository to #{node[:tomcat][:docroot]}")
   # Clone to grab application source from remote repository. Pull is done in the next bash script
@@ -91,7 +91,7 @@ if (! node[:delete_docroot_executed])
       end
 
   end
-end 
+#end  #if node[:delete_docroot_executed]
 
 #    git_pull_output=$(git pull)
 #    if grep -i -q "Already up-to-date"<<<$git_pull_output && test "#{node[:delete_docroot_executed]}" = "true"; then
