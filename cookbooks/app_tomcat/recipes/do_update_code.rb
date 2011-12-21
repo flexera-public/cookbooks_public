@@ -55,7 +55,7 @@ Chef::Log.info("You did not provide branch informaiton -- setting to default.") 
       #Creating Tomcat DocRoot
       directory "#{node[:tomcat][:docroot]}" do
         recursive true
-        user node[:tomcat][:app_user]
+        owner node[:tomcat][:app_user]
         not_if do (File.exists?("#{node[:tomcat][:docroot]}")) end
       end
 
