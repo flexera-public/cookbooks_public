@@ -291,7 +291,7 @@
         "recipes": [
           "db::default"
         ],
-        "description": "The fully qualified domain name for the master database server.",
+        "description": "The fully qualified domain name for the master database server (e.g., text:db-master.example.com).",
         "display_name": "Database Master FQDN"
       },
       "db": {
