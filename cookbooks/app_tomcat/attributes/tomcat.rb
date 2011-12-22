@@ -22,7 +22,7 @@ set_unless[:tomcat][:code][:branch] = "master"
 set_unless[:tomcat][:db_adapter] = "mysql"
 
 # this docroot is currently symlinked from /usr/share/tomcat6/webapps
-set[:tomcat][:docroot] = "/srv/tomcat6/webapps"
+set[:tomcat][:docroot] = "/srv/tomcat6/webapps/"
 
 # == Calculated attributes
 #

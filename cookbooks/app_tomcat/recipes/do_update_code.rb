@@ -29,8 +29,91 @@ raise "You must provide a URL to your application code repository" if ("#{node[:
 raise "You must provide a destination for your application code." if ("#{node[:tomcat][:docroot]}" == "")
 
 # Warn about missing optional attributes
-Chef::Log.warn("WARNING: You did not provide credentials for your code repository -- assuming public repository.") if ("#{node[:tomcat][:code][:credentials]}" == "")
-Chef::Log.info("You did not provide branch informaiton -- setting to default.") if ("#{node[:tomcat][:code][:branch]}" == "")
+Log("WARNING: You did not provide credentials for your code repository -- assuming public repository.") if ("#{node[:tomcat][:code][:credentials]}" == "")
+Log("You did not provide branch informaiton -- setting to default.") if ("#{node[:tomcat][:code][:branch]}" == "")
+
+#########################################################
+node[:tomcat][:docroot] = "/srv/tomcat6/webapps/"
+
+log "INFO: Creating directory for project deployment - #{node[:app_passenger][:deploy_dir]}"
+directory node[:app_passenger][:deploy_dir] do
+  recursive true
+end
+
+#Deleting tmp pull directory for repo_git_pull correct operations
+directory "#{node[:app_passenger][:deploy_dir].chomp}/tmp/" do
+  recursive true
+  action :delete
+end
+
+case node[:app_passenger][:repository][:type]
+  when "svn"
+#cloning from SVN
+
+    directory "/root/.subversion/" do
+      recursive true
+    end
+    #Creating subversion config for run without promts
+    log "INFO: Creating subversion config"
+
+    template "/root/.subversion/servers" do
+      source "svn_servers.erb"
+    end
+
+    subversion "Get Repository SVN" do
+      repository node[:tomcat][:code][:url]
+      revision node[:tomcat][:code][:branch]
+      svn_username node[:tomcat][:code][:svn_username]
+      svn_password node[:tomcat][:code][:svn_password]
+      destination "#{node[:tomcat][:docroot].chomp}/tmp"
+      action :sync
+    end
+
+#deploy!
+    deploy node[:app_passenger][:deploy_dir] do
+      scm_provider Chef::Provider::Subversion
+      repo node "#{node[:tomcat][:docroot].chomp}/tmp" #"#{[:tomcat][:code][:url].chomp}" #"#{node[:app_passenger][:repository][:url].chomp}"
+      #svn_username node[:tomcat][:code][:svn_username] #node[:app_passenger][:repository][:svn][:username]
+      #svn_password node[:tomcat][:code][:svn_password] #node[:app_passenger][:repository][:svn][:password]
+      #revision node[:tomcat][:code][:branch] #node[:app_passenger][:repository][:revision]
+      user node[:tomcat][:app_user] #node[:app_passenger][:apache][:user]
+      enable_submodules true
+      migrate false
+#      migration_command "/opt/ruby-enterprise/bin/#{node[:app_passenger][:project][:migration_cmd]}"
+      shallow_clone true
+      action :deploy
+      restart_command "touch tmp/restart.txt" #"/etc/init.d/tomcat6 restart"
+      create_dirs_before_symlink
+    end
+
+  when "git"
+=begin
+#cloning from git
+    repo_git_pull "Get Repository" do
+      url "#{node[:app_passenger][:repository][:url].chomp}"
+      branch node[:app_passenger][:repository][:revision]
+      dest "#{node[:app_passenger][:deploy_dir].chomp}/tmp/"
+      cred  node[:app_passenger][:repository][:git][:credentials]
+    end
+
+#deploy!
+    deploy node[:app_passenger][:deploy_dir] do
+      repo "#{node[:app_passenger][:deploy_dir].chomp}/tmp"
+      user node[:app_passenger][:apache][:user]
+      enable_submodules true
+      migrate node[:app_passenger][:project][:migrate]
+      migration_command "/opt/ruby-enterprise/bin/#{node[:app_passenger][:project][:migration_cmd]}"
+      environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
+      shallow_clone true
+      action :deploy
+      restart_command "touch tmp/restart.txt"
+      create_dirs_before_symlink
+    end
+=end
+end
+
+##########################################################
+=begin
 
 # Execute once, on first boot
 #if (! node[:delete_docroot_executed])
@@ -106,6 +189,9 @@ Chef::Log.info("You did not provide branch informaiton -- setting to default.") 
 #      echo "Code is up-to-date, exiting successfully"
 #      exit 0
 #    fi
+=end
+
+node[:tomcat][:docroot] = "/srv/tomcat6/webapps/current"
 
 # Set ROOT war and code ownership
 bash "set_root_war_and_chown_home" do
