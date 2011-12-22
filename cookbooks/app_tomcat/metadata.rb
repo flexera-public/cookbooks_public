@@ -94,3 +94,46 @@ attribute "tomcat/java/xmx",
   :description => "The java Xmx argument (i.e. 512m)",
   :required => "optional",
   :recipes => [ "app_tomcat::setup_tomcat_configs" ]
+
+attribute "tomcat/java/PermSize",
+  :display_name => "Tomcat Java PermSize",
+  :description => "The java PermSize argument (i.e. 256m)",
+  :required => "optional",
+  :recipes => [ "app_tomcat::setup_tomcat_configs" ]
+
+attribute "tomcat/java/MaxPermSize",
+  :display_name => "Tomcat Java MaxPermSize",
+  :description => "The java MaxPermSize argument (i.e. 256m)",
+  :required => "optional",
+  :recipes => [ "app_tomcat::setup_tomcat_configs" ]
+
+attribute "tomcat/java/NewSize",
+  :display_name => "Tomcat Java NewSize",
+  :description => "The java NewSize argument (i.e. 256m)",
+  :required => "optional",
+  :recipes => [ "app_tomcat::setup_tomcat_configs" ]
+
+
+attribute "tomcat/java/MaxNewSize",
+  :display_name => "Tomcat Java MaxNewSize",
+  :description => "The java MaxNewSize argument (i.e. 256m)",
+  :required => "optional",
+  :recipes => [ "app_tomcat::setup_tomcat_configs" ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

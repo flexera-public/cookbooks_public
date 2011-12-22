@@ -48,3 +48,14 @@ CATALINA_PID="/var/run/tomcat6.pid"
 # put your own definitions here
 # (i.e. LD_LIBRARY_PATH for some jdbc drivers)
 
+#JVM tuning options
+# see http://www.tomcatexpert.com/blog/2011/11/22/performance-tuning-jvm-running-tomcat
+
+# XMX and XMS
+CATALINA_OPTS=" -Xms<%=node[:tomcat][:java][:xms]%> -Xmx<%=node[:tomcat][:java][:xms]%>"
+
+#PermSize and MaxPermSize
+CATALINA_OPTS=" -XX:PermSize=<%=node[:tomcat][:java][:permsize]%> -XX:MaxPermSize=<%=node[:tomcat][:java][:maxpermsize]%>"
+
+#NewSize and MaxNewSize
+CATALINA_OPTS=" -XX:NewSize=<%=node[:tomcat][:java][:newsize]%> -XX:MaxNewSize=<%=node[:tomcat][:java][:maxnewsize]%>"

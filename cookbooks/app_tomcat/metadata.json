@@ -197,6 +197,58 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "tomcat/java/PermSize": {
+      "display_name": "Tomcat Java PermSize",
+      "description": "The java PermSize argument (i.e. 256m)",
+      "required": "optional",
+      "recipes": [
+        "app_tomcat::setup_tomcat_configs"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "tomcat/java/MaxPermSize": {
+      "display_name": "Tomcat Java MaxPermSize",
+      "description": "The java MaxPermSize argument (i.e. 256m)",
+      "required": "optional",
+      "recipes": [
+        "app_tomcat::setup_tomcat_configs"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "tomcat/java/NewSize": {
+      "display_name": "Tomcat Java NewSize",
+      "description": "The java NewSize argument (i.e. 256m)",
+      "required": "optional",
+      "recipes": [
+        "app_tomcat::setup_tomcat_configs"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "tomcat/java/MaxNewSize": {
+      "display_name": "Tomcat Java MaxNewSize",
+      "description": "The java MaxNewSize argument (i.e. 256m)",
+      "required": "optional",
+      "recipes": [
+        "app_tomcat::setup_tomcat_configs"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {

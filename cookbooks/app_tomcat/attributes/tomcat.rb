@@ -10,6 +10,11 @@
 set_unless[:tomcat][:server_name] = "myserver"  
 set_unless[:tomcat][:application_name] = "myapp"
 
+set_unless[:tomcat][:java][:permsize] = "256m"
+set_unless[:tomcat][:java][:maxpermsize] = "256m"
+set_unless[:tomcat][:java][:newsize] = "256m"
+set_unless[:tomcat][:java][:maxnewsize] = "256m"
+
 # == Optional attributes
 #
 set_unless[:tomcat][:code][:repo_type] = "git"

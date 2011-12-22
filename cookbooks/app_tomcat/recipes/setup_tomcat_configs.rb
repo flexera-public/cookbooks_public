@@ -32,6 +32,7 @@ template "/etc/tomcat6/tomcat6.conf" do
   mode "0644"
 end
 
+=begin
 bash "Add optional Java XMS and XMX parameters" do
   flags "-ex"
   code <<-EOH
@@ -49,7 +50,7 @@ EOF
     fi
   EOH
 end
-
+=end
 template "/etc/tomcat6/server.xml" do
   action :create
   source "server_xml.erb"
