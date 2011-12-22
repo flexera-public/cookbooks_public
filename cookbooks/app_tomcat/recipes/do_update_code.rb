@@ -35,18 +35,18 @@ Log("You did not provide branch informaiton -- setting to default.") if ("#{node
 #########################################################
 node[:tomcat][:docroot] = "/srv/tomcat6/webapps/"
 
-log "INFO: Creating directory for project deployment - #{node[:app_passenger][:deploy_dir]}"
-directory node[:app_passenger][:deploy_dir] do
+log "INFO: Creating directory for project deployment - #{node[:tomcat][:docroot]}"
+directory node[:tomcat][:docroot] do
   recursive true
 end
 
 #Deleting tmp pull directory for repo_git_pull correct operations
-directory "#{node[:app_passenger][:deploy_dir].chomp}/tmp/" do
+directory "#{node[:tomcat][:docroot].chomp}/tmp/" do
   recursive true
   action :delete
 end
 
-case node[:app_passenger][:repository][:type]
+case node[:tomcat][:code][:repo_type]
   when "svn"
 #cloning from SVN
 
@@ -70,9 +70,9 @@ case node[:app_passenger][:repository][:type]
     end
 
 #deploy!
-    deploy node[:app_passenger][:deploy_dir] do
+    deploy node[:tomcat][:code][:repo_type] do
       scm_provider Chef::Provider::Subversion
-      repo node "#{node[:tomcat][:docroot].chomp}/tmp" #"#{[:tomcat][:code][:url].chomp}" #"#{node[:app_passenger][:repository][:url].chomp}"
+      repo "#{node[:tomcat][:docroot].chomp}/tmp" #"#{[:tomcat][:code][:url].chomp}" #"#{node[:app_passenger][:repository][:url].chomp}"
       #svn_username node[:tomcat][:code][:svn_username] #node[:app_passenger][:repository][:svn][:username]
       #svn_password node[:tomcat][:code][:svn_password] #node[:app_passenger][:repository][:svn][:password]
       #revision node[:tomcat][:code][:branch] #node[:app_passenger][:repository][:revision]
