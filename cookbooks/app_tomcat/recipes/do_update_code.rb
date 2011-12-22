@@ -82,7 +82,7 @@ case node[:tomcat][:code][:repo_type]
 #deploy!
     deploy node[:tomcat][:docroot] do
       scm_provider Chef::Provider::Subversion
-      repo  "#{[:tomcat][:code][:url].chomp}" #"#{node[:tomcat][:docroot].chomp}/tmp" #"#{node[:app_passenger][:repository][:url].chomp}"
+      repo  "#{node[:tomcat][:code][:url].chomp}" #"#{node[:tomcat][:docroot].chomp}/tmp" #"#{node[:app_passenger][:repository][:url].chomp}"
       #svn_username node[:tomcat][:code][:svn_username] #node[:app_passenger][:repository][:svn][:username]
       #svn_password node[:tomcat][:code][:svn_password] #node[:app_passenger][:repository][:svn][:password]
       #revision node[:tomcat][:code][:branch] #node[:app_passenger][:repository][:revision]
