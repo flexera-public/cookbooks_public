@@ -83,9 +83,9 @@ case node[:tomcat][:code][:repo_type]
     deploy node[:tomcat][:docroot] do
       scm_provider Chef::Provider::Subversion
       repo  "#{node[:tomcat][:code][:url].chomp}" #"#{node[:tomcat][:docroot].chomp}/tmp" #"#{node[:app_passenger][:repository][:url].chomp}"
-      #svn_username node[:tomcat][:code][:svn_username] #node[:app_passenger][:repository][:svn][:username]
-      #svn_password node[:tomcat][:code][:svn_password] #node[:app_passenger][:repository][:svn][:password]
-      #revision node[:tomcat][:code][:branch] #node[:app_passenger][:repository][:revision]
+      svn_username node[:tomcat][:code][:svn_username] #node[:app_passenger][:repository][:svn][:username]
+      svn_password node[:tomcat][:code][:svn_password] #node[:app_passenger][:repository][:svn][:password]
+      revision node[:tomcat][:code][:branch] #node[:app_passenger][:repository][:revision]
       user node[:tomcat][:app_user] #node[:app_passenger][:apache][:user]
       enable_submodules true
       migrate false
