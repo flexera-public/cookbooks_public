@@ -69,16 +69,7 @@ case node[:tomcat][:code][:repo_type]
     template "/root/.subversion/servers" do
       source "svn_servers.erb"
     end
-=begin
-    subversion "Get Repository SVN" do
-      repository node[:tomcat][:code][:url]
-      revision node[:tomcat][:code][:branch]
-      svn_username node[:tomcat][:code][:svn_username]
-      svn_password node[:tomcat][:code][:svn_password]
-      destination "#{node[:tomcat][:docroot].chomp}/tmp"
-      action :sync
-    end
-=end
+
 #deploy!
     deploy node[:tomcat][:docroot] do
       scm_provider Chef::Provider::Subversion
@@ -94,113 +85,32 @@ case node[:tomcat][:code][:repo_type]
       shallow_clone true
       action :deploy
       restart_command "touch tmp/restart.txt" #"/etc/init.d/tomcat6 restart"
-      #create_dirs_before_symlink
     end
 
   when "git"
-=begin
-#cloning from git
-    repo_git_pull "Get Repository" do
-      url "#{node[:app_passenger][:repository][:url].chomp}"
-      branch node[:app_passenger][:repository][:revision]
-      dest "#{node[:app_passenger][:deploy_dir].chomp}/tmp/"
-      cred  node[:app_passenger][:repository][:git][:credentials]
+
+    repo_git_pull "Get Repository git" do
+      url    node[:tomcat][:code][:url]
+      branch node[:tomcat][:code][:branch]
+      dest   node[:tomcat][:docroot]
+      cred   node[:tomcat][:code][:credentials]
     end
 
 #deploy!
-    deploy node[:app_passenger][:deploy_dir] do
-      repo "#{node[:app_passenger][:deploy_dir].chomp}/tmp"
-      user node[:app_passenger][:apache][:user]
+    deploy node[:tomcat][:docroot] do
+      repo  "#{node[:tomcat][:docroot].chomp}/tmp" #"#{node[:app_passenger][:repository][:url].chomp}"
+      revision node[:tomcat][:code][:branch] #node[:app_passenger][:repository][:revision]
+      user node[:tomcat][:app_user] #node[:app_passenger][:apache][:user]
       enable_submodules true
-      migrate node[:app_passenger][:project][:migrate]
-      migration_command "/opt/ruby-enterprise/bin/#{node[:app_passenger][:project][:migration_cmd]}"
-      environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
+      migrate false
+      symlink_before_migrate({})
+      symlinks({})
       shallow_clone true
       action :deploy
-      restart_command "touch tmp/restart.txt"
-      create_dirs_before_symlink
+      restart_command "touch tmp/restart.txt" #"/etc/init.d/tomcat6 restart"
     end
-=end
+
 end
-
-##########################################################
-=begin
-
-# Execute once, on first boot
-#if (! node[:delete_docroot_executed])
-#  log("Deleting the original docroot")
-#  directory "#{node[:tomcat][:docroot]}" do
-#    recursive true
-#    action :delete
-#  end
-
-  log("Cloning repository to #{node[:tomcat][:docroot]}")
-  # Clone to grab application source from remote repository. Pull is done in the next bash script
-
-  case node[:tomcat][:code][:repo_type]
-
-    #cloning from SVN
-    when "svn"
-      #Creating SVN config
-      directory "/root/.subversion/" do
-        recursive true
-      end
-
-      #Creating Tomcat DocRoot
-      directory "#{node[:tomcat][:docroot]}" do
-        recursive true
-        owner node[:tomcat][:app_user]
-        not_if do (File.exists?("#{node[:tomcat][:docroot]}")) end
-      end
-
-
-  #Create subversion config for run without promts
-  log "Creating subversion config"
-
-      template "/root/.subversion/servers" do
-        source "svn_servers.erb"
-      end
-
-      subversion "Get Repository SVN" do
-        repository node[:tomcat][:code][:url]
-        revision node[:tomcat][:code][:branch]
-        svn_username node[:tomcat][:code][:svn_username]
-        svn_password node[:tomcat][:code][:svn_password]
-        destination node[:tomcat][:docroot]
-        action :sync
-      end
-
-    #cloning from GIT
-    when "git"
-
-      repo_git_pull "Get Repository git" do
-        url    node[:tomcat][:code][:url]
-        branch node[:tomcat][:code][:branch]
-        dest   node[:tomcat][:docroot]
-        cred   node[:tomcat][:code][:credentials]
-      end
-
-      bash "Update git Repository" do
-        flags "-ex"
-        code <<-EOH
-          cd #{node[:tomcat][:docroot]}
-          git_pull_output=$(git pull)
-          if grep -i -q "Already up-to-date"<<<$git_pull_output && test "#{node[:delete_docroot_executed]}" = "true"; then
-            echo "Code is up-to-date, exiting successfully"
-            exit 0
-          fi
-        EOH
-      end
-
-  end
-#end  #if node[:delete_docroot_executed]
-
-#    git_pull_output=$(git pull)
-#    if grep -i -q "Already up-to-date"<<<$git_pull_output && test "#{node[:delete_docroot_executed]}" = "true"; then
-#      echo "Code is up-to-date, exiting successfully"
-#      exit 0
-#    fi
-=end
 
 node[:tomcat][:docroot] = "/srv/tomcat6/webapps/current"
 
