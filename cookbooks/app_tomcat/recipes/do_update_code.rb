@@ -70,7 +70,7 @@ case node[:tomcat][:code][:repo_type]
     end
 
 #deploy!
-    deploy node[:tomcat][:code][:repo_type] do
+    deploy node[:tomcat][:docroot] do
       scm_provider Chef::Provider::Subversion
       repo "#{node[:tomcat][:docroot].chomp}/tmp" #"#{[:tomcat][:code][:url].chomp}" #"#{node[:app_passenger][:repository][:url].chomp}"
       #svn_username node[:tomcat][:code][:svn_username] #node[:app_passenger][:repository][:svn][:username]
