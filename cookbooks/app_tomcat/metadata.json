@@ -258,7 +258,8 @@
     "app_tomcat::do_update_code": "Update application source files from the remote repository.",
     "app_tomcat::setup_db_connection": "Set up the MySQL database db.tomcat connection file.",
     "app_tomcat::setup_tomcat_configs": "Configure tomcat.",
-    "app_tomcat::setup_monitoring": "Install collectd monitoring for tomcat."
+    "app_tomcat::setup_monitoring": "Install collectd monitoring for tomcat.",
+    "app_tomcat::setup_mod_jk_vhost": "Installs, configures mod_jk and creates vhost."
   },
   "version": "0.1.1"
 }

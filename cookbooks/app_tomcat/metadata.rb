@@ -15,7 +15,7 @@ recipe  "app_tomcat::do_update_code", "Update application source files from the 
 recipe  "app_tomcat::setup_db_connection", "Set up the MySQL database db.tomcat connection file."
 recipe  "app_tomcat::setup_tomcat_configs", "Configure tomcat."
 recipe  "app_tomcat::setup_monitoring", "Install collectd monitoring for tomcat."
-
+recipe  "app_tomcat::setup_mod_jk_vhost", "Installs, configures mod_jk and creates vhost."
 attribute "tomcat",
   :display_name => "Tomcat Application Settings",
   :type => "hash"
