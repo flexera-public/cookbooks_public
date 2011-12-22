@@ -33,7 +33,7 @@ Log("WARNING: You did not provide credentials for your code repository -- assumi
 Log("You did not provide branch informaiton -- setting to default.") if ("#{node[:tomcat][:code][:branch]}" == "")
 
 #########################################################
-node[:tomcat][:docroot] = "/srv/tomcat6/webapps/"
+node[:tomcat][:docroot] = "/srv/tomcat6/webapps"
 
 log "INFO: Creating directory for project deployment - #{node[:tomcat][:docroot]}"
 directory node[:tomcat][:docroot] do
@@ -45,6 +45,16 @@ directory "#{node[:tomcat][:docroot].chomp}/tmp/" do
   recursive true
   action :delete
 end
+
+#Create deploy system dirs
+directory "#{node[:tomcat][:docroot].chomp}/shared/log" do
+  recursive true
+end
+
+directory "#{node[:tomcat][:docroot].chomp}/shared/system" do
+  recursive true
+end
+
 
 case node[:tomcat][:code][:repo_type]
   when "svn"
