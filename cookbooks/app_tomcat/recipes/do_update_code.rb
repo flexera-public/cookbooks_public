@@ -69,7 +69,7 @@ case node[:tomcat][:code][:repo_type]
     template "/root/.subversion/servers" do
       source "svn_servers.erb"
     end
-
+=begin
     subversion "Get Repository SVN" do
       repository node[:tomcat][:code][:url]
       revision node[:tomcat][:code][:branch]
@@ -78,11 +78,11 @@ case node[:tomcat][:code][:repo_type]
       destination "#{node[:tomcat][:docroot].chomp}/tmp"
       action :sync
     end
-
+=end
 #deploy!
     deploy node[:tomcat][:docroot] do
       scm_provider Chef::Provider::Subversion
-      repo "#{node[:tomcat][:docroot].chomp}/tmp" #"#{[:tomcat][:code][:url].chomp}" #"#{node[:app_passenger][:repository][:url].chomp}"
+      repo  "#{[:tomcat][:code][:url].chomp}" #"#{node[:tomcat][:docroot].chomp}/tmp" #"#{node[:app_passenger][:repository][:url].chomp}"
       #svn_username node[:tomcat][:code][:svn_username] #node[:app_passenger][:repository][:svn][:username]
       #svn_password node[:tomcat][:code][:svn_password] #node[:app_passenger][:repository][:svn][:password]
       #revision node[:tomcat][:code][:branch] #node[:app_passenger][:repository][:revision]
