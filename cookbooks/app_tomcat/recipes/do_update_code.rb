@@ -93,6 +93,7 @@ case node[:tomcat][:code][:repo_type]
       shallow_clone true
       action :deploy
       restart_command "touch tmp/restart.txt" #"/etc/init.d/tomcat6 restart"
+      symlinks({})
       symlink_before_migrate nil
       #create_dirs_before_symlink
     end
