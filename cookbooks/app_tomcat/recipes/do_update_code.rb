@@ -89,12 +89,11 @@ case node[:tomcat][:code][:repo_type]
       user node[:tomcat][:app_user] #node[:app_passenger][:apache][:user]
       enable_submodules true
       migrate false
-#      migration_command "/opt/ruby-enterprise/bin/#{node[:app_passenger][:project][:migration_cmd]}"
+      symlink_before_migrate({})
+      symlinks({})
       shallow_clone true
       action :deploy
       restart_command "touch tmp/restart.txt" #"/etc/init.d/tomcat6 restart"
-      symlinks({})
-      symlink_before_migrate nil
       #create_dirs_before_symlink
     end
 
