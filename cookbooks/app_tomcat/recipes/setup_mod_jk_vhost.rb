@@ -42,6 +42,9 @@ if !File.exists?("#{etc_apache}/conf.d/mod_jk.conf")
         options "-y"
       end
 
+   cookbook_file "/tmp/#{connectors_source}" do
+    source "#{connectors_source}"
+  end
 
 bash "install_tomcat_connectors" do
   flags "-ex"
@@ -60,9 +63,7 @@ end
 
   end
 
-  cookbook_file "/tmp/#{connectors_source}" do
-    source "#{connectors_source}"
-  end
+
 ###################################################
 =begin
 if arch == "x86_64"
