@@ -104,7 +104,7 @@ case node[:tomcat][:code][:repo_type]
       user node[:tomcat][:app_user] #node[:app_passenger][:apache][:user]
       enable_submodules true
       migrate false
-      create_dirs_before_symlink ({})
+      create_dirs_before_symlink %w{}
       symlink_before_migrate({})
       symlinks({})
       shallow_clone true
