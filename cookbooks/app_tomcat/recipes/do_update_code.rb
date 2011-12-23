@@ -84,10 +84,11 @@ case node[:tomcat][:code][:repo_type]
   when "git"
 
     #Deleting tmp pull directory for repo_git_pull correct operations
-    directory "#{node[:tomcat][:docroot].chomp}/tmp/" do
-      recursive true
-      action :delete
-    end
+    #directory "#{node[:tomcat][:docroot].chomp}/tmp/" do
+    #  recursive true
+    #  action :delete
+    #end
+
     log "INFO: Pullng from #{node[:tomcat][:code][:url]} branch #{node[:tomcat][:code][:branch]}"
     repo_git_pull "Get Repository git" do
       url    node[:tomcat][:code][:url]
