@@ -40,12 +40,6 @@ directory node[:tomcat][:docroot] do
   recursive true
 end
 
-#Deleting tmp pull directory for repo_git_pull correct operations
-directory "#{node[:tomcat][:docroot].chomp}/tmp/" do
-  recursive true
-  action :delete
-end
-
 #Create deploy system dirs
 directory "#{node[:tomcat][:docroot].chomp}/shared/log" do
   recursive true
@@ -88,6 +82,12 @@ case node[:tomcat][:code][:repo_type]
     end
 
   when "git"
+
+    #Deleting tmp pull directory for repo_git_pull correct operations
+    directory "#{node[:tomcat][:docroot].chomp}/tmp/" do
+      recursive true
+      action :delete
+    end
 
     repo_git_pull "Get Repository git" do
       url    node[:tomcat][:code][:url]
