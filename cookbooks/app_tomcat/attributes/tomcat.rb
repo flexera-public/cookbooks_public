@@ -48,7 +48,7 @@ case node[:platform]
     set_unless[:tomcat][:app_user] = "tomcat6"
     set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
     set[:tomcat][:alternatives_cmd] = "update-alternatives  --auto java"
-  when "centos","fedora","suse"
+  when "centos", "fedora", "suse", "redhat", "redhatenterpriseserver"
     set[:tomcat][:package_dependencies] = ["eclipse-ecj",\
                                          "tomcat6",\
                                          "tomcat6-admin-webapps",\
