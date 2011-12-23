@@ -41,13 +41,13 @@ directory node[:tomcat][:docroot] do
 end
 
 #Create deploy system dirs
-directory "#{node[:tomcat][:docroot].chomp}/shared/log" do
+directory "#{node[:tomcat][:docroot].chomp}/shared/" do
   recursive true
 end
 
-directory "#{node[:tomcat][:docroot].chomp}/shared/system" do
-  recursive true
-end
+#directory "#{node[:tomcat][:docroot].chomp}/shared/system" do
+#  recursive true
+#end
 
 
 case node[:tomcat][:code][:repo_type]
@@ -91,10 +91,10 @@ case node[:tomcat][:code][:repo_type]
 
     log "INFO: Pullng from #{node[:tomcat][:code][:url]} branch #{node[:tomcat][:code][:branch]}"
     repo_git_pull "Get Repository git" do
-      url    node[:tomcat][:code][:url]
+      url "#{node[:tomcat][:code][:url].chomp}"
       branch node[:tomcat][:code][:branch]
-      dest   "#{node[:tomcat][:docroot].chomp}/tmp"
-      cred   node[:tomcat][:code][:credentials]
+      dest "#{node[:tomcat][:docroot].chomp}/tmp"
+      cred node[:tomcat][:code][:credentials]
     end
 
 #deploy!
