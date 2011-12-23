@@ -109,7 +109,7 @@ case node[:tomcat][:code][:repo_type]
       symlinks({})
       shallow_clone true
       action :deploy
-      restart_command "touch tmp/restart.txt" #"/etc/init.d/tomcat6 restart"
+      #restart_command "touch tmp/restart.txt" #"/etc/init.d/tomcat6 restart"
     end
 
 end
