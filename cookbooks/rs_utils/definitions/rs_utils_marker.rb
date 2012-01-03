@@ -5,6 +5,9 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+
+#@todo add description
+#@author Scott M. Likens
 define :rs_utils_marker do
 
   recipe_name = "#{self.cookbook_name}" + "::" + "#{self.recipe_name}"

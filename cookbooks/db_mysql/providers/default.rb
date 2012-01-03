@@ -7,42 +7,95 @@
 
 include RightScale::Database::MySQL::Helper
 
+# @group General Database Actions
+#   Below are the actions defined by by the db resource interface.
+#
+#
+# == Stop
+#   Stop the database service.
+#
+#   Calls the correct init.d script for the database and platform.
+#
 action :stop do
   @db = init(new_resource)
   @db.stop
 end
 
+# == Start
+#   Start the database service.
+#
+#   Calls the correct init.d script for the database and platform.
+#
 action :start do
   @db = init(new_resource)
   @db.start
 end
 
+# == Status
+#   Log the status of the database service.
+#
+#   Calls the correct init.d script for the database and platform
+#   and send the output to the Chef log and RightScale audit entries.
+#
 action :status do
   @db = init(new_resource)
   status = @db.status
   log "Database Status:\n#{status}"
 end
 
+# == Lock
+#   Lock the database so writes will be blocked.
+#
+#   This must insure a conistent state while taking a snapshot.
+#
 action :lock do
   @db = init(new_resource)
   @db.lock
 end
 
+# == Unlock
+#   Unlock the database so writes can occur.
+#
+#   This must be called as soon as possible after calling the :lock action
+#   since no clients will be blocked from writting.
+#
 action :unlock do
   @db = init(new_resource)
   @db.unlock
 end
 
+# == Move Data Directory
+#   Relocate the database data directory
+#
+#   Moves the data directory from the default install path to the path specified
+#   in name attribute or data_dir attribute of the resource.  This is used for
+#   relocating the data directory to a block device that provides snapshot
+#   functionality.
+#
+#   This action should also setup a symlink from the old path to the new
+#   location.
+#
 action :move_data_dir do
   @db = init(new_resource)
   @db.move_datadir
 end
 
+# == Reset
+#   Wipes the current database into a pristine state.
+#
+#   This utility action can be useful in development and test environments.
+#   Not recommended for production use.
+#
+# @note WARNING: this will delete any data in your database!
+#
 action :reset do
   @db = init(new_resource)
   @db.reset
 end
 
+# == Firewall Update Request
+#   Sends a remote_recipe that requests a database updates it's firewall rules.
+#
 action :firewall_update_request do
   sys_firewall "Request database open port 3306 (MySQL) to this server" do
     machine_tag new_resource.machine_tag
@@ -53,6 +106,9 @@ action :firewall_update_request do
   end
 end
 
+# == Firewall Update
+#   Updates database firewall rules.
+#
 action :firewall_update do
   sys_firewall "Request database open port 3306 (MySQL) to this server" do
     machine_tag new_resource.machine_tag
@@ -62,7 +118,7 @@ action :firewall_update do
   end
 end
 
-
+# == Write Backup Info
 action :write_backup_info do
   masterstatus = Hash.new
   masterstatus = RightScale::Database::MySQL::Helper.do_query(node, 'SHOW MASTER STATUS')
@@ -83,27 +139,69 @@ action :write_backup_info do
   end
 end
 
+# == Pre-restore Check
+#   Verify the database is in a good state before preforming a restore.
+#
+#   This action is called before a restore is performed. It should be used to
+#   verify that the system is in a correct state for restoring and should
+#   preform any other steps necessary before a new block_device is attached
+#   and the database is stopped for a restore.
+#
+#   This action should raise an exception if the database is not
+#   in a valid state for a restore.
+#
 action :pre_restore_check do
   @db = init(new_resource)
   @db.pre_restore_sanity_check
 end
 
+# == Post-restore Cleanup
+#   Used to cleanup VM after restore.
+#
+#   This action is called after the block_device restore has completed and
+#   before the database is started.
+#
+#   Used to link the database to the files in the newly restored data_dir.
+#   Can also be used to perform other steps necessary to cleanup after a
+#   restore.
+#
 action :post_restore_cleanup do
   @db = init(new_resource)
   @db.symlink_datadir("/var/lib/mysql", node[:db][:data_dir])
   @db.post_restore_cleanup
 end
 
+# == Pre-backup Check
+#   Verify the database is in a good state for taking a snapshot.
+#
+#   This action is used to verify correct state and to preform any
+#   other steps necessary before the database is locked.
+#
+#   This action should raise an exception if the database is not
+#   in a valid state for a backup.
+#
 action :pre_backup_check do
   @db = init(new_resource)
   @db.pre_backup_check
 end
 
+# == Post-backup Cleanup
+#   Used to cleanup VM after backup.
+#
+#   This action is called after the backup has completed.  Can be used to cleanup
+#   any temporary files created from the :pre_backup_check action.
+#
 action :post_backup_cleanup do
   @db = init(new_resource)
   @db.post_backup_steps
 end
 
+# == Set Privileges
+#   Set database user privileges.
+#
+#   Use the privilage attributes of this resource to setup 'administrator' or
+#   'user' privilages to the given username with the given password.
+#
 action :set_privileges do
   priv = new_resource.privilege
   priv_username = new_resource.privilege_username
@@ -117,6 +215,13 @@ action :set_privileges do
   end
 end
 
+# == Install Client
+#   Installs database client
+#
+#   Use to install the client on any system that needs to connect to the server.
+#   Also should install language binding packages For example, ruby client gem
+#   java client jar, php client modules, etc
+#
 action :install_client do
 
   # == Install MySQL 5.1 package(s)
@@ -177,6 +282,10 @@ action :install_client do
   log "Gem reload forced with Gem.clear_paths"
 end
 
+
+# == Install Server
+#   Installs database server
+#
 action :install_server do
 
   # MySQL server depends on MySQL client
@@ -327,6 +436,13 @@ action :install_server do
 
 end
 
+# == Setup Monitoring
+#   Install and configure collectd plgins for the server.
+#
+#   This is used by the RightScale platorm to display metrics about the database
+#   on the RightScale dashboard.  Also enables alerts and escalations for the
+#   database.
+#
 action :setup_monitoring do
   service "collectd" do
     action :nothing
@@ -363,6 +479,9 @@ action :setup_monitoring do
 
 end
 
+# == Grant Replication Slave
+#@todo add description
+#
 action :grant_replication_slave do
   require 'mysql'
 
@@ -373,6 +492,9 @@ action :grant_replication_slave do
   con.close
 end
 
+# == Promote
+#@todo add description
+#
 action :promote do
   
   x = node[:db_mysql][:log_bin]
@@ -480,7 +602,9 @@ action :promote do
   end
 end
 
-
+# == Enable Replication
+#   Configures and start a slave replicating from master
+#
 action :enable_replication do
 
   ruby_block "wipe_existing_runtime_config" do
@@ -587,6 +711,9 @@ action :enable_replication do
   end
 end
 
+# == Generate dump file
+#@todo add description
+#
 action :generate_dump_file do
 
   db_name     = new_resource.db_name
@@ -598,6 +725,9 @@ action :generate_dump_file do
 
 end
 
+# == Restore db from dump file
+#@todo add description
+#
 action :restore_from_dump_file do
  
   db_name   = new_resource.db_name

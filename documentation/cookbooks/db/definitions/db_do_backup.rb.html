@@ -1,0 +1,507 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: cookbooks::db::definitions::db_do_backup.rb
+  
+    &mdash; Documentation by YARD 0.7.4
+  
+</title>
+
+  <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '../../..';
+  if (relpath != '') relpath += '/';
+</script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../../_index.html">Index (d)</a> &raquo; 
+    <span class='title'><span class='object_link'><a href="../../../cookbooks.html" title="cookbooks (class)">cookbooks</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../db.html" title="cookbooks::db (class)">db</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../definitions.html" title="cookbooks::db::definitions (class)">definitions</a></span></span>
+     &raquo; 
+    <span class="title">db_do_backup.rb</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: cookbooks::db::definitions::db_do_backup.rb
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><span class='object_link'><a href="../definitions.html" title="cookbooks::db::definitions (class)">cookbooks::db::definitions</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="../../../cookbooks.html" title="cookbooks (class)">cookbooks</a></span></li>
+          
+            <li class="next"><span class='object_link'><a href="../../db.html" title="cookbooks::db (class)">cookbooks::db</a></span></li>
+          
+            <li class="next"><span class='object_link'><a href="../definitions.html" title="cookbooks::db::definitions (class)">cookbooks::db::definitions</a></span></li>
+          
+            <li class="next">cookbooks::db::definitions::db_do_backup.rb</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">cookbooks/db/definitions/db_do_backup.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <h1>Cookbook Name:: db</h1>
+<pre class="code">
+ Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+ RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+ if applicable, other agreements such as a RightScale Master Subscription Agreement.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#db_do_backup-instance_method" title="#db_do_backup (instance method)">- (Object) <strong>db_do_backup</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Does a snapshot backup of the filesystem containing the database.</h2>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="db_do_backup-instance_method">
+  
+    - (<tt>Object</tt>) <strong>db_do_backup</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Does a snapshot backup of the filesystem containing the database</h2>
+<pre class="code">
+  Note that the upload becomes a background job in order to allow other recipes to
+  not wait if the upload takes a long time.
+  Since this backup is a snapshot of a filesystem, it will check if the database has
+  been 'initialized', else it will fail.
+</pre>
+<h2>Exceptions</h2>
+<pre class="code">
+  If force is false and a backup is currently running, will raise an exception.
+  If database is not 'initialized', will raise.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>force</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><ul>
+<li><p>
+If false, if a backup is currently running, will error out stating so,
+</p>
+</li>
+<li><p>
+if true, if a backup is currently running, will kill that process and take
+over the lock.
+</p>
+</li>
+</ul>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>backup_type</span>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>primary</tt>, <tt>secondary</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><ul>
+<li><p>
+If &#8220;primary&#8221; will do a primary backup using node attributes
+specific to the main backup.
+</p>
+</li>
+<li><p>
+If &#8216;secondary&#8217; will do a secondary backup using node attributes
+for secondary.  Secondary uses &#8216;ROS&#8217;.
+</p>
+</li>
+</ul>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db/definitions/db_do_backup.rb', line 26</span>
+
+<span class='id identifier rubyid_define'>define</span> <span class='symbol'>:db_do_backup</span><span class='comma'>,</span> <span class='symbol'>:force</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='symbol'>:backup_type</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>primary</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+
+  <span class='const'>NICKNAME</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:nickname</span><span class='rbracket'>]</span>
+  <span class='const'>DATA_DIR</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data_dir</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_do_force'>do_force</span>        <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:force</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>true</span> <span class='op'>?</span> <span class='kw'>true</span> <span class='op'>:</span> <span class='kw'>false</span>
+  <span class='id identifier rubyid_do_backup_type'>do_backup_type</span>  <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:backup_type</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>primary</span><span class='tstring_end'>&quot;</span></span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>primary</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>secondary</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='comment'># == Check if database is able to be backed up (initialized)
+</span>  <span class='comment'># must be done in ruby block to expand node during converge not compile
+</span>  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  Checking db_init_status making sure db ready for backup</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_db_init_status'>db_init_status</span> <span class='symbol'>:check</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_expected_state'>expected_state</span> <span class='symbol'>:initialized</span>
+    <span class='id identifier rubyid_error_message'>error_message</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Database not initialized.</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># == Verify initalized database
+</span>  <span class='comment'># Check the node state to verify that we have correctly initialized this server.
+</span>  <span class='id identifier rubyid_db_state_assert'>db_state_assert</span> <span class='symbol'>:either</span>
+  
+  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  Performing pre-backup check...</span><span class='tstring_end'>&quot;</span></span> 
+  <span class='id identifier rubyid_db'>db</span> <span class='const'>DATA_DIR</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:pre_backup_check</span>
+  <span class='kw'>end</span>
+  
+  <span class='comment'># == Aquire the backup lock or die
+</span>  <span class='comment'>#
+</span>  <span class='comment'># This lock is released in the 'backup' script for now.
+</span>  <span class='comment'># See below for more information about 'backup'
+</span>  <span class='comment'># if 'force' is true, kills pid and removes locks
+</span>  <span class='comment'>#
+</span>  <span class='id identifier rubyid_block_device'>block_device</span> <span class='const'>NICKNAME</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:backup_lock_take</span>
+    <span class='id identifier rubyid_force'>force</span> <span class='id identifier rubyid_do_force'>do_force</span>
+  <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  Performing (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_do_backup_type'>do_backup_type</span><span class='rbrace'>}</span><span class='tstring_content'> backup) lock DB and write backup info file...</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_db'>db</span> <span class='const'>DATA_DIR</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='lbracket'>[</span> <span class='symbol'>:lock</span><span class='comma'>,</span> <span class='symbol'>:write_backup_info</span> <span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  Performing (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_do_backup_type'>do_backup_type</span><span class='rbrace'>}</span><span class='tstring_content'> backup)Snapshot with lineage </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:lineage</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>..</span><span class='tstring_end'>&quot;</span></span>
+  <span class='comment'># Requires block_device node[:db][:block_device] to be instantiated
+</span>  <span class='comment'># previously. Make sure block_device::default recipe has been run.
+</span>  <span class='id identifier rubyid_block_device'>block_device</span> <span class='const'>NICKNAME</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_lineage'>lineage</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:lineage</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:snapshot</span>
+  <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  Performing unlock DB...</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_db'>db</span> <span class='const'>DATA_DIR</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:unlock</span>
+  <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  Performing (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_do_backup_type'>do_backup_type</span><span class='rbrace'>}</span><span class='tstring_content'>)Backup of lineage </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:lineage</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'> and post-backup cleanup...</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_cloud'>cloud</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:cloud</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:provider</span><span class='rbracket'>]</span>
+  <span class='comment'># Log that storage rotation is not supported on ROS storage types
+</span>  <span class='kw'>if</span> <span class='lparen'>(</span> <span class='id identifier rubyid_cloud'>cloud</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Rackspace</span><span class='tstring_end'>&quot;</span></span> <span class='rparen'>)</span>
+    <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  ROS storage type (Eg: Rackspace) does not support rotation.  Use of rotation inputs will be ignored.</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># If doing a secondary backup, set variables needed for this.
+</span>  <span class='kw'>if</span> <span class='id identifier rubyid_do_backup_type'>do_backup_type</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>secondary</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_secondary_storage_cloud'>secondary_storage_cloud</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:secondary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:cloud</span><span class='rbracket'>]</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:secondary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:cloud</span><span class='rbracket'>]</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>aws</span><span class='regexp_end'>/i</span></span>
+      <span class='id identifier rubyid_secondary_storage_cloud'>secondary_storage_cloud</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>s3</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>elsif</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:secondary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:cloud</span><span class='rbracket'>]</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>rackspace</span><span class='regexp_end'>/i</span></span>
+      <span class='id identifier rubyid_secondary_storage_cloud'>secondary_storage_cloud</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cloudfiles</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_secondary_storage_container'>secondary_storage_container</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:secondary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:container</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># backup.rb removes the file lock created from :backup_lock_take
+</span>  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  Forking background process to complete backup... (see /var/log/messages for results)</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_background_exe'>background_exe</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/opt/rightscale/sandbox/bin/backup</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--backuponly</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--lineage </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:lineage</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--nickname </span><span class='embexpr_beg'>#{</span><span class='const'>NICKNAME</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--mount-point </span><span class='embexpr_beg'>#{</span><span class='const'>DATA_DIR</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--cloud </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_cloud'>cloud</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--backup-type </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_do_backup_type'>do_backup_type</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='id identifier rubyid_secondary_storage_cloud'>secondary_storage_cloud</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_do_backup_type'>do_backup_type</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>secondary</span><span class='tstring_end'>&quot;</span></span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--secondary-storage-cloud </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_secondary_storage_cloud'>secondary_storage_cloud</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='op'>:</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='id identifier rubyid_secondary_storage_container'>secondary_storage_container</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_do_backup_type'>do_backup_type</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>secondary</span><span class='tstring_end'>&quot;</span></span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--secondary-storage-container </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_secondary_storage_container'>secondary_storage_container</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='op'>:</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:rackspace_snet</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>false</span><span class='rparen'>)</span>  <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--no-snet</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:max_snapshots</span><span class='rbracket'>]</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--max-snapshots </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:max_snapshots</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep_daily</span><span class='rbracket'>]</span>    <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--keep-daily </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep_daily</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>       <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep_weekly</span><span class='rbracket'>]</span>   <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--keep-weekly </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep_weekly</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>     <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep_monthly</span><span class='rbracket'>]</span>  <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--keep-monthly </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep_monthly</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>   <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep_yearly</span><span class='rbracket'>]</span>   <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--keep-yearly </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:keep_yearly</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>     <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>2&gt;&amp;1 | logger -t rs_db_backup &amp;</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  background process = '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_background_exe'>background_exe</span><span class='rbrace'>}</span><span class='tstring_content'>'</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_bash'>bash</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>backup.rb</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_environment'>environment</span> <span class='lparen'>(</span><span class='lbrace'>{</span> 
+                   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>PRIMARY_STORAGE_KEY</span><span class='tstring_end'>&quot;</span></span>      <span class='op'>=&gt;</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:cred</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user</span><span class='rbracket'>]</span><span class='comma'>,</span>
+                   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>PRIMARY_STORAGE_SECRET</span><span class='tstring_end'>&quot;</span></span>   <span class='op'>=&gt;</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:primary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:cred</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:secret</span><span class='rbracket'>]</span><span class='comma'>,</span>
+                   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SECONDARY_STORAGE_KEY</span><span class='tstring_end'>&quot;</span></span>    <span class='op'>=&gt;</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:secondary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:cred</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user</span><span class='rbracket'>]</span><span class='comma'>,</span>
+                   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SECONDARY_STORAGE_SECRET</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:block_device</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:backup</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:secondary</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:cred</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:secret</span><span class='rbracket'>]</span>
+                <span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_code'>code</span> <span class='id identifier rubyid_background_exe'>background_exe</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Tue Jan  3 18:34:49 2012 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.7.4 (ruby-1.9.2).
+</div>
+
+  </body>
+</html>

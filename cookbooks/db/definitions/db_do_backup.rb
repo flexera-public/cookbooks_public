@@ -5,22 +5,24 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+
 # == Does a snapshot backup of the filesystem containing the database
-# Note that the upload becomes a background job in order to allow other recipes to
-# not wait if the upload takes a long time.
-# Since this backup is a snapshot of a filesystem, it will check if the database has
-# been 'initialized', else it will fail.
-# == Params
-# force(Boolean):: If false, if a backup is currently running, will error out stating so.
-#   If true, if a backup is currently running, will kill that process and take over the lock.
-# backup_type(String):: If 'primary' will do a primary backup using node attributes specific
-#   to the main backup.  If 'secondary' will do a secondary backup using node attributes for
-#   secondary.  Secondary uses 'ROS'.
+#   Note that the upload becomes a background job in order to allow other recipes to
+#   not wait if the upload takes a long time.
+#   Since this backup is a snapshot of a filesystem, it will check if the database has
+#   been 'initialized', else it will fail.
+#
 # == Exceptions
-# If force is false and a backup is currently running, will raise an exception.
-# If database is not 'initialized', will raise.
-
-
+#   If force is false and a backup is currently running, will raise an exception.
+#   If database is not 'initialized', will raise.
+#
+# @param [Boolean] force
+#   * If false, if a backup is currently running, will error out stating so,
+#   * if true, if a backup is currently running, will kill that process and take over the lock.
+# @param backup_type [String, primary, secondary]
+#   * If "primary" will do a primary backup using node attributes specific to the main backup.
+#   * If 'secondary' will do a secondary backup using node attributes for secondary.  Secondary uses 'ROS'.
+#
 define :db_do_backup, :force => false, :backup_type => "primary" do
 
   NICKNAME = node[:block_device][:nickname]

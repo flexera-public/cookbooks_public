@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+#@todo add description
+#@author Scott M. Likens
 define :rs_utils_logrotate_app, :enable => true, :frequency => "weekly", :template => "logrotate.erb", :cookbook => "logrotate" do
   include_recipe "logrotate"
 

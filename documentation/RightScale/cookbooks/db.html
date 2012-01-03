@@ -1,0 +1,350 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: RightScale::cookbooks::db
+  
+    &mdash; Documentation by YARD 0.7.4
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '../..';
+  if (relpath != '') relpath += '/';
+</script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (d)</a> &raquo; 
+    <span class='title'><span class='object_link'><a href="../../RightScale.html" title="RightScale (module)">RightScale</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../cookbooks.html" title="RightScale::cookbooks (class)">cookbooks</a></span></span>
+     &raquo; 
+    <span class="title">db</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: RightScale::cookbooks::db
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">RightScale::cookbooks::db</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">/cookbooks/db</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <h1>RightScale Database Manager</h1>
+<h2>DESCRIPTION:</h2>
+<p>
+This cookbook provides a set of database recipes used by the RightScale 
+Database Manager ServerTemplates.
+</p>
+<p>
+This cookbook does not contain a specific database implementation, rather 
+it provides an interface for general database actions and parameters.
+</p>
+<h2>DETAILS:</h2>
+<h3>General</h3>
+<p>
+The &#8216;db&#8217; interface is defined by a Lightweight Resource, which
+can be found in the resources/default.rb file.
+</p>
+<p>
+This cookbook is intended to be used in conjunction with cookbooks that
+contain Lightweight Providers which implement the &#8216;db&#8217;
+interface. See the RightScale  db_mysql cookbook for an example.
+</p>
+<p>
+For more about Lightweight Resources and Providers (LWRPs), please see the
+Chef wiki at:
+</p>
+<pre class="code">
+  
+  http://wiki.opscode.com/display/chef/Lightweight+Resources+and+Providers+%28LWRP%29
+  
+</pre>
+<h3>Backup/Restore</h3>
+<p>
+This cookbook depends on the block_device LWRP for backup and restore 
+actions.  See db::do_backup and db::do_restore recipes for examples.  The 
+block_device cookbook in RightScale&#8217;s cookbooks_premium repository
+provides primary and secondary persistence solutions for multiple clouds.
+</p>
+<p>
+However, using LWRPs one can provide their own block_device implementation
+instead.  
+</p>
+<p>
+Please see RightScale&#8217;s premium block_device cookbook for the list of
+available actions, attributes and usage.
+</p>
+<pre class="code">
+      
+</pre>
+<h2>REQUIREMENTS:</h2>
+<ul>
+<li><p>
+Must be used with a &#8216;db&#8217; provider in the cookbook path.
+</p>
+</li>
+<li><p>
+Depends on a &#8216;block_device&#8217; resource for backup and restore
+recipes. 
+</p>
+<pre class="code">
+   
+</pre>
+</li>
+</ul>
+<h2>SETUP:</h2>
+<pre class="code">
+   
+</pre>
+<ul>
+<li><p>
+Place db::default recipe into your runlist to setup the db resource.  When
+using a RightScale ServerTemplate, this will also automatically add the 
+common database attributes to your ServerTemplate inputs.
+</p>
+<pre class="code">
+ 
+</pre>
+</li>
+<li><p>
+The default recipe for the cookbook that contains the db provider must also
+be added to your runlist. For example:
+</p>
+<pre class="code">
+  <span class='id identifier rubyid_db_mysql'>db_mysql</span><span class='op'>::</span><span class='id identifier rubyid_default'>default</span> 
+  
+</pre>
+<p>
+This will load your provider and pull in any database specific attributes 
+as inputs.
+</p>
+</li>
+</ul>
+<h2>USAGE:</h2>
+<h3>Initialize a master database:</h3>
+<ol>
+<li><p>
+Once your VMs is operational, run the:
+</p>
+<pre class="code">
+ <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>db::setup_block_device</span><span class='tstring_end'>&quot;</span></span>
+ 
+</pre>
+<p>
+recipe. This will initialize your database onto a block device that
+supports backup and restore operations. 
+</p>
+</li>
+<li><p>
+Initialize your database from previous dumpfile or other source.
+</p>
+</li>
+<li><p>
+Register your database with a Dynamic DNS provider using:
+</p>
+<pre class="code">
+ <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sys_dns::do_set_private</span><span class='tstring_end'>&quot;</span></span>
+</pre>
+<p>
+to allow you application servers to start making connections.
+</p>
+</li>
+<li><p>
+Backup your database using:
+</p>
+<pre class="code">
+ <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>db:do_backup</span><span class='tstring_end'>&quot;</span></span>
+ 
+</pre>
+<p>
+to allow restoring the master database in case of failure or planned
+termination.
+</p>
+</li>
+</ol>
+<h3>Restore a master database:</h3>
+<ol>
+<li><p>
+Once your VMs is operational, run the:
+</p>
+<pre class="code">
+ <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>db::do_restore</span><span class='tstring_end'>&quot;</span></span>
+ 
+</pre>
+<p>
+recipe. This will restore your database from a backup previously saved to
+persistent cloud storage. 
+</p>
+</li>
+<li><p>
+Register your database with a Dynamic DNS provider using:
+</p>
+<pre class="code">
+ <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sys_dns::do_set_private</span><span class='tstring_end'>&quot;</span></span>
+</pre>
+<p>
+to allow you application servers to start making connections.
+</p>
+</li>
+</ol>
+<h2>KNOWN LIMITATIONS:</h2>
+<ul>
+<li><p>
+Currently only one db provider should be present in your cookbook path.
+</p>
+</li>
+<li><p>
+The &#8216;appserver_allow&#8217; and &#8216;appserver_deny&#8217; recipes
+require VMs managed  by the RightScale platform to run.
+</p>
+<pre class="code">
+ 
+</pre>
+</li>
+</ul>
+<h2>PROVIDERS:</h2>
+<p>
+When writing your own database Lightweight Provider:
+</p>
+<ul>
+<li><p>
+The database provider to use is defined by node[:db][:provider] attribute, 
+you will need to override this. You can do so by adding: 
+</p>
+<pre class="code">
+ 
+  <span class='id identifier rubyid_set'>set</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:provider</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>db_myprovider</span><span class='tstring_end'>&quot;</span></span>
+  
+</pre>
+<p>
+in the attributes file of your provider cookbook.
+</p>
+</li>
+<li><p>
+Any database specific attributes that you wish to make user configurable 
+should be added to the cookbook metadata with the default recipe included
+in the attribute&#8217;s &#8216;recipes&#8217; array.  For more about Chef
+metadata, please see the Chef wiki at:
+</p>
+<pre class="code">
+  <span class='id identifier rubyid_http'>http</span><span class='symbol'>:/</span><span class='op'>/</span><span class='id identifier rubyid_wiki'>wiki</span><span class='period'>.</span><span class='id identifier rubyid_opscode'>opscode</span><span class='period'>.</span><span class='id identifier rubyid_com'>com</span><span class='op'>/</span><span class='id identifier rubyid_display'>display</span><span class='op'>/</span><span class='id identifier rubyid_chef'>chef</span><span class='op'>/</span><span class='const'>Metadata</span>
+ 
+</pre>
+</li>
+<li><p>
+Your provider cookbook metadata should depend on this cookbook by added a
+&#8216;depends&#8217; line to your metadata. For example:
+</p>
+<pre class="code">
+  <span class='id identifier rubyid_depends'>depends</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>db</span><span class='tstring_end'>&quot;</span></span>
+  
+</pre>
+</li>
+</ul>
+<h1>LICENSE</h1>
+<p>
+Copyright RightScale, Inc. All rights reserved.  All access and use subject
+to the RightScale Terms of Service available at <a
+href="http://www.rightscale.com/terms.php">www.rightscale.com/terms.php</a>
+and, if applicable, other agreements such as a RightScale Master
+Subscription Agreement.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+   
+    
+   
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="db/definitions.html" title="RightScale::cookbooks::db::definitions (class)">definitions</a></span>, <span class='object_link'><a href="db/resources.html" title="RightScale::cookbooks::db::resources (class)">resources</a></span>
+    
+  
+</p>
+
+
+
+
+
+
+
+</div>
+    
+    <div id="footer">
+  Generated on Tue Jan  3 15:23:09 2012 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.7.4 (ruby-1.9.2).
+</div>
+
+  </body>
+</html>

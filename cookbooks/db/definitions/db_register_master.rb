@@ -6,12 +6,12 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 # == Sets a database server to be a master in a replication db setup.
-# The tasks include setting up DNS, setting tags, and setting node attributes.
+#   The tasks include setting up DNS, setting tags, and setting node attributes.
 # == Params
-# none
+#   none
 # == Exceptions
-# none
-
+#   none
+#
 define :db_register_master do
 
   # == Set master DNS

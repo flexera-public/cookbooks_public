@@ -1,0 +1,2766 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: cookbooks::db_mysql::providers::default.rb
+  
+    &mdash; Documentation by YARD 0.7.4
+  
+</title>
+
+  <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '../../..';
+  if (relpath != '') relpath += '/';
+</script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../../_index.html">Index (d)</a> &raquo; 
+    <span class='title'><span class='object_link'><a href="../../../cookbooks.html" title="cookbooks (class)">cookbooks</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../db_mysql.html" title="cookbooks::db_mysql (class)">db_mysql</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../providers.html" title="cookbooks::db_mysql::providers (class)">providers</a></span></span>
+     &raquo; 
+    <span class="title">default.rb</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: cookbooks::db_mysql::providers::default.rb
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><span class='object_link'><a href="../providers.html" title="cookbooks::db_mysql::providers (class)">cookbooks::db_mysql::providers</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="../../../cookbooks.html" title="cookbooks (class)">cookbooks</a></span></li>
+          
+            <li class="next"><span class='object_link'><a href="../../db_mysql.html" title="cookbooks::db_mysql (class)">cookbooks::db_mysql</a></span></li>
+          
+            <li class="next"><span class='object_link'><a href="../providers.html" title="cookbooks::db_mysql::providers (class)">cookbooks::db_mysql::providers</a></span></li>
+          
+            <li class="next">cookbooks::db_mysql::providers::default.rb</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">cookbooks/db_mysql/providers/default.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <h1>Cookbook Name:: db_mysql</h1>
+<pre class="code">
+ Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+ RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+ if applicable, other agreements such as a RightScale Master Subscription Agreement.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <h2>
+      General Database Actions
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#enable_replication-instance_method" title="#enable_replication (instance method)">- (Object) <strong>enable_replication</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Enable Replication.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#firewall_update-instance_method" title="#firewall_update (instance method)">- (Object) <strong>firewall_update</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Firewall Update.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#firewall_update_request-instance_method" title="#firewall_update_request (instance method)">- (Object) <strong>firewall_update_request</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Firewall Update Request.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#generate_dump_file-instance_method" title="#generate_dump_file (instance method)">- (Object) <strong>generate_dump_file</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Generate dump file.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#grant_replication_slave-instance_method" title="#grant_replication_slave (instance method)">- (Object) <strong>grant_replication_slave</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Grant Replication Slave.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#install_client-instance_method" title="#install_client (instance method)">- (Object) <strong>install_client</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Install Client.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#install_server-instance_method" title="#install_server (instance method)">- (Object) <strong>install_server</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Install Server.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#lock-instance_method" title="#lock (instance method)">- (Object) <strong>lock</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Lock.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#move_data_dir-instance_method" title="#move_data_dir (instance method)">- (Object) <strong>move_data_dir</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Move Data Directory.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#post_backup_cleanup-instance_method" title="#post_backup_cleanup (instance method)">- (Object) <strong>post_backup_cleanup</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Post-backup Cleanup.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#post_restore_cleanup-instance_method" title="#post_restore_cleanup (instance method)">- (Object) <strong>post_restore_cleanup</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Post-restore Cleanup.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#pre_backup_check-instance_method" title="#pre_backup_check (instance method)">- (Object) <strong>pre_backup_check</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Pre-backup Check.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#pre_restore_check-instance_method" title="#pre_restore_check (instance method)">- (Object) <strong>pre_restore_check</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Pre-restore Check.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#promote-instance_method" title="#promote (instance method)">- (Object) <strong>promote</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Promote.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#reset-instance_method" title="#reset (instance method)">- (Object) <strong>reset</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Reset.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#restore_from_dump_file-instance_method" title="#restore_from_dump_file (instance method)">- (Object) <strong>restore_from_dump_file</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Restore db from dump file.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#set_privileges-instance_method" title="#set_privileges (instance method)">- (Object) <strong>set_privileges</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Set Privileges.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#setup_monitoring-instance_method" title="#setup_monitoring (instance method)">- (Object) <strong>setup_monitoring</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Setup Monitoring.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#start-instance_method" title="#start (instance method)">- (Object) <strong>start</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Start.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#status-instance_method" title="#status (instance method)">- (Object) <strong>status</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Status.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#stop-instance_method" title="#stop (instance method)">- (Object) <strong>stop</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Below are the actions defined by by the db resource interface.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#unlock-instance_method" title="#unlock (instance method)">- (Object) <strong>unlock</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Unlock.</h2>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#write_backup_info-instance_method" title="#write_backup_info (instance method)">- (Object) <strong>write_backup_info</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><h2>Write Backup Info.</h2>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="enable_replication-instance_method">
+  
+    - (<tt>Object</tt>) <strong>enable_replication</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Enable Replication</h2>
+<pre class="code">
+  <span class='const'>Configures</span> <span class='kw'>and</span> <span class='id identifier rubyid_start'>start</span> <span class='id identifier rubyid_a'>a</span> <span class='id identifier rubyid_slave'>slave</span> <span class='id identifier rubyid_replicating'>replicating</span> <span class='id identifier rubyid_from'>from</span> <span class='id identifier rubyid_master'>master</span></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 608</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:enable_replication</span> <span class='kw'>do</span>
+
+  <span class='id identifier rubyid_ruby_block'>ruby_block</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wipe_existing_runtime_config</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_block'>block</span> <span class='kw'>do</span>
+      <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Wiping existing runtime config files</span><span class='tstring_end'>&quot;</span></span>
+      <span class='id identifier rubyid_data_dir'>data_dir</span> <span class='op'>=</span> <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data_dir</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>mysql</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_files_to_delete'>files_to_delete</span> <span class='op'>=</span> <span class='lbracket'>[</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>master.info</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>relay-log.info</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql-bin.*</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>*relay-bin.*</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_files_to_delete'>files_to_delete</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_file'>file</span><span class='op'>|</span>
+        <span class='id identifier rubyid_expand'>expand</span> <span class='op'>=</span> <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_glob'>glob</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_data_dir'>data_dir</span><span class='comma'>,</span><span class='id identifier rubyid_file'>file</span><span class='rparen'>)</span><span class='rparen'>)</span>
+        <span class='kw'>unless</span> <span class='id identifier rubyid_expand'>expand</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+        	<span class='id identifier rubyid_expand'>expand</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_exp_file'>exp_file</span><span class='op'>|</span>
+        	  <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_rm_rf'>rm_rf</span><span class='lparen'>(</span><span class='id identifier rubyid_exp_file'>exp_file</span><span class='rparen'>)</span>
+        	<span class='kw'>end</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># disable binary logging
+</span>  <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:log_bin_enabled</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>false</span>
+
+  <span class='comment'># we refactored setup_my_cnf into db::install_server, we might want to break that out again?
+</span>  <span class='comment'># Setup my.cnf
+</span>  <span class='id identifier rubyid_template_source'>template_source</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>my.cnf.erb</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='id identifier rubyid_template'>template</span> <span class='id identifier rubyid_value_for_platform'>value_for_platform</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>centos</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>redhat</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>suse</span><span class='tstring_end'>&quot;</span></span> <span class='rbracket'>]</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/my.cnf</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/mysql/my.cnf</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_source'>source</span> <span class='id identifier rubyid_template_source'>template_source</span>
+    <span class='id identifier rubyid_owner'>owner</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>root</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_group'>group</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>root</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_mode'>mode</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0644</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_variables'>variables</span><span class='lparen'>(</span>
+      <span class='symbol'>:server_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_mycnf_uuid'>mycnf_uuid</span>
+    <span class='rparen'>)</span>
+    <span class='id identifier rubyid_cookbook'>cookbook</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>db_mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># empty out the binary log dir
+</span>  <span class='id identifier rubyid_directory'>directory</span> <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:log_bin</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='lbracket'>[</span><span class='symbol'>:delete</span><span class='comma'>,</span> <span class='symbol'>:create</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_recursive'>recursive</span> <span class='kw'>true</span>
+    <span class='id identifier rubyid_owner'>owner</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>mysql</span><span class='tstring_end'>'</span></span>
+    <span class='id identifier rubyid_group'>group</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># ensure_db_started
+</span>  <span class='comment'># service provider uses the status command to decide if it
+</span>  <span class='comment'># has to run the start command again.
+</span>  <span class='int'>10</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_service'>service</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:start</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># checks for valid backup and that current master matches backup
+</span>  <span class='id identifier rubyid_ruby_block'>ruby_block</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>validate_backup</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_block'>block</span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_master_info'>master_info</span> <span class='op'>=</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_load_replication_info'>load_replication_info</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='rparen'>)</span>
+      <span class='comment'># Check that the snapshot is from the current master or a slave associated with the current master
+</span>
+      <span class='comment'># 11H2 backup
+</span>      <span class='kw'>if</span> <span class='id identifier rubyid_master_info'>master_info</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Master_instance_uuid</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+        <span class='kw'>if</span> <span class='id identifier rubyid_master_info'>master_info</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Master_instance_uuid</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:current_master_uuid</span><span class='rbracket'>]</span>
+          <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>FATAL: snapshot was taken from a different master! snap_master was:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_master_info'>master_info</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Master_instance_uuid</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'> != current master: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:current_master_uuid</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+        <span class='kw'>end</span>
+      <span class='comment'># 11H1 backup
+</span>      <span class='kw'>elsif</span> <span class='id identifier rubyid_master_info'>master_info</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Master_instance_id</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+        <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  Detected 11H1 snapshot to migrate</span><span class='tstring_end'>&quot;</span></span>
+        <span class='kw'>if</span> <span class='id identifier rubyid_master_info'>master_info</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Master_instance_id</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:current_master_ec2_id</span><span class='rbracket'>]</span>
+          <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>FATAL: snapshot was taken from a different master! snap_master was:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_master_info'>master_info</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Master_instance_id</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'> != current master: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:current_master_ec2_id</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+        <span class='kw'>end</span>
+      <span class='comment'># File not found or does not contain info
+</span>      <span class='kw'>else</span>
+        <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Position and file not saved!</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_ruby_block'>ruby_block</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>reconfigure_replication</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_block'>block</span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_master_info'>master_info</span> <span class='op'>=</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_load_replication_info'>load_replication_info</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_newmaster_host'>newmaster_host</span> <span class='op'>=</span> <span class='id identifier rubyid_master_info'>master_info</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Master_IP</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_newmaster_logfile'>newmaster_logfile</span> <span class='op'>=</span> <span class='id identifier rubyid_master_info'>master_info</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>File</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_newmaster_position'>newmaster_position</span> <span class='op'>=</span> <span class='id identifier rubyid_master_info'>master_info</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Position</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> 
+      <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure_replication'>reconfigure_replication</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>localhost</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='id identifier rubyid_newmaster_host'>newmaster_host</span><span class='comma'>,</span> <span class='id identifier rubyid_newmaster_logfile'>newmaster_logfile</span><span class='comma'>,</span> <span class='id identifier rubyid_newmaster_position'>newmaster_position</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_ruby_block'>ruby_block</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>do_query</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_block'>block</span> <span class='kw'>do</span>
+      <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SET GLOBAL READ_ONLY=1</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:tunable</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:read_only</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>1</span>
+  <span class='id identifier rubyid_template'>template</span> <span class='id identifier rubyid_value_for_platform'>value_for_platform</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>centos</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>redhat</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>suse</span><span class='tstring_end'>&quot;</span></span> <span class='rbracket'>]</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/my.cnf</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/mysql/my.cnf</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_source'>source</span> <span class='id identifier rubyid_template_source'>template_source</span>
+    <span class='id identifier rubyid_owner'>owner</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>root</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_group'>group</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>root</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_mode'>mode</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0644</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_variables'>variables</span><span class='lparen'>(</span>
+      <span class='symbol'>:server_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_mycnf_uuid'>mycnf_uuid</span>
+    <span class='rparen'>)</span>
+    <span class='id identifier rubyid_cookbook'>cookbook</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>db_mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="firewall_update-instance_method">
+  
+    - (<tt>Object</tt>) <strong>firewall_update</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Firewall Update</h2>
+<pre class="code">
+  Updates database firewall rules.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+112
+113
+114
+115
+116
+117
+118
+119</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 112</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:firewall_update</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_sys_firewall'>sys_firewall</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Request database open port 3306 (MySQL) to this server</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_machine_tag'>machine_tag</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_machine_tag'>machine_tag</span>
+    <span class='id identifier rubyid_port'>port</span> <span class='int'>3306</span> 
+    <span class='id identifier rubyid_enable'>enable</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_enable'>enable</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:update</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="firewall_update_request-instance_method">
+  
+    - (<tt>Object</tt>) <strong>firewall_update_request</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Firewall Update Request</h2>
+<pre class="code">
+  <span class='const'>Sends</span> <span class='id identifier rubyid_a'>a</span> <span class='id identifier rubyid_remote_recipe'>remote_recipe</span> <span class='id identifier rubyid_that'>that</span> <span class='id identifier rubyid_requests'>requests</span> <span class='id identifier rubyid_a'>a</span> <span class='id identifier rubyid_database'>database</span> <span class='id identifier rubyid_updates'>updates</span> <span class='id identifier rubyid_it'>it</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>s firewall rules.</span></span></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+99
+100
+101
+102
+103
+104
+105
+106
+107</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 99</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:firewall_update_request</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_sys_firewall'>sys_firewall</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Request database open port 3306 (MySQL) to this server</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_machine_tag'>machine_tag</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_machine_tag'>machine_tag</span>
+    <span class='id identifier rubyid_port'>port</span> <span class='int'>3306</span> 
+    <span class='id identifier rubyid_enable'>enable</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_enable'>enable</span>
+    <span class='id identifier rubyid_ip_addr'>ip_addr</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_ip_addr'>ip_addr</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:update_request</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="generate_dump_file-instance_method">
+  
+    - (<tt>Object</tt>) <strong>generate_dump_file</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note todo">
+    <strong>TODO:</strong> 
+    <div class='inline'><p>
+add description
+</p>
+</div>
+  </div>
+
+<h2>Generate dump file</h2>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 717</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:generate_dump_file</span> <span class='kw'>do</span>
+
+  <span class='id identifier rubyid_db_name'>db_name</span>     <span class='op'>=</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_db_name'>db_name</span>
+  <span class='id identifier rubyid_dumpfile'>dumpfile</span>    <span class='op'>=</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_dumpfile'>dumpfile</span>
+
+  <span class='id identifier rubyid_execute'>execute</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Write the mysql DB backup file</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_command'>command</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysqldump --single-transaction -u root </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_db_name'>db_name</span><span class='rbrace'>}</span><span class='tstring_content'> | gzip -c &gt; </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_dumpfile'>dumpfile</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="grant_replication_slave-instance_method">
+  
+    - (<tt>Object</tt>) <strong>grant_replication_slave</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note todo">
+    <strong>TODO:</strong> 
+    <div class='inline'><p>
+add description
+</p>
+</div>
+  </div>
+
+<h2>Grant Replication Slave</h2>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+485
+486
+487
+488
+489
+490
+491
+492
+493</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 485</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:grant_replication_slave</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>mysql</span><span class='tstring_end'>'</span></span>
+
+  <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>GRANT REPLICATION SLAVE to </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:replication</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_con'>con</span> <span class='op'>=</span> <span class='const'>Mysql</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>localhost</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>root</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_con'>con</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>GRANT REPLICATION SLAVE ON *.* TO '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:replication</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:user</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>'@'%' IDENTIFIED BY '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:replication</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:password</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>'</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_con'>con</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>FLUSH PRIVILEGES</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_con'>con</span><span class='period'>.</span><span class='id identifier rubyid_close'>close</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="install_client-instance_method">
+  
+    - (<tt>Object</tt>) <strong>install_client</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Install Client</h2>
+<pre class="code">
+  Installs database client
+
+  Use to install the client on any system that needs to connect to the server.
+  Also should install language binding packages For example, ruby client gem
+  java client jar, php client modules, etc</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 225</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:install_client</span> <span class='kw'>do</span>
+
+  <span class='comment'># == Install MySQL 5.1 package(s)
+</span>  <span class='kw'>if</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:platform</span><span class='rbracket'>]</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>redhat|centos</span><span class='regexp_end'>/</span></span>
+
+    <span class='comment'># Install MySQL GPG Key (http://download.oracle.com/docs/cd/E17952_01/refman-5.5-en/checking-gpg-signature.html)
+</span>    <span class='id identifier rubyid_gpgkey'>gpgkey</span> <span class='op'>=</span> <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='kw'>__FILE__</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>..</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>files</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>centos</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql_pubkey.asc</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+    <span class='backtick'>`</span><span class='tstring_content'>rpm --import </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_gpgkey'>gpgkey</span><span class='rbrace'>}</span><span class='tstring_end'>`</span></span>
+
+    <span class='comment'># Packages from rightscale-software repository for MySQL 5.1
+</span>    <span class='id identifier rubyid_packages'>packages</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>MySQL-shared-compat</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>MySQL-devel-community</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>MySQL-client-community</span><span class='tstring_end'>&quot;</span></span> <span class='rbracket'>]</span>
+    <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Packages to install: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_packages'>packages</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>,</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_packages'>packages</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_p'>p</span><span class='op'>|</span>
+      <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_package'>package</span> <span class='id identifier rubyid_p'>p</span> <span class='kw'>do</span>
+        <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:nothing</span>
+      <span class='kw'>end</span>
+      <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_run_action'>run_action</span><span class='lparen'>(</span><span class='symbol'>:install</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+
+  <span class='kw'>else</span>
+
+    <span class='comment'># Install development library in compile phase
+</span>    <span class='id identifier rubyid_p'>p</span> <span class='op'>=</span> <span class='id identifier rubyid_package'>package</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql-dev</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_package_name'>package_name</span> <span class='id identifier rubyid_value_for_platform'>value_for_platform</span><span class='lparen'>(</span>
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ubuntu</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>8.04</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>libmysqlclient15-dev</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>8.10</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>libmysqlclient15-dev</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>9.04</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>libmysqlclient15-dev</span><span class='tstring_end'>&quot;</span></span>
+        <span class='rbrace'>}</span><span class='comma'>,</span>
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>libmysqlclient-dev</span><span class='tstring_end'>'</span></span>
+      <span class='rparen'>)</span>
+      <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:nothing</span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_p'>p</span><span class='period'>.</span><span class='id identifier rubyid_run_action'>run_action</span><span class='lparen'>(</span><span class='symbol'>:install</span><span class='rparen'>)</span>
+
+    <span class='comment'># install client in converge phase
+</span>    <span class='id identifier rubyid_package'>package</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql-client</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_package_name'>package_name</span> <span class='id identifier rubyid_value_for_platform'>value_for_platform</span><span class='lparen'>(</span>
+        <span class='lbracket'>[</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>centos</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>redhat</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>suse</span><span class='tstring_end'>&quot;</span></span> <span class='rbracket'>]</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='comma'>,</span>
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql-client</span><span class='tstring_end'>&quot;</span></span>
+      <span class='rparen'>)</span>
+      <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:install</span>
+    <span class='kw'>end</span>
+
+  <span class='kw'>end</span>
+
+
+  <span class='comment'># == Install MySQL client gem
+</span>  <span class='comment'>#
+</span>  <span class='comment'># Also installs in compile phase
+</span>  <span class='comment'>#
+</span>  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_execute'>execute</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>install mysql gem</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_command'>command</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/opt/rightscale/sandbox/bin/gem install mysql --no-rdoc --no-ri -v 2.7 -- --build-flags --with-mysql-config</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_run_action'>run_action</span><span class='lparen'>(</span><span class='symbol'>:run</span><span class='rparen'>)</span>
+
+  <span class='const'>Gem</span><span class='period'>.</span><span class='id identifier rubyid_clear_paths'>clear_paths</span>
+  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Gem reload forced with Gem.clear_paths</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="install_server-instance_method">
+  
+    - (<tt>Object</tt>) <strong>install_server</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Install Server</h2>
+<pre class="code">
+  <span class='const'>Installs</span> <span class='id identifier rubyid_database'>database</span> <span class='id identifier rubyid_server'>server</span></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 289</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:install_server</span> <span class='kw'>do</span>
+
+  <span class='comment'># MySQL server depends on MySQL client
+</span>  <span class='id identifier rubyid_action_install_client'>action_install_client</span>
+
+  <span class='comment'># == Install MySQL 5.1 and other packages
+</span>  <span class='comment'>#
+</span>  <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:packages_install</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_p'>p</span><span class='op'>|</span>
+    <span class='id identifier rubyid_package'>package</span> <span class='id identifier rubyid_p'>p</span>
+  <span class='kw'>end</span> <span class='kw'>unless</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:packages_install</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='comment'># Stop MySQL to allow custom configuration
+</span>  <span class='id identifier rubyid_service'>service</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_supports'>supports</span> <span class='symbol'>:status</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:restart</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:reload</span> <span class='op'>=&gt;</span> <span class='kw'>true</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:stop</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Uninstall other packages we don't
+</span>  <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:packages_uninstall</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_p'>p</span><span class='op'>|</span>
+     <span class='id identifier rubyid_package'>package</span> <span class='id identifier rubyid_p'>p</span> <span class='kw'>do</span>
+       <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:remove</span>
+     <span class='kw'>end</span>
+  <span class='kw'>end</span> <span class='kw'>unless</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:packages_uninstall</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='comment'># Ubuntu requires deactivating upstart from starting mysql.
+</span>  <span class='kw'>if</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:platform</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ubuntu</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_ubuntu_mysql_upstart_conf'>ubuntu_mysql_upstart_conf</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/init/mysql.conf</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_bash'>bash</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>disable mysql upstart</span><span class='tstring_end'>'</span></span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_only_if'>only_if</span> <span class='lbrace'>{</span> <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_exists?'>exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_ubuntu_mysql_upstart_conf'>ubuntu_mysql_upstart_conf</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+      <span class='id identifier rubyid_code'>code</span> <span class='heredoc_beg'>&lt;&lt;-eof</span>
+<span class='tstring_content'>        pkill mysqld
+</span><span class='embexpr_beg'>        mv #{</span><span class='id identifier rubyid_ubuntu_mysql_upstart_conf'>ubuntu_mysql_upstart_conf</span><span class='rbrace'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_ubuntu_mysql_upstart_conf'>ubuntu_mysql_upstart_conf</span><span class='rbrace'>}</span><span class='tstring_content'>.disabled
+</span><span class='heredoc_end'>      eof
+</span>    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Create MySQL server system tables
+</span>  <span class='id identifier rubyid_touchfile'>touchfile</span> <span class='op'>=</span> <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_expand_path'>expand_path</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>~/.mysql_installed</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_execute'>execute</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/usr/bin/mysql_install_db ; touch </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_touchfile'>touchfile</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_creates'>creates</span> <span class='id identifier rubyid_touchfile'>touchfile</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># moves mysql default db to storage location, removes ib_logfiles for re-config of innodb_log_file_size
+</span>  <span class='id identifier rubyid_touchfile'>touchfile</span> <span class='op'>=</span> <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_expand_path'>expand_path</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>~/.mysql_dbmoved</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_ruby_block'>ruby_block</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>clean innodb logfiles</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_not_if'>not_if</span> <span class='lbrace'>{</span> <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_exists?'>exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_touchfile'>touchfile</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_block'>block</span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>fileutils</span><span class='tstring_end'>'</span></span>
+      <span class='id identifier rubyid_remove_files'>remove_files</span> <span class='op'>=</span> <span class='op'>::</span><span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_glob'>glob</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:datadir</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ib_logfile*</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='op'>::</span><span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_glob'>glob</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:datadir</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ibdata*</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+      <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_rm_rf'>rm_rf</span><span class='lparen'>(</span><span class='id identifier rubyid_remove_files'>remove_files</span><span class='rparen'>)</span>
+      <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='id identifier rubyid_touchfile'>touchfile</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='rbrace'>}</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Initialize the binlog dir
+</span>  <span class='id identifier rubyid_binlog'>binlog</span> <span class='op'>=</span> <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:log_bin</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_directory'>directory</span> <span class='id identifier rubyid_binlog'>binlog</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_owner'>owner</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_group'>group</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_recursive'>recursive</span> <span class='kw'>true</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Create the tmp directory
+</span>  <span class='id identifier rubyid_directory'>directory</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/mnt/mysqltmp</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_owner'>owner</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_group'>group</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_mode'>mode</span> <span class='int'>0770</span>
+    <span class='id identifier rubyid_recursive'>recursive</span> <span class='kw'>true</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Create it so mysql can use it if configured
+</span>  <span class='id identifier rubyid_file'>file</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/var/log/mysqlslow.log</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_owner'>owner</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_group'>group</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Setup my.cnf
+</span>  <span class='id identifier rubyid_template_source'>template_source</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>my.cnf.erb</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_template'>template</span> <span class='id identifier rubyid_value_for_platform'>value_for_platform</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>centos</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>redhat</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>suse</span><span class='tstring_end'>&quot;</span></span> <span class='rbracket'>]</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/my.cnf</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/mysql/my.cnf</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_source'>source</span> <span class='id identifier rubyid_template_source'>template_source</span>
+    <span class='id identifier rubyid_owner'>owner</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>root</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_group'>group</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>root</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_mode'>mode</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0644</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_variables'>variables</span><span class='lparen'>(</span>
+      <span class='symbol'>:server_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_mycnf_uuid'>mycnf_uuid</span>
+    <span class='rparen'>)</span>
+    <span class='id identifier rubyid_cookbook'>cookbook</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>db_mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># == Setup MySQL user limits
+</span>  <span class='comment'>#
+</span>  <span class='comment'># Set the mysql and root users max open files to a really large number.
+</span>  <span class='comment'># 1/3 of the overall system file max should be large enough.  The percentage can be
+</span>  <span class='comment'># adjusted if necessary.
+</span>  <span class='comment'>#
+</span>  <span class='id identifier rubyid_mysql_file_ulimit'>mysql_file_ulimit</span> <span class='op'>=</span> <span class='backtick'>`</span><span class='tstring_content'>sysctl -n fs.file-max</span><span class='tstring_end'>`</span></span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='op'>/</span><span class='int'>33</span>
+
+  <span class='id identifier rubyid_template'>template</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/security/limits.d/mysql.limits.conf</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_source'>source</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql.limits.conf.erb</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_variables'>variables</span><span class='lparen'>(</span><span class='lbrace'>{</span>
+      <span class='symbol'>:ulimit</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_mysql_file_ulimit'>mysql_file_ulimit</span>
+    <span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_cookbook'>cookbook</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>db_mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Change root's limitations for THIS shell.  The entry in the limits.d will be
+</span>  <span class='comment'># used for future logins.
+</span>  <span class='comment'># The setting needs to be in place before mysql is started.
+</span>  <span class='comment'>#
+</span>  <span class='id identifier rubyid_execute'>execute</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ulimit -n </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_mysql_file_ulimit'>mysql_file_ulimit</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+
+
+  <span class='comment'># == Drop in best practice replacement for mysqld startup.
+</span>  <span class='comment'>#
+</span>  <span class='comment'># Timeouts enabled.
+</span>  <span class='comment'>#
+</span>  <span class='id identifier rubyid_template'>template</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/init.d/mysql</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_source'>source</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>init-mysql.erb</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_mode'>mode</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0755</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_cookbook'>cookbook</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>db_mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+
+  <span class='comment'># == specific configs for ubuntu
+</span>  <span class='comment'>#  - set config file localhost access w/ root and no password
+</span>  <span class='comment'>#  - disable the 'check_for_crashed_tables'.
+</span>  <span class='comment'>#
+</span>  <span class='id identifier rubyid_remote_file'>remote_file</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/mysql/debian.cnf</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_only_if'>only_if</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:platform</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ubuntu</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_mode'>mode</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0600</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_source'>source</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>debian.cnf</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_cookbook'>cookbook</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>db_mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_remote_file'>remote_file</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/mysql/debian-start</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_only_if'>only_if</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:platform</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ubuntu</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_mode'>mode</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0755</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_source'>source</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>debian-start</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_cookbook'>cookbook</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>db_mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># == Start MySQL
+</span>  <span class='comment'>#
+</span>  <span class='id identifier rubyid_service'>service</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_supports'>supports</span> <span class='symbol'>:status</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:restart</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:reload</span> <span class='op'>=&gt;</span> <span class='kw'>true</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:start</span>
+  <span class='kw'>end</span>
+
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="lock-instance_method">
+  
+    - (<tt>Object</tt>) <strong>lock</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Lock</h2>
+<pre class="code">
+  Lock the database so writes will be blocked.
+
+  This must insure a conistent state while taking a snapshot.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+51
+52
+53
+54</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 51</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:lock</span> <span class='kw'>do</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='id identifier rubyid_init'>init</span><span class='lparen'>(</span><span class='id identifier rubyid_new_resource'>new_resource</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="move_data_dir-instance_method">
+  
+    - (<tt>Object</tt>) <strong>move_data_dir</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Move Data Directory</h2>
+<pre class="code">
+  Relocate the database data directory
+
+  Moves the data directory from the default install path to the path specified
+  in name attribute or data_dir attribute of the resource.  This is used for
+  relocating the data directory to a block device that provides snapshot
+  functionality.
+
+  This action should also setup a symlink from the old path to the new
+  location.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+78
+79
+80
+81</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 78</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:move_data_dir</span> <span class='kw'>do</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='id identifier rubyid_init'>init</span><span class='lparen'>(</span><span class='id identifier rubyid_new_resource'>new_resource</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_move_datadir'>move_datadir</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="post_backup_cleanup-instance_method">
+  
+    - (<tt>Object</tt>) <strong>post_backup_cleanup</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Post-backup Cleanup</h2>
+<pre class="code">
+  Used to cleanup VM after backup.
+
+  This action is called after the backup has completed.  Can be used to cleanup
+  any temporary files created from the :pre_backup_check action.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+194
+195
+196
+197</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 194</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:post_backup_cleanup</span> <span class='kw'>do</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='id identifier rubyid_init'>init</span><span class='lparen'>(</span><span class='id identifier rubyid_new_resource'>new_resource</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_post_backup_steps'>post_backup_steps</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="post_restore_cleanup-instance_method">
+  
+    - (<tt>Object</tt>) <strong>post_restore_cleanup</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Post-restore Cleanup</h2>
+<pre class="code">
+  Used to cleanup VM after restore.
+
+  This action is called after the block_device restore has completed and
+  before the database is started.
+
+  Used to link the database to the files in the newly restored data_dir.
+  Can also be used to perform other steps necessary to cleanup after a
+  restore.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+168
+169
+170
+171
+172</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 168</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:post_restore_cleanup</span> <span class='kw'>do</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='id identifier rubyid_init'>init</span><span class='lparen'>(</span><span class='id identifier rubyid_new_resource'>new_resource</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_symlink_datadir'>symlink_datadir</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/var/lib/mysql</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data_dir</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_post_restore_cleanup'>post_restore_cleanup</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="pre_backup_check-instance_method">
+  
+    - (<tt>Object</tt>) <strong>pre_backup_check</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Pre-backup Check</h2>
+<pre class="code">
+  Verify the database is in a good state for taking a snapshot.
+
+  This action is used to verify correct state and to preform any
+  other steps necessary before the database is locked.
+
+  This action should raise an exception if the database is not
+  in a valid state for a backup.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+183
+184
+185
+186</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 183</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:pre_backup_check</span> <span class='kw'>do</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='id identifier rubyid_init'>init</span><span class='lparen'>(</span><span class='id identifier rubyid_new_resource'>new_resource</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_pre_backup_check'>pre_backup_check</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="pre_restore_check-instance_method">
+  
+    - (<tt>Object</tt>) <strong>pre_restore_check</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Pre-restore Check</h2>
+<pre class="code">
+  Verify the database is in a good state before preforming a restore.
+
+  This action is called before a restore is performed. It should be used to
+  verify that the system is in a correct state for restoring and should
+  preform any other steps necessary before a new block_device is attached
+  and the database is stopped for a restore.
+
+  This action should raise an exception if the database is not
+  in a valid state for a restore.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+153
+154
+155
+156</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 153</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:pre_restore_check</span> <span class='kw'>do</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='id identifier rubyid_init'>init</span><span class='lparen'>(</span><span class='id identifier rubyid_new_resource'>new_resource</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_pre_restore_sanity_check'>pre_restore_sanity_check</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="promote-instance_method">
+  
+    - (<tt>Object</tt>) <strong>promote</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note todo">
+    <strong>TODO:</strong> 
+    <div class='inline'><p>
+add description
+</p>
+</div>
+  </div>
+
+<h2>Promote</h2>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 498</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:promote</span> <span class='kw'>do</span>
+  
+  <span class='id identifier rubyid_x'>x</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:log_bin</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_logbin_dir'>logbin_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='embexpr_beg'>#{</span><span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_basename'>basename</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>$</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_directory'>directory</span> <span class='id identifier rubyid_logbin_dir'>logbin_dir</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:create</span>
+    <span class='id identifier rubyid_recursive'>recursive</span> <span class='kw'>true</span>
+    <span class='id identifier rubyid_owner'>owner</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>mysql</span><span class='tstring_end'>'</span></span>
+    <span class='id identifier rubyid_group'>group</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Set read/write in my.cnf
+</span>  <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:tunable</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:read_only</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='comment'># Enable binary logging in my.cnf
+</span>  <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db_mysql</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:log_bin_enabled</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>
+
+  <span class='id identifier rubyid_template'>template</span> <span class='id identifier rubyid_value_for_platform'>value_for_platform</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>centos</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>redhat</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>suse</span><span class='tstring_end'>&quot;</span></span> <span class='rbracket'>]</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/my.cnf</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/etc/mysql/my.cnf</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_source'>source</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>my.cnf.erb</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_owner'>owner</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>root</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_group'>group</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>root</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_mode'>mode</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0644</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_variables'>variables</span><span class='lparen'>(</span>
+      <span class='symbol'>:server_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_mycnf_uuid'>mycnf_uuid</span>
+    <span class='rparen'>)</span>
+    <span class='id identifier rubyid_cookbook'>cookbook</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>db_mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_service'>service</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mysql</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:start</span>
+    <span class='id identifier rubyid_only_if'>only_if</span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_log_bin'>log_bin</span> <span class='op'>=</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>show variables like 'log_bin'</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>localhost</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='op'>::</span><span class='const'>DEFAULT_CRITICAL_TIMEOUT</span><span class='rparen'>)</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_log_bin'>log_bin</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Value</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>OFF</span><span class='tstring_end'>'</span></span>
+	<span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Detected binlogs were disabled, restarting service to enable them for Master takeover.</span><span class='tstring_end'>&quot;</span></span>
+	<span class='kw'>true</span>
+      <span class='kw'>else</span>
+	<span class='kw'>false</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SET GLOBAL READ_ONLY=0</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>localhost</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='op'>::</span><span class='const'>DEFAULT_CRITICAL_TIMEOUT</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_newmasterstatus'>newmasterstatus</span> <span class='op'>=</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>SHOW SLAVE STATUS</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>localhost</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='op'>::</span><span class='const'>DEFAULT_CRITICAL_TIMEOUT</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_previous_master'>previous_master</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:current_master_ip</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>FATAL: could not determine master host from slave status</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_previous_master'>previous_master</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>host: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_previous_master'>previous_master</span><span class='rbrace'>}</span><span class='tstring_content'>}</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='comment'># PHASE1: contains non-critical old master operations, if a timeout or
+</span>  <span class='comment'># error occurs we continue promotion assuming the old master is dead.
+</span>  <span class='kw'>begin</span>
+    <span class='comment'># OLDMASTER: query with terminate (STOP SLAVE)
+</span>    <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>STOP SLAVE</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='id identifier rubyid_previous_master'>previous_master</span><span class='comma'>,</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='op'>::</span><span class='const'>DEFAULT_CRITICAL_TIMEOUT</span><span class='comma'>,</span> <span class='int'>2</span><span class='rparen'>)</span>
+
+    <span class='comment'># OLDMASTER: flush_and_lock_db
+</span>    <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>FLUSH TABLES WITH READ LOCK</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='id identifier rubyid_previous_master'>previous_master</span><span class='comma'>,</span> <span class='int'>5</span><span class='comma'>,</span> <span class='int'>12</span><span class='rparen'>)</span>
+
+
+    <span class='comment'># OLDMASTER:
+</span>    <span class='id identifier rubyid_masterstatus'>masterstatus</span> <span class='op'>=</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>SHOW MASTER STATUS</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='id identifier rubyid_previous_master'>previous_master</span><span class='comma'>,</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='op'>::</span><span class='const'>DEFAULT_CRITICAL_TIMEOUT</span><span class='rparen'>)</span>
+
+    <span class='comment'># OLDMASTER: unconfigure source of replication
+</span>    <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>CHANGE MASTER TO MASTER_HOST=''</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_previous_master'>previous_master</span><span class='comma'>,</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='op'>::</span><span class='const'>DEFAULT_CRITICAL_TIMEOUT</span><span class='rparen'>)</span>
+
+    <span class='id identifier rubyid_master_file'>master_file</span><span class='op'>=</span><span class='id identifier rubyid_masterstatus'>masterstatus</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>File</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_master_position'>master_position</span><span class='op'>=</span><span class='id identifier rubyid_masterstatus'>masterstatus</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Position</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+    <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Retrieved master info...File: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_master_file'>master_file</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> position: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_master_position'>master_position</span>
+
+    <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Waiting for slave to catch up with OLDMASTER (if alive)..</span><span class='tstring_end'>&quot;</span></span>
+    <span class='comment'># NEWMASTER localhost:
+</span>    <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT MASTER_POS_WAIT('</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_master_file'>master_file</span><span class='rbrace'>}</span><span class='tstring_content'>',</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_master_position'>master_position</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>rescue</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>WARNING: caught exception </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_e'>e</span><span class='rbrace'>}</span><span class='tstring_content'> during non-critical operations on the OLD MASTER</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># PHASE2: reset and promote this slave to master
+</span>  <span class='comment'># Critical operations on newmaster, if a failure occurs here we allow it to halt promote operations
+</span>  <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Promoting slave..</span><span class='tstring_end'>&quot;</span></span>
+  <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>RESET MASTER</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_newmasterstatus'>newmasterstatus</span> <span class='op'>=</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>SHOW MASTER STATUS</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_newmaster_file'>newmaster_file</span><span class='op'>=</span><span class='id identifier rubyid_newmasterstatus'>newmasterstatus</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>File</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_newmaster_position'>newmaster_position</span><span class='op'>=</span><span class='id identifier rubyid_newmasterstatus'>newmasterstatus</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Position</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+  <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Retrieved new master info...File: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_newmaster_file'>newmaster_file</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> position: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_newmaster_position'>newmaster_position</span>
+
+  <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Stopping slave and misconfiguring master</span><span class='tstring_end'>&quot;</span></span>
+  <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>STOP SLAVE</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>CHANGE MASTER TO MASTER_HOST=''</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_action_grant_replication_slave'>action_grant_replication_slave</span>
+  <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>SET GLOBAL READ_ONLY=0</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+
+  <span class='comment'># PHASE3: more non-critical operations, have already made assumption oldmaster is dead
+</span>  <span class='kw'>begin</span>
+    <span class='kw'>unless</span> <span class='id identifier rubyid_previous_master'>previous_master</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='comment'>#unlocking oldmaster
+</span>      <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>UNLOCK TABLES</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='id identifier rubyid_previous_master'>previous_master</span><span class='rparen'>)</span>
+      <span class='const'>SystemTimer</span><span class='period'>.</span><span class='id identifier rubyid_timeout_after'>timeout_after</span><span class='lparen'>(</span><span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='op'>::</span><span class='const'>DEFAULT_CRITICAL_TIMEOUT</span><span class='rparen'>)</span> <span class='kw'>do</span>
+	<span class='comment'>#demote oldmaster
+</span>        <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Calling reconfigure replication with host: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_previous_master'>previous_master</span><span class='rbrace'>}</span><span class='tstring_content'> ip: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:cloud</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:private_ips</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'> file: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_newmaster_file'>newmaster_file</span><span class='rbrace'>}</span><span class='tstring_content'> position: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_newmaster_position'>newmaster_position</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+	<span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure_replication'>reconfigure_replication</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='id identifier rubyid_previous_master'>previous_master</span><span class='comma'>,</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:cloud</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:private_ips</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_newmaster_file'>newmaster_file</span><span class='comma'>,</span> <span class='id identifier rubyid_newmaster_position'>newmaster_position</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>rescue</span> <span class='const'>Timeout</span><span class='op'>::</span><span class='const'>Error</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>WARNING: rescuing SystemTimer exception </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_e'>e</span><span class='rbrace'>}</span><span class='tstring_content'>, continuing with promote</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>rescue</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>WARNING: rescuing exception </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_e'>e</span><span class='rbrace'>}</span><span class='tstring_content'>, continuing with promote</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="reset-instance_method">
+  
+    - (<tt>Object</tt>) <strong>reset</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong> 
+    <div class='inline'><p>
+WARNING: this will delete any data in your database!
+</p>
+</div>
+  </div>
+
+<h2>Reset</h2>
+<pre class="code">
+  Wipes the current database into a pristine state.
+
+  This utility action can be useful in development and test environments.
+  Not recommended for production use.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+91
+92
+93
+94</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 91</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:reset</span> <span class='kw'>do</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='id identifier rubyid_init'>init</span><span class='lparen'>(</span><span class='id identifier rubyid_new_resource'>new_resource</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_reset'>reset</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="restore_from_dump_file-instance_method">
+  
+    - (<tt>Object</tt>) <strong>restore_from_dump_file</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note todo">
+    <strong>TODO:</strong> 
+    <div class='inline'><p>
+add description
+</p>
+</div>
+  </div>
+
+<h2>Restore db from dump file</h2>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+752
+753
+754
+755
+756
+757
+758
+759
+760
+761</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 731</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:restore_from_dump_file</span> <span class='kw'>do</span>
+ 
+  <span class='id identifier rubyid_db_name'>db_name</span>   <span class='op'>=</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_db_name'>db_name</span>
+  <span class='id identifier rubyid_dumpfile'>dumpfile</span>  <span class='op'>=</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_dumpfile'>dumpfile</span>
+  <span class='id identifier rubyid_db_check'>db_check</span>  <span class='op'>=</span> <span class='backtick'>`</span><span class='tstring_content'>mysql -e &quot;SHOW DATABASES LIKE '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_db_name'>db_name</span><span class='rbrace'>}</span><span class='tstring_content'>'&quot;</span><span class='tstring_end'>`</span></span>
+
+  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  Check if DB already exists</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_ruby_block'>ruby_block</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>checking existing db</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_block'>block</span> <span class='kw'>do</span>
+      <span class='kw'>if</span> <span class='op'>!</span> <span class='id identifier rubyid_db_check'>db_check</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+        <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>WARNING: database '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_db_name'>db_name</span><span class='rbrace'>}</span><span class='tstring_content'>' already exists. No changes will be made to existing database.</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  
+  <span class='id identifier rubyid_bash'>bash</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Import MySQL dump file: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_dumpfile'>dumpfile</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_only_if'>only_if</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_db_check'>db_check</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_user'>user</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>root</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_code'>code</span> <span class='heredoc_beg'>&lt;&lt;-EOH</span>
+<span class='tstring_content'>      set -e
+</span><span class='embexpr_beg'>      if [ ! -f #{</span><span class='id identifier rubyid_dumpfile'>dumpfile</span><span class='rbrace'>}</span><span class='tstring_content'> ] 
+      then 
+</span><span class='embexpr_beg'>        echo &quot;ERROR: MySQL dumpfile not found! File: '#{</span><span class='id identifier rubyid_dumpfile'>dumpfile</span><span class='rbrace'>}</span><span class='tstring_content'>'&quot; 
+        exit 1
+      fi 
+</span><span class='embexpr_beg'>      mysqladmin -u root create #{</span><span class='id identifier rubyid_db_name'>db_name</span><span class='rbrace'>}</span><span class='tstring_content'> 
+</span><span class='embexpr_beg'>      gunzip &lt; #{</span><span class='id identifier rubyid_dumpfile'>dumpfile</span><span class='rbrace'>}</span><span class='tstring_content'> | mysql -u root -b </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_db_name'>db_name</span><span class='rbrace'>}</span><span class='tstring_content'>
+</span><span class='heredoc_end'>    EOH
+</span>  <span class='kw'>end</span>
+
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="set_privileges-instance_method">
+  
+    - (<tt>Object</tt>) <strong>set_privileges</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Set Privileges</h2>
+<pre class="code">
+  Set database user privileges.
+
+  Use the privilage attributes of this resource to setup 'administrator' or
+  'user' privilages to the given username with the given password.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 205</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:set_privileges</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_priv'>priv</span> <span class='op'>=</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_privilege'>privilege</span>
+  <span class='id identifier rubyid_priv_username'>priv_username</span> <span class='op'>=</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_privilege_username'>privilege_username</span>
+  <span class='id identifier rubyid_priv_password'>priv_password</span> <span class='op'>=</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_privilege_password'>privilege_password</span>
+  <span class='id identifier rubyid_priv_database'>priv_database</span> <span class='op'>=</span> <span class='id identifier rubyid_new_resource'>new_resource</span><span class='period'>.</span><span class='id identifier rubyid_privilege_database'>privilege_database</span>
+  <span class='id identifier rubyid_db_mysql_set_privileges'>db_mysql_set_privileges</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>setup db privileges</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_preset'>preset</span> <span class='id identifier rubyid_priv'>priv</span>
+    <span class='id identifier rubyid_username'>username</span> <span class='id identifier rubyid_priv_username'>priv_username</span>
+    <span class='id identifier rubyid_password'>password</span> <span class='id identifier rubyid_priv_password'>priv_password</span>
+    <span class='id identifier rubyid_database'>database</span> <span class='id identifier rubyid_priv_database'>priv_database</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="setup_monitoring-instance_method">
+  
+    - (<tt>Object</tt>) <strong>setup_monitoring</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Setup Monitoring</h2>
+<pre class="code">
+  Install and configure collectd plgins for the server.
+
+  This is used by the RightScale platorm to display metrics about the database
+  on the RightScale dashboard.  Also enables alerts and escalations for the
+  database.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 446</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:setup_monitoring</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_service'>service</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>collectd</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_action'>action</span> <span class='symbol'>:nothing</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_arch'>arch</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:kernel</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:machine</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_arch'>arch</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>i386</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_arch'>arch</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>i686</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='comment'># Centos specific items
+</span>  <span class='const'>TMP_FILE</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/tmp/collectd.rpm</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_remote_file'>remote_file</span> <span class='const'>TMP_FILE</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_only_if'>only_if</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:platform</span><span class='rbracket'>]</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>redhat|centos</span><span class='regexp_end'>/</span></span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_source'>source</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>collectd-mysql-4.10.0-4.el5.</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_arch'>arch</span><span class='rbrace'>}</span><span class='tstring_content'>.rpm</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_cookbook'>cookbook</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>db_mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_package'>package</span> <span class='const'>TMP_FILE</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_only_if'>only_if</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:platform</span><span class='rbracket'>]</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>redhat|centos</span><span class='regexp_end'>/</span></span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_source'>source</span> <span class='const'>TMP_FILE</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_cookbook_file'>cookbook_file</span> <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:rs_utils</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:collectd_plugin_dir</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>mysql.conf</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_mode'>mode</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0644</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_backup'>backup</span> <span class='kw'>false</span>
+    <span class='id identifier rubyid_source'>source</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>collectd-plugin-mysql.conf</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_notifies'>notifies</span> <span class='symbol'>:restart</span><span class='comma'>,</span> <span class='id identifier rubyid_resources'>resources</span><span class='lparen'>(</span><span class='symbol'>:service</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>collectd</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_cookbook'>cookbook</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>db_mysql</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Send warning if not centos/redhat or ubuntu
+</span>  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>WARNING: attempting to install collectd-mysql on unsupported platform </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:platform</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>, continuing..</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_only_if'>only_if</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:platform</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>centos</span><span class='tstring_end'>&quot;</span></span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:platform</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>redhat</span><span class='tstring_end'>&quot;</span></span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:platform</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ubuntu</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_level'>level</span> <span class='symbol'>:warn</span>
+  <span class='kw'>end</span>
+
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="start-instance_method">
+  
+    - (<tt>Object</tt>) <strong>start</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Start</h2>
+<pre class="code">
+  Start the database service.
+
+  Calls the correct init.d script for the database and platform.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+29
+30
+31
+32</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 29</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:start</span> <span class='kw'>do</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='id identifier rubyid_init'>init</span><span class='lparen'>(</span><span class='id identifier rubyid_new_resource'>new_resource</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_start'>start</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="status-instance_method">
+  
+    - (<tt>Object</tt>) <strong>status</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Status</h2>
+<pre class="code">
+  Log the status of the database service.
+
+  Calls the correct init.d script for the database and platform
+  and send the output to the Chef log and RightScale audit entries.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+40
+41
+42
+43
+44</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 40</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:status</span> <span class='kw'>do</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='id identifier rubyid_init'>init</span><span class='lparen'>(</span><span class='id identifier rubyid_new_resource'>new_resource</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>=</span> <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span>
+  <span class='id identifier rubyid_log'>log</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Database Status:\n</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_status'>status</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="stop-instance_method">
+  
+    - (<tt>Object</tt>) <strong>stop</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Below are the actions defined by by the db resource interface.
+</p>
+<h2>Stop</h2>
+<pre class="code">
+  Stop the database service.
+
+  Calls the correct init.d script for the database and platform.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+19
+20
+21
+22</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 19</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:stop</span> <span class='kw'>do</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='id identifier rubyid_init'>init</span><span class='lparen'>(</span><span class='id identifier rubyid_new_resource'>new_resource</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_stop'>stop</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="unlock-instance_method">
+  
+    - (<tt>Object</tt>) <strong>unlock</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Unlock</h2>
+<pre class="code">
+  Unlock the database so writes can occur.
+
+  This must be called as soon as possible after calling the :lock action
+  since no clients will be blocked from writting.</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+62
+63
+64
+65</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 62</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:unlock</span> <span class='kw'>do</span>
+  <span class='ivar'>@db</span> <span class='op'>=</span> <span class='id identifier rubyid_init'>init</span><span class='lparen'>(</span><span class='id identifier rubyid_new_resource'>new_resource</span><span class='rparen'>)</span>
+  <span class='ivar'>@db</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="write_backup_info-instance_method">
+  
+    - (<tt>Object</tt>) <strong>write_backup_info</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <h2>Write Backup Info</h2>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'cookbooks/db_mysql/providers/default.rb', line 122</span>
+
+<span class='id identifier rubyid_action'>action</span> <span class='symbol'>:write_backup_info</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_masterstatus'>masterstatus</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='id identifier rubyid_masterstatus'>masterstatus</span> <span class='op'>=</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>SHOW MASTER STATUS</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_masterstatus'>masterstatus</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Master_IP</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:current_master_ip</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_masterstatus'>masterstatus</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Master_instance_uuid</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:current_master_uuid</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_slavestatus'>slavestatus</span> <span class='op'>=</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_do_query'>do_query</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>SHOW SLAVE STATUS</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_slavestatus'>slavestatus</span> <span class='op'>||=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:this_is_master</span><span class='rbracket'>]</span>
+    <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Backing up Master info</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>else</span>
+    <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Backing up slave replication status</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_masterstatus'>masterstatus</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>File</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_slavestatus'>slavestatus</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Relay_Master_Log_File</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_masterstatus'>masterstatus</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Position</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_slavestatus'>slavestatus</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Exec_Master_Log_Pos</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+  <span class='const'>Chef</span><span class='op'>::</span><span class='const'>Log</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Saving master info...:\n</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_masterstatus'>masterstatus</span><span class='period'>.</span><span class='id identifier rubyid_to_yaml'>to_yaml</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data_dir</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='const'>RightScale</span><span class='op'>::</span><span class='const'>Database</span><span class='op'>::</span><span class='const'>MySQL</span><span class='op'>::</span><span class='const'>Helper</span><span class='op'>::</span><span class='const'>SNAPSHOT_POSITION_FILENAME</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>::</span><span class='const'>File</span><span class='op'>::</span><span class='const'>CREAT</span><span class='op'>|</span><span class='op'>::</span><span class='const'>File</span><span class='op'>::</span><span class='const'>TRUNC</span><span class='op'>|</span><span class='op'>::</span><span class='const'>File</span><span class='op'>::</span><span class='const'>RDWR</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_out'>out</span><span class='op'>|</span>
+    <span class='const'>YAML</span><span class='period'>.</span><span class='id identifier rubyid_dump'>dump</span><span class='lparen'>(</span><span class='id identifier rubyid_masterstatus'>masterstatus</span><span class='comma'>,</span> <span class='id identifier rubyid_out'>out</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Tue Jan  3 18:34:49 2012 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.7.4 (ruby-1.9.2).
+</div>
+
+  </body>
+</html>

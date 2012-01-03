@@ -12,15 +12,15 @@ module RightScale
       # Return the IP address of the interface that this application server 
       # listens on.
       #
-      # == Parameters 
-      # private_ips(Array):: List of private ips assigned to the application server
-      # public_ips(Array):: List of public ips assigned to the application server
       #
-      # == Returns
-      # String:: IP Address 
+      # @param private_ips(Array) List of private ips assigned to the application server
+      # @param public_ips(Array) List of public ips assigned to the application server
       #
-      # == Raise
-      # RuntimeError:: If nether a valid private nor public ip can be found
+      #
+      # @return [String] IP Address
+      #
+      #
+      # @raise [RuntimeError] If nether a valid private nor public ip can be found
       def self.bind_ip(private_ips = [ ], public_ips = [ ])
         ip = nil
         if private_ips && private_ips.size > 0

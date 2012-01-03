@@ -5,6 +5,7 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+#@todo add description
 define :db_mysql_connect_app, :template => "db_connection_example.erb", :cookbook => "db_mysql", :database => nil do
   
   template params[:name] do

@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: RightScale::cookbooks::rs_utils
+  
+    &mdash; Documentation by YARD 0.7.4
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '../..';
+  if (relpath != '') relpath += '/';
+</script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (r)</a> &raquo; 
+    <span class='title'><span class='object_link'><a href="../../RightScale.html" title="RightScale (module)">RightScale</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../cookbooks.html" title="RightScale::cookbooks (class)">cookbooks</a></span></span>
+     &raquo; 
+    <span class="title">rs_utils</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: RightScale::cookbooks::rs_utils
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">RightScale::cookbooks::rs_utils</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">/cookbooks/rs_utils</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <h1>RightScale Utilities Cookbook (Beta)</h1>
+<h2>DESCRIPTION:</h2>
+<p>
+Base recipes used to setup services used by the RightScale Cloud Management
+Platform
+</p>
+<h2>DETAILS:</h2>
+<h2>REQUIREMENTS:</h2>
+<p>
+Requires a VM launched from a RightScale managed RightImage
+</p>
+<h2>SETUP:</h2>
+<h2>USAGE:</h2>
+<p>
+Run the rs_utils::default recipe to perform common server configuration
+steps   such as enabling monitoring and logging on the RightScale
+Dashboard.
+</p>
+<h2>KNOWN LIMITATIONS:</h2>
+<h2>DEFINITIONS</h2>
+<p>
+rs_utils_enable_collectd_plugin
+</p>
+<hr style="height: 10px"></hr><ul>
+<li><p>
+Accepts only one parameter &#8220;name&#8221; which is the name of the
+collectd plugin to enable
+</p>
+</li>
+<li><p>
+The plugin name is added to node[:rs_utils][:plugin_list_ary] which is used
+to create the list of plugins in the /etc/collectd/collectd.conf file
+</p>
+</li>
+<li><p>
+The node[:rs_utils][:plugin_list_ary] will have any plugins listed in
+node[:rs_utils][:plugin_list] merged into it.  This is to support any
+legacy recipes as well as allow the input to be manipulated in the RS
+dashboard.
+</p>
+</li>
+</ul>
+<p>
+Syntax:
+</p>
+<p>
+```rs_utils_enable_collectd_plugin &#8220;curl_json&#8221;```
+</p>
+<p>
+rs_utils_monitor_process
+</p>
+<hr style="height: 10px"></hr><ul>
+<li><p>
+Accepts only one parameter, &#8220;name&#8221; which is the name of the
+process to monitor
+</p>
+</li>
+<li><p>
+The process name is added to node[:rs_utils][:process_list_ary] which is
+used to create the list of processes in the
+/etc/collectd/conf/processes.conf file
+</p>
+</li>
+<li><p>
+The node[:rs_utils][:process_list_ary] will have any processes listed in
+node[:rs_utils][:process_list] merged into it.  This is to support any
+legacy recipes as well as allow the input to be manipulated in the RS
+dashboard.
+</p>
+</li>
+</ul>
+<p>
+Syntax:
+</p>
+<p>
+```rs_utils_monitor_process &#8220;nginx&#8221;```
+</p>
+<p>
+rs_utils_marker
+</p>
+<hr style="height: 10px"></hr><ul>
+<li><p>
+Accepts only one parameter, &#8220;location&#8221; which can be :start or
+:end.  Can also be :begin, :stop, and the string versions.
+</p>
+</li>
+<li><p>
+Used to log the start and end of a recipe using the &#8216;log&#8217; chef
+resource.  Should be added at the beginning and end of a recipe.
+</p>
+</li>
+<li><p>
+Log marker: ========================= recipe::name : START/END
+=========================
+</p>
+</li>
+</ul>
+<p>
+Syntax:
+</p>
+<p>
+```rs_utils_marker :start``` ```rs_utils_marker :end```
+</p>
+<h1>LICENSE</h1>
+<p>
+Copyright RightScale, Inc. All rights reserved.  All access and use subject
+to the RightScale Terms of Service available at <a
+href="http://www.rightscale.com/terms.php">www.rightscale.com/terms.php</a>
+and, if applicable, other agreements such as a RightScale Master
+Subscription Agreement.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+   
+    
+   
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="rs_utils/definitions.html" title="RightScale::cookbooks::rs_utils::definitions (class)">definitions</a></span>, <span class='object_link'><a href="rs_utils/providers.html" title="RightScale::cookbooks::rs_utils::providers (class)">providers</a></span>, <span class='object_link'><a href="rs_utils/resources.html" title="RightScale::cookbooks::rs_utils::resources (class)">resources</a></span>
+    
+  
+</p>
+
+
+
+
+
+
+
+</div>
+    
+    <div id="footer">
+  Generated on Tue Jan  3 15:23:10 2012 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.7.4 (ruby-1.9.2).
+</div>
+
+  </body>
+</html>

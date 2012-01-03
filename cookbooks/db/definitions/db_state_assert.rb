@@ -6,13 +6,16 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 # == Verify database node state
-# Make sure our current_master values are set
-# Fail if we think we are a slave, but node state thinks we are a master
-# == Params
-# name(String):: Assert the type of server we thing we are. Can be :slave, :master, :either
-# == Exceptions
-# raises Excaption if we are not the server type (:slave or :master) that we expect
+#   Make sure our current_master values are set
+#   Fail if we think we are a slave, but node state thinks we are a master
 #
+# == Params
+#   @param name(String, :slave, :master, :either) Assert the type of server we thing we are. Can be :slave, :master, :either
+#
+# == Exceptions
+#   raises Excaption if we are not the server type (:slave or :master) that we expect
+#@raise [RunTimeError] FATAL: this slave thinks its master!
+#@raise [RunTimeError] FATAL: this server is not a master!
 define :db_state_assert do
   
   ruby_block "check database node state" do
