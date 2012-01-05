@@ -129,7 +129,7 @@ attribute "db/init_slave_at_boot",
 #
 attribute "db/backup/lineage",
   :display_name => "Database Backup Lineage",
-  :description => "The prefix that will be used to name/locate the backup of a particular database.",
+  :description => "The prefix that will be used to name/locate the backup of a particular database. Note: For servers running on Rackspace, this value also indicates the Cloud Files container to use for storing primary backups. If a Cloud Files container with this name does not already exist, the setup process creates one.",
   :required => true,
   :recipes => [
     "db::do_primary_init_slave",
