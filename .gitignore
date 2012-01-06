@@ -5,4 +5,6 @@
 /.git
 .DEV_TEMP
 .gitignore
+.yardoc
 chefignore
+doc

@@ -1,10 +1,10 @@
 
 
- class YARD::Handlers::Ruby::ModuleHandler < YARD::Handlers::Ruby::Base
+class YARD::Handlers::Ruby::ModuleHandler < YARD::Handlers::Ruby::Base
   handles :module
   namespace_only
 
-    YARD::Parser::SourceParser.before_parse_file do |p|
+  YARD::Parser::SourceParser.before_parse_file do |p|
     @@parsed_file =  p.file.to_s
   end
 
@@ -14,14 +14,14 @@
 
     modname = statement[0].source
     if (modname == 'DnsTools' || modname == 'Helper')
-        puts modname
+      puts modname
       mod = register ModuleObject.new(ext_obj, modname)
     end
     #mod = register ModuleObject.new(ext_obj, modname)
     parse_block(statement[1], :namespace => mod)
   end
 end
- #YARD.parse('cookbooks/*/libraries/*.rb')
+#YARD.parse('cookbooks/*/libraries/*.rb')
 
 #handler for chef "define" keywords
 class Defenition < YARD::Handlers::Ruby::Base
@@ -131,7 +131,7 @@ class ClassAttributeHandler < YARD::Handlers::Ruby::AttributeHandler
     end
     attr_new.add_file("#{parser.file.to_s}", nil, false)
     push_state(:scope => :class) {
-      YARD::Registry.register (attr_new)
+      YARD::Registry.register(attr_new)
       #attr_new.object_id
      # puts attr_new.path
                                   }
@@ -213,20 +213,9 @@ YARD.parse(paths)
 a = YARD::Registry.paths
 a.each do |e|
   #puts e
-  if e.chr == '#'
+  if e[0].chr == '#'
     duplicate = YARD::Registry.resolve(:root, e, true)
     YARD::Registry.delete(duplicate)
     YARD::Registry.save
   end
 end
-
-
-
-
-
-
-
-
-
-
-

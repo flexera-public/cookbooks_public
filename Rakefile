@@ -23,10 +23,10 @@ require 'chef'
 #require 'json'
 require 'yard'
 
-task :documentify do
-  load_cmd= "yardoc -e ./chef-yard.rb -o documentation"
-  system(load_cmd)
+YARD::Rake::YardocTask.new do |yard|
+  yard.options = ['--load=chef-yard.rb']
 end
+
 # Make sure you have loaded constants first
 require File.join(File.dirname(__FILE__), 'config', 'rake')
 
