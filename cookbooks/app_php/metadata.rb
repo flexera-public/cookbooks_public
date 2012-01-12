@@ -43,17 +43,17 @@ attribute "php/code/url",
   :display_name => "Repository URL",
   :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
   :required => true,
-  :recipes => [ "app_php::do_update_code", "app_php::do_db_restore",  "app_php::default" ]
+  :recipes => [ "app_php::do_update_code", "app_php::default" ]
 
 attribute "php/code/credentials",
   :display_name => "Repository Credentials",
   :description => "The private SSH key of the git repository.",
   :required => false,
   :default => "",
-  :recipes => [ "app_php::do_update_code", "app_php::do_db_restore",  "app_php::default" ]
+  :recipes => [ "app_php::do_update_code", "app_php::default" ]
 
 attribute "php/code/branch",
   :display_name => "Repository Branch",
   :description => "The name of the branch/tag/SHA within the git repository where the application code should be pulled from. Ex: mybranch",
   :required => true,
-  :recipes => [ "app_php::do_update_code", "app_php::do_db_restore",  "app_php::default" ]
+  :recipes => [ "app_php::do_update_code", "app_php::default" ]
