@@ -33,7 +33,7 @@ attribute "php/db_schema_name",
   :display_name => "Database Schema Name",
   :description => "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema will be backed up.  Ex: mydbschema",
   :required => false,
-  :recipes => [ "app_php::setup_db_connection"  ]
+  :recipes => [ "app_php::setup_db_connection" ]
 
 attribute "php/code",
   :display_name => "PHP Application Code",
@@ -43,17 +43,17 @@ attribute "php/code/url",
   :display_name => "Repository URL",
   :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
   :required => true,
-  :recipes => [ "app_php::do_update_code", "app_php::default" ]
+  :recipes => [ "app_php::do_update_code" ]
 
 attribute "php/code/credentials",
   :display_name => "Repository Credentials",
   :description => "The private SSH key of the git repository.",
   :required => false,
   :default => "",
-  :recipes => [ "app_php::do_update_code", "app_php::default" ]
+  :recipes => [ "app_php::do_update_code" ]
 
 attribute "php/code/branch",
   :display_name => "Repository Branch",
   :description => "The name of the branch/tag/SHA within the git repository where the application code should be pulled from. Ex: mybranch",
   :required => true,
-  :recipes => [ "app_php::do_update_code", "app_php::default" ]
+  :recipes => [ "app_php::do_update_code" ]
