@@ -13,7 +13,7 @@ end
 
 # disable default vhost
 log 'Enabling deafult vhost'
-apache_site "000-default" do
+apache_site "default" do
   enable true
   notifies :reload, resources(:service => "apache2")
 end
