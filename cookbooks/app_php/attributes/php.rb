@@ -36,6 +36,7 @@ when "ubuntu", "debian"
   else
     set[:php][:package_dependencies] = ["php5-pgsql"]
     set[:db_postgres][:socket] = "/var/run/postgresql"
+  end
 when "centos","fedora","suse","redhat"
   # set[:php][:package_dependencies] = ["php53u", "php53u-mysql", "php53u-pear", "php53u-zts"]
   set[:php][:package_dependencies] = ["php53u", "php53u-pear", "php53u-zts"] # change for db_postgres
