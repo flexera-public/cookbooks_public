@@ -20,7 +20,7 @@ db_type = node[:php][:db_adapter]
 
 # Tell MySQL to fill in our connection template
 #db_mysql_connect_app File.join(node[:web_apache][:docroot], "config", "db.php") do
-db_#{db_type}_connect_app File.join(node[:web_apache][:docroot], "config", "db.php") do # change for db_postgres
+db_"#{db_type}"_connect_app File.join(node[:web_apache][:docroot], "config", "db.php") do # change for db_postgres
   template "db.php.erb"
   cookbook "app_php"
   database node[:php][:db_schema_name]
