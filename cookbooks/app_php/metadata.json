@@ -1,13 +1,21 @@
 {
-  "dependencies": {
-    "db_mysql": ">= 0.0.0",
-    "app": ">= 0.0.0",
-    "web_apache": ">= 0.0.0",
-    "repo_git": ">= 0.0.0",
-    "rs_utils": ">= 0.0.0"
+  "platforms": {
   },
-  "name": "app_php",
-  "maintainer_email": "support@rightscale.com",
+  "description": "Installs the php application server.",
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "recipes": {
+    "app_php::do_update_code": "Updates application source files from the remote repository.",
+    "app_php::setup_php_application_vhost": "Set up the application vhost on port 8000.",
+    "app_php::setup_db_connection": "Set up the MySQL database db.php connection file.",
+    "app_php::default": "Installs the php application server."
+  },
+  "long_description": "= RightScale App PHP Cookbook (Beta)\n\n== DESCRIPTION:\n\nRightScale PHP application server management cookbook\n\nInstalls and configures a PHP application server.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "providing": {
+  },
+  "version": "0.0.1",
   "attributes": {
     "php/db_schema_name": {
       "required": "optional",
@@ -90,6 +98,21 @@
       ],
       "display_name": "PHP Application Code"
     },
+    "php/db_adapter": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+        "mysql",
+        "postgres"
+      ],
+      "default": "mysql",
+      "type": "string",
+      "recipes": [
+        "app_php::default"
+      ],
+      "display_name": "Database Adapter",
+      "description": "Database adapter to connect to Database. (Ex: mysql)"
+    },
     "php/code/url": {
       "required": "required",
       "calculated": false,
@@ -106,29 +129,34 @@
       "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git"
     }
   },
-  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
-  "suggestions": {
-  },
-  "platforms": {
-  },
   "maintainer": "RightScale, Inc.",
-  "long_description": "= RightScale App PHP Cookbook (Beta)\n\n== DESCRIPTION:\n\nRightScale PHP application server management cookbook\n\nInstalls and configures a PHP application server.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n",
-  "version": "0.0.1",
-  "recommendations": {
-  },
-  "recipes": {
-    "app_php::do_update_code": "Updates application source files from the remote repository.",
-    "app_php::setup_php_application_vhost": "Set up the application vhost on port 8000.",
-    "app_php::setup_db_connection": "Set up the MySQL database db.php connection file.",
-    "app_php::default": "Installs the php application server."
-  },
-  "groupings": {
-  },
-  "conflicting": {
-  },
   "replacing": {
   },
-  "description": "Installs the php application server.",
-  "providing": {
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "maintainer_email": "support@rightscale.com",
+  "name": "app_php",
+  "groupings": {
+  },
+  "dependencies": {
+    "db_mysql": [
+
+    ],
+    "app": [
+
+    ],
+    "db_postgres": [
+
+    ],
+    "web_apache": [
+
+    ],
+    "repo_git": [
+
+    ],
+    "rs_utils": [
+
+    ]
+  },
+  "recommendations": {
   }
 }
