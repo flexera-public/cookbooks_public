@@ -48,4 +48,5 @@ when "centos","fedora","suse","redhat"
   else
     set[:php][:package_dependencies] = ["php53u-pgsql"]
     set[:db_postgres][:socket] = "/var/run/postgresql"
+  end
 end
