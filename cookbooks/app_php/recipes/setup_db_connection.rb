@@ -16,7 +16,7 @@ directory File.join(node[:web_apache][:docroot], "config") do
   group node[:php][:app_user]
 end
 
-db_type = node[:php][:db_adapter]
+db_adapter = node[:php][:db_adapter]
 
 # runs only on db_adapter selection
 if db_adapter == "mysql"
