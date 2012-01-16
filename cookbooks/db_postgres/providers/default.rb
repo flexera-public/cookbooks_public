@@ -466,6 +466,13 @@ action :setup_monitoring do
       cookbook 'db_postgres'
     end
 
+    template ::File.join(node[:rs_utils][:collectd_share], 'postgresql_default.conf') do
+      backup false
+      source "postgresql_default.conf.erb"
+      notifies :restart, resources(:service => "collectd")
+      cookbook 'db_postgres'
+    end
+
     # install the postgres_ps collectd script into the collectd library plugins directory
     cookbook_file ::File.join(node[:rs_utils][:collectd_lib], "plugins", 'postgres_ps') do
       source "postgres_ps"
