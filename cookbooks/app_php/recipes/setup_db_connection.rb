@@ -18,14 +18,25 @@ end
 
 db_type = node[:php][:db_adapter]
 
-# Tell MySQL to fill in our connection template
-#db_mysql_connect_app File.join(node[:web_apache][:docroot], "config", "db.php") do
-"db_#{db_type}_connect_app" File.join(node[:web_apache][:docroot], "config", "db.php") do # change for db_postgres
-  template "db.php.erb"
-  cookbook "app_php"
-  database node[:php][:db_schema_name]
-  owner node[:php][:app_user]
-  group node[:php][:app_user]
+# runs only on db_adapter selection
+if db_adapter == "mysql"
+  # Tell MySQL to fill in our connection template
+  db_mysql_connect_app File.join(node[:web_apache][:docroot], "config", "db.php") do
+    template "db.php.erb"
+    cookbook "app_php"
+    database node[:php][:db_schema_name]
+    owner node[:php][:app_user]
+    group node[:php][:app_user]
+  end
+else
+  # Tell PostgreSQL to fill in our connection template
+  db_postgres_connect_app File.join(node[:web_apache][:docroot], "config", "db.php") do
+    template "db.php.erb"
+    cookbook "app_php"
+    database node[:php][:db_schema_name]
+    owner node[:php][:app_user]
+    group node[:php][:app_user]
+  end
 end
 
 rs_utils_marker :end
