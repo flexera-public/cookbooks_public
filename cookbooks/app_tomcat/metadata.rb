@@ -9,6 +9,7 @@ depends "app"
 depends "db_mysql"
 depends "repo_git"
 depends "rs_utils"
+depends "db_postgres"
 
 recipe  "app_tomcat::default", "Installs the tomcat application server."
 recipe  "app_tomcat::do_update_code", "Update application source files from the remote repository."
@@ -27,6 +28,13 @@ attribute "tomcat/db_name",
   :description => "Enter the name of the MySQL database to use. Ex: mydatabase",
   :required => "required",
   :recipes => [ "app_tomcat::setup_db_connection"  ]
+
+attribute "tomcat/db_adapter",
+  :display_name => "Database Adapter",
+  :description => "Database adapter to connect to Database. (Ex: mysql)",
+  :default => "mysql",
+  :choice => [ "mysql", "postgres" ],
+  :recipes => [ "app_tomcat::default", "app_tomcat::setup_db_connection" ]
 
 attribute "tomcat/code",
   :display_name => "Tomcat Application Code",

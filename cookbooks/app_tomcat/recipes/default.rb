@@ -48,11 +48,28 @@ rs_utils_marker :begin
     action :run
   end
   
-  ## Link mysql-connector plugin to Tomcat6 lib
-  # ln -sf /usr/share/java/mysql-connector-java.jar /usr/share/tomcat6/lib/mysql-connector-java.jar
-  # todo: if /usr/share/tomcat6/lib/mysql-connector-java.jar exists delete it first
-  link "/usr/share/tomcat6/lib/mysql-connector-java.jar" do
-    to "/usr/share/java/mysql-connector-java.jar"
+  db_adapter = node[:tomcat][:db_adapter]
+  if db_adapter == "mysql"
+    ## Link mysql-connector plugin to Tomcat6 lib
+    # ln -sf /usr/share/java/mysql-connector-java.jar /usr/share/tomcat6/lib/mysql-connector-java.jar
+    # todo: if /usr/share/tomcat6/lib/mysql-connector-java.jar exists delete it first
+    link "/usr/share/tomcat6/lib/mysql-connector-java.jar" do
+      to "/usr/share/java/mysql-connector-java.jar"
+    end
+  else
+    # Copy to /usr/share/java/postgresql-9.1-901.jdbc4.jar
+    cookbook_file "/usr/share/java/postgresql-9.1-901.jdbc4.jar" do
+      source "postgresql-9.1-901.jdbc4.jar"
+      owner "root"
+      group "root"
+      cookbook 'app_tomcat'
+    end
+    ## Link postgresql-connector plugin to Tomcat6 lib
+    # ln -sf /usr/share/java/postgresql-9.1-901.jdbc4.jar /usr/share/tomcat6/lib/postgresql-9.1-901.jdbc4.jar
+    # todo: if /usr/share/tomcat6/lib/postgresql-9.1-901.jdbc4.jar exists delete it first
+    link "/usr/share/tomcat6/lib/postgresql-9.1-901.jdbc4.jar" do
+      to "/usr/share/java/postgresql-9.1-901.jdbc4.jar"
+    end
   end
 
   ## "Linking RightImage JAVA_HOME to what Tomcat6 expects to be..."
