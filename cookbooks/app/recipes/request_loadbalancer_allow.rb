@@ -7,12 +7,16 @@
 
 rs_utils_marker :begin
 
-sys_firewall "Request all appservers open ports to this loadbalancer" do
-  machine_tag "loadbalancer:app=#{node[:lb][:applistener_name]}"
-  port node[:app][:port]
-  enable true
-  ip_addr node[:cloud][:private_ips][0]
-  action :update_request
+VHOST_NAMES = node[:lb][:vhost_names]
+
+VHOST_NAMES.gsub(/\s+/, "").split(",").each do | each_vhost |
+  sys_firewall "Request all appservers open ports to this loadbalancer" do
+    machine_tag "loadbalancer:#{each_vhost}=app"
+    port node[:app][:port]
+    enable true
+    ip_addr node[:cloud][:private_ips][0]
+    action :update_request
+  end
 end
 
 rs_utils_marker :end
