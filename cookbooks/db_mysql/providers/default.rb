@@ -119,72 +119,23 @@ end
 
 action :install_client do
 
-  version = node[:db_mysql][:version]
-  platform = node[:platform]
-  raise "Unsupported MySQL Version #{version}" unless version =~ /5.1|5.5/
+  packages = node:[:db_mysql][:client_packages_install]
   # == Install MySQL client packages
   # Must install during the compile stage because mysql gem build depends on the libs
-  log "Installing MySQL #{version} client software"
-  if version == "5.5"
-    raise "Only CentOS/RedHat supported" unless platform =~ /redhat|centos/
-  # http://dev.mysql.com/doc/refman/5.5/en/linux-installation-native.html
-  # For Red Hat and similar distributions, the MySQL distribution is divided into a number of separate packages, 
-  # mysql for the client tools, mysql-server for the server and associated tools, and mysql-libs for the libraries. 
-
-    # Packages from rightscale-software repository mirror of ius for MySQL 5.5
-    packages = ["mysql55-devel", "mysql55-lib", "mysql55" ]
-    Chef::Log.info("Packages to install: #{packages.join(",")}")
-    packages.each do |p|
-      r = package p do
-        action :nothing
-      end
-      r.run_action(:install)
-    end
-
-  else
-    if platform =~ /redhat|centos/
-
-      # Install MySQL GPG Key (http://download.oracle.com/docs/cd/E17952_01/refman-5.5-en/checking-gpg-signature.html)
-      gpgkey = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "mysql_pubkey.asc")
-      `rpm --import #{gpgkey}`
-
-      # Packages from rightscale-software repository for MySQL 5.1
-      packages = ["MySQL-shared-compat", "MySQL-devel-community", "MySQL-client-community" ]
-      Chef::Log.info("Packages to install: #{packages.join(",")}")
-      packages.each do |p|
-        r = package p do
-          action :nothing
-        end
-        r.run_action(:install)
-      end
-
-    else
-
-      # Install development library in compile phase
-      p = package "mysql-dev" do
-        package_name value_for_platform(
-          "ubuntu" => {
-            "8.04" => "libmysqlclient15-dev",
-            "8.10" => "libmysqlclient15-dev",
-            "9.04" => "libmysqlclient15-dev"
-          },
-          "default" => 'libmysqlclient-dev'
-        )
-        action :nothing
-      end
-      p.run_action(:install)
-
-      # install client in converge phase
-      package "mysql-client" do
-        package_name value_for_platform(
-          [ "centos", "redhat", "suse" ] => { "default" => "mysql" },
-          "default" => "mysql-client"
-        )
-        action :install
-      end
-    end
+  if node[:platform] =~ /redhat|centos/
+    # Install MySQL GPG Key (http://download.oracle.com/docs/cd/E17952_01/refman-5.5-en/checking-gpg-signature.html)
+    gpgkey = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "mysql_pubkey.asc")
+    `rpm --import #{gpgkey}`
   end
 
+  log "Installing MySQL #{node[:db_mysql][:version]} client software"
+  Chef::Log.info("Packages to install: #{packages.join(",")}")
+  packages.each do |p|
+    r = package p do
+      action :nothing
+    end
+    r.run_action(:install)
+  end
 
   # == Install MySQL client gem
   #
@@ -206,9 +157,10 @@ action :install_server do
 
   # == Install MySQL 5.1 and other packages
   #
-  node[:db_mysql][:packages_install].each do |p|
+  packages = node[:db_mysql][:server_packages_install]
+  packages.each do |p|
     package p
-  end unless node[:db_mysql][:packages_install] == ""
+  end unless packages == ""
 
   # Stop MySQL to allow custom configuration
   service "mysql" do
@@ -217,11 +169,12 @@ action :install_server do
   end
 
   # Uninstall other packages we don't
-  node[:db_mysql][:packages_uninstall].each do |p|
+  packages = node[:db_mysql][:packages_uninstall]
+  packages.each do |p|
      package p do
        action :remove
      end
-  end unless node[:db_mysql][:packages_uninstall] == ""
+  end unless packages == ""
 
   # Ubuntu requires deactivating upstart from starting mysql.
   if node[:platform] == "ubuntu"
@@ -356,7 +309,7 @@ action :setup_monitoring do
 
   arch = node[:kernel][:machine]
   arch = "i386" if arch == "i686"
-
+#TODO set platform var instead of using node
   # Centos specific items
   TMP_FILE = "/tmp/collectd.rpm"
   remote_file TMP_FILE do

@@ -36,28 +36,50 @@ case platform
 when "redhat","centos","fedora","suse"
 	set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
   set_unless[:db_mysql][:basedir] = "/var/lib"
-  set_unless[:db_mysql][:packages_uninstall] = ""
-  set_unless[:db_mysql][:packages_install] = ["MySQL-server-community", "MySQL-shared-compat", "MySQL-devel-community", "MySQL-client-community" ]
- # set_unless[:db_mysql][:packages_install] = [ "unixODBC.#{kernel[:machine] }", "krb5-libs" ]
   set_unless[:db_mysql][:log] = ""
   set_unless[:db_mysql][:log_error] = "" 
 when "debian","ubuntu"
   set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
   set_unless[:db_mysql][:basedir] = "/usr"
-  set_unless[:db_mysql][:packages_uninstall] = "apparmor"
-  if(platform_version == "10.10" || platform_version == "10.04")
-    set_unless[:db_mysql][:packages_install] = ["mysql-server-5.1", "tofrodos"]
-  else
-    set_unless[:db_mysql][:packages_install] = ["mysql-server-5.0", "tofrodos"]
-  end
   set_unless[:db_mysql][:log] = "log = /var/log/mysql.log"
   set_unless[:db_mysql][:log_error] = "log_error = /var/log/mysql.err" 
 else
-  set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
-  set_unless[:db_mysql][:basedir] = "/usr"
-  set_unless[:db_mysql][:packages_uninstall] = ""
-  set_unless[:db_mysql][:packages_install] = ["mysql-server-5.0"]
-  set_unless[:db_mysql][:log] = "log = /var/log/mysql.log"
-  set_unless[:db_mysql][:log_error] = "log_error = /var/log/mysql.err"
+  raise "Unsupported platform #{platform} for MySQL Version #{version}"
+end
+
+# == Version specific packages
+#
+case node[:db_mysql][:version]
+when "5.1"
+  case platform
+  when "redhat","centos","fedora","suse"
+    set_unless[:db_mysql][:packages_uninstall] = ""
+    set_unless[:db_mysql][:client_packages_install] = ["MySQL-shared-compat",
+                                                       "MySQL-devel-community",
+                                                       "MySQL-client-community" ]
+    set_unless[:db_mysql][:server_packages_install] = ["MySQL-server-community"]
+  when "debian","ubuntu"
+#    set_unless[:db_mysql][:packages_uninstall] = ["apparmor"]
+    set_unless[:db_mysql][:packages_uninstall] = ""
+    set_unless[:db_mysql][:client_packages_install] = ["libmysqlclient-dev", "mysql-client-5.1"]
+    set_unless[:db_mysql][:server_packages_install] = ["mysql-server-5.1"]
+  else
+    raise "Unsupported platform #{platform} for MySQL Version #{version}"
+  end
+when "5.5"
+  case platform
+  when "redhat","centos","fedora","suse"
+  # http://dev.mysql.com/doc/refman/5.5/en/linux-installation-native.html
+  # For Red Hat and similar distributions, the MySQL distribution is divided into a 
+  # number of separate packages, mysql for the client tools, mysql-server for the 
+  # server and associated tools, and mysql-libs for the libraries. 
+    set_unless[:db_mysql][:packages_uninstall] = ""
+    set_unless[:db_mysql][:client_packages_install] = ["mysql55-devel", "mysql55-libs", "mysql55"]
+    set_unless[:db_mysql][:server_packages_install] = ["mysql55-server"]
+  else
+    raise "Unsupported platform #{platform} for MySQL Version #{version}"
+  end
+else
+  raise "Unsupported MySQL Version #{version}"
 end
 
