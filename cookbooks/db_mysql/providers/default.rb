@@ -119,15 +119,20 @@ end
 
 action :install_client do
 
-  # == Install MySQL 5.1 package(s)
-  if node[:platform] =~ /redhat|centos/
+  version = node[:db_mysql][:version]
+  platform = node[:platform]
+  raise "Unsupported MySQL Version #{version}" unless version =~ /5.1|5.5/
+  # == Install MySQL client packages
+  # Must install during the compile stage because mysql gem build depends on the libs
+  log "Installing MySQL #{version} client software"
+  if version == "5.5"
+    raise "Only CentOS/RedHat supported" unless platform =~ /redhat|centos/
+  # http://dev.mysql.com/doc/refman/5.5/en/linux-installation-native.html
+  # For Red Hat and similar distributions, the MySQL distribution is divided into a number of separate packages, 
+  # mysql for the client tools, mysql-server for the server and associated tools, and mysql-libs for the libraries. 
 
-    # Install MySQL GPG Key (http://download.oracle.com/docs/cd/E17952_01/refman-5.5-en/checking-gpg-signature.html)
-    gpgkey = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "mysql_pubkey.asc")
-    `rpm --import #{gpgkey}`
-
-    # Packages from rightscale-software repository for MySQL 5.1
-    packages = ["MySQL-shared-compat", "MySQL-devel-community", "MySQL-client-community" ]
+    # Packages from rightscale-software repository mirror of ius for MySQL 5.5
+    packages = ["mysql55-devel", "mysql55-lib", "mysql55" ]
     Chef::Log.info("Packages to install: #{packages.join(",")}")
     packages.each do |p|
       r = package p do
@@ -137,30 +142,47 @@ action :install_client do
     end
 
   else
+    if platform =~ /redhat|centos/
 
-    # Install development library in compile phase
-    p = package "mysql-dev" do
-      package_name value_for_platform(
-        "ubuntu" => {
-          "8.04" => "libmysqlclient15-dev",
-          "8.10" => "libmysqlclient15-dev",
-          "9.04" => "libmysqlclient15-dev"
-        },
-        "default" => 'libmysqlclient-dev'
-      )
-      action :nothing
+      # Install MySQL GPG Key (http://download.oracle.com/docs/cd/E17952_01/refman-5.5-en/checking-gpg-signature.html)
+      gpgkey = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "mysql_pubkey.asc")
+      `rpm --import #{gpgkey}`
+
+      # Packages from rightscale-software repository for MySQL 5.1
+      packages = ["MySQL-shared-compat", "MySQL-devel-community", "MySQL-client-community" ]
+      Chef::Log.info("Packages to install: #{packages.join(",")}")
+      packages.each do |p|
+        r = package p do
+          action :nothing
+        end
+        r.run_action(:install)
+      end
+
+    else
+
+      # Install development library in compile phase
+      p = package "mysql-dev" do
+        package_name value_for_platform(
+          "ubuntu" => {
+            "8.04" => "libmysqlclient15-dev",
+            "8.10" => "libmysqlclient15-dev",
+            "9.04" => "libmysqlclient15-dev"
+          },
+          "default" => 'libmysqlclient-dev'
+        )
+        action :nothing
+      end
+      p.run_action(:install)
+
+      # install client in converge phase
+      package "mysql-client" do
+        package_name value_for_platform(
+          [ "centos", "redhat", "suse" ] => { "default" => "mysql" },
+          "default" => "mysql-client"
+        )
+        action :install
+      end
     end
-    p.run_action(:install)
-
-    # install client in converge phase
-    package "mysql-client" do
-      package_name value_for_platform(
-        [ "centos", "redhat", "suse" ] => { "default" => "mysql" },
-        "default" => "mysql-client"
-      )
-      action :install
-    end
-
   end
 
 
