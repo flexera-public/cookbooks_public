@@ -6,8 +6,9 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
+version="5.1"
 
-node[:db_mysql][:version] ||= "5.1"
-include_recipe "db::install_client"
+log "Setting DB MySQL version to #{version}"
+node[:db_mysql][:version] = version
 
 rs_utils_marker :end

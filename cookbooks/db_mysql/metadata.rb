@@ -11,6 +11,8 @@ depends "sys_dns"
 depends "rs_utils"
 
 recipe  "db_mysql::default", "Runs the client 'db::install_server' recipes."
+recipe  "db_mysql::default_5_1", "Set MySQL chef node version to 5.1"
+recipe  "db_mysql::default_5_5", "Set MySQL chef node version to 5.5"
 
 attribute "db_mysql",
   :display_name => "General Database Options",
