@@ -119,7 +119,6 @@ end
 
 action :install_client do
 
-  packages = node:[:db_mysql][:client_packages_install]
   # == Install MySQL client packages
   # Must install during the compile stage because mysql gem build depends on the libs
   if node[:platform] =~ /redhat|centos/
@@ -128,8 +127,8 @@ action :install_client do
     `rpm --import #{gpgkey}`
   end
 
-  log "Installing MySQL #{node[:db_mysql][:version]} client software"
-  Chef::Log.info("Packages to install: #{packages.join(",")}")
+  packages = node[:db_mysql][:client_packages_install]
+  log "Packages to install: #{packages.join(",")}" unless packages == ""
   packages.each do |p|
     r = package p do
       action :nothing
@@ -152,6 +151,7 @@ end
 
 action :install_server do
 
+  platform = node[:platform]
   # MySQL server depends on MySQL client
   action_install_client
 
@@ -170,6 +170,7 @@ action :install_server do
 
   # Uninstall other packages we don't
   packages = node[:db_mysql][:packages_uninstall]
+  log "Packages to uninstall: #{packages.join(",")}" unless packages == ""
   packages.each do |p|
      package p do
        action :remove
@@ -177,7 +178,7 @@ action :install_server do
   end unless packages == ""
 
   # Ubuntu requires deactivating upstart from starting mysql.
-  if node[:platform] == "ubuntu"
+  if platform == "ubuntu"
     ubuntu_mysql_upstart_conf = "/etc/init/mysql.conf"
     bash 'disable mysql upstart' do
       only_if { ::File.exists?(ubuntu_mysql_upstart_conf) }
@@ -268,26 +269,25 @@ action :install_server do
   #
   # Timeouts enabled.
   #
-  template "/etc/init.d/mysql" do
+  template "/etc/init.d/mysqld" do
     source "init-mysql.erb"
     mode "0755"
     cookbook 'db_mysql'
   end
-
 
   # == specific configs for ubuntu
   #  - set config file localhost access w/ root and no password
   #  - disable the 'check_for_crashed_tables'.
   #
   remote_file "/etc/mysql/debian.cnf" do
-    only_if { node[:platform] == "ubuntu" }
+    only_if { platform == "ubuntu" }
     mode "0600"
     source "debian.cnf"
     cookbook 'db_mysql'
   end
 
   remote_file "/etc/mysql/debian-start" do
-    only_if { node[:platform] == "ubuntu" }
+    only_if { platform == "ubuntu" }
     mode "0755"
     source "debian-start"
     cookbook 'db_mysql'
@@ -309,16 +309,16 @@ action :setup_monitoring do
 
   arch = node[:kernel][:machine]
   arch = "i386" if arch == "i686"
-#TODO set platform var instead of using node
+  platform = node[:platform]
   # Centos specific items
   TMP_FILE = "/tmp/collectd.rpm"
   remote_file TMP_FILE do
-    only_if { node[:platform] =~ /redhat|centos/ }
+    only_if { platform =~ /redhat|centos/ }
     source "collectd-mysql-4.10.0-4.el5.#{arch}.rpm"
     cookbook 'db_mysql'
   end
   package TMP_FILE do
-    only_if { node[:platform] =~ /redhat|centos/ }
+    only_if { platform =~ /redhat|centos/ }
     source TMP_FILE
   end
 
@@ -331,8 +331,8 @@ action :setup_monitoring do
   end
 
   # Send warning if not centos/redhat or ubuntu
-  log "WARNING: attempting to install collectd-mysql on unsupported platform #{node[:platform]}, continuing.." do
-    only_if { node[:platform] != "centos" && node[:platform] != "redhat" && node[:platform] != "ubuntu" }
+  log "WARNING: attempting to install collectd-mysql on unsupported platform #{platform}, continuing.." do
+    only_if { platform != "centos" && platform != "redhat" && platform != "ubuntu" }
     level :warn
   end
 

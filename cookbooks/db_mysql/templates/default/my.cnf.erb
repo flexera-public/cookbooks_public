@@ -15,29 +15,16 @@
 # 
 # The MySQL database server configuration file.
 #
-# You can copy this to one of:
-# - "/etc/mysql/my.cnf" to set global options,
-# - "~/.my.cnf" to set user-specific options.
-# 
-# One can use all long options that the program supports.
-# Run program with --help to get a list of available options and with
-# --print-defaults to see which it would actually understand and use.
-#
 # For explanations see
 # http://dev.mysql.com/doc/mysql/en/server-system-variables.html
 
 # This will be passed to all mysql clients
-# It has been reported that passwords should be enclosed with ticks/quotes
-# escpecially if they contain "#" chars...
-# Remember to edit /etc/mysql/debian.cnf when changing the socket location.
 [client]
 port            = 3306
 socket          = <%= node[:db_mysql][:socket] %>
 
 # Here is entries for some specific programs
-# The following values assume you have at least 32M ram
 
-# This was formally known as [safe_mysqld]. Both versions are currently parsed.
 [mysqld_safe]
 socket          = <%= node[:db_mysql][:socket] %>
 nice            = 0
@@ -59,9 +46,6 @@ port            = 3306
 basedir         = <%= node[:db_mysql][:basedir] %>
 datadir         = <%= node[:db_mysql][:datadir] %>
 tmpdir          = <%= node[:db_mysql][:tmpdir] %>
-
-# Set to have InnoDB engine as default vs MyISAM
-#default-storage-engine=INNODB
 
 skip-external-locking
 #
@@ -104,19 +88,12 @@ query_cache_size        = <%= node[:db_mysql][:tunable][:query_cache_size] %>
 #
 # * Logging and Replication
 #
-# Both location gets rotated by the cronjob.
-# Be aware that this log type is a performance killer.
-
 <%= node[:db_mysql][:log] %>
 <%= node[:db_mysql][:log_error] %>
 <%= node[:db_mysql][:tunable][:log_slow_queries] %>
 <%= node[:db_mysql][:tunable][:long_query_time] %>
 log-queries-not-using-indexes
 
-#
-# The following can be used as easy to replay backup logs or for replication.
-# note: if you are setting up a replication slave, see README.Debian about
-#       other settings you may need to change.
 <%= "read_only = 1" unless node[:db_mysql][:tunable][:read_only] == nil %>
 server-id               = <%= @server_id %>
 <% if node[:db_mysql][:log_bin_enabled] %>
@@ -129,12 +106,9 @@ max_binlog_size         = 100M
 #
 # * InnoDB
 #
-# InnoDB is enabled by default with a 10MB datafile in /var/lib/mysql/.
-# Read the manual for more InnoDB related options. There are many!
-# You might want to disable InnoDB to shrink the mysqld process by circa 100MB.
 #skip-innodb
 
-<% if node[:db_mysql][:packages_install].include?('mysql-server-5.1') %>
+<% if node[:db_mysql][:version] == '5.1' %>
   # On MySQL 5.1, load the innodb plugin
   ignore-builtin-innodb
   plugin-load=innodb=ha_innodb_plugin.so
@@ -144,19 +118,15 @@ innodb_data_home_dir = /var/lib/mysql/
 innodb_data_file_path = ibdata1:10M:autoextend
 innodb_log_group_home_dir = /var/lib/mysql
 
-<% if node[:db_mysql][:packages_install].include?('mysql-server-5.0') %>
-innodb_log_arch_dir = /var/lib/mysql
+<% if node[:db_mysql][:version] == '5.5' %>
+# some MySQL 5.5 specific config
 <% end %>
 
 innodb_file_per_table
-# You can set .._buffer_pool_size up to 50 - 80 %
-# of RAM but beware of setting memory usage too high
 innodb_buffer_pool_size = <%= node[:db_mysql][:tunable][:innodb_buffer_pool_size] %>
 innodb_additional_mem_pool_size = <%= node[:db_mysql][:tunable][:innodb_additional_mem_pool_size] %>
-# Set .._log_file_size to 25 % of buffer pool size
 innodb_log_file_size = <%= node[:db_mysql][:tunable][:innodb_log_file_size] %>
 innodb_log_buffer_size = <%= node[:db_mysql][:tunable][:innodb_log_buffer_size] %>
-# Write to log but don't flush on commit (it will be flushed every "second")
 innodb_flush_log_at_trx_commit = 2
 innodb_lock_wait_timeout = 50
 innodb_support_xa = 1
@@ -198,25 +168,17 @@ max_allowed_packet      = 16M
 [mysql]
 #no-auto-rehash # faster start of mysql but no tab completition
 
+<% if node[:db_mysql][:version] == '5.1' %>
+# isam dropped after version 5.1
 [isamchk]
 key_buffer        = <%= node[:db_mysql][:tunable][:isamchk][:key_buffer] %>
 sort_buffer_size        = <%= node[:db_mysql][:tunable][:isamchk][:sort_buffer_size] %>
+<% end %>
 
 [myisamchk]
 key_buffer        = <%= node[:db_mysql][:tunable][:myisamchk][:key_buffer] %>
 sort_buffer_size        = <%= node[:db_mysql][:tunable][:myisamchk][:sort_buffer_size] %>
 
-#
-# * NDB Cluster
-#
-# See /usr/share/doc/mysql-server-*/README.Debian for more information.
-#
-# The following configuration is read by the NDB Data Nodes (ndbd processes)
-# not from the NDB Management Nodes (ndb_mgmd processes).
-#
-# [MYSQL_CLUSTER]
-# ndb-connectstring=127.0.0.1
-#
 # * IMPORTANT: Additional settings that can override those from this file!
 #   The files must end with '.cnf', otherwise they'll be ignored.
 #

@@ -11,4 +11,18 @@ version="5.5"
 log "Setting DB MySQL version to #{version}"
 node[:db_mysql][:version] = version
 
+platform = node[:platform]
+case platform
+when "redhat","centos","fedora","suse"
+# http://dev.mysql.com/doc/refman/5.5/en/linux-installation-native.html
+# For Red Hat and similar distributions, the MySQL distribution is divided into a 
+# number of separate packages, mysql for the client tools, mysql-server for the 
+# server and associated tools, and mysql-libs for the libraries. 
+  node[:db_mysql][:packages_uninstall] = ""
+  node[:db_mysql][:client_packages_install] = ["mysql55-devel", "mysql55-libs", "mysql55"]
+  node[:db_mysql][:server_packages_install] = ["mysql55-server"]
+else
+  raise "Unsupported platform #{platform} for MySQL Version #{version}"
+end
+
 rs_utils_marker :end
