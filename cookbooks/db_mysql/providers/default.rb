@@ -228,7 +228,7 @@ action :install_server do
     owner "mysql"
     group "mysql"
   end
-
+=begin
   # Setup my.cnf
   template_source = "my.cnf.erb"
   template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
@@ -241,7 +241,7 @@ action :install_server do
     )
     cookbook 'db_mysql'
   end
-
+=end
   # == Setup MySQL user limits
   #
   # Set the mysql and root users max open files to a really large number.
@@ -264,12 +264,21 @@ action :install_server do
   #
   execute "ulimit -n #{mysql_file_ulimit}"
 
-
   # == Drop in best practice replacement for mysqld startup.
   #
   # Timeouts enabled.
   #
+  # There mysql vs mysqld service name does not appear to follow a consistent pattern.
+  # Between Ubuntu and Centos it changes.  Between versions of Centos it changes and
+  # Between versions of MySQL it changes.
+  # We install both service names
   template "/etc/init.d/mysqld" do
+    source "init-mysql.erb"
+    mode "0755"
+    cookbook 'db_mysql'
+  end
+
+  template "/etc/init.d/mysql" do
     source "init-mysql.erb"
     mode "0755"
     cookbook 'db_mysql'
