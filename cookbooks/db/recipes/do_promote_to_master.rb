@@ -14,11 +14,10 @@ db_state_assert :slave
 
 # == Open port for slave replication by old-master
 #
-sys_firewall "Open port 3306 to the old master which is becoming a slave" do
-  port 3306
+db node[:db][:data_dir] do
   enable true
   ip_addr node[:db][:current_master_ip]
-  action :update
+  action :firewall_update_request
 end
 
 # == Promote to master
