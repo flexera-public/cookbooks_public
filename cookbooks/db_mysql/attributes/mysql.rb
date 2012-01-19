@@ -36,12 +36,10 @@ platform = node[:platform]
 case platform
 when "redhat","centos","fedora","suse"
 	set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
-  set_unless[:db_mysql][:basedir] = "/var/lib"
   set_unless[:db_mysql][:log] = ""
   set_unless[:db_mysql][:log_error] = "" 
 when "debian","ubuntu"
   set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
-  set_unless[:db_mysql][:basedir] = "/usr"
   set_unless[:db_mysql][:log] = "log = /var/log/mysql.log"
   set_unless[:db_mysql][:log_error] = "log_error = /var/log/mysql.err" 
 else

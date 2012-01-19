@@ -18,12 +18,9 @@
 # For explanations see
 # http://dev.mysql.com/doc/mysql/en/server-system-variables.html
 
-# This will be passed to all mysql clients
 [client]
 port            = 3306
 socket          = <%= node[:db_mysql][:socket] %>
-
-# Here is entries for some specific programs
 
 [mysqld_safe]
 socket          = <%= node[:db_mysql][:socket] %>
@@ -33,24 +30,14 @@ nice            = 0
 #
 # * Basic Settings
 #
-
-#
-# * IMPORTANT
-#   If you make changes to these settings and your system uses apparmor, you may
-#   also need to also adjust /etc/apparmor.d/usr.sbin.mysqld.
-#
 user            = mysql
 pid-file        = /var/run/mysqld/mysqld.pid
 socket          = <%= node[:db_mysql][:socket] %>
 port            = 3306
-basedir         = <%= node[:db_mysql][:basedir] %>
 datadir         = <%= node[:db_mysql][:datadir] %>
 tmpdir          = <%= node[:db_mysql][:tmpdir] %>
 
 skip-external-locking
-#
-# Instead of skip-networking the default is now to listen only on
-# localhost which is more compatible and is not less secure.
 bind-address            = <%= node[:db_mysql][:bind_address] %>
 #
 # * Fine Tuning
@@ -59,12 +46,7 @@ key_buffer              = <%= node[:db_mysql][:tunable][:key_buffer] %>
 max_allowed_packet      = 16M
 thread_stack            = 192K
 thread_cache_size       = <%= node[:db_mysql][:tunable][:thread_cache_size] %>
-# This replaces the startup script and checks MyISAM tables if needed
-# the first time they are touched
 myisam-recover          = BACKUP
-#max_connections        = 100
-#table_cache            = 64
-#thread_concurrency     = 10
 max_connections         = <%= node[:db_mysql][:tunable][:max_connections] %>
 wait_timeout            = <%= node[:db_mysql][:tunable][:wait_timeout] %>
 net_read_timeout        = <%= node[:db_mysql][:tunable][:net_read_timeout] %>
@@ -101,12 +83,9 @@ server-id               = <%= @server_id %>
 <%= "expire_logs_days        = #{node[:expire_logs_days]}" %>
 <% end %>
 max_binlog_size         = 100M
-#binlog_do_db           = include_database_name
-#binlog_ignore_db       = include_database_name
 #
 # * InnoDB
 #
-#skip-innodb
 
 <% if node[:db_mysql][:version] == '5.1' %>
   # On MySQL 5.1, load the innodb plugin
@@ -120,6 +99,7 @@ innodb_log_group_home_dir = /var/lib/mysql
 
 <% if node[:db_mysql][:version] == '5.5' %>
 # some MySQL 5.5 specific config
+# None to date
 <% end %>
 
 innodb_file_per_table
@@ -130,35 +110,13 @@ innodb_log_buffer_size = <%= node[:db_mysql][:tunable][:innodb_log_buffer_size] 
 innodb_flush_log_at_trx_commit = 2
 innodb_lock_wait_timeout = 50
 innodb_support_xa = 1
-# innodb_doublewrite
 innodb_flush_method=O_DIRECT
 innodb_fast_shutdown = 1
 
-#
-# Binary logs are required for replication on masters
-# and slaves which may be promoted to master in the future.
-#
 log-bin=<%=node[:db_mysql][:log_bin] %>
 
-#
-# Configure the binary and relay log names
-# This is essential under systems using upstart, as the hostname may not be 
-# consistently set during daemon start.
-#
 relay-log-index=<%= node[:db][:data_dir] %>/<%= node[:hostname] %>-relay-log.index
 relay-log=<%= node[:db][:data_dir] %>/<%= node[:hostname] %>-relay-bin
-
-#
-# * Security Features
-#
-# Read the manual, too, if you want chroot!
-# chroot = /var/lib/mysql/
-#
-# For generating SSL certificates I recommend the OpenSSL GUI "tinyca".
-#
-# ssl-ca=/etc/mysql/cacert.pem
-# ssl-cert=/etc/mysql/server-cert.pem
-# ssl-key=/etc/mysql/server-key.pem
 
 [mysqldump]
 quick
@@ -166,7 +124,6 @@ quote-names
 max_allowed_packet      = 16M
 
 [mysql]
-#no-auto-rehash # faster start of mysql but no tab completition
 
 <% if node[:db_mysql][:version] == '5.1' %>
 # isam dropped after version 5.1
