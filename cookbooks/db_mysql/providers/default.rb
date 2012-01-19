@@ -228,7 +228,6 @@ action :install_server do
     owner "mysql"
     group "mysql"
   end
-=begin
   # Setup my.cnf
   template_source = "my.cnf.erb"
   template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
@@ -241,7 +240,7 @@ action :install_server do
     )
     cookbook 'db_mysql'
   end
-=end
+
   # == Setup MySQL user limits
   #
   # Set the mysql and root users max open files to a really large number.
