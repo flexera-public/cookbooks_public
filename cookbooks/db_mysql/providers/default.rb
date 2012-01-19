@@ -263,22 +263,12 @@ action :install_server do
   #
   execute "ulimit -n #{mysql_file_ulimit}"
 
-  # == Drop in best practice replacement for mysqld startup.
+  # == Setup custom mysqld init script via /etc/sysconfig/mysqld.
   #
   # Timeouts enabled.
   #
-  # There mysql vs mysqld service name does not appear to follow a consistent pattern.
-  # Between Ubuntu and Centos it changes.  Between versions of Centos it changes and
-  # Between versions of MySQL it changes.
-  # We install both service names
-  template "/etc/init.d/mysqld" do
-    source "init-mysql.erb"
-    mode "0755"
-    cookbook 'db_mysql'
-  end
-
-  template "/etc/init.d/mysql" do
-    source "init-mysql.erb"
+  template "/etc/sysconfig/mysqld" do
+    source "sysconfig-mysqld.erb"
     mode "0755"
     cookbook 'db_mysql'
   end
