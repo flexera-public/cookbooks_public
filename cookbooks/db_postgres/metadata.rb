@@ -30,7 +30,7 @@ attribute "db_postgres/server_usage",
 
 attribute "db_postgres/slave/sync",
   :display_name => "Slave Sync State",
-  :description => "Enables/Disables Slave sync state with Master, if enable slave connect with master in 'sync' state, otherwise in 'async' state. To check the state of slave, run query 'select application_name,state,sync_priority,sync_state from pg_stat_replication;' on master.",
+  :description => "Enables or Disables Slave sync state on Master, if enable - slave connect with master in 'sync' state, otherwise in 'async' state. To check the state of slave, run query 'select application_name,state,sync_priority,sync_state from pg_stat_replication;' on master.",
   :choice => ["enable", "disable"],
   :default => "disable",
   :recipes => [ "db_postgres::setup_pgmaster" ]
