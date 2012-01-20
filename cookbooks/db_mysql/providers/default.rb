@@ -263,6 +263,32 @@ action :install_server do
   #
   execute "ulimit -n #{mysql_file_ulimit}"
 
+  # == Create mysql init scripts
+  #
+  # The usage of mysql vs mysqld for the service name is inconsistent.  Prior to
+  # MySQL 5.5 the rule was (CentOS/Ubuntu >= 10.04)  => mysql, (Ubuntu < 10.04) => mysqld
+  # With MySQL 5.5 on CentOS it is now mysqld.  The MySQL version number is not part of the
+  # opscode cookbooks where the service name is determined.  Modifing the code to do so
+  # would be messy.  Instead we create both service names on the server by making sure
+  # both /etc/init.d/mysql and /etc/init.d/mysqld exist.  Only one service is registered with
+  # chkconfig or upstart so two attempts to start the service will not be done on boot.  And
+  # any scripts / chef recipe that uses /etc/init.d/mysql[d] directly will work.
+
+  # If the init file does not exist create a symlink to the other one
+  mysql_file = "/etc/init.d/mysql"
+  mysqld_file = "/etc/init.d/mysqld"
+  if ::File.exists?(mysqld_file)
+    log "  Creating mysqld init script link"
+    link mysql_file do
+      to mysqld_file
+    end
+  else
+    log "  Creating mysql init script link"
+    link mysqld_file do
+      to mysql_file
+    end
+  end
+
   # == Setup custom mysqld init script via /etc/sysconfig/mysqld.
   #
   # Timeouts enabled.
