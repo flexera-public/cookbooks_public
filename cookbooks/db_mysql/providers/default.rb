@@ -247,6 +247,7 @@ action :install_server do
   # 1/3 of the overall system file max should be large enough.  The percentage can be
   # adjusted if necessary.
   #
+#TODO put this into the attribute tuning file
   mysql_file_ulimit = `sysctl -n fs.file-max`.to_i/33
 
   template "/etc/security/limits.d/mysql.limits.conf" do
@@ -277,13 +278,17 @@ action :install_server do
   # If the init file does not exist create a symlink to the other one
   mysql_file = "/etc/init.d/mysql"
   mysqld_file = "/etc/init.d/mysqld"
-  if ::File.exists?(mysql_file)
-    log "  Creating mysqld init script link"
-    link mysql_file do
-      to mysqld_file
-    end
-  else
-    log "  Creating mysql init script link"
+  ruby_block "Create mysql init link" do
+    not_if { ::File.exists?(mysql_file) }
+    block do
+      link mysql_file do
+        to mysqld_file
+      end
+  end
+
+  ruby_block "Create mysqld init link" do
+    not_if { ::File.exists?(mysqld_file) }
+    block do
     link mysqld_file do
       to mysql_file
     end
