@@ -277,7 +277,7 @@ action :install_server do
   # If the init file does not exist create a symlink to the other one
   mysql_file = "/etc/init.d/mysql"
   mysqld_file = "/etc/init.d/mysqld"
-  if ::File.exists?(mysqld_file)
+  if ::File.exists?(mysql_file)
     log "  Creating mysqld init script link"
     link mysql_file do
       to mysqld_file
