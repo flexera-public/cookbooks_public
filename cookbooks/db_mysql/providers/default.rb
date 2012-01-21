@@ -328,6 +328,7 @@ action :install_server do
 end
 
 action :setup_monitoring do
+
   service "collectd" do
     action :nothing
   end
@@ -347,12 +348,20 @@ action :setup_monitoring do
     source TMP_FILE
   end
 
-  cookbook_file ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
+  if ( node[:db][:init_status] == "uninitialized" )
+     replication_type_line = ""
+  else 
+     replication_type_line = node[:db][:this_is_master] == true ? "MasterStats true" : "SlaveStats true"
+  end
+  template ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
+    source "collectd-plugin-mysql.conf.erb"
     mode "0644"
     backup false
-    source "collectd-plugin-mysql.conf"
-    notifies :restart, resources(:service => "collectd")
     cookbook 'db_mysql'
+    variables({
+      :replication_type_entry => replication_type_line
+    })
+    notifies :restart, resources(:service => "collectd")
   end
 
   # Send warning if not centos/redhat or ubuntu
