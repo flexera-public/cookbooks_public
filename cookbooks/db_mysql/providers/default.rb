@@ -326,7 +326,7 @@ action :install_server do
   dir=node[:db_mysql][:datadir]
   bash "chown mysql #{dir}" do
     code <<-EOH
-      chown -R mysql:mysql dir
+      chown -R mysql:mysql #{dir}
     EOH
   end
 
