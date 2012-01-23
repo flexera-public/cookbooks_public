@@ -348,10 +348,10 @@ action :setup_monitoring do
     source TMP_FILE
   end
 
-  if ( node[:db][:init_status] == "uninitialized" )
-     replication_type_line = ""
-  else 
+  if ( node[:db][:init_status] == "initialized" )
      replication_type_line = node[:db][:this_is_master] == true ? "MasterStats true" : "SlaveStats true"
+  else
+     replication_type_line = ""
   end
   template ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
     source "collectd-plugin-mysql.conf.erb"
