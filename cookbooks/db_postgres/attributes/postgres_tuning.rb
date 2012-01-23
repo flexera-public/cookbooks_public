@@ -25,6 +25,8 @@ end
 # Set tuning parameters.
 #
 
+set_unless[:db_postgres][:tunable][:ulimit] = `sysctl -n fs.file-max`.to_i/33
+
 # Shared servers get %50 of the resources allocated to a dedicated server.
 set_unless[:db_postgres][:server_usage] = "dedicated"  # or "shared"
 usage = 1 # Dedicated server
@@ -49,28 +51,28 @@ else
   # TODO: The settings for t1.micro may be excessively conservative, but we're going to be okay with it for now
   when "t1.micro"
      if(db_postgres[:server_usage] == :dedicated)
-#      set_unless[:db_postgres][:tunable][:shared_buffers] = "48M"
-     else
-#      set_unless[:db_postgres][:tunable][:shared_buffers] = "24M"
+      set_unless[:db_postgres][:tunable][:shared_buffers] = "48M"
+    else
+      set_unless[:db_postgres][:tunable][:shared_buffers] = "24M"
       set_unless[:db_postgres][:tunable][:max_connections] = "100"
      end
-#  when "m1.small", "c1.medium"
-#     if (db_postgres[:server_usage] == :dedicated) 
-#      set_unless[:db_postgres][:tunable][:shared_buffers] = "128M"
-#     else
-#      set_unless[:db_postgres][:tunable][:shared_buffers] = "64M"
-#     end
-#  when "m1.large", "c1.xlarge"    
-#     if (db_postgres[:server_usage] == :dedicated) 
-#      set_unless[:db_postgres][:tunable][:shared_buffers] = "192M"
-#     else
-#      set_unless[:db_postgres][:tunable][:shared_buffers] = "128M"
-#     end 
-#  when "m1.xlarge"
-#     if (db_postgres[:server_usage] == :dedicated) 
-#      set_unless[:db_postgres][:tunable][:shared_buffers] = "265M"
-#     else
-#      set_unless[:db_postgres][:tunable][:shared_buffers] = "192M"
-#     end
-  end 
-end 
+  when "m1.small", "c1.medium"
+     if (db_postgres[:server_usage] == :dedicated)
+      set_unless[:db_postgres][:tunable][:shared_buffers] = "128M"
+     else
+      set_unless[:db_postgres][:tunable][:shared_buffers] = "64M"
+     end
+  when "m1.large", "c1.xlarge"
+     if (db_postgres[:server_usage] == :dedicated)
+      set_unless[:db_postgres][:tunable][:shared_buffers] = "192M"
+     else
+      set_unless[:db_postgres][:tunable][:shared_buffers] = "128M"
+     end
+  when "m1.xlarge"
+     if (db_postgres[:server_usage] == :dedicated)
+      set_unless[:db_postgres][:tunable][:shared_buffers] = "265M"
+     else
+      set_unless[:db_postgres][:tunable][:shared_buffers] = "192M"
+     end
+  end
+end
