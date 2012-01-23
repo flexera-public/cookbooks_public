@@ -63,4 +63,10 @@ block_device NICKNAME do
   action :backup_schedule_disable
 end
 
+log "  resetting collectd config..."
+db DATA_DIR do
+  database_type ""
+  action :setup_monitoring
+end
+
 rs_utils_marker :end

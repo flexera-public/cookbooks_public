@@ -7,6 +7,8 @@
 
 rs_utils_marker :begin
 
+DATA_DIR = node[:db][:data_dir]
+
 # == Verify initalized database
 # Check the node state to verify that we have correctly initialized this server.
 #
@@ -26,7 +28,7 @@ end
 #
 include_recipe "db::setup_replication_privileges"
 
-db node[:db][:data_dir] do
+db DATA_DIR do
   action :promote
 end
 
@@ -54,6 +56,12 @@ end
 # Changes master status tags and node state
 #
 db_register_master
+
+# == Setup collected to monitor for a master db
+db DATA_DIR do
+  database_type "master"
+  action :setup_monitoring
+end
 
 # == force a backup
 #

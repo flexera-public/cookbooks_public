@@ -329,6 +329,8 @@ end
 
 action :setup_monitoring do
 
+  db_type = new_resource.database_type
+
   service "collectd" do
     action :nothing
   end
@@ -348,18 +350,13 @@ action :setup_monitoring do
     source TMP_FILE
   end
 
-  if ( node[:db][:init_status] == "initialized" )
-     replication_type_line = node[:db][:this_is_master] == true ? "MasterStats true" : "SlaveStats true"
-  else
-     replication_type_line = ""
-  end
   template ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
     source "collectd-plugin-mysql.conf.erb"
     mode "0644"
     backup false
     cookbook 'db_mysql'
     variables({
-      :replication_type_entry => replication_type_line
+      :replication_type_entry => (db_type == "master" or db_type == "slave") ? "#{db_type.capitalize}Stats true" : ""
     })
     notifies :restart, resources(:service => "collectd")
   end

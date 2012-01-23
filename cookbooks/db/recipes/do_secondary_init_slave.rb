@@ -5,9 +5,9 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-DATA_DIR = node[:db][:data_dir]
-
 rs_utils_marker :begin
+
+DATA_DIR = node[:db][:data_dir]
 
 log "  Checking if state of database is'uninitialized'..."
 db_init_status :check do
@@ -78,6 +78,11 @@ raise "No master DB found" unless node[:db][:current_master_ip] && node[:db][:cu
 include_recipe "db::request_master_allow"
 
 include_recipe "db::do_secondary_restore"
+
+db DATA_DIR do
+  database_type "slave"
+  action :setup_monitoring
+end
 
 db DATA_DIR do
   action :enable_replication

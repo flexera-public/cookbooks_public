@@ -8,6 +8,7 @@
 rs_utils_marker :begin
 
 db node[:db][:data_dir] do
+  database_type node[:db][:init_status] == "initialized" ? ( node[:db][:this_is_master] == true ? "master" : "slave" ) : ""
   action :setup_monitoring
 end
 

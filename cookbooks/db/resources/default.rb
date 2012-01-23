@@ -44,6 +44,9 @@ attribute :machine_tag, :kind_of => String, :regex => /^([^:]+):(.+)=.+/
 attribute :dumpfile, :kind_of => String
 attribute :db_name, :kind_of => String
 
+# == Monitoring options
+attribute :database_type, :equal_to => [ "master", "slave", "" ], :default => ""
+
 
 # = General Database Actions
 #
