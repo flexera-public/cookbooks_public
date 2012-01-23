@@ -296,6 +296,11 @@ action :install_server do
     mode "0755"
     cookbook 'db_mysql'
   end
+  template "/etc/sysconfig/mysql" do
+    source "sysconfig-mysqld.erb"
+    mode "0755"
+    cookbook 'db_mysql'
+  end
 
   # == specific configs for ubuntu
   #  - set config file localhost access w/ root and no password
@@ -313,6 +318,16 @@ action :install_server do
     mode "0755"
     source "debian-start"
     cookbook 'db_mysql'
+  end
+
+  # == Fix permissions
+  # During the first startup after install some of the file are created with root:root
+  # so MySQL can not read them.
+  dir=node[:db_mysql][:datadir]
+  bash "chown mysql #{dir}" do
+    code <<-EOH
+      chown -R mysql:mysql dir
+    EOH
   end
 
   # == Start MySQL
