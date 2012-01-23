@@ -45,9 +45,7 @@ elsif node[:db_postgres][:slave][:sync] == "disable"
 
   # Reload postgresql to read new updated postgresql.conf
   Chef::Log.info "Reload postgresql to read new updated postgresql.conf"
-  service "postgresql-#{node[:db_postgres][:version]}" do
-    action :reload
-  end
+  RightScale::Database::PostgreSQL::Helper.do_query('select pg_reload_conf()')
 
 else
   log "WARNING: Skipping to postgresql update slave sync mode on master server, not selected any valid user input enable/disable" do
