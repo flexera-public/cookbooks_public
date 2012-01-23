@@ -128,14 +128,14 @@ action :install_client do
     action :install
   end
 
-  packages = ["postgresql91-libs", "postgresql91", "postgresql91-devel" ]
-    Chef::Log.info("Packages to install: #{packages.join(",")}")
-    packages.each do |p|
-	pkg = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "#{p}-9.1.1-1PGDG.rhel5.#{arch}.rpm")
-	package p do
-	action :install
-	source "#{pkg}"
-	provider Chef::Provider::Package::Rpm 
+  packages = node[:db_postgres][:client_packages_install]
+  Chef::Log.info("Packages to install: #{packages.join(",")}")
+  packages.each do |p|
+	  pkg = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "#{p}-9.1.1-1PGDG.rhel5.#{arch}.rpm")
+	  package p do
+	    action :install
+	    source "#{pkg}"
+	    provider Chef::Provider::Package::Rpm 
     end
   end
 
@@ -165,7 +165,9 @@ action :install_server do
     action :install
   end
 
-  node[:db_postgres][:packages_install].each do |p|
+  packages = node[:db_postgres][:server_packages_install]
+  Chef::Log.info("Packages to install: #{packages.join(",")}")
+  packages.each do |p|
       pkg = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "#{p}-9.1.1-1PGDG.rhel5.#{arch}.rpm")
       package p do
       action :install
