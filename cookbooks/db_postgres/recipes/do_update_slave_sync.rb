@@ -9,7 +9,8 @@
 #
 rs_utils_marker :begin
 
-#to_enable = new_resource.enable
+raise "Skipping to postgresql update slave sync mode on master server, not selected any valid input enable/disable" if node[:db_postgres][:slave][:sync] == ""
+
 to_enable = (node[:db_postgres][:slave][:sync] == "enable") ? true : false
 
 if node[:db_postgres][:slave][:sync] == "enable"
@@ -34,23 +35,24 @@ elsif node[:db_postgres][:slave][:sync] == "disable"
   end
 
   # Setup pg_hba.conf
-  template "#{node[:db_postgres][:confdir]}/pg_hba.conf" do
-    source "pg_hba.conf.erb"
+  cookbook_file ::File.join(node[:db_postgres][:confdir], 'pg_hba.conf') do
+    source "pg_hba.conf"
     owner "postgres"
     group "postgres"
     mode "0644"
     cookbook 'db_postgres'
   end
-  
+
   # Reload postgresql to read new updated postgresql.conf
   Chef::Log.info "Reload postgresql to read new updated postgresql.conf"
-  #RightScale::Database::PostgreSQL::Helper.do_query('select pg_reload_conf()')
-  execute "/etc/init.d/postgresql-9.1 reload" do
-    command "/etc/init.d/postgresql-9.1 reload" 
+  service "postgresql-#{node[:db_postgres][:version]}" do
+    action :reload
   end
 
 else
-  log "Initialize slave to master in 'sync' state [skipped]"
+  log "WARNING: Skipping to postgresql update slave sync mode on master server, not selected any valid user input enable/disable" do
+    level :warn
+  end
 
 end
 
