@@ -278,19 +278,19 @@ action :install_server do
   # If the init file does not exist create a symlink to the other one
   mysql_file = "/etc/init.d/mysql"
   mysqld_file = "/etc/init.d/mysqld"
-  ruby_block "Create mysql init link" do
-    not_if { ::File.exists?(mysql_file) }
-    block do
-      link mysql_file do
-        to mysqld_file
-      end
-  end
-
   ruby_block "Create mysqld init link" do
     not_if { ::File.exists?(mysqld_file) }
     block do
-    link mysqld_file do
-      to mysql_file
+      link mysqld_file do
+        to mysql_file
+      end
+  end
+
+  ruby_block "Create mysql init link" do
+    not_if { ::File.exists?(mysql_file) }
+    block do
+    link mysql_file do
+      to mysqld_file
     end
   end
 
