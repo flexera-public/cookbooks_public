@@ -514,6 +514,30 @@ end
 
 action :enable_replication do
 
+  # Check the volume before performing any actions.  If invalid raise error and exit.
+  ruby_block "validate_master" do
+    block do
+      master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
+      # Check that the snapshot is from the current master or a slave associated with the current master
+
+      # 11H2 backup
+      if master_info['Master_instance_uuid']
+        if master_info['Master_instance_uuid'] != node[:db][:current_master_uuid]
+          raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_uuid']} != current master: #{node[:db][:current_master_uuid]}"
+        end
+      # 11H1 backup
+      elsif master_info['Master_instance_id']
+        Chef::Log.info "  Detected 11H1 snapshot to migrate"
+        if master_info['Master_instance_id'] != node[:db][:current_master_ec2_id]
+          raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_id']} != current master: #{node[:db][:current_master_ec2_id]}"
+        end
+      # File not found or does not contain info
+      else
+        raise "Position and file not saved!"
+      end
+    end
+  end
+
   ruby_block "wipe_existing_runtime_config" do
     block do
       Chef::Log.info "Wiping existing runtime config files"
@@ -593,42 +617,25 @@ action :enable_replication do
     cookbook 'db_mysql'
   end
 end
+
 action :validate_backup do
-  # checks for valid backup and that current master matches backup
+  # Performs checks for snapshot compatibility with current server
   ruby_block "validate_backup" do
     block do
       master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
-      # Check that the snapshot is from the current master or a slave associated with the current master
-
-      # 11H2 backup
-      if master_info['Master_instance_uuid']
-        if master_info['Master_instance_uuid'] != node[:db][:current_master_uuid]
-          raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_uuid']} != current master: #{node[:db][:current_master_uuid]}"
-
-          # Check version matches
-          # Not all 11H2 snapshots (prior to 5.5 release) saved provider or version.  
-          # Assume MySQL 5.1 if nil
-          snap_version=master_info['DB_Version']||='5.1'
-          snap_provider=master_info['DB_Provider']||='db_mysql'
-          current_version= node[:db_mysql][:version]
-          current_provider=master_info['DB_Provider']||=node[:db][:provider]
-          Chef::Log.info "  Snapshot from #{snap_provider} version #{snap_version}"
-          # skip check if restore version check is false
-          if node[:db][:restore_version_check] == "true"
-            raise "FATAL: Attempting to restore #{snap_provider} #{snap_version} snapshot to #{current_provider} #{current_version} with :restore_version_check enabled." unless ( snap_version == current_version ) && ( snap_provider == current_provider )
-          else
-            Chef::Log.info "  Skipping #{provider} restore version check"
-          end
-        end
-      # 11H1 backup
-      elsif master_info['Master_instance_id']
-        Chef::Log.info "  Detected 11H1 snapshot to migrate"
-        if master_info['Master_instance_id'] != node[:db][:current_master_ec2_id]
-          raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_id']} != current master: #{node[:db][:current_master_ec2_id]}"
-        end
-      # File not found or does not contain info
+      # Check version matches
+      # Not all 11H2 snapshots (prior to 5.5 release) saved provider or version.  
+      # Assume MySQL 5.1 if nil
+      snap_version=master_info['DB_Version']||='5.1'
+      snap_provider=master_info['DB_Provider']||='db_mysql'
+      current_version= node[:db_mysql][:version]
+      current_provider=master_info['DB_Provider']||=node[:db][:provider]
+      Chef::Log.info "  Snapshot from #{snap_provider} version #{snap_version}"
+      # skip check if restore version check is false
+      if node[:db][:restore_version_check] == "true"
+        raise "FATAL: Attempting to restore #{snap_provider} #{snap_version} snapshot to #{current_provider} #{current_version} with :restore_version_check enabled." unless ( snap_version == current_version ) && ( snap_provider == current_provider )
       else
-        raise "Position and file not saved!"
+        Chef::Log.info "  Skipping #{provider} restore version check"
       end
     end
   end
