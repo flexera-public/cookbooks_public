@@ -11,9 +11,9 @@ depends "rs_utils"
 depends "block_device"
 
 recipe  "db_postgres::default", "Runs the client 'db::install_client' recipes."
-recipe  "db_postgres::do_set_slave_sync_mode", "Setup master sync mode for replication"
-recipe  "db_postgres::do_set_slave_async_mode", "Setup master async mode for replication"
-recipe  "db_postgres::do_show_slave_sync_mode", "Show the status of slave syncing state"
+recipe  "db_postgres::do_set_slave_sync_mode", "Show the sync mode for the replication"
+recipe  "db_postgres::do_set_slave_async_mode", "Set master to do sync based replication with slave"
+recipe  "db_postgres::do_show_slave_sync_mode", "Set master to do async based replication with slave"
 
 attribute "db_postgres",
   :display_name => "General Database Options",
