@@ -12,6 +12,8 @@ rs_utils_marker :begin
 node[:db][:provider] = "db_postgres"
 version="#{node[:db_postgres][:version]}"
 
+log "Setting DB provider to #{node[:db][:provider]} and PostgreSQL version to #{version}"
+
 db node[:db][:data_dir] do
   persist true
   provider node[:db][:provider]
