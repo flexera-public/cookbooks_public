@@ -5,27 +5,18 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-# == Request postgresql.conf updated
-#
 rs_utils_marker :begin
 
-raise "Skipping to postgresql update slave sync mode on master server, not selected any valid input enable/disable" if node[:db_postgres][:slave][:sync] == ""
-
-to_enable = (node[:db_postgres][:slave][:sync] == "enable") ? true : false
-
-if node[:db_postgres][:slave][:sync] == "enable"
-  log "Initializing slave to connect to master in sync state..."
+# Run only on master server
+if node[:rightscale][:instance_uuid] == "#{node[:db][:current_master_uuid]}"
+#
+# Set async mode on master server
+#
+  # Enable async state
+  # Setup postgresql.conf
+  log "Initializing slave to connect to master in async state..."
   # updates postgresql.conf for replication
   Chef::Log.info "updates postgresql.conf for replication"
-  RightScale::Database::PostgreSQL::Helper.configure_postgres_conf(node)
-
-  # Reload postgresql to read new updated postgresql.conf
-  Chef::Log.info "Reload postgresql to read new updated postgresql.conf"
-  RightScale::Database::PostgreSQL::Helper.do_query('select pg_reload_conf()')
-
-elsif node[:db_postgres][:slave][:sync] == "disable"
-  # Disable sync state
-  # Setup postgresql.conf
   template "#{node[:db_postgres][:confdir]}/postgresql.conf" do
     source "postgresql.conf.erb"
     owner "postgres"
@@ -48,10 +39,7 @@ elsif node[:db_postgres][:slave][:sync] == "disable"
   RightScale::Database::PostgreSQL::Helper.do_query('select pg_reload_conf()')
 
 else
-  log "WARNING: Skipping to postgresql update slave sync mode on master server, not selected any valid user input enable/disable" do
-    level :warn
-  end
-
+  raise "This is not master server! This script only runs on master: #{node[:db][:current_master_uuid]}"
 end
 
 rs_utils_marker :end

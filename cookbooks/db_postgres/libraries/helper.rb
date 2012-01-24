@@ -69,7 +69,7 @@ module RightScale
               Chef::Log.info info_msg
               result = nil
               if timeout
-                  SystemTimer.timeout_after(timeout) do
+                SystemTimer.timeout_after(timeout) do
                   conn = PGconn.open("localhost", nil, nil, nil, nil, "postgres", nil)
                   result = conn.exec(query)
                 end
@@ -89,8 +89,8 @@ module RightScale
 
         def self.reconfigure_replication_info(newmaster_host = nil, rep_user = nil, rep_pass = nil, app_name = nil)
           File.open("/var/lib/pgsql/9.1/data/recovery.conf", File::CREAT|File::TRUNC|File::RDWR) do |f|
-          f.puts("standby_mode='on'\nprimary_conninfo='host=#{newmaster_host} user=#{rep_user} password=#{rep_pass} application_name=#{app_name}'\ntrigger_file='/var/lib/pgsql/9.1/data/recovery.trigger'")
-          `chown postgres:postgres /var/lib/pgsql/9.1/data/recovery.conf`
+            f.puts("standby_mode='on'\nprimary_conninfo='host=#{newmaster_host} user=#{rep_user} password=#{rep_pass} application_name=#{app_name}'\ntrigger_file='/var/lib/pgsql/9.1/data/recovery.trigger'")
+            `chown postgres:postgres /var/lib/pgsql/9.1/data/recovery.conf`
           end
           return $? == 0
         end

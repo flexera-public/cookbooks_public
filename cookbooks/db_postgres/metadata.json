@@ -7,29 +7,16 @@
   "conflicting": {
   },
   "recipes": {
-    "db_postgres::do_update_slave_sync": "Runs the client 'db_postgres::do_update_slave_sync' recipe to setup master config for replication mode",
-    "db_postgres::default": "Runs the client 'db::install_client' recipes."
+    "db_postgres::do_show_slave_sync_mode": "Show the status of slave syncing state",
+    "db_postgres::do_set_slave_async_mode": "Setup master async mode for replication",
+    "db_postgres::default": "Runs the client 'db::install_client' recipes.",
+    "db_postgres::do_set_slave_sync_mode": "Setup master sync mode for replication"
   },
   "long_description": "= RightScale Database Manager for PostgreSQL (Beta)\n\n== DESCRIPTION:\n\nProvides the PostgreSQL implementation of the 'db' resource to install and\nmanage PostgreSQL database stand-alone servers and clients.\n\n\n== DETAILS\n\nThe 'db' implementation is defined by a Lightweight Provider, which can be\nfound in the providers/default.rb file.\n\nThe majority of the functionality of the PostgreSQL provider is encapsulated\nin the premium rightscale_tools gem, however, there are currently a handful\nof recipes that can be used without it. See 'Public Recipes' in the USAGE\nsection below.\n\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage\n\n* Tested on CentOS 5.6 RightImage\n\n* Supports PostgreSQL 9.1\n\n* Needs RightScale Premium ServerTemplate tools gem installed on system.\n  This gem is only available for paid RightScale customers.\n  Please contact sales@rightscale.com to upgrade you account.\n\n== SETUP:\n\n* Place db::default recipe into your runlist to setup the db resource.  When\n  using a RightScale ServerTemplate, this will also automatically add the\n  common database attributes to your ServerTemplate inputs.\n\n* Also, place the db_postgres::default recipe into your runlist to load the\n  PostgreSQL provider, tuning parameters, as well as other PostgreSQL specific\n  attributes in as inputs.\n\n== USAGE:\n\n=== Basic usage\nOnce setup, use the recipes in the 'db' cookbook to install and manage your\nPostgreSQL database servers and clients.  See the db/README.rdoc for usage\ndetails.\n\n\n=== PostgreSQL Tuning and postgresql.conf and pg_hba.conf\n\nCustom tuning parameters can be applied by overriding the postgres_tuning.rb\nattributes file.  For more information and an example override repository\nplease see:\n\n  https://github.com/ravibhure/cookbooks_public/tree/master/cookbooks/db_postgres\n\n\n=== Public Recipes\nHere is the list of db recipes that can be used without the preimum\nrightscale_tools gem:\n\n* db::default\n* db::install_client\n* db::install_server\n* db::setup_monitoring\n* db::setup_privileges_admin\n* db::setup_privileges_application\n* db::do_appserver_allow\n* db::do_appserver_deny\n* db::request_appserver_allow\n* db::request_appserver_deny\n\nThese recipes are used by the RightScale LAPP ServerTemplate.\n\n\n== KNOWN LIMITATIONS\n\n* none\n  \n",
   "providing": {
   },
   "version": "0.0.1",
   "attributes": {
-    "db_postgres/slave/sync": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-        "enable",
-        "disable"
-      ],
-      "default": "disable",
-      "type": "string",
-      "recipes": [
-        "db_postgres::do_update_slave_sync"
-      ],
-      "display_name": "Slave Sync State",
-      "description": "Enables or Disables Slave sync state on Master, if enable - slave connect with master in 'sync' state, otherwise in 'async' state. To check the state of slave, run query 'select application_name,state,sync_priority,sync_state from pg_stat_replication;' on master."
-    },
     "db_postgres": {
       "required": "optional",
       "calculated": false,

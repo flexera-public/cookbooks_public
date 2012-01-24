@@ -33,7 +33,7 @@ usage = 1 # Dedicated server
 usage = 0.5 if db_postgres[:server_usage] == :shared
 
 # Ohai returns total in KB.  Set GB so X*GB can be used in conditional
-GB=1024*1024
+# GB=1024*1024
 
 mem = memory[:total].to_i/1024
 Chef::Log.info("Auto-tuning PostgreSQL parameters.  Total memory: #{mem}M")
@@ -50,29 +50,29 @@ else
   case ec2[:instance_type]
   # TODO: The settings for t1.micro may be excessively conservative, but we're going to be okay with it for now
   when "t1.micro"
-     if(db_postgres[:server_usage] == :dedicated)
+    if(db_postgres[:server_usage] == :dedicated)
       set_unless[:db_postgres][:tunable][:shared_buffers] = "48M"
     else
       set_unless[:db_postgres][:tunable][:shared_buffers] = "24M"
       set_unless[:db_postgres][:tunable][:max_connections] = "100"
-     end
+    end
   when "m1.small", "c1.medium"
-     if (db_postgres[:server_usage] == :dedicated)
+    if (db_postgres[:server_usage] == :dedicated)
       set_unless[:db_postgres][:tunable][:shared_buffers] = "128M"
-     else
+    else
       set_unless[:db_postgres][:tunable][:shared_buffers] = "64M"
-     end
+    end
   when "m1.large", "c1.xlarge"
-     if (db_postgres[:server_usage] == :dedicated)
+    if (db_postgres[:server_usage] == :dedicated)
       set_unless[:db_postgres][:tunable][:shared_buffers] = "192M"
-     else
+    else
       set_unless[:db_postgres][:tunable][:shared_buffers] = "128M"
-     end
+    end
   when "m1.xlarge"
-     if (db_postgres[:server_usage] == :dedicated)
+    if (db_postgres[:server_usage] == :dedicated)
       set_unless[:db_postgres][:tunable][:shared_buffers] = "265M"
-     else
+    else
       set_unless[:db_postgres][:tunable][:shared_buffers] = "192M"
-     end
+    end
   end
 end
