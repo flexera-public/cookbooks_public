@@ -63,12 +63,12 @@ action :firewall_update do
 end
 
 action :write_backup_info do
-    File_position = `#{node[:db_postgres][:bindir]}/pg_controldata #{node[:db_postgres][:datadir]} | grep "Latest checkpoint location:" | awk '{print $NF}'`
-    masterstatus = Hash.new
-    masterstatus['Master_IP'] = node[:db][:current_master_ip]
-    masterstatus['Master_instance_uuid'] = node[:db][:current_master_uuid]
-    slavestatus ||= Hash.new
-    slavestatus['File_position'] = File_position
+  File_position = `#{node[:db_postgres][:bindir]}/pg_controldata #{node[:db_postgres][:datadir]} | grep "Latest checkpoint location:" | awk '{print $NF}'`
+  masterstatus = Hash.new
+  masterstatus['Master_IP'] = node[:db][:current_master_ip]
+  masterstatus['Master_instance_uuid'] = node[:db][:current_master_uuid]
+  slavestatus ||= Hash.new
+  slavestatus['File_position'] = File_position
   if node[:db][:this_is_master]
     Chef::Log.info "Backing up Master info"
   else
@@ -89,8 +89,6 @@ end
 action :post_restore_cleanup do
   @db = init(new_resource)
   @db.restore_snapshot
-  # TODO: used for replication
-  # @db.post_restore_sanity_check
 end
 
 action :pre_backup_check do
@@ -120,30 +118,27 @@ action :install_client do
 
   # Install PostgreSQL 9.1.1 package(s)
   if node[:platform] == "centos"
-   arch = node[:kernel][:machine]
-   # arch = "x86_64" if arch == "i386"
-   arch = "i386" unless arch == "x86_64"
-  
-  package "libxslt" do
-    action :install
-  end
-
-  packages = node[:db_postgres][:client_packages_install]
-  Chef::Log.info("Packages to install: #{packages.join(",")}")
-  packages.each do |p|
-	  pkg = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "#{p}-9.1.1-1PGDG.rhel5.#{arch}.rpm")
-	  package p do
-	    action :install
-	    source "#{pkg}"
-	    provider Chef::Provider::Package::Rpm 
+    arch = node[:kernel][:machine]
+    # arch = "x86_64" if arch == "i386"
+    arch = "i386" unless arch == "x86_64"
+    
+    package "libxslt" do
+      action :install
     end
-  end
 
+    packages = node[:db_postgres][:client_packages_install]
+    Chef::Log.info("Packages to install: #{packages.join(",")}")
+    packages.each do |p|
+      pkg = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "#{p}-9.1.1-1PGDG.rhel5.#{arch}.rpm")
+      package p do
+        action :install
+        source "#{pkg}"
+        provider Chef::Provider::Package::Rpm 
+      end
+    end
   else
-
     # Currently supports CentOS in future will support others
     raise "ERROR:: Unrecognized distro #{node[:platform]}, exiting "
-    
   end
 
   # == Install PostgreSQL client gem
@@ -158,9 +153,8 @@ action :install_server do
   # PostgreSQL server depends on PostgreSQL client
   action_install_client
 
-   arch = node[:kernel][:machine]
-   #arch = "x86_64" if arch == "i386"
-   arch = "i386" unless arch == "x86_64"
+  arch = node[:kernel][:machine]
+  arch = "i386" unless arch == "x86_64"
  
   package "uuid" do
     action :install
@@ -169,22 +163,13 @@ action :install_server do
   packages = node[:db_postgres][:server_packages_install]
   Chef::Log.info("Packages to install: #{packages.join(",")}")
   packages.each do |p|
-      pkg = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "#{p}-9.1.1-1PGDG.rhel5.#{arch}.rpm")
-      package p do
+    pkg = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "#{p}-9.1.1-1PGDG.rhel5.#{arch}.rpm")
+    package p do
       action :install
       source "#{pkg}"
       provider Chef::Provider::Package::Rpm 
     end
   end
-
-  # Install PostgreSQL 9.1 server rpm
-  #  pgserverrpm = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "postgresql91-server-9.1.1-1PGDG.rhel5.#{arch}.rpm")
-  #  `yum -y localinstall #{pgserverrpm}`
-
-  # Install PostgreSQL contrib rpm
-  #   pgcontribpkg =  ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "postgresql91-contrib-9.1.1-1PGDG.rhel5.#{arch}.rpm")
-  #  `yum -y localinstall #{pgcontribpkg}`
-
 
   service "postgresql-#{node[:db_postgres][:version]}" do
     supports :status => true, :restart => true, :reload => true
@@ -278,66 +263,66 @@ action :grant_replication_slave do
   
   # Enable admin/replication user
   # Check if server is in read_only mode, if found skip this... 
-      res = conn.exec("show transaction_read_only")
-      slavestatus = res.getvalue(0,0)
-      if ( slavestatus == 'off' )
-        Chef::Log.info "Detected Master server."
-        result = conn.exec("SELECT COUNT(*) FROM pg_user WHERE usename='#{node[:db][:replication][:user]}'")
-        userstat = result.getvalue(0,0)
-        if ( userstat == '1' )
-          Chef::Log.info "User #{node[:db][:replication][:user]} already exists, updating user using current inputs"
-          conn.exec("ALTER USER #{node[:db][:replication][:user]} SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN ENCRYPTED PASSWORD '#{node[:db][:replication][:password]}'")
-        else
-          Chef::Log.info "creating replication user #{node[:db][:replication][:user]}"
-          conn.exec("CREATE USER #{node[:db][:replication][:user]} SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN ENCRYPTED PASSWORD '#{node[:db][:replication][:password]}'")
-          # Setup pg_hba.conf for replication user allow
-          RightScale::Database::PostgreSQL::Helper.configure_pg_hba(node)
-          # Reload postgresql to read new updated pg_hba.conf
-          RightScale::Database::PostgreSQL::Helper.do_query('select pg_reload_conf()')
-        end
-      else
-        Chef::Log.info "Do nothing, Detected read_only db or slave mode"
-      end
+  res = conn.exec("show transaction_read_only")
+  slavestatus = res.getvalue(0,0)
+  if ( slavestatus == 'off' )
+    Chef::Log.info "Detected Master server."
+    result = conn.exec("SELECT COUNT(*) FROM pg_user WHERE usename='#{node[:db][:replication][:user]}'")
+    userstat = result.getvalue(0,0)
+    if ( userstat == '1' )
+      Chef::Log.info "User #{node[:db][:replication][:user]} already exists, updating user using current inputs"
+      conn.exec("ALTER USER #{node[:db][:replication][:user]} SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN ENCRYPTED PASSWORD '#{node[:db][:replication][:password]}'")
+    else
+      Chef::Log.info "creating replication user #{node[:db][:replication][:user]}"
+      conn.exec("CREATE USER #{node[:db][:replication][:user]} SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN ENCRYPTED PASSWORD '#{node[:db][:replication][:password]}'")
+      # Setup pg_hba.conf for replication user allow
+      RightScale::Database::PostgreSQL::Helper.configure_pg_hba(node)
+      # Reload postgresql to read new updated pg_hba.conf
+      RightScale::Database::PostgreSQL::Helper.do_query('select pg_reload_conf()')
+    end
+  else
+    Chef::Log.info "Do nothing, Detected read_only db or slave mode"
+  end
   conn.finish
 end
 
 action :enable_replication do
 
-newmaster_host = node[:db][:current_master_ip]
-rep_user = node[:db][:replication][:user]
-rep_pass = node[:db][:replication][:password]
-app_name = node[:rightscale][:instance_uuid]
+  newmaster_host = node[:db][:current_master_ip]
+  rep_user = node[:db][:replication][:user]
+  rep_pass = node[:db][:replication][:password]
+  app_name = node[:rightscale][:instance_uuid]
 
-master_info = RightScale::Database::PostgreSQL::Helper.load_replication_info(node)
+  master_info = RightScale::Database::PostgreSQL::Helper.load_replication_info(node)
 
-# == Set slave state
-#
-log "Setting up slave state..."
-ruby_block "set slave state" do
-  block do
-    node[:db][:this_is_master] = false
+  # == Set slave state
+  #
+  log "Setting up slave state..."
+  ruby_block "set slave state" do
+    block do
+      node[:db][:this_is_master] = false
+    end
   end
-end
 
-# Stoping Postgresql service
-action_stop
+  # Stoping Postgresql service
+  action_stop
 
-# Sync to Master data
-RightScale::Database::PostgreSQL::Helper.rsync_db(newmaster_host, rep_user)
-
-
-# Setup recovery conf
-RightScale::Database::PostgreSQL::Helper.reconfigure_replication_info(newmaster_host, rep_user, rep_pass, app_name)
+  # Sync to Master data
+  RightScale::Database::PostgreSQL::Helper.rsync_db(newmaster_host, rep_user)
 
 
- Chef::Log.info "Wiping existing runtime config files"
-`rm -rf "#{node[:db][:datadir]}/pg_xlog/*"`
+  # Setup recovery conf
+  RightScale::Database::PostgreSQL::Helper.reconfigure_replication_info(newmaster_host, rep_user, rep_pass, app_name)
+
+
+  Chef::Log.info "Wiping existing runtime config files"
+  `rm -rf "#{node[:db][:datadir]}/pg_xlog/*"`
 
 
 
-# ensure_db_started
-# service provider uses the status command to decide if it
-# has to run the start command again.
+  # ensure_db_started
+  # service provider uses the status command to decide if it
+  # has to run the start command again.
   5.times do
       action_start
   end
@@ -367,12 +352,12 @@ action :promote do
   
   begin
   
-  # Promote the slave into the new master  
+    # Promote the slave into the new master  
     Chef::Log.info "Promoting slave.."
     RightScale::Database::PostgreSQL::Helper.write_trigger(node)
     sleep 10
 
-  # Let the new slave loose and thus let him become the new master
+    # Let the new slave loose and thus let him become the new master
     Chef::Log.info  "New master is ReadWrite."
     
   rescue => e
