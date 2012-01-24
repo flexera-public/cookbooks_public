@@ -632,7 +632,7 @@ action :validate_backup do
       current_provider=master_info['DB_Provider']||=node[:db][:provider]
       Chef::Log.info "  Snapshot from #{snap_provider} version #{snap_version}"
       # skip check if restore version check is false
-      if node[:db][:restore_version_check] == "true"
+      if node[:db][:backup][:restore_version_check] == "true"
         raise "FATAL: Attempting to restore #{snap_provider} #{snap_version} snapshot to #{current_provider} #{current_version} with :restore_version_check enabled." unless ( snap_version == current_version ) && ( snap_provider == current_provider )
       else
         Chef::Log.info "  Skipping #{provider} restore version check"
