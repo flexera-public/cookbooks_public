@@ -76,13 +76,6 @@ attribute "db",
   :display_name => "General Database Options",
   :type => "hash"
 
-attribute "db/provider",
-  :display_name => "Database Provider",
-  :description => "Database provider for the Master Database. (Ex: db_mysql)",
-  :default => "db_postgres",
-  :choice => [ "db_mysql", "db_postgres" ],
-  :recipes => [ "db::default" ]
-  
 attribute "db/fqdn",
   :display_name => "Database Master FQDN",
   :description => "The fully qualified domain name for the master database server (e.g., text:db-master.example.com).",

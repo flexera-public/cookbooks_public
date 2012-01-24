@@ -144,21 +144,6 @@
       "display_name": "Slave Backup Cron Minute",
       "description": "Defines the minute of the hour when the backup EBS snapshot will be taken of the Slave database. Backups of the Slave are taken hourly. By default, a minute will be randomly chosen at launch time. Uses standard crontab format (e.g., 30 for minute 30 of the hour)."
     },
-    "db/provider": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-        "db_mysql",
-        "db_postgres"
-      ],
-      "default": "db_postgres",
-      "type": "string",
-      "recipes": [
-        "db::default"
-      ],
-      "display_name": "Database Provider",
-      "description": "Database provider for the Master Database. (Ex: db_mysql)"
-    },
     "db/dump/database_name": {
       "required": "required",
       "calculated": false,
