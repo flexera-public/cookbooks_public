@@ -27,7 +27,6 @@ attribute :data_dir, :kind_of => String, :default => "/mnt/storage"
 attribute :lineage, :kind_of => String
 attribute :force, :kind_of => String, :default => "false"
 attribute :timestamp_override, :kind_of => String, :default => nil
-attribute :version_check, :equal_to => [ true, false ], :default => true
 attribute :from_master, :kind_of => String, :default => nil
 
 # == Privilege options
