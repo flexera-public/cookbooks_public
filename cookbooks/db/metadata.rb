@@ -164,7 +164,12 @@ attribute "db/backup/timestamp_override",
   :display_name => "Database Restore Timestamp Override", 
   :description => "An optional variable to restore a database backup with a specific timestamp rather than the most recent backup in the lineage. You must specify a string that matches the timestamp tag on the volume snapshot. You will need to specify the timestamp that is defined by the snapshot's tag (not the name). For example, if the snapshot's tag is 'rs_backup:timestamp=1303613371' you would specify '1303613371' for this input.",
   :required => false,
-  :recipes => [ "db::do_primary_restore", "db::do_secondary_restore", "do_primary_restore_and_become_master", "do_secondary_restore_and_become_master" ]
+  :recipes => [
+                "db::do_primary_restore",
+                "db::do_secondary_restore",
+                "do_primary_restore_and_become_master",
+                "do_secondary_restore_and_become_master"
+              ]
   
 attribute "db/backup/restore_version_check",
   :display_name => "Backup restore version check", 
@@ -172,7 +177,14 @@ attribute "db/backup/restore_version_check",
   :required => false,
   :choice => [ "true", "false" ],
   :default => "true",
-  :recipes => [ "db::do_primary_restore", "db::do_secondary_restore", "do_primary_restore_and_become_master", "do_secondary_restore_and_become_master" ]
+  :recipes => [ 
+                "db::do_primary_restore",
+                "db::do_secondary_restore",
+                "db::do_primary_init_slave",
+                "db::do_secondary_init_slave",
+                "do_primary_restore_and_become_master",
+                "do_secondary_restore_and_become_master"
+              ]
   
 attribute "db/backup/primary/master/cron/hour",
   :display_name => "Master Backup Cron Hour",

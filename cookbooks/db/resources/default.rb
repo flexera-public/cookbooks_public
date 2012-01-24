@@ -27,6 +27,7 @@ attribute :data_dir, :kind_of => String, :default => "/mnt/storage"
 attribute :lineage, :kind_of => String
 attribute :force, :kind_of => String, :default => "false"
 attribute :timestamp_override, :kind_of => String, :default => nil
+attribute :version_check, :equal_to => [ true, false ], :default => true
 attribute :from_master, :kind_of => String, :default => nil
 
 # == Privilege options
@@ -162,6 +163,19 @@ add_action :write_backup_info
 # in a valid state for a restore.
 #        
 add_action :pre_restore_check
+
+# == Validate backup
+# Verify that the attached volume is valid for restoring the current database.
+#
+# This action is called after a volume created from a snapshot is attached and mounted
+# to an instance and before any database configuration is done.
+#
+# Raise and exception if the snapshot is from a different master, from an incompatible
+# database software version, incompatible architecture, or other provider dependent 
+# conditions.
+#
+# Allow overridding of checks using parameters if needed
+add-action :validate_backup
 
 # == Post-restore Cleanup
 # Used to cleanup VM after restore.

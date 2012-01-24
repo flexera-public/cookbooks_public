@@ -47,6 +47,11 @@ block_device NICKNAME do
   action :primary_restore
 end
 
+log "  Validating restored backup"
+db DATA_DIR do
+  action :validate_backup
+end
+
 log "  Setting state of database to be 'initialized'..."
 db_init_status :set
 
