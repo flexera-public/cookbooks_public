@@ -180,6 +180,7 @@ action :install_server do
   touchfile = ::File.expand_path "~/.postgresql_installed"
   execute "/etc/init.d/postgresql-#{node[:db_postgres][:version]} initdb ; touch #{touchfile}" do
     creates touchfile
+    not_if "test -f #{touchfile}"
   end
   
   # == Configure system for PostgreSQL
@@ -202,12 +203,14 @@ action :install_server do
   # Setup postgresql.conf
   # template_source = "postgresql.conf.erb"
 
+  configfile = ::File.expand_path "~/.postgresql_config.done"
   template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "#{node[:db_postgres][:confdir]}/postgresql.conf"}, "default" => "#{node[:db_postgres][:confdir]}/postgresql.conf") do
     source "postgresql.conf.erb"
     owner "postgres"
     group "postgres"
     mode "0644"
     cookbook 'db_postgres'
+    not_if "test -f #{configfile}"
   end
 
   # Setup pg_hba.conf
@@ -219,6 +222,11 @@ action :install_server do
     group "postgres"
     mode "0644"
     cookbook 'db_postgres'
+    not_if "test -f #{configfile}"
+  end
+
+  execute "touch #{configfile}" do
+    creates configfile
   end
 
   # == Setup PostgreSQL user limits
