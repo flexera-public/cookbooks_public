@@ -14,9 +14,14 @@ node[:app_passenger][:mysql_packages_install]= ["mysql", "mysql-devel","mysqlcli
 case node[:platform]
   when "redhat","redhatenterpriseserver", "centos"
 
-    #Installing packages required for mysql gem installation until db recipe on rhel will be fixed
-    node[:app_passenger][:mysql_packages_install].each do |p|
-      package p
+    db_adapter = node[:app_passenger][:project][:db][:adapter]
+    if db_adapter == "mysql"
+      #Installing packages required for mysql gem installation until db recipe on rhel will be fixed
+      node[:app_passenger][:mysql_packages_install].each do |p|
+        package p
+      end
+    else
+      include_recipe "db_postgres::default"
     end
 
     #Fixing  centos root certificate authority issues

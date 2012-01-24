@@ -73,5 +73,5 @@ if node[:app_passenger][:project][:migration_cmd]!=""
 end
 
 set_unless[:app_passenger][:project][:db][:schema_name]=""
-set_unless[:app_passenger][:project][:db][:adapter]="mysql"
+set_unless[:app_passenger][:project][:db][:adapter]=""
 

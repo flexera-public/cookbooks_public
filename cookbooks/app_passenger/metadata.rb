@@ -141,4 +141,5 @@ attribute "app_passenger/project/db/adapter",
   :display_name => "Database adapter for database.yml ",
   :description => "Enter database adpter wich will be used to connect to the database Default: mysql",
   :default => "mysql",
+  :choice => [ "mysql", "postgresql" ],
   :recipes => ["app_passenger::svn_code_update_and_db_config"]
