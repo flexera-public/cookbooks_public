@@ -175,7 +175,7 @@ add_action :pre_restore_check
 # conditions.
 #
 # Allow overridding of checks using parameters if needed
-add-action :validate_backup
+add_action :validate_backup
 
 # == Post-restore Cleanup
 # Used to cleanup VM after restore.
