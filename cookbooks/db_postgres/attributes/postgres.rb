@@ -32,8 +32,6 @@ when "centos"
   set_unless[:db_postgres][:datadir] = "/var/lib/pgsql/#{node[:db_postgres][:version]}/data"
   set_unless[:db_postgres][:bindir] = "/usr/pgsql-#{node[:db_postgres][:version]}/bin"
   set_unless[:db_postgres][:packages_uninstall] = ""
-  set_unless[:db_postgres][:client_packages_install] = ["postgresql91-libs", "postgresql91", "postgresql91-devel" ] 
-  set_unless[:db_postgres][:server_packages_install] = ["postgresql91-libs", "postgresql91", "postgresql91-devel", "postgresql91-server", "postgresql91-contrib" ]
   set_unless[:db_postgres][:log] = ""
   set_unless[:db_postgres][:log_error] = ""
 else
