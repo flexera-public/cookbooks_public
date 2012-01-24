@@ -18,6 +18,7 @@ db node[:db][:data_dir] do
   action :nothing
 end
 
+platform = node[:platform]
 case platform
 when "centos"
   node[:db_postgres][:client_packages_install] = ["postgresql91-libs", "postgresql91", "postgresql91-devel" ] 
