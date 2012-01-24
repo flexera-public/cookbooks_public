@@ -77,6 +77,10 @@ action :write_backup_info do
     masterstatus['File'] = slavestatus['Relay_Master_Log_File']
     masterstatus['Position'] = slavestatus['Exec_Master_Log_Pos']
   end
+  # Save the MySQL version number as set in the node
+  version=node[:db_mysql][:version]
+  Chef::Log.info "  Saving MySQL version #{version} in master info file"
+  masterstatus['MySQL_Version']=version
   Chef::Log.info "Saving master info...:\n#{masterstatus.to_yaml}"
   ::File.open(::File.join(node[:db][:data_dir], RightScale::Database::MySQL::Helper::SNAPSHOT_POSITION_FILENAME), ::File::CREAT|::File::TRUNC|::File::RDWR) do |out|
     YAML.dump(masterstatus, out)
@@ -560,6 +564,15 @@ action :enable_replication do
       if master_info['Master_instance_uuid']
         if master_info['Master_instance_uuid'] != node[:db][:current_master_uuid]
           raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_uuid']} != current master: #{node[:db][:current_master_uuid]}"
+          # Not all 11H2 snapshots (prior to 5.5 release) saved version.  Assume 5.1 if nil
+          version=master_info['MySQL_Version']||=5.1
+          Chef::Log.info "  Snapshot from MySQL version #{version}"
+          # skip check if restore version check is false
+          if node[:db][:restore_version_check]
+            raise "FATAL: Attempting to restore MySQL #{version} snapshot to MySQL #{node[:db_mysql][:version]}"
+          else
+            Chef::Log.info "  Skipping MySQL restore version check"
+          end
         end
       # 11H1 backup
       elsif master_info['Master_instance_id']

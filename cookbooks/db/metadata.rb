@@ -166,6 +166,14 @@ attribute "db/backup/timestamp_override",
   :required => false,
   :recipes => [ "db::do_primary_restore", "db::do_secondary_restore", "do_primary_restore_and_become_master", "do_secondary_restore_and_become_master" ]
   
+attribute "db/backup/restore_version_check",
+  :display_name => "Backup restore version check", 
+  :description => "A variable to allow restore from a backup performed on a different version of the DB software.  Make sure you fully understand the implications of cross version restoration.  Set to false to skip version checking.",
+  :required => false,
+  :choice => [ "true", "false" ],
+  :default => "true",
+  :recipes => [ "db::do_primary_restore", "db::do_secondary_restore", "do_primary_restore_and_become_master", "do_secondary_restore_and_become_master" ]
+  
 attribute "db/backup/primary/master/cron/hour",
   :display_name => "Master Backup Cron Hour",
   :description => "Defines the hour of the day when the primary backup will be taken of the master database. Backups of the master are taken daily. By default, an hour will be randomly chosen at launch time. Otherwise, the time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'. Uses standard crontab format (e.g., 23 for 11:00 PM).",
