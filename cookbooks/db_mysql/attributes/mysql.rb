@@ -19,7 +19,8 @@ set_unless[:db_mysql][:log_bin] = "/mnt/mysql-binlogs/mysql-bin"
 set_unless[:db_mysql][:tmpdir] = "/tmp"
 set_unless[:db_mysql][:datadir] = "/var/lib/mysql"
 set_unless[:db_mysql][:datadir_relocate] = "/mnt/storage"
-set_unless[:db_mysql][:bind_address] = cloud[:private_ips][0]
+# Always set to support stop/start
+set[:db_mysql][:bind_address] = cloud[:private_ips][0]
 
 set_unless[:db_mysql][:dump][:schema_name] = ""
 set_unless[:db_mysql][:dump][:storage_account_provider] = ""
