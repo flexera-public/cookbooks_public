@@ -198,6 +198,7 @@ action :install_server do
     bash 'disable mysql upstart' do
       only_if { ::File.exists?(ubuntu_mysql_upstart_conf) }
       code <<-eof
+        flags "-ex"
         pkill mysqld
         mv #{ubuntu_mysql_upstart_conf} #{ubuntu_mysql_upstart_conf}.disabled
       eof
@@ -340,6 +341,7 @@ action :install_server do
   # so MySQL can not read them.
   dir=node[:db_mysql][:datadir]
   bash "chown mysql #{dir}" do
+    flags "-ex"
     code <<-EOH
       chown -R mysql:mysql #{dir}
     EOH
@@ -670,6 +672,7 @@ action :restore_from_dump_file do
   bash "Import MySQL dump file: #{dumpfile}" do
     only_if { db_check.empty? }
     user "root"
+    flags "-ex"
     code <<-EOH
       set -e
       if [ ! -f #{dumpfile} ] 

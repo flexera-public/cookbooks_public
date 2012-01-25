@@ -35,6 +35,7 @@ tags_to_remove.each do |each_tag|
   each_tag = each_tag.strip.chomp.chomp(',').gsub(/^\"|\"$/, '')
   log "  Remove #{each_tag}..."
   bash "remove tags" do
+    flags "-ex"
     code <<-EOH
     rs_tag -r '#{each_tag}'
     EOH
