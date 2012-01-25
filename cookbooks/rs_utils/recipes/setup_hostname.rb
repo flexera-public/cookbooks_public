@@ -98,6 +98,7 @@ end
 log 'Setting hostname.'
 if platform?('centos', 'redhat')
   bash "set_hostname" do
+    flags "-ex"
     code <<-EOH
       sed -i "s/HOSTNAME=.*/HOSTNAME=#{hostname}/" /etc/sysconfig/network
       hostname #{hostname}
@@ -105,6 +106,7 @@ if platform?('centos', 'redhat')
   end
 else
   bash "set_hostname" do
+    flags "-ex"
     code <<-EOH
       hostname #{hostname}
     EOH
@@ -115,9 +117,10 @@ end
 if "#{node.rs_utils.domain_name}" != ""
   log 'Running domainname'
   bash "set_domainname" do
+    flags "-ex"
     code <<-EOH
       domainname #{node.rs_utils.domain_name}
-      EOH
+    EOH
   end
 end
 
@@ -142,11 +145,12 @@ end
 # rightlink commandline tools set tag with rs_tag
 log 'Setting hostname tag.'
 bash "set_node_hostname_tag" do
+  flags "-ex"
   code <<-EOH
     type -P rs_tag &>/dev/null && rs_tag --add "node:hostname=#{hostname}"
   EOH
 end
-  
+
 # Show the new host/node information
 ruby_block "show_new_host_info" do
   block do

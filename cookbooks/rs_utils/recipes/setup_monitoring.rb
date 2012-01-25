@@ -11,7 +11,7 @@ rs_utils_marker :begin
 node[:rs_utils][:plugin_list_ary] = node[:rs_utils][:plugin_list].split | node[:rs_utils][:plugin_list_ary]
 node[:rs_utils][:process_list_ary] = node[:rs_utils][:process_list].split | node[:rs_utils][:process_list_ary]
 
-# == Install Attached Packages 
+# == Install Attached Packages
 #
 # Installs collectd packages that are matched to the RightScale monitoring
 # system.  These packages are locked/pinned to avoid accidental update.
@@ -23,7 +23,7 @@ package "librrd4" if node[:platform] == 'ubuntu'
 
 arch = (node[:kernel][:machine] == "x86_64") ? "64" : "i386"
 type = (node[:platform] == 'ubuntu') ? "deb" : "rpm"
-installed_ver = (node[:platform] =~ /redhat|centos/) ? `rpm -q --queryformat %{VERSION} collectd`.strip : `dpkg-query --showformat='${Version}' -W collectd`.strip 
+installed_ver = (node[:platform] =~ /redhat|centos/) ? `rpm -q --queryformat %{VERSION} collectd`.strip : `dpkg-query --showformat='${Version}' -W collectd`.strip
 installed = (installed_ver == "") ? false : true
 log 'Collectd package not installed' unless installed
 log "Checking installed collectd version: installed #{installed_ver}" if installed
@@ -65,6 +65,7 @@ end
 if node[:platform] =~ /redhat|centos/
   lockfile = "/etc/yum.repos.d/Epel.repo"
   bash "Lock package - YUM" do
+    flags "-ex"
     only_if { `grep -c 'exclude=collectd' /etc/yum.repos.d/Epel.repo`.strip == "0" }
     code <<-EOF
       echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> #{lockfile}
@@ -78,7 +79,7 @@ service "collectd" do
 end
 
 
-# == Generate config file 
+# == Generate config file
 #
 # This should be updated to use the default config file installed
 # with the package.  The default configs should be template-ized as needed.
@@ -96,7 +97,7 @@ directory "#{node[:rs_utils][:collectd_plugin_dir]}" do
   recursive true
   action :create
 end
-# == Install a Nightly Crontask to Restart Collectd 
+# == Install a Nightly Crontask to Restart Collectd
 #
 # Add the task to /etc/crontab, at 04:00 localtime.
 cron "collectd" do
@@ -105,7 +106,7 @@ cron "collectd" do
   hour   "4"
 end
 
-# == Monitor Processes from Script Input 
+# == Monitor Processes from Script Input
 #
 # Write the process file into the include directory from template.
 template File.join(node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
@@ -114,7 +115,7 @@ template File.join(node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
   notifies :restart, resources(:service => "collectd")
 end
 
-# Patch collectd init script, so it uses collectdmon.  
+# Patch collectd init script, so it uses collectdmon.
 # Only needed for CentOS, Ubuntu already does this out of the box.
 if node[:platform] =~ /redhat|centos/
   remote_file "/etc/init.d/collectd" do
@@ -126,7 +127,7 @@ end
 
 # == Tag required to enable monitoring
 #
-right_link_tag "rs_monitoring:state=active" 
+right_link_tag "rs_monitoring:state=active"
 
 # == Start monitoring
 #
