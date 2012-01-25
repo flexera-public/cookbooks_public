@@ -96,6 +96,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   # backup.rb removes the file lock created from :backup_lock_take
   log "  Forking background process to complete backup... (see /var/log/messages for results)"
   background_exe = ["/opt/rightscale/sandbox/bin/backup",
+                    "--db-provider #{node[:db][:provider]}",
                     "--backuponly",
                     "--lineage #{node[:db][:backup][:lineage]}",
                     "--nickname #{NICKNAME}",
