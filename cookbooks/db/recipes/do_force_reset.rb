@@ -8,7 +8,7 @@
 # Attempt to return the instance to a pristine / newly launched state.
 # This is for development and test purpose and should not be used on
 # production servers.
- 
+
 rs_utils_marker :begin
 
 raise "Force reset safety not off.  Override db/force_safety to run this recipe" unless node[:db][:force_safety] == "off"
@@ -65,7 +65,6 @@ end
 
 log "  resetting collectd config..."
 db DATA_DIR do
-  database_type ""
   action :setup_monitoring
 end
 

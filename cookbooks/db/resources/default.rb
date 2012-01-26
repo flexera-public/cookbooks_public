@@ -44,9 +44,6 @@ attribute :machine_tag, :kind_of => String, :regex => /^([^:]+):(.+)=.+/
 attribute :dumpfile, :kind_of => String
 attribute :db_name, :kind_of => String
 
-# == Monitoring options
-attribute :database_type, :equal_to => [ "master", "slave", "" ], :default => ""
-
 
 # = General Database Actions
 #
@@ -58,29 +55,29 @@ attribute :database_type, :equal_to => [ "master", "slave", "" ], :default => ""
 #
 # Calls the correct init.d script for the database and platform.
 #
-add_action :stop                  
+add_action :stop
 
 # == Start
 # Start the database service.
 #
 # Calls the correct init.d script for the database and platform.
 #
-add_action :start                 
+add_action :start
 
 # == Status
 # Log the status of the database service.
 #
 # Calls the correct init.d script for the database and platform
-# and send the output to the Chef log and RightScale audit entries. 
+# and send the output to the Chef log and RightScale audit entries.
 #
-add_action :status                
+add_action :status
 
 # == Lock
 # Lock the database so writes will be blocked.
 #
 # This must insure a conistent state while taking a snapshot.
 #
-add_action :lock       
+add_action :lock
 
 # == Unlock
 # Unlock the database so writes can occur.
@@ -92,15 +89,15 @@ add_action :unlock
 
 # == Reset
 # Wipes the current database into a pristine state.
-#  
-# This utility action can be useful in development and test environments.  
-# Not recommended for production use.  
-# 
+#
+# This utility action can be useful in development and test environments.
+# Not recommended for production use.
+#
 # WARNING: this will delete any data in your database!
 #
 add_action :reset
 
-# == Firewall Update 
+# == Firewall Update
 # Updates database firewall rules.
 #
 add_action :firewall_update
@@ -109,19 +106,19 @@ add_action :firewall_update
 # Sends a remote_recipe that requests a database updates it's firewall rules.
 #
 add_action :firewall_update_request
-         
+
 # == Move Data Directory
 # Relocate the database data directory
 #
-# Moves the data directory from the default install path to the path specified 
-# in name attribute or data_dir attribute of the resource.  This is used for 
-# relocating the data directory to a block device that provides snapshot 
+# Moves the data directory from the default install path to the path specified
+# in name attribute or data_dir attribute of the resource.  This is used for
+# relocating the data directory to a block device that provides snapshot
 # functionality.
 #
-# This action should also setup a symlink from the old path to the new 
+# This action should also setup a symlink from the old path to the new
 # location.
 #
-add_action :move_data_dir      
+add_action :move_data_dir
 
 
 # == Generate dump file
@@ -139,51 +136,51 @@ add_action :restore_from_dump_file
 # This action should raise an exception if the database is not
 # in a valid state for a backup.
 #
-add_action :pre_backup_check 
+add_action :pre_backup_check
 
 # == Post-backup Cleanup
 # Used to cleanup VM after backup.
 #
 # This action is called after the backup has completed.  Can be used to cleanup
-# any temporary files created from the :pre_backup_check action. 
+# any temporary files created from the :pre_backup_check action.
 #
 add_action :post_backup_cleanup
 
 # == Write Backup Info
 # TODO
 add_action :write_backup_info
- 
+
 # == Pre-restore Check
 # Verify the database is in a good state before preforming a restore.
 #
-# This action is called before a restore is performed. It should be used to 
-# verify that the system is in a correct state for restoring and should 
+# This action is called before a restore is performed. It should be used to
+# verify that the system is in a correct state for restoring and should
 # preform any other steps necessary before a new block_device is attached
 # and the database is stopped for a restore.
 #
 # This action should raise an exception if the database is not
 # in a valid state for a restore.
-#        
+#
 add_action :pre_restore_check
 
 # == Post-restore Cleanup
 # Used to cleanup VM after restore.
 #
-# This action is called after the block_device restore has completed and  
+# This action is called after the block_device restore has completed and
 # before the database is started.
-#  
+#
 # Used to link the database to the files in the newly restored data_dir.
-# Can also be used to perform other steps necessary to cleanup after a 
+# Can also be used to perform other steps necessary to cleanup after a
 # restore.
-#  
+#
 add_action :post_restore_cleanup
 
 # == Set Privileges
 # Set database user privileges.
 #
-# Use the privilage attributes of this resource to setup 'administrator' or 
+# Use the privilage attributes of this resource to setup 'administrator' or
 # 'user' privilages to the given username with the given password.
-# 
+#
 add_action :set_privileges
 
 # == Install Client
@@ -192,11 +189,11 @@ add_action :set_privileges
 # Use to install the client on any system that needs to connect to the server.
 # Also should install language binding packages For example, ruby client gem
 # java client jar, php client modules, etc
-# 
+#
 add_action :install_client
 
 # == Install Server
-# Installs database server 
+# Installs database server
 #
 add_action :install_server
 

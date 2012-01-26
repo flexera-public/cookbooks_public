@@ -14,7 +14,6 @@ include_recipe "db::do_primary_restore"
 db_register_master
 
 db DATA_DIR do
-  database_type "master"
   action :setup_monitoring
 end
 

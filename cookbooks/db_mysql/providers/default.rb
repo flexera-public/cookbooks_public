@@ -329,7 +329,11 @@ end
 
 action :setup_monitoring do
 
-  db_type = new_resource.database_type
+  if node[:db][:init_status] == "initialized"
+    db_type = ( node[:db][:this_is_master] == true ? "master" : "slave" )
+  else
+    db_type = "uninitialized"
+  end
 
   service "collectd" do
     action :nothing

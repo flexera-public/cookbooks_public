@@ -40,7 +40,6 @@ db_register_master
 
 log "  Setting up monitoring for master..."
 db DATA_DIR do
-  database_type "master"
   action :setup_monitoring
 end
 

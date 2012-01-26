@@ -33,9 +33,9 @@ db DATA_DIR do
 end
 
 # == Schedule backups on slave
-# This should be done before calling db::do_lookup_master 
-# changes current_master from old to new. 
-# 
+# This should be done before calling db::do_lookup_master
+# changes current_master from old to new.
+#
 remote_recipe "enable slave backups on oldmaster" do
   recipe "db::do_primary_backup_schedule_enable"
   recipients_tags "rs_dbrepl:master_instance_uuid=#{node[:db][:current_master_uuid]}"
@@ -59,7 +59,6 @@ db_register_master
 
 # == Setup collected to monitor for a master db
 db DATA_DIR do
-  database_type "master"
   action :setup_monitoring
 end
 

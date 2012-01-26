@@ -22,7 +22,7 @@ r = rs_utils_server_collection "master_servers" do
 end
 r.run_action(:load)
 
-# Finds the current master and sets the node attribs for 
+# Finds the current master and sets the node attribs for
 #   node[:db][:current_master_uuid]
 #   node[:db][:current_master_ip]
 #   node[:db][:this_is_master]
@@ -73,14 +73,13 @@ r = ruby_block "find current master" do
 end
 r.run_action(:create)
 
-raise "No master DB found" unless node[:db][:current_master_ip] && node[:db][:current_master_uuid] 
+raise "No master DB found" unless node[:db][:current_master_ip] && node[:db][:current_master_uuid]
 
 include_recipe "db::request_master_allow"
 
 include_recipe "db::do_secondary_restore"
 
 db DATA_DIR do
-  database_type "slave"
   action :setup_monitoring
 end
 
