@@ -363,7 +363,7 @@ action :setup_monitoring do
     backup false
     cookbook 'db_mysql'
     variables({
-      :replication_type_entry => (node[:db_mysql][:master_slave_mode] =~ /^(master|slave)$/) ? "#{db_type.capitalize}Stats true" : ""
+      :replication_type_entry => (node[:db_mysql][:master_slave_mode] =~ /^(master|slave)$/) ? "#{node[:db_mysql][:master_slave_mode].capitalize}Stats true" : ""
     })
     notifies :restart, resources(:service => "collectd")
   end
