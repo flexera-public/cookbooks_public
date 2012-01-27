@@ -329,10 +329,13 @@ end
 
 action :setup_monitoring do
 
-  if node[:db][:init_status] == "initialized"
-    db_type = ( node[:db][:this_is_master] == true ? "master" : "slave" )
-  else
-    db_type = "uninitialized"
+  ruby_block "evaluate db type" do
+    block do
+      node[:db_mysql][:master_slave_mode] = ""
+      if node[:db][:init_status] == "initialized"
+        node[:db_mysql][:master_slave_mode] = ( node[:db][:this_is_master] == true ? "master" : "slave" )
+      end
+    end
   end
 
   service "collectd" do
@@ -360,7 +363,7 @@ action :setup_monitoring do
     backup false
     cookbook 'db_mysql'
     variables({
-      :replication_type_entry => (db_type == "master" or db_type == "slave") ? "#{db_type.capitalize}Stats true" : ""
+      :replication_type_entry => (node[:db_mysql][:master_slave_mode] =~ /^(master|slave)$/) ? "#{db_type.capitalize}Stats true" : ""
     })
     notifies :restart, resources(:service => "collectd")
   end
