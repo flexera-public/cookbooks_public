@@ -7,11 +7,13 @@
 
 rs_utils_marker :begin
 
-VHOST_NAMES = node[:lb][:vhost_names]
+class Chef::Recipe
+  include RightScale::LB::Helper
+end
 
-VHOST_NAMES.gsub(/\s+/, "").split(",").each do | each_vhost |
+vhosts(node[:lb][:vhost_names]).each do | vhost_name |
   sys_firewall "Close this appserver's ports to all loadbalancers" do
-    machine_tag "loadbalancer:#{each_vhost}=lb"
+    machine_tag "loadbalancer:#{vhost_name}=lb"
     port node[:app][:port]
     enable false
     action :update
