@@ -104,6 +104,27 @@ action :pre_restore_check do
 end
 
 action :post_restore_cleanup do
+  # Performs checks for snapshot compatibility with current server
+  ruby_block "validate_backup" do
+    block do
+      master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
+      # Check version matches
+      # Not all 11H2 snapshots (prior to 5.5 release) saved provider or version.  
+      # Assume MySQL 5.1 if nil
+      snap_version=master_info['DB_Version']||='5.1'
+      snap_provider=master_info['DB_Provider']||='db_mysql'
+      current_version= node[:db_mysql][:version]
+      current_provider=master_info['DB_Provider']||=node[:db][:provider]
+      Chef::Log.info "  Snapshot from #{snap_provider} version #{snap_version}"
+      # skip check if restore version check is false
+      if node[:db][:backup][:restore_version_check] == "true"
+        raise "FATAL: Attempting to restore #{snap_provider} #{snap_version} snapshot to #{current_provider} #{current_version} with :restore_version_check enabled." unless ( snap_version == current_version ) && ( snap_provider == current_provider )
+      else
+        Chef::Log.info "  Skipping #{provider} restore version check"
+      end
+    end
+  end
+
   @db = init(new_resource)
   @db.symlink_datadir("/var/lib/mysql", node[:db][:data_dir])
   @db.post_restore_cleanup
@@ -617,29 +638,6 @@ action :enable_replication do
       :server_id => mycnf_uuid
     )
     cookbook 'db_mysql'
-  end
-end
-
-action :validate_backup do
-  # Performs checks for snapshot compatibility with current server
-  ruby_block "validate_backup" do
-    block do
-      master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
-      # Check version matches
-      # Not all 11H2 snapshots (prior to 5.5 release) saved provider or version.  
-      # Assume MySQL 5.1 if nil
-      snap_version=master_info['DB_Version']||='5.1'
-      snap_provider=master_info['DB_Provider']||='db_mysql'
-      current_version= node[:db_mysql][:version]
-      current_provider=master_info['DB_Provider']||=node[:db][:provider]
-      Chef::Log.info "  Snapshot from #{snap_provider} version #{snap_version}"
-      # skip check if restore version check is false
-      if node[:db][:backup][:restore_version_check] == "true"
-        raise "FATAL: Attempting to restore #{snap_provider} #{snap_version} snapshot to #{current_provider} #{current_version} with :restore_version_check enabled." unless ( snap_version == current_version ) && ( snap_provider == current_provider )
-      else
-        Chef::Log.info "  Skipping #{provider} restore version check"
-      end
-    end
   end
 end
 
