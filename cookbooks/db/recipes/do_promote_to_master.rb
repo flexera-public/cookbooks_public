@@ -14,10 +14,11 @@ db_state_assert :slave
 
 # == Open port for slave replication by old-master
 #
-db node[:db][:data_dir] do
+sys_firewall "Open port to the old master which is becoming a slave" do
+  port node[:db_postgres][:port].to_i
   enable true
   ip_addr node[:db][:current_master_ip]
-  action :firewall_update_request
+  action :update
 end
 
 # == Promote to master
