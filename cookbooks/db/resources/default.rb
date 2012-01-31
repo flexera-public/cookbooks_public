@@ -163,21 +163,12 @@ add_action :write_backup_info
 #        
 add_action :pre_restore_check
 
-# == Validate backup
-# Verify that the attached volume is valid for restoring the current database.
-#
-# This action is called after a volume created from a snapshot is attached and mounted
-# to an instance and before any database configuration is done.
+# == Post-restore Cleanup Validation
+# Used to validate backup and cleanup VM after restore.
 #
 # Raise and exception if the snapshot is from a different master, from an incompatible
 # database software version, incompatible architecture, or other provider dependent 
 # conditions.
-#
-# Allow overridding of checks using parameters if needed
-add_action :validate_backup
-
-# == Post-restore Cleanup
-# Used to cleanup VM after restore.
 #
 # This action is called after the block_device restore has completed and  
 # before the database is started.
