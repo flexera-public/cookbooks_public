@@ -79,18 +79,11 @@ action :write_backup_info do
   end
 
   # Save the db provider (MySQL) and version number as set in the node
-#TODO there should be a genric db info file and a provider specific one
   version=node[:db_mysql][:version]
   provider=node[:db][:provider]
   Chef::Log.info "  Saving #{provider} version #{version} in master info file"
   masterstatus['DB_Provider']=provider
   masterstatus['DB_Version']=version
-
-  # TODO Save ther information that may prove useful and/or information required 
-  # by other providers to keep format/contents consistent
-  # TODO - postgres needs to check arch
-  # Platform/kernel/version
-  # Cloud created on (cross cloud debugging information)
 
   Chef::Log.info "Saving master info...:\n#{masterstatus.to_yaml}"
   ::File.open(::File.join(node[:db][:data_dir], RightScale::Database::MySQL::Helper::SNAPSHOT_POSITION_FILENAME), ::File::CREAT|::File::TRUNC|::File::RDWR) do |out|

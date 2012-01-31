@@ -147,7 +147,12 @@ add_action :pre_backup_check
 add_action :post_backup_cleanup
 
 # == Write Backup Info
-# TODO
+# Write backup information needed during restore.
+#
+# This action is called before a backup is done.  
+# It contains information about the current DB setup (dbprovider, version, replication
+# details, etc.) that is used during restore to verify the backup and initialize
+# the DB. The file is written to the DB data block device and is part of the backup.
 add_action :write_backup_info
  
 # == Pre-restore Check
@@ -215,11 +220,16 @@ add_action :setup_monitoring
 add_action :enable_replication
 
 # == Promote
-# TODO
+# Promotes a slave server to the master server.
+#
+# This is called when a new master is needed.  If the prior master is still
+# functioning it is configured as a slave.
 add_action :promote
 
 # == Grant Replication Slave
-# TODO
+# Set database replication priviliges for a slave.
+#
+# This is called when a slave is initialized.
 add_action :grant_replication_slave
 
 actions @action_list
