@@ -508,11 +508,7 @@ action :promote do
 
   Chef::Log.info "Stopping slave and misconfiguring master"
   RightScale::Database::MySQL::Helper.do_query(node, "STOP SLAVE")
-# http://www.gossamer-threads.com/lists/linuxha/dev/72747
-# http://dev.mysql.com/doc/refman/5.1/en/change-master-to.html
-# MySQL 5.5. (Bug #28796)
-# Setting MASTER_HOST to an emaplty string does not work in MySQL 5.5. see links for additional information.
-#  RightScale::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST=''")
+  RightScale::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST='MASTER misconfigured on purpose during slave promotion'")
   action_grant_replication_slave
   RightScale::Database::MySQL::Helper.do_query(node, 'SET GLOBAL READ_ONLY=0')
 
