@@ -280,13 +280,7 @@ action :install_server do
 
   # == Setup MySQL user limits
   #
-  # Set the mysql and root users max open files to a really large number.
-  # 1/3 of the overall system file max should be large enough.  The percentage can be
-  # adjusted if necessary.
-  #
-#TODO put this into the attribute tuning file
-  mysql_file_ulimit = `sysctl -n fs.file-max`.to_i/33
-
+  mysql_file_ulimit = node[:db_mysql][:file_ulimit]
   template "/etc/security/limits.d/mysql.limits.conf" do
     source "mysql.limits.conf.erb"
     variables({

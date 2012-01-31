@@ -46,3 +46,8 @@ else
   raise "Unsupported platform #{platform}"
 end
 
+# System tuning parameters
+# Set the mysql and root users max open files to a really large number.
+# 1/3 of the overall system file max should be large enough.  The percentage can be
+# adjusted if necessary.
+set_unless[:db_mysql][:file_ulimit] = `sysctl -n fs.file-max`.to_i/33
