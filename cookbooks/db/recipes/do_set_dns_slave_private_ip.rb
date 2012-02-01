@@ -17,8 +17,8 @@ raise "ERROR: Server is a master" if node[:db][:this_is_master]
 log 'WARN: Slave database is not initialized!' if node[:db][:init_status] == :uninitialized
 
 private_ip = node[:cloud][:private_ips][0]
-log "   Setting slave #{[:db][:dns][:slave][:fqdn]} to #{private_ip}"
-sys_dns "Slave DNS" do
+log "   Setting slave #{node[:db][:dns][:slave][:fqdn]} to #{private_ip}"
+sys_dns "default" do
   id node[:db][:dns][:slave][:id]
   address private_ip
   action :set_private
