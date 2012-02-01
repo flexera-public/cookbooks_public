@@ -8,13 +8,10 @@
 rs_utils_marker :begin
 
 sys_dns "Setting Host" do
-  provider "sys_dns_#{node[:sys_dns][:choice]}"
-
   id node[:sys_dns][:id]
-  user node[:sys_dns][:user]
-  password node[:sys_dns][:password]
   address node[:cloud][:private_ips][0]
 
   action :set_private
 end
+
 rs_utils_marker :end

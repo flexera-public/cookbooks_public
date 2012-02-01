@@ -60,6 +60,7 @@ recipe "db::do_secondary_restore_and_become_master", "Restores the database from
 recipe "db::do_primary_init_slave", "Initializes the slave server from the primary backup location."
 recipe "db::do_secondary_init_slave", "Initializes the slave server from the secondary backup location."
 recipe "db::do_init_slave_at_boot", "Initializes the slave server at boot."
+recipe "db::do_set_dns_slave_private_ip", "Sets the slave DNS record to the private IP."
 recipe "db::do_promote_to_master", "Promotes a replicating slave to master."
 recipe "db::setup_replication_privileges", "Sets up privileges for replication slave servers."
 recipe "db::request_master_allow", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to allow connections from the server's private IP address. This script should be run on a slave before it sets up replication."
@@ -75,46 +76,69 @@ attribute "db",
   :display_name => "General Database Options",
   :type => "hash"
   
-attribute "db/fqdn",
+attribute "db/dns/master/fqdn",
   :display_name => "Database Master FQDN",
   :description => "The fully qualified domain name for the master database server (e.g., text:db-master.example.com).",
-  :required => true,
+  :required => "required",
   :recipes => [ "db::default" ]
+
+attribute "db/dns/master/id",
+  :display_name => "Database Master DNS Record ID",
+  :description => "The unique identifier that is associated with the DNS A record of the master server.  The unique identifier is assigned by the DNS provider when you create a dynamic DNS A record. This ID is used to update the associated A record with the private IP address of the master server when this recipe is run.  If you are using DNS Made Easy as your DNS provider, a 7-digit number is used (e.g., 4403234).",
+  :required => "required",
+  :recipes => [ 
+                "db::do_primary_restore_and_become_master",
+                "db::do_secondary_restore_and_become_master",
+                "db::do_init_and_become_master",
+                "db::do_promote_to_master"
+                ]
+
+attribute "db/dns/slave/fqdn",
+  :display_name => "Database Slave FQDN",
+  :description => "The fully qualified domain name for a slave database server (e.g., text:db-slave.example.com).",
+  :required => "optional",
+  :recipes => [ "db::do_set_dns_slave_private_ip" ]
+
+attribute "db/dns/slave/id",
+  :display_name => "Database Slave DNS Record ID",
+  :description => "The unique identifier that is associated with the DNS A record of a slave server.  The unique identifier is assigned by the DNS provider when you create a dynamic DNS A record. This ID is used to update the associated A record with the private IP address of a slave server when this recipe is run.  If you are using DNS Made Easy as your DNS provider, a 7-digit number is used (e.g., 4403234).",
+  :required => "required",
+  :recipes => [ "db::do_set_dns_slave_private_ip" ]
 
 attribute "db/admin/user",
   :display_name => "Database Admin Username",
   :description => "The username of the database user with 'admin' privileges (e.g., cred:DBADMIN_USER).",
-  :required => true,
+  :required => "required",
   :recipes => [ "db::install_server", "db::setup_privileges_admin" ]
 
 attribute "db/admin/password",
   :display_name => "Database Admin Password",
   :description => "The password of the database user with 'admin' privileges (e.g., cred:DBADMIN_PASSWORD).",
-  :required => true,
+  :required => "required",
   :recipes => [ "db::install_server", "db::setup_privileges_admin" ]
 
 attribute "db/replication/user",
   :display_name => "Database Replication Username",
   :description => "The username of the database user that has 'replication' privileges (e.g., cred:DBREPLICATION_USER).",
-  :required => true,
+  :required => "required",
   :recipes => [ "db::setup_replication_privileges", "db::do_primary_restore_and_become_master", "db::do_secondary_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master", "db::do_primary_init_slave", "db::do_secondary_init_slave", "db::do_init_slave_at_boot" ]
 
 attribute "db/replication/password",
   :display_name => "Database Replication Password",
   :description => "The password of the database user that has 'replication' privileges (e.g., cred:DBREPLICATION_PASSWORD).",
-  :required => true,
+  :required => "required",
   :recipes => [ "db::setup_replication_privileges", "db::do_primary_restore_and_become_master", "db::do_secondary_restore_and_become_master", "db::do_init_and_become_master", "db::do_promote_to_master", "db::do_primary_init_slave", "db::do_secondary_init_slave", "db::do_init_slave_at_boot" ]
 
 attribute "db/application/user",
   :display_name => "Database Application Username",
   :description => "The username of the database user that has 'user' privileges (e.g., cred:DBAPPLICATION_USER).",
-  :required => true,
+  :required => "required",
   :recipes => [ "db::default", "db::setup_privileges_application" ]
 
 attribute "db/application/password",
   :display_name => "Database Application Password",
   :description => "The password of the database user that has 'user' privileges (e.g., cred:DBAPPLICATION_PASSWORD).",
-  :required => true,
+  :required => "required",
   :recipes => [ "db::default", "db::setup_privileges_application" ]
   
 attribute "db/init_slave_at_boot",
@@ -130,7 +154,7 @@ attribute "db/init_slave_at_boot",
 attribute "db/backup/lineage",
   :display_name => "Database Backup Lineage",
   :description => "The prefix that will be used to name/locate the backup of a particular database. Note: For servers running on Rackspace, this value also indicates the Cloud Files container to use for storing primary backups. If a Cloud Files container with this name does not already exist, the setup process creates one.",
-  :required => true,
+  :required => "required",
   :recipes => [
     "db::do_primary_init_slave",
     "db::do_secondary_init_slave",
@@ -151,7 +175,7 @@ attribute "db/backup/lineage",
 attribute "db/backup/lineage_override",
   :display_name => "Database Backup Lineage Override",
   :description => "If defined, this will override the input defined for 'Backup Lineage' (db/backup/lineage) so that you can restore the database from another backup that has as different lineage name. The most recently completed snapshots will be used unless a specific timestamp value is specified for 'Restore Timestamp Override' (db/backup/timestamp_override). Although this input allows you to restore from a different set of snapshots, subsequent backups will use 'Backup Lineage' to name the snapshots. Be sure to remove the 'Backup Lineage Override' input after the new master is operational.",
-  :required => false,
+  :required => "optional",
   :recipes => [
     "db::do_primary_init_slave",
     "db::do_secondary_init_slave",
@@ -163,31 +187,31 @@ attribute "db/backup/lineage_override",
 attribute "db/backup/timestamp_override",
   :display_name => "Database Restore Timestamp Override",
   :description => "An optional variable to restore a database backup with a specific timestamp rather than the most recent backup in the lineage. You must specify a string that matches the timestamp tag on the volume snapshot. You will need to specify the timestamp that is defined by the snapshot's tag (not the name). For example, if the snapshot's tag is 'rs_backup:timestamp=1303613371' you would specify '1303613371' for this input.",
-  :required => false,
+  :required => "optional",
   :recipes => [ "db::do_primary_restore", "db::do_secondary_restore", "do_primary_restore_and_become_master", "do_secondary_restore_and_become_master" ]
   
 attribute "db/backup/primary/master/cron/hour",
   :display_name => "Master Backup Cron Hour",
   :description => "Defines the hour of the day when the primary backup will be taken of the master database. Backups of the master are taken daily. By default, an hour will be randomly chosen at launch time. Otherwise, the time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'. Uses standard crontab format (e.g., 23 for 11:00 PM).",
-  :required => false,
+  :required => "optional",
   :recipes => [ 'db::do_primary_backup_schedule_enable' ]
 
 attribute "db/backup/primary/slave/cron/hour",
   :display_name => "Slave Backup Cron Hour",
   :description => "By default, primary backups of the slave database are taken hourly. However, if you specify a value in this input (e.g., 23 for 11:00 PM), then backups will occur once per day at the specified hour, rather than hourly.",
-  :required => false,
+  :required => "optional",
   :recipes => [ 'db::do_primary_backup_schedule_enable' ]
 
 attribute "db/backup/primary/master/cron/minute",
   :display_name => "Master Backup Cron Minute",
   :description => "Defines the minute of the hour when the backup will be taken of the master database. Backups of the master are taken daily. By default, a minute will be randomly chosen at launch time. Otherwise, the time of the backup is defined by 'Master Backup Cron Hour' and 'Master Backup Cron Minute'. Uses standard crontab format (e.g., 30 for minute 30 of the hour).",
-  :required => false,
+  :required => "optional",
   :recipes => [ 'db::do_primary_backup_schedule_enable' ]
 
 attribute "db/backup/primary/slave/cron/minute",
   :display_name => "Slave Backup Cron Minute",
   :description => "Defines the minute of the hour when the backup EBS snapshot will be taken of the Slave database. Backups of the Slave are taken hourly. By default, a minute will be randomly chosen at launch time. Uses standard crontab format (e.g., 30 for minute 30 of the hour).",
-  :required => false,
+  :required => "optional",
   :recipes => [ 'db::do_primary_backup_schedule_enable' ]
 
 
@@ -241,7 +265,7 @@ attribute "db/terminate_safety",
   :type => "string",
   :choice => ["Override the dropdown and set to \"off\" to really run this recipe"],
   :default => "Override the dropdown and set to \"off\" to really run this recipe",
-  :required => false,
+  :required => "required",
   :recipes => [ "db::do_delete_volumes_and_terminate_server" ]
 
 attribute "db/force_safety",
@@ -250,5 +274,5 @@ attribute "db/force_safety",
   :type => "string",
   :choice => ["Override the dropdown and set to \"off\" to really run this recipe"],
   :default => "Override the dropdown and set to \"off\" to really run this recipe",
-  :required => false,
+  :required => "required",
   :recipes => [ "db::do_force_reset" ]

@@ -32,4 +32,12 @@ remote_file "/opt/rightscale/dns/dnscurl.pl" do
   backup false
 end
 
+sys_dns "default" do
+  provider "sys_dns_#{node[:sys_dns][:choice]}"
+  user node[:sys_dns][:user]
+  password node[:sys_dns][:password]
+  persist true
+  action :nothing
+end
+
 rs_utils_marker :end
