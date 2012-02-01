@@ -17,10 +17,13 @@ define :db_register_master do
   # == Set master DNS
   # Do this first so that DNS can propagate while the recipe runs
   #
-  private_ip node[:cloud][:private_ips][0]
-  log.info ("   Setting master database #{[:db][:dns][:master][:fqdn]} to #{private_ip}"
-  sys_dns "Setting Master DNS" do
+  private_ip = node[:cloud][:private_ips][0]
+  log ("   Setting master database #{node[:db][:dns][:master][:fqdn]} to #{private_ip}")
+  sys_dns "Master DNS" do
+    provider "sys_dns_#{node[:sys_dns][:choice]}"
     id node[:db][:dns][:master][:id]
+    user node[:sys_dns][:user]
+    password node[:sys_dns][:password]
     address private_ip
 
     action :set_private

@@ -14,12 +14,15 @@ rs_utils_marker :begin
 # Raise exception if this server thinks it is a master.
 
 raise "ERROR: Server is a master" if node[:db][:this_is_master]
-log.warn 'WARN: Slave database is not initialized!' if node[:db][:init_status] == :uninitialized
+log 'WARN: Slave database is not initialized!' if node[:db][:init_status] == :uninitialized
 
-private_ip node[:cloud][:private_ips][0]
-log.info ("   Setting slave #{[:db][:dns][:slave][:fqdn]} to #{private_ip}"
-sys_dns "Setting Slave DNS" do
+private_ip = node[:cloud][:private_ips][0]
+log ("   Setting slave #{[:db][:dns][:slave][:fqdn]} to #{private_ip}")
+sys_dns "Slave DNS" do
+  provider "sys_dns_#{node[:sys_dns][:choice]}"
   id node[:db][:dns][:slave][:id]
+  user node[:sys_dns][:user]
+  password node[:sys_dns][:password]
   address private_ip
 
   action :set_private
