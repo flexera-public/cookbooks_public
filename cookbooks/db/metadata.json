@@ -77,7 +77,7 @@
       "description": "The fully qualified domain name for the master database server (e.g., text:db-master.example.com)."
     },
     "db/terminate_safety": {
-      "required": "required",
+      "required": "optional",
       "calculated": false,
       "choice": [
         "Override the dropdown and set to \"off\" to really run this recipe"
@@ -337,7 +337,7 @@
       "description": "The username of the database user that has 'replication' privileges (e.g., cred:DBREPLICATION_USER)."
     },
     "db/force_safety": {
-      "required": "required",
+      "required": "optional",
       "calculated": false,
       "choice": [
         "Override the dropdown and set to \"off\" to really run this recipe"

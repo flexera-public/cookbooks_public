@@ -265,7 +265,7 @@ attribute "db/terminate_safety",
   :type => "string",
   :choice => ["Override the dropdown and set to \"off\" to really run this recipe"],
   :default => "Override the dropdown and set to \"off\" to really run this recipe",
-  :required => "required",
+  :required => "optional",
   :recipes => [ "db::do_delete_volumes_and_terminate_server" ]
 
 attribute "db/force_safety",
@@ -274,5 +274,5 @@ attribute "db/force_safety",
   :type => "string",
   :choice => ["Override the dropdown and set to \"off\" to really run this recipe"],
   :default => "Override the dropdown and set to \"off\" to really run this recipe",
-  :required => "required",
+  :required => "optional",
   :recipes => [ "db::do_force_reset" ]
