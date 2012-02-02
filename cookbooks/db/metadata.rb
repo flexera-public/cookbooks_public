@@ -21,8 +21,8 @@ recipe "db::setup_monitoring", "Installs the collectd plugin for database monito
 
 # == Common Database Recipes
 #
-recipe  "db::do_primary_backup", "Creates a primary backup of the database using persistent storage in the current cloud.  On Rackspace, LVM backups are uploaded to the specified CloudFiles container.  For all other clouds, volume snapshots (e.g., Amazon EBS or CloudStack volumes) are used."
-recipe  "db::do_primary_restore", "Restores the database from the most recently completed primary backup available in persistent storage of the current cloud."
+recipe "db::do_primary_backup", "Creates a primary backup of the database using persistent storage in the current cloud. On Rackspace, LVM backups are uploaded to the specified Cloud Files container. For all other clouds, volume snapshots (e.g., Amazon EBS or CloudStack volumes) are used."
+recipe "db::do_primary_restore", "Restores the database from the most recently completed primary backup available in persistent storage of the current cloud."
 
 recipe "db::do_primary_backup_schedule_enable", "Enables db::do_primary_backup to be run periodically."
 recipe "db::do_primary_backup_schedule_disable", "Disables db::do_primary_backup from being run periodically."
@@ -54,14 +54,14 @@ recipe "db::request_appserver_deny", "Sends a request to deny connections from t
 
 # == Master/Slave Recipes
 #
-recipe "db::do_init_and_become_master", "Initializes MySQL database. Tag as Master. Set Master DNS. Starts a fresh backup from this master."
-recipe "db::do_primary_restore_and_become_master", "Restore MySQL database. Tag as Master. Set Master DNS. Starts a fresh backup from this master."
-recipe "db::do_secondary_restore_and_become_master", "Restore MySQL database from secondary backup location. Tag as Master. Set Master DNS. Start a fresh backup from this master."
-recipe "db::do_primary_init_slave", "Initialize MySQL Slave from primary backup location"
-recipe "db::do_secondary_init_slave", "Initialize MySQL Slave from secondary backup location"
-recipe "db::do_init_slave_at_boot", "Initialize MySQL Slave at boot."
-recipe "db::do_promote_to_master", "Promote a replicating slave to master."
-recipe "db::setup_replication_privileges", "Set up privileges for MySQL replication slaves."
+recipe "db::do_init_and_become_master", "Initializes database server and tags it as the master. Sets DNS. Starts a fresh backup from this master."
+recipe "db::do_primary_restore_and_become_master", "Restores the database and tags it as the master. Sets DNS. Starts a fresh backup from this master."
+recipe "db::do_secondary_restore_and_become_master", "Restores the database from a secondary backup location and tags it as the master. Sets DNS. Starts a fresh backup from this master."
+recipe "db::do_primary_init_slave", "Initializes the slave server from the primary backup location."
+recipe "db::do_secondary_init_slave", "Initializes the slave server from the secondary backup location."
+recipe "db::do_init_slave_at_boot", "Initializes the slave server at boot."
+recipe "db::do_promote_to_master", "Promotes a replicating slave to master."
+recipe "db::setup_replication_privileges", "Sets up privileges for replication slave servers."
 recipe "db::request_master_allow", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to allow connections from the server's private IP address. This script should be run on a slave before it sets up replication."
 recipe "db::request_master_deny", "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to deny connections from the server's private IP address. This script should be run on a slave when it stops replicating."
 
@@ -150,7 +150,7 @@ attribute "db/backup/lineage",
 
 attribute "db/backup/lineage_override",
   :display_name => "Database Backup Lineage Override",
-  :description => "If defined, it will override the input defined for 'Backup Lineage' (db/backup/lineage) so that you can restore the database from another backup that has as different lineage name. The most recently completed snapshots will be used unless a specific timestamp value is specified for 'Restore Timestamp Override' (db/backup/timestamp_override). Although this input allows you to restore from a different set of snapshots, subsequent backups will use 'Backup Lineage' to name the snapshots. Be sure to remove the 'Backup Lineage Override' input after the new master is operational.",
+  :description => "If defined, this will override the input defined for 'Backup Lineage' (db/backup/lineage) so that you can restore the database from another backup that has as different lineage name. The most recently completed snapshots will be used unless a specific timestamp value is specified for 'Restore Timestamp Override' (db/backup/timestamp_override). Although this input allows you to restore from a different set of snapshots, subsequent backups will use 'Backup Lineage' to name the snapshots. Be sure to remove the 'Backup Lineage Override' input after the new master is operational.",
   :required => false,
   :recipes => [
     "db::do_primary_init_slave",
@@ -161,7 +161,7 @@ attribute "db/backup/lineage_override",
   ]
   
 attribute "db/backup/timestamp_override",
-  :display_name => "Database Restore Timestamp Override", 
+  :display_name => "Database Restore Timestamp Override",
   :description => "An optional variable to restore a database backup with a specific timestamp rather than the most recent backup in the lineage. You must specify a string that matches the timestamp tag on the volume snapshot. You will need to specify the timestamp that is defined by the snapshot's tag (not the name). For example, if the snapshot's tag is 'rs_backup:timestamp=1303613371' you would specify '1303613371' for this input.",
   :required => false,
   :recipes => [ "db::do_primary_restore", "db::do_secondary_restore", "do_primary_restore_and_become_master", "do_secondary_restore_and_become_master" ]
