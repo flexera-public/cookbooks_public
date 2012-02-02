@@ -365,6 +365,17 @@ action :install_server do
 end
 
 action :setup_monitoring do
+
+  ruby_block "evaluate db type" do
+    block do
+      if node[:db][:init_status].to_s == "initialized"
+        node[:db_mysql][:collectd_master_slave_mode] = ( node[:db][:this_is_master] == true ? "Master" : "Slave" ) + "Stats true"
+      else
+        node[:db_mysql][:collectd_master_slave_mode] = ""
+      end
+    end
+  end
+
   service "collectd" do
     action :nothing
   end
@@ -384,12 +395,12 @@ action :setup_monitoring do
     source TMP_FILE
   end
 
-  cookbook_file ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
+  template ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
+    source "collectd-plugin-mysql.conf.erb"
     mode "0644"
     backup false
-    source "collectd-plugin-mysql.conf"
-    notifies :restart, resources(:service => "collectd")
     cookbook 'db_mysql'
+    notifies :restart, resources(:service => "collectd")
   end
 
   # Send warning if not centos/redhat or ubuntu

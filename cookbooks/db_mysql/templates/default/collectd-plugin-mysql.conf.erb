@@ -14,4 +14,5 @@ LoadPlugin mysql
   Host "localhost"
   User "root"
   Password ""
+  <%= node[:db_mysql][:collectd_master_slave_mode] %>
 </Plugin>
