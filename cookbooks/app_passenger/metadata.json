@@ -1,297 +1,297 @@
 {
-  "name": "app_passenger",
-  "description": "Installs/Configures Apache Passenger Rails application server",
-  "long_description": "== DESCRIPTION:\n\n* Installs and configures, apache+passenger application server.\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage\n\n* Tested on CentOS 5.6 RightImage\n* Tested on Ubuntu RightImage\n\n== SETUP:\n\n* Place app_passenger::default recipe into your runlist to setup the application server.  When\n  using a RightScale ServerTemplate, this will also automatically add the\n  common attributes to your ServerTemplate inputs.\n\n== USAGE:\n\n* Template con be combined in two modes:\n  1 For apps with bundler support\n    You have to add \"install_required app gems\" recipe, and \"run_custom_rails_commands\" for migration commands\n  2 For apps without bundler support\n    Y have to add \"install_custom_gems\"  recipe, and \"run_custom_rails_commands\" for migration commands\n  Anyway you can mix these recipes to fit needs of your project\n\n== KNOWN LIMITATIONS\n\n* none\n",
-  "maintainer": "RightScale, Inc.",
-  "maintainer_email": "support@rightscale.com",
-  "license": "All rights reserved",
-  "platforms": {
-  },
   "dependencies": {
-    "rs_utils": ">= 0.0.0",
-    "web_apache": ">= 0.0.0",
-    "repo_git": ">= 0.0.0",
     "logrotate": ">= 0.0.0",
     "app": ">= 0.0.0",
-    "db": ">= 0.0.0"
+    "web_apache": ">= 0.0.0",
+    "repo_git": ">= 0.0.0",
+    "db": ">= 0.0.0",
+    "rs_utils": ">= 0.0.0"
   },
-  "recommendations": {
-  },
-  "suggestions": {
-  },
-  "conflicting": {
-  },
-  "providing": {
-  },
-  "replacing": {
-  },
+  "name": "app_passenger",
+  "maintainer_email": "support@rightscale.com",
   "attributes": {
-    "app_passenger/apache/port": {
-      "display_name": "Apache application Port",
-      "description": "Apache port number for your application Ex: 8000",
-      "default": "8000",
-      "recipes": [
-        "app_passenger::setup_apache_passenger_vhost"
-      ],
+    "app_passenger/apache/maintenance_page": {
+      "required": "optional",
+      "calculated": false,
       "choice": [
 
       ],
-      "calculated": false,
+      "default": "",
       "type": "string",
-      "required": "optional"
+      "recipes": [
+        "app_passenger::setup_apache_passenger_vhost"
+      ],
+      "display_name": "Apache maintenance page",
+      "description": "Maintenance URI to show if the page exists (based on document root). Default: [document root]/system/maintenance.html.  If this file exists, your site will show a &quot;Under Maintenance&quot; page and your site will not be available."
+    },
+    "app_passenger/project/custom_cmd": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "app_passenger::run_custom_rails_commands"
+      ],
+      "display_name": "Custom rails/bin/ command",
+      "description": "A comma separated list of optional commands which will be executed in app directory. Ex: rake gems:install, rake db:create, rake get_common"
+    },
+    "app_passenger/repository/svn/username": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "app_passenger::svn_code_update_and_db_config"
+      ],
+      "display_name": "SVN repository username",
+      "description": "The SVN username that is used to checkout the application code from SVN repository."
+    },
+    "app_passenger/project/migration_cmd": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "app_passenger::svn_code_update_and_db_config"
+      ],
+      "display_name": "Migration command",
+      "description": "Rake command used to initiate migration Ex:rake db:bootstrap If you set value to ignore, migration process would not start."
+    },
+    "app_passenger/project/db/schema_name": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "app_passenger::svn_code_update_and_db_config"
+      ],
+      "display_name": "Database schema name",
+      "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up. This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema"
+    },
+    "app_passenger/project/gem_list": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "app_passenger::install_custom_gems"
+      ],
+      "display_name": "Custom gems list",
+      "description": "A space-separated list of optional gem(s). Format:  ruby-Gem1:version  ruby-Gem2:version ruby-Gem3 "
+    },
+    "app_passenger/repository/git/credentials": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "app_passenger::svn_code_update_and_db_config"
+      ],
+      "display_name": "Git Repository Credentials",
+      "description": "The private SSH key of the git repository."
     },
     "app_passenger/spawn_method": {
-      "display_name": "Rails spawn method",
-      "description": "The  spawn method that Phusion Passenger will use.  The choices are: smart, smart-lv2, and conservative.  Ex: conservative",
+      "required": "optional",
+      "calculated": false,
       "choice": [
         "conservative",
         "smart-lv2",
         "smart"
       ],
       "default": "conservative",
-      "recipes": [
-        "app_passenger::setup_apache_passenger_vhost"
-      ],
-      "calculated": false,
       "type": "string",
-      "required": "optional"
-    },
-    "app_passenger/apache/maintenance_page": {
-      "display_name": "Apache maintenance page",
-      "description": "Maintenance URI to show if the page exists (based on document root). Default: [document root]/system/maintenance.html.  If this file exists, your site will show a &quot;Under Maintenance&quot; page and your site will not be available.",
-      "default": "",
       "recipes": [
         "app_passenger::setup_apache_passenger_vhost"
       ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string",
-      "required": "optional"
-    },
-    "app_passenger/apache/serve_local_files": {
-      "display_name": "Apache serve local Files",
-      "description": "This option tells Apache whether it should serve the (static) content itself. Currently, it will omit PHP and TomCat dynamic content, such as *.php, *.action, *.jsp, and *.do    Ex:  true",
-      "required": "optional",
-      "default": "true",
-      "recipes": [
-        "app_passenger::setup_apache_passenger_vhost"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "app_passenger/apache/target_bind_address": {
-      "display_name": "Apache target bind address",
-      "description": "The IP address that Apache will redirect the requests to. Most likely this will always be set to localhost.",
-      "required": "optional",
-      "default": "",
-      "recipes": [
-        "app_passenger::setup_apache_passenger_vhost"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "app_passenger/apache/target_bind_port": {
-      "display_name": "Apache target bind port",
-      "description": "The port address that Apache will redirect the requests to.  Default: 85",
-      "required": "optional",
-      "default": "",
-      "recipes": [
-        "app_passenger::setup_apache_passenger_vhost"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
+      "display_name": "Rails spawn method",
+      "description": "The  spawn method that Phusion Passenger will use.  The choices are: smart, smart-lv2, and conservative.  Ex: conservative"
     },
     "app_passenger/repository/type": {
-      "display_name": "Repository Type",
-      "description": "Choose type of Repository SVN or GIT",
+      "required": "optional",
+      "calculated": false,
       "choice": [
         "git",
         "svn"
       ],
       "default": "git",
-      "required": "optional",
+      "type": "string",
       "recipes": [
         "app_passenger::svn_code_update_and_db_config"
       ],
-      "calculated": false,
-      "type": "string"
+      "display_name": "Repository Type",
+      "description": "Choose type of Repository SVN or GIT"
     },
-    "app_passenger/repository/revision": {
-      "display_name": "Repository branch",
-      "description": "Enter branch of your repo you want ot fetch  Default: HEAD ",
+    "app_passenger/apache/target_bind_port": {
       "required": "optional",
-      "default": "HEAD",
-      "recipes": [
-        "app_passenger::svn_code_update_and_db_config"
-      ],
+      "calculated": false,
       "choice": [
 
       ],
-      "calculated": false,
-      "type": "string"
-    },
-    "app_passenger/repository/url": {
-      "display_name": "Repository URL",
-      "description": "The URL of your svn or git repository where your application code will be checked out from.  Ex: http://mysvn.net/app/ or git@github.com/whoami/project",
-      "required": "optional",
-      "recipes": [
-        "app_passenger::svn_code_update_and_db_config"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "app_passenger/repository/svn/username": {
-      "display_name": "SVN repository username",
-      "description": "The SVN username that is used to checkout the application code from SVN repository.",
-      "required": "optional",
       "default": "",
+      "type": "string",
       "recipes": [
-        "app_passenger::svn_code_update_and_db_config"
+        "app_passenger::setup_apache_passenger_vhost"
       ],
+      "display_name": "Apache target bind port",
+      "description": "The port address that Apache will redirect the requests to.  Default: 85"
+    },
+    "app_passenger/apache/serve_local_files": {
+      "required": "optional",
+      "calculated": false,
       "choice": [
 
       ],
-      "calculated": false,
-      "type": "string"
+      "default": "true",
+      "type": "string",
+      "recipes": [
+        "app_passenger::setup_apache_passenger_vhost"
+      ],
+      "display_name": "Apache serve local Files",
+      "description": "This option tells Apache whether it should serve the (static) content itself. Currently, it will omit PHP and TomCat dynamic content, such as *.php, *.action, *.jsp, and *.do    Ex:  true"
     },
     "app_passenger/repository/svn/password": {
-      "display_name": "SVN repository password",
-      "description": "The SVN password that is used to checkout the application code from SVN repository.",
       "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
       "default": "",
+      "type": "string",
       "recipes": [
         "app_passenger::svn_code_update_and_db_config"
       ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
+      "display_name": "SVN repository password",
+      "description": "The SVN password that is used to checkout the application code from SVN repository."
     },
-    "app_passenger/repository/git/credentials": {
-      "display_name": "Git Repository Credentials",
-      "description": "The private SSH key of the git repository.",
+    "app_passenger/repository/revision": {
       "required": "optional",
-      "recipes": [
-        "app_passenger::svn_code_update_and_db_config"
-      ],
+      "calculated": false,
       "choice": [
 
       ],
+      "default": "HEAD",
+      "type": "string",
+      "recipes": [
+        "app_passenger::svn_code_update_and_db_config"
+      ],
+      "display_name": "Repository branch",
+      "description": "Enter branch of your repo you want ot fetch  Default: HEAD "
+    },
+    "app_passenger/apache/port": {
+      "required": "optional",
       "calculated": false,
-      "type": "string"
+      "choice": [
+
+      ],
+      "default": "8000",
+      "type": "string",
+      "recipes": [
+        "app_passenger::setup_apache_passenger_vhost"
+      ],
+      "display_name": "Apache application Port",
+      "description": "Apache port number for your application Ex: 8000"
+    },
+    "app_passenger/project/db/adapter": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "mysql",
+      "type": "string",
+      "recipes": [
+        "app_passenger::svn_code_update_and_db_config"
+      ],
+      "display_name": "Database adapter for database.yml ",
+      "description": "Enter database adpter wich will be used to connect to the database Default: mysql"
+    },
+    "app_passenger/apache/target_bind_address": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "app_passenger::setup_apache_passenger_vhost"
+      ],
+      "display_name": "Apache target bind address",
+      "description": "The IP address that Apache will redirect the requests to. Most likely this will always be set to localhost."
+    },
+    "app_passenger/repository/url": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "app_passenger::svn_code_update_and_db_config"
+      ],
+      "display_name": "Repository URL",
+      "description": "The URL of your svn or git repository where your application code will be checked out from.  Ex: http://mysvn.net/app/ or git@github.com/whoami/project"
     },
     "app_passenger/project/environment": {
-      "display_name": "Rails Environment",
-      "description": "Creates a Rails RAILS ENV environment variable. ",
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
       "default": "",
+      "type": "string",
       "recipes": [
         "app_passenger::svn_code_update_and_db_config",
         "app_passenger::run_custom_rails_commands"
       ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string",
-      "required": "optional"
-    },
-    "app_passenger/project/gem_list": {
-      "display_name": "Custom gems list",
-      "description": "A space-separated list of optional gem(s). Format:  ruby-Gem1:version  ruby-Gem2:version ruby-Gem3 ",
-      "default": "",
-      "recipes": [
-        "app_passenger::install_custom_gems"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string",
-      "required": "optional"
-    },
-    "app_passenger/project/custom_cmd": {
-      "display_name": "Custom rails/bin/ command",
-      "description": "A comma separated list of optional commands which will be executed in app directory. Ex: rake gems:install, rake db:create, rake get_common",
-      "default": "",
-      "recipes": [
-        "app_passenger::run_custom_rails_commands"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string",
-      "required": "optional"
-    },
-    "app_passenger/project/migration_cmd": {
-      "display_name": "Migration command",
-      "description": "Rake command used to initiate migration Ex:rake db:bootstrap If you set value to ignore, migration process would not start.",
-      "required": "optional",
-      "recipes": [
-        "app_passenger::svn_code_update_and_db_config"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "app_passenger/project/db/schema_name": {
-      "display_name": "Database schema name",
-      "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up. This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
-      "default": "",
-      "recipes": [
-        "app_passenger::svn_code_update_and_db_config"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string",
-      "required": "optional"
-    },
-    "app_passenger/project/db/adapter": {
-      "display_name": "Database adapter for database.yml ",
-      "description": "Enter database adpter wich will be used to connect to the database Default: mysql",
-      "default": "mysql",
-      "recipes": [
-        "app_passenger::svn_code_update_and_db_config"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string",
-      "required": "optional"
+      "display_name": "Rails Environment",
+      "description": "Creates a Rails RAILS ENV environment variable. "
     }
+  },
+  "license": "All rights reserved",
+  "suggestions": {
+  },
+  "platforms": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "long_description": "== DESCRIPTION:\r\n\r\n* Installs and configures, apache+passenger application server.\r\n\r\n== REQUIREMENTS:\r\n\r\n* Requires a VM launched from a RightScale managed RightImage\r\n\r\n* Tested on CentOS 5.6 RightImage\r\n* Tested on Ubuntu RightImage\r\n\r\n== SETUP:\r\n\r\n* Place app_passenger::default recipe into your runlist to setup the application server.  When\r\n  using a RightScale ServerTemplate, this will also automatically add the\r\n  common attributes to your ServerTemplate inputs.\r\n\r\n== USAGE:\r\n\r\n* Template con be combined in two modes:\r\n  1 For apps with bundler support\r\n    You have to add \"install_required app gems\" recipe, and \"run_custom_rails_commands\" for migration commands\r\n  2 For apps without bundler support\r\n    Y have to add \"install_custom_gems\"  recipe, and \"run_custom_rails_commands\" for migration commands\r\n  Anyway you can mix these recipes to fit needs of your project\r\n\r\n== KNOWN LIMITATIONS\r\n\r\n* none\r\n",
+  "version": "0.0.1",
+  "recommendations": {
+  },
+  "recipes": {
+    "app_passenger::install_custom_gems": "Custom gems install.",
+    "app_passenger::rhel_apache_fix": "Temporary recipe for fixing apache bug on red hat image",
+    "app_passenger::run_custom_rails_commands": "Run specific user defined commands Commands will be executed in the app directory. Command path ../rails/bin/",
+    "app_passenger::install_required_app_gems": "Bundler gems Install. Gemfile must be present in app directory.",
+    "app_passenger::svn_code_update_and_db_config": "Configures rails deploy environment",
+    "app_passenger::default": "default cookbook recipe",
+    "app_passenger::setup_apache_passenger_vhost": "Configure apache passenger vhost",
+    "app_passenger::install_ruby_enterprise_edition": "Install Ruby EE",
+    "app_passenger::install_apache_passenger": "Install and apache passenger module"
   },
   "groupings": {
   },
-  "recipes": {
-    "app_passenger::default": "default cookbook recipe",
-    "app_passenger::install_custom_gems": "Custom gems install.",
-    "app_passenger::install_required_app_gems": "Bundler gems Install. Gemfile must be present in app directory.",
-    "app_passenger::install_apache_passenger": "Install and apache passenger module",
-    "app_passenger::setup_apache_passenger_vhost": "Configure apache passenger vhost",
-    "app_passenger::install_ruby_enterprise_edition": "Install Ruby EE",
-    "app_passenger::svn_code_update_and_db_config": "Configures rails deploy environment",
-    "app_passenger::run_custom_rails_commands": "Run specific user defined commands Commands will be executed in the app directory. Command path ../rails/bin/",
-    "app_passenger::rhel_apache_fix": "Temporary recipe for fixing apache bug on red hat image"
+  "conflicting": {
   },
-  "version": "0.0.1"
+  "replacing": {
+  },
+  "description": "Installs/Configures Apache Passenger Rails application server",
+  "providing": {
+  }
 }

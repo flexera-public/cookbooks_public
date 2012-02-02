@@ -38,6 +38,11 @@ db_init_status :set
 log "  Registering as master..."
 db_register_master
 
+log "  Setting up monitoring for master..."
+db DATA_DIR do
+  action :setup_monitoring
+end
+
 log "  Adding replication privileges for this master database..."
 include_recipe "db::setup_replication_privileges"
 

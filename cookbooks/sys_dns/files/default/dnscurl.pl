@@ -117,6 +117,7 @@ my $signature = encode_base64($hmac->digest, "");
 # Can't use STDIN for this purpose because that would prevent the caller from using that stream
 # This is secure because tempfile() guarantees the new file is chmod 600
 my ($curl_args_file, $curl_args_file_name) = tempfile(UNLINK => 1);
+print $curl_args_file "--silent --show-error\n";
 print $curl_args_file "header = \"Date: $server_date\"\n";
 print $curl_args_file "header = \"X-Amzn-Authorization: AWS3-HTTPS AWSAccessKeyId=$aws_key_id,Algorithm=HmacSHA1,Signature=$signature\"\n";
 

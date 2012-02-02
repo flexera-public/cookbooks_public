@@ -69,6 +69,7 @@ available actions, attributes and usage.
    that supports backup and restore operations. 
 2. Initialize your database from previous dumpfile or other source.
 3. Register your database with a Dynamic DNS provider using:
+#TODO update to reflect DNS changes made
 
     "sys_dns::do_set_private"
    

@@ -12,13 +12,18 @@ module RightScale
         
       	require 'timeout'
       	require 'yaml'
+      	require 'ipaddr'
 
       	SNAPSHOT_POSITION_FILENAME = 'rs_snapshot_position.yaml'
       	DEFAULT_CRITICAL_TIMEOUT = 7
 
+        # == Create numeric UUID
+        # MySQL server_id must be a unique number  - use the ip address integer representation
+        # 
+        # Duplicate IP's and server_id's may occur with cross cloud replication.
         def mycnf_uuid
-          node[:db_mysql][:mycnf_uuid] ||= Time.new.to_i
-          node[:db_mysql][:mycnf_uuid]
+          # Always set to support stop/start
+          node[:db_mysql][:mycnf_uuid] = IPAddr.new(node[:cloud][:private_ips][0]).to_i
         end
 
         def init(new_resource)

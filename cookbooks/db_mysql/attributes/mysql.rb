@@ -7,6 +7,7 @@
 
 # Recommended attributes
 #
+set_unless[:db_mysql][:collectd_master_slave_mode] = ""
 set_unless[:db_mysql][:server_usage] = "dedicated"  # or "shared"
 set_unless[:db_mysql][:previous_master] = nil
 
@@ -19,7 +20,8 @@ set_unless[:db_mysql][:log_bin] = "/mnt/mysql-binlogs/mysql-bin"
 set_unless[:db_mysql][:tmpdir] = "/tmp"
 set_unless[:db_mysql][:datadir] = "/var/lib/mysql"
 set_unless[:db_mysql][:datadir_relocate] = "/mnt/storage"
-set_unless[:db_mysql][:bind_address] = cloud[:private_ips][0]
+# Always set to support stop/start
+set[:db_mysql][:bind_address] = cloud[:private_ips][0]
 
 set_unless[:db_mysql][:dump][:schema_name] = ""
 set_unless[:db_mysql][:dump][:storage_account_provider] = ""
@@ -35,29 +37,18 @@ set_unless[:db_mysql][:kill_bug_mysqld_safe] = true
 case platform
 when "redhat","centos","fedora","suse"
 	set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
-  set_unless[:db_mysql][:basedir] = "/var/lib"
-  set_unless[:db_mysql][:packages_uninstall] = ""
-  set_unless[:db_mysql][:packages_install] = ["MySQL-server-community", "MySQL-shared-compat", "MySQL-devel-community", "MySQL-client-community" ]
- # set_unless[:db_mysql][:packages_install] = [ "unixODBC.#{kernel[:machine] }", "krb5-libs" ]
   set_unless[:db_mysql][:log] = ""
   set_unless[:db_mysql][:log_error] = "" 
 when "debian","ubuntu"
   set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
-  set_unless[:db_mysql][:basedir] = "/usr"
-  set_unless[:db_mysql][:packages_uninstall] = "apparmor"
-  if(platform_version == "10.10" || platform_version == "10.04")
-    set_unless[:db_mysql][:packages_install] = ["mysql-server-5.1", "tofrodos"]
-  else
-    set_unless[:db_mysql][:packages_install] = ["mysql-server-5.0", "tofrodos"]
-  end
   set_unless[:db_mysql][:log] = "log = /var/log/mysql.log"
   set_unless[:db_mysql][:log_error] = "log_error = /var/log/mysql.err" 
 else
-  set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
-  set_unless[:db_mysql][:basedir] = "/usr"
-  set_unless[:db_mysql][:packages_uninstall] = ""
-  set_unless[:db_mysql][:packages_install] = ["mysql-server-5.0"]
-  set_unless[:db_mysql][:log] = "log = /var/log/mysql.log"
-  set_unless[:db_mysql][:log_error] = "log_error = /var/log/mysql.err"
+  raise "Unsupported platform #{platform}"
 end
 
+# System tuning parameters
+# Set the mysql and root users max open files to a really large number.
+# 1/3 of the overall system file max should be large enough.  The percentage can be
+# adjusted if necessary.
+set_unless[:db_mysql][:file_ulimit] = `sysctl -n fs.file-max`.to_i/33
