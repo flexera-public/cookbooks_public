@@ -7,7 +7,7 @@
 
 rs_utils_marker :begin
 
-sys_dns "Setting Host" do
+sys_dns "default" do
   id node[:sys_dns][:id]
   address node[:cloud][:private_ips][0]
 
