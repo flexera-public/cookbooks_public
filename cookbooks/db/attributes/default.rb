@@ -5,7 +5,7 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-set_unless[:db][:fqdn] = ""
+set_unless[:db][:dns][:master][:fqdn] = "localhost"
 set_unless[:db][:data_dir] = "/mnt/storage"
 set_unless[:db][:provider] = "db_mysql"
 set_unless[:db][:admin][:user] = "root"

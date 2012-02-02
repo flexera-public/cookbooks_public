@@ -18,10 +18,10 @@ attribute "sys_dns/choice",
   :recipes => ["sys_dns::do_set_private", "sys_dns::default"]
 
 attribute "sys_dns/id",
-  :display_name => "Master DNS Record ID",
-  :description => "The unique identifier that is associated with the DNS A record of the master database server.  The unique identifier is assigned by the DNS provider when you create a dynamic DNS A record. This ID is used to update the associated A record with the private IP address of the master server when defining which server is the master.  If you are using DNS Made Easy as your DNS provider, a 7-digit number is used (e.g., 4403234).",
+  :display_name => "DNS Record ID",
+  :description => "The unique identifier that is associated with the DNS A record of the server.  The unique identifier is assigned by the DNS provider when you create a dynamic DNS A record. This ID is used to update the associated A record with the private IP address of the server when this recipe is run.  If you are using DNS Made Easy as your DNS provider, a 7-digit number is used (e.g., 4403234).",
   :required => "required",
-  :recipes => ["sys_dns::do_set_private", "sys_dns::default"]
+  :recipes => ["sys_dns::do_set_private"]
 
 attribute "sys_dns/user",
   :display_name => "DNS User",
