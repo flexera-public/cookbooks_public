@@ -1,0 +1,31 @@
+{
+  "name": "repo_svn",
+  "description": "Manages the Subversion version control system",
+  "long_description": "= RightScale \"repo_svn\" Provider\n\n== DESCRIPTION:\n\nProvides the SVN implementation of the 'repo' resource to\nmanage source code download from SVN repositories.\n\n\n== DETAILS:\n\n=== General\nThe 'repo' implementation is defined by a Lightweight Provider, which can be\nfound in the providers/default.rb file.\n\n\n== SETUP:\n\n* Provider will be automatically initialized when you add \"repo:default\" recipe to your ServerTemplate runlist\n\n== USAGE:\n\n=== Basic usage\nOnce setup, use the recipes in the 'repo' cookbook to install and manage your\ncode repo.  See the repo/README.rdoc for usage details.\n\n\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "maintainer": "RightScale, Inc.",
+  "maintainer_email": "support@rightscale.com",
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "platforms": {
+  },
+  "dependencies": {
+    "repo": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "repo_svn::default": "Default pattern of loading packages and resources provided"
+  },
+  "version": "0.0.1"
+}
