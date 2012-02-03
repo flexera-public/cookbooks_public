@@ -1,4 +1,4 @@
-= RightScale LAMP Cookbook (Beta)
+= RightScale LAMP Cookbook 
 
 == DESCRIPTION:
 

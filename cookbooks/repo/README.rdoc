@@ -1,4 +1,4 @@
-= RightScale Repo Cookbook (Beta)
+= RightScale Repo Cookbook 
 
 == DESCRIPTION:
 

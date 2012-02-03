@@ -1,8 +1,8 @@
-= RightScale System Cookbook (Beta)
+= RightScale System Cookbook 
 
 == DESCRIPTION:
 
-RightScale system utilities (BETA)
+RightScale system utilities 
 
 == DETAILS:
 

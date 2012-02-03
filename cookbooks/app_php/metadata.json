@@ -106,7 +106,7 @@
   "platforms": {
   },
   "maintainer": "RightScale, Inc.",
-  "long_description": "= RightScale App PHP Cookbook (Beta)\n\n== DESCRIPTION:\n\nRightScale PHP application server management cookbook\n\nInstalls and configures a PHP application server.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "long_description": "= RightScale App PHP Cookbook \n\n== DESCRIPTION:\n\nRightScale PHP application server management cookbook\n\nInstalls and configures a PHP application server.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
   "version": "0.0.1",
   "recommendations": {
   },

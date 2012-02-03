@@ -1,8 +1,8 @@
-= RightScale System Firewall Cookbook (Beta)
+= RightScale System Firewall Cookbook 
 
 == DESCRIPTION:
 
-RightScale firewall cookbook (beta) 
+RightScale firewall cookbook  
 
 Built upon the opscode iptables cookbook, this coobook provides a LWRP
 for managing access to mutliple servers in a deployment using machine 

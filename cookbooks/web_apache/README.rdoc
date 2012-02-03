@@ -1,4 +1,4 @@
-= RightScale Web Apache (Beta)
+= RightScale Web Apache 
 
 == DESCRIPTION:
 

@@ -1,4 +1,4 @@
-= RightScale App Tomcat Cookbook (Beta)
+= RightScale App Tomcat Cookbook 
 
 == DESCRIPTION:
 

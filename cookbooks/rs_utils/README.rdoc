@@ -1,4 +1,4 @@
-= RightScale Utilities Cookbook (Beta)
+= RightScale Utilities Cookbook 
 
 == DESCRIPTION:
 

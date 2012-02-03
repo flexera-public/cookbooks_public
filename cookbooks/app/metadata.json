@@ -13,7 +13,7 @@
   "platforms": {
   },
   "maintainer": "RightScale, Inc.",
-  "long_description": "= RightScale App Cookbook (Beta)\n\n== DESCRIPTION:\n\nRightScale application server management cookbook (beta) \n\nThis cookbook contains recipes that generally applicable to all application\nservers.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n       \n== USAGE:\n\nAdd the default recipe to tag your server as an appserver. This is used by \nservers (like databases) to identify their clients.\n\n== KNOWN LIMITIATIONS:\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "long_description": "= RightScale App Cookbook \n\n== DESCRIPTION:\n\nRightScale application server management cookbook  \n\nThis cookbook contains recipes that generally applicable to all application\nservers.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n       \n== USAGE:\n\nAdd the default recipe to tag your server as an appserver. This is used by \nservers (like databases) to identify their clients.\n\n== KNOWN LIMITIATIONS:\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
   "version": "0.1.0",
   "recommendations": {
   },
