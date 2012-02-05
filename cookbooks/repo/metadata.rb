@@ -11,7 +11,7 @@ depends "repo_git"
 depends "repo_ros"
 
 recipe  "repo::default", "Default recipe for setup resources provided"
-recipe  "repo::do_pull", "Recipe for pulling project repos from svn, git or ros. Your source will be available in /tmp/repo "
+recipe  "repo::do_pull", "Recipe for pulling project repos from svn, git or ros."
 
 attribute "repo/default/provider",
   :display_name => "Repository Provider",
@@ -91,9 +91,9 @@ attribute "repo/default/prefix",
 #capistrano attributes used in repo::do_pull
 
 attribute "repo/default/perform_action",
-  :display_name => "CAP Action",
+  :display_name => "Action",
   :description => "Choose the pull action which will be performed, 'pull'- standard repo pull, 'capistrano_pull' standard pull and then capistrano deployment style will be applied.",
-  :choice => [ "Pull", "Capistrano_pull" ],
+  :choice => [ "pull", "capistrano_pull" ],
   :required => "recommended",
   :recipes => ["repo::do_pull"]
 
