@@ -34,8 +34,7 @@
       ],
       "default": "repo_git",
       "recipes": [
-        "repo::default",
-        "repo::do_pull"
+        "repo::default"
       ],
       "calculated": false,
       "type": "string"
@@ -45,8 +44,7 @@
       "description": "",
       "required": "recommended",
       "recipes": [
-        "repo::default",
-        "repo::do_pull"
+        "repo::default"
       ],
       "choice": [
 
@@ -59,8 +57,7 @@
       "description": "",
       "required": "recommended",
       "recipes": [
-        "repo::default",
-        "repo::do_pull"
+        "repo::default"
       ],
       "choice": [
 
@@ -74,8 +71,7 @@
       "required": "optional",
       "default": "",
       "recipes": [
-        "repo::default",
-        "repo::do_pull"
+        "repo::default"
       ],
       "choice": [
 
@@ -89,8 +85,7 @@
       "required": "optional",
       "default": "",
       "recipes": [
-        "repo::default",
-        "repo::do_pull"
+        "repo::default"
       ],
       "choice": [
 
@@ -104,8 +99,7 @@
       "default": "",
       "required": "recommended",
       "recipes": [
-        "repo::default",
-        "repo::do_pull"
+        "repo::default"
       ],
       "choice": [
 
@@ -122,8 +116,7 @@
         "CloudFiles"
       ],
       "recipes": [
-        "repo::default",
-        "repo::do_pull"
+        "repo::default"
       ],
       "calculated": false,
       "type": "string"
@@ -133,8 +126,7 @@
       "description": "In order to write the repo  to the specified cloud storage location, you need to provide cloud authentication credentials. For Amazon S3, use your Amazon access key ID (e.g., cred:AWS_ACCESS_KEY_ID). For Rackspace Cloud Files, use your Rackspace login username (e.g., cred:RACKSPACE_USERNAME).",
       "required": "optional",
       "recipes": [
-        "repo::default",
-        "repo::do_pull"
+        "repo::default"
       ],
       "choice": [
 
@@ -147,8 +139,7 @@
       "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use your AWS secret access key (e.g., cred:AWS_SECRET_ACCESS_KEY). For Rackspace Cloud Files, use your Rackspace account API key (e.g., cred:RACKSPACE_AUTH_KEY).",
       "required": "optional",
       "recipes": [
-        "repo::default",
-        "repo::do_pull"
+        "repo::default"
       ],
       "choice": [
 
@@ -161,8 +152,7 @@
       "description": "The cloud storage location where the dump file will be saved to or restored from. For Amazon S3, use the bucket name. For Rackspace Cloud Files, use the container name.",
       "required": "optional",
       "recipes": [
-        "repo::default",
-        "repo::do_pull"
+        "repo::default"
       ],
       "choice": [
 
@@ -175,8 +165,7 @@
       "description": "The prefix that will be used to name/locate the backup of a particular source repo. Defines the prefix of the source repo file name that will be used to name the downloaded repo file.",
       "required": "optional",
       "recipes": [
-        "repo::default",
-        "repo::do_pull"
+        "repo::default"
       ],
       "choice": [
 
