@@ -79,12 +79,6 @@ RewriteRule ^/(.*)$ /$1 [QSA,L]
 <% end %>
 
 
-<% if (!node[:app_passenger][:apache][:target_bind_address].empty?)&&(!node[:app_passenger][:apache][:target_bind_port].empty?) %>
-# Proxy the rest to the load balancer
-RewriteRule ^/(.*)$ http://<%=node[:app_passenger][:apache][:target_bind_address]%>:<%node[:app_passenger][:apache][:target_bind_port]%>%{REQUEST_URI} [P,QSA,L]
-<% end %>
-
-
 # Setup the logs in the appropriate directory
 CustomLog <%= node[:app_passenger][:apache][:log_dir]%>/<%=@params[:server_name]%>-access.log combined
 ErrorLog  <%= node[:app_passenger][:apache][:log_dir]%>/<%=@params[:server_name]%>-error.log

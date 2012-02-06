@@ -20,11 +20,10 @@ cookbook_file "/tmp/ruby-enterprise-installed.tar.gz" do
 end
 
 bash "install_ruby_EE" do
-  flags "-ex"
   code <<-EOH
     tar xzf /tmp/ruby-enterprise-installed.tar.gz -C /opt/
   EOH
-  only_if do File.exists?("/tmp/ruby-enterprise-installed.tar.gz") end
+  only_if do File.exists?("/tmp/ruby-enterprise-installed.tar.gz")  end
 end
 
 rs_utils_marker :end

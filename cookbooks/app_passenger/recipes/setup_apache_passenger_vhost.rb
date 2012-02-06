@@ -6,10 +6,18 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
-
+=begin
 service "apache2" do
   action :nothing
 end
+
+#Removing preinstalled apache ssl.conf as it conflicts with ports.conf of web:apache
+file "/etc/httpd/conf.d/ssl.conf" do
+  action :delete
+  backup false
+  only_if do File.exists?("/etc/httpd/conf.d/ssl.conf")  end
+end
+
 
 # Generation of new apache ports.conf, based on user prefs
 template "#{node[:app_passenger][:apache][:install_dir]}/ports.conf" do
@@ -33,9 +41,9 @@ web_app "http-#{node[:app_passenger][:apache][:port]}-#{node[:web_apache][:serve
   rails_env node[:app_passenger][:project][:environment]
   notifies :restart, resources(:service => "apache2"), :immediately
 end
+=end
 
-
-
+  notifies :restart, resources(:service => "apache2"), :immediately
 rs_utils_logrotate_app "rails" do
   cookbook "app_passenger"
   template "logrotate_rails.erb"

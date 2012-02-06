@@ -2,28 +2,16 @@
 # Cookbook Name:: app_passenger
 # Attributes:: app_passenger
 #
-# Copyright 2008-2011, RightScale, Inc.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 
 set_unless[:app_passenger][:rails_spawn_method]="conservative"
 set_unless[:app_passenger][:apache][:maintenance_page]=""
 set_unless[:app_passenger][:apache][:php_enable]="false"
 set_unless[:app_passenger][:apache][:serve_local_files]="true"
-set_unless[:app_passenger][:apache][:target_bind_address]=""
-set_unless[:app_passenger][:apache][:target_bind_port]=""
 set_unless[:app_passenger][:apache][:port]="8000"
 
 case node[:platform]
@@ -32,16 +20,16 @@ case node[:platform]
     set[:app_passenger][:apache][:install_dir]="/etc/apache2"
     set[:app_passenger][:apache][:log_dir]="/var/log/apache2"
 
-    set[:app_passenger][:packages_install] = ["apache2-mpm-prefork", "apache2-prefork-dev", "libapr1-dev", "libcurl4-openssl-dev"]
-    set[:app_passenger][:ruby_packages_install] = ["libopenssl-ruby", "libcurl4-openssl-dev"]
+    set[:app_passenger][:packages_install] = ["libopenssl-ruby", "libcurl4-openssl-dev", "apache2-mpm-prefork", "apache2-prefork-dev", "libapr1-dev", "libcurl4-openssl-dev"]
+    #set[:app_passenger][:ruby_packages_install] = []
 
   when "centos","redhat","redhatenterpriseserver","fedora","suse"
     set[:app_passenger][:apache][:user]="apache"
     set[:app_passenger][:apache][:install_dir]="/etc/httpd"
     set[:app_passenger][:apache][:log_dir]="/var/log/httpd"
 
-    set[:app_passenger][:packages_install] = ["curl-devel", "openssl-devel", "httpd-devel", "apr-devel", "apr-util-devel", "readline-devel"]
-    set[:app_passenger][:ruby_packages_install] = ["zlib-devel", "openssl-devel", "readline-devel"]
+    set[:app_passenger][:packages_install] = ["zlib-devel", "openssl-devel", "readline-devel", "curl-devel", "openssl-devel", "httpd-devel", "apr-devel", "apr-util-devel", "readline-devel"]
+    #set[:app_passenger][:ruby_packages_install] = ["]
 
   else
     raise "Unrecognized distro #{node[:platform]}, exiting "

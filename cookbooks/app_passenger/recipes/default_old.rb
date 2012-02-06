@@ -7,20 +7,6 @@
 
 rs_utils_marker :begin
 
-app "Setup Dev Headers" do
-  provider "app_passenger"
-  packages node[:app_passenger][:packages_install]
-  app_root#, :kind_of => String
-  app_port#, :kind_of => String
-  action :install
-end
-
-
-
-
-
-
-=begin
 #Installing some apache development headers required for rubyEE
 node[:app_passenger][:ruby_packages_install].each do |p|
   package p
@@ -30,5 +16,16 @@ end
 node[:app_passenger][:packages_install].each do |p|
   package p
 end
-=end
+
+
+#Saving project name variables
+ENV['RAILS_APP'] = node[:web_apache][:application_name]
+
+bash "save global vars" do
+  code <<-EOH
+  echo $RAILS_APP >> /tmp/appname
+  EOH
+end
+
+
 rs_utils_marker :end

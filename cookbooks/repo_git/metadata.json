@@ -1,31 +1,32 @@
 {
-  "dependencies": {
-    "git": ">= 0.0.0"
-  },
   "name": "repo_git",
+  "description": "Manages the Git fast version control system",
+  "long_description": "= RightScale \"repo_git\" Provider\n\n== DESCRIPTION:\n\nProvides the GIT implementation of the 'repo' resource to\nmanage source code download from GIT repositories.\n\n\n== DETAILS:\n\n=== General\nThe 'repo' implementation is defined by a Lightweight Provider, which can be\nfound in the providers/default.rb file.\n\n\n== SETUP:\n\n* Provider will be automatically initialized when you add \"repo:default\" recipe to your ServerTemplate runlist\n\n== USAGE:\n\n=== Basic usage\nOnce setup, use the recipes in the 'repo' cookbook to install and manage your\ncode repo.  See the repo/README.rdoc for usage details.\n\n\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "maintainer": "RightScale, Inc.",
   "maintainer_email": "support@rightscale.com",
-  "attributes": {
-  },
   "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "suggestions": {
-  },
   "platforms": {
   },
-  "maintainer": "RightScale, Inc.",
-  "long_description": "",
-  "version": "0.0.1",
+  "dependencies": {
+    "git": ">= 0.0.0",
+    "repo": ">= 0.0.0"
+  },
   "recommendations": {
   },
-  "recipes": {
-  },
-  "groupings": {
+  "suggestions": {
   },
   "conflicting": {
   },
+  "providing": {
+  },
   "replacing": {
   },
-  "description": "Installs Git's Fast Version Control System.",
-  "providing": {
-    "repo_git": ">= 0.0.0"
-  }
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "repo_git::default": "Default pattern of loading packages"
+  },
+  "version": "0.0.1"
 }

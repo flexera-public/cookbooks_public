@@ -12,23 +12,20 @@ depends "logrotate"
 depends "app"
 depends "db"
 
+provides "app"
+
 recipe "app_passenger::default", "default cookbook recipe"
 recipe "app_passenger::install_custom_gems", "Custom gems install."
 recipe "app_passenger::install_required_app_gems", "Bundler gems Install. Gemfile must be present in app directory."
 recipe "app_passenger::install_apache_passenger", "Install and apache passenger module"
 recipe "app_passenger::setup_apache_passenger_vhost", "Configure apache passenger vhost"
 recipe "app_passenger::install_ruby_enterprise_edition", "Install Ruby EE"
-recipe "app_passenger::svn_code_update_and_db_config", "Configures rails deploy environment"
+recipe "app_passenger::setup_db_connection", "Set up the MySQL database db.tomcat connection file."
+recipe "app_passenger::do_update_code", "Update application source files from the remote repository."
 
 recipe "app_passenger::run_custom_rails_commands", "Run specific user defined commands Commands will be executed in the app directory. Command path ../rails/bin/"
-recipe "app_passenger::rhel_apache_fix", "Temporary recipe for fixing apache bug on red hat image"
 
 
-attribute "app_passenger/apache/port",
-  :display_name => "Apache application Port",
-  :description => "Apache port number for your application Ex: 8000",
-  :default => "8000",
-  :recipes => ["app_passenger::setup_apache_passenger_vhost"]
 
 attribute "app_passenger/spawn_method",
   :display_name => "Rails spawn method",
@@ -50,68 +47,53 @@ attribute "app_passenger/apache/serve_local_files",
   :default => "true",
   :recipes => ["app_passenger::setup_apache_passenger_vhost"]
 
-attribute "app_passenger/apache/target_bind_address",
-  :display_name => "Apache target bind address",
-  :description => "The IP address that Apache will redirect the requests to. Most likely this will always be set to localhost.",
-  :required => false,
-  :default => "",
-  :recipes => ["app_passenger::setup_apache_passenger_vhost"]
-
-attribute "app_passenger/apache/target_bind_port",
-  :display_name => "Apache target bind port",
-  :description => "The port address that Apache will redirect the requests to.  Default: 85",
-  :required => false,
-  :default => "",
-  :recipes => ["app_passenger::setup_apache_passenger_vhost"]
-
-
 attribute "app_passenger/repository/type",
   :display_name => "Repository Type",
   :description => "Choose type of Repository SVN or GIT",
   :choice => ["git", "svn"],
   :default => "git",
   :required => "optional",
-  :recipes => [ "app_passenger::svn_code_update_and_db_config" ]
+  :recipes => [ "app_passenger::do_update_code" ]
 
 attribute "app_passenger/repository/revision",
   :display_name => "Repository branch",
   :description => "Enter branch of your repo you want ot fetch  Default: HEAD ",
   :required => false,
   :default => "HEAD",
-  :recipes => ["app_passenger::svn_code_update_and_db_config"]
+  :recipes => ["app_passenger::do_update_code"]
 
 attribute "app_passenger/repository/url",
   :display_name => "Repository URL",
   :description => "The URL of your svn or git repository where your application code will be checked out from.  Ex: http://mysvn.net/app/ or git@github.com/whoami/project",
   :required => false,
-  :recipes => ["app_passenger::svn_code_update_and_db_config"]
+  :recipes => ["app_passenger::do_update_code"]
 
 attribute "app_passenger/repository/svn/username",
   :display_name => "SVN repository username",
   :description => "The SVN username that is used to checkout the application code from SVN repository.",
   :required => false,
   :default => "",
-  :recipes => ["app_passenger::svn_code_update_and_db_config"]
+  :recipes => ["app_passenger::do_update_code"]
 
 attribute "app_passenger/repository/svn/password",
   :display_name => "SVN repository password",
   :description => "The SVN password that is used to checkout the application code from SVN repository.",
   :required => false,
   :default => "",
-  :recipes => ["app_passenger::svn_code_update_and_db_config"]
+  :recipes => ["app_passenger::do_update_code"]
 
 attribute "app_passenger/repository/git/credentials",
   :display_name => "Git Repository Credentials",
   :description => "The private SSH key of the git repository.",
   :required => "optional",
-  :recipes => [ "app_passenger::svn_code_update_and_db_config" ]
+  :recipes => [ "app_passenger::do_update_code" ]
 
 
 attribute "app_passenger/project/environment",
   :display_name => "Rails Environment",
   :description => "Creates a Rails RAILS ENV environment variable. ",
   :default => "",
-  :recipes => ["app_passenger::svn_code_update_and_db_config", "app_passenger::run_custom_rails_commands"]
+  :recipes => ["app_passenger::setup_db_connection", "app_passenger::run_custom_rails_commands"]
 
 attribute "app_passenger/project/gem_list",
      :display_name => "Custom gems list",
@@ -125,20 +107,15 @@ attribute "app_passenger/project/custom_cmd",
      :default => "",
      :recipes => ["app_passenger::run_custom_rails_commands"]
 
-attribute "app_passenger/project/migration_cmd",
-  :display_name => "Migration command",
-  :description => "Rake command used to initiate migration Ex:rake db:bootstrap If you set value to ignore, migration process would not start.",
-  :required => false,
-  :recipes => [ "app_passenger::svn_code_update_and_db_config" ]
 
 attribute "app_passenger/project/db/schema_name",
   :display_name => "Database schema name",
   :description => "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up. This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
   :default => "",
-  :recipes => ["app_passenger::svn_code_update_and_db_config"]
+  :recipes => ["app_passenger::setup_db_connection"]
 
 attribute "app_passenger/project/db/adapter",
   :display_name => "Database adapter for database.yml ",
   :description => "Enter database adpter wich will be used to connect to the database Default: mysql",
   :default => "mysql",
-  :recipes => ["app_passenger::svn_code_update_and_db_config"]
+  :recipes => ["app_passenger::setup_db_connection"]

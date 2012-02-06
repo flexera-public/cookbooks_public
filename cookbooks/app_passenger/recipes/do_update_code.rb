@@ -7,17 +7,22 @@
 
 rs_utils_marker :begin
 
+
+#Reading app name from tmp file (for execution in "operational" phase))
+if(node[:app_passenger][:deploy_dir]=="/home/rails/")
+  app_name = IO.read('/tmp/appname')
+  node[:app_passenger][:deploy_dir]="/home/rails/#{app_name.to_s.chomp}"
+end
+
+
+
 # Preparing dirs, required for apache+passenger
-log "INFO: Creating directory for project deployment - #{node[:app_passenger][:deploy_dir]}"
+log "INFO: Creating directory for project deployment - <#{node[:app_passenger][:deploy_dir]}>"
 directory node[:app_passenger][:deploy_dir] do
   recursive true
 end
 
-#Deleting tmp pull directory for repo_git_pull correct operations
-directory "#{node[:app_passenger][:deploy_dir].chomp}/tmp/" do
-  recursive true
-  action :delete
-end
+
 
 log "Backup old project dirs "
 #backuping old dirs
@@ -83,7 +88,13 @@ log "INFO: Creating subversion config"
     end
 
   when "git"
-#cloning from git
+    #Deleting tmp pull directory for repo_git_pull correct operations
+    directory "#{node[:app_passenger][:deploy_dir].chomp}/tmp/" do
+      recursive true
+      action :delete
+    end
+
+    #cloning from git
     repo_git_pull "Get Repository" do
       url "#{node[:app_passenger][:repository][:url].chomp}"
       branch node[:app_passenger][:repository][:revision]
@@ -105,23 +116,6 @@ log "INFO: Creating subversion config"
       create_dirs_before_symlink
     end
 
-end
-#creating database template
-log "INFO: Generating database.yml"
-template "#{node[:app_passenger][:deploy_dir].chomp}/current/config/database.yml" do
-  owner node[:app_passenger][:apache][:user]
-  source "database.yml.erb"
-  action :create_if_missing
-end
-
-#setting $RAILS_ENV
-ENV['RAILS_ENV'] = node[:app_passenger][:project][:environment]
-
-#Creating bash file for manual $RAILS_ENV setup
-log "INFO: Creating bash file for manual $RAILS_ENV setup"
-template "/etc/profile.d/rails_env.sh" do
-  mode '0744'
-  source "rails_env.erb"
 end
 
 

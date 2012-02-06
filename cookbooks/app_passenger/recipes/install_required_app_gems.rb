@@ -19,11 +19,10 @@ end
 #
 log "Bundler will install gems from Gemfile"
 bash "Bundle gem install" do
-  flags "-ex"
   code <<-EOH
     /opt/ruby-enterprise/bin/bundle install --gemfile=#{node[:app_passenger][:deploy_dir]}/current/Gemfile
   EOH
-  only_if do File.exists?("#{node[:app_passenger][:deploy_dir]}/current/Gemfile") end
+  only_if do File.exists?("#{node[:app_passenger][:deploy_dir]}/current/Gemfile")  end
 end
 
 rs_utils_marker :end
