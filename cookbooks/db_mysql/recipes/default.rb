@@ -8,6 +8,7 @@
 rs_utils_marker :begin
 
 node[:db_mysql][:version] ||= "5.1"
+node[:db_mysql][:service_name] ||= "mysqld"
 include_recipe "db::install_client"
 
 rs_utils_marker :end

@@ -7,8 +7,9 @@
 
 define :db_mysql_setup_service do
 
+  log "  Setting up mysql service"
   service "mysql" do
-    service_name = node[:db_mysql][:service_name]
+    service_name node[:db_mysql][:service_name]
     supports :status => true, :restart => true, :reload => true
     case :platform
     when "ubuntu"
