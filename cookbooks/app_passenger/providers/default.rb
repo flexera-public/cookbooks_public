@@ -40,7 +40,7 @@ action :install do
   end
 
 end
-=begin
+
 action :setup_vhost do
 
 service "apache2" do
@@ -80,4 +80,3 @@ end
 
 
 end
-=end

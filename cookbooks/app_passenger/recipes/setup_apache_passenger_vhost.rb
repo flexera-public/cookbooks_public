@@ -43,7 +43,6 @@ web_app "http-#{node[:app_passenger][:apache][:port]}-#{node[:web_apache][:serve
 end
 =end
 
-  notifies :restart, resources(:service => "apache2"), :immediately
 rs_utils_logrotate_app "rails" do
   cookbook "app_passenger"
   template "logrotate_rails.erb"
