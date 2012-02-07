@@ -7,6 +7,7 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+set[:app][:provider] = "app_passenger"
 
 set_unless[:app_passenger][:rails_spawn_method]="conservative"
 set_unless[:app_passenger][:apache][:maintenance_page]=""
@@ -19,7 +20,6 @@ case node[:platform]
     set[:app_passenger][:apache][:user]="www-data"
     set[:app_passenger][:apache][:install_dir]="/etc/apache2"
     set[:app_passenger][:apache][:log_dir]="/var/log/apache2"
-
     set[:app_passenger][:packages_install] = ["libopenssl-ruby", "libcurl4-openssl-dev", "apache2-mpm-prefork", "apache2-prefork-dev", "libapr1-dev", "libcurl4-openssl-dev"]
     #set[:app_passenger][:ruby_packages_install] = []
 

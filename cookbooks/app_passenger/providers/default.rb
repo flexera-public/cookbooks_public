@@ -6,11 +6,15 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 action :stop do
-  system("/etc/init.d/apache stop")
+  service "apache2" do
+    action :stop
+  end
 end
 
 action :start do
-  system("/etc/init.d/apache start")
+  service "apache2" do
+    action :start
+  end
 end
 
 action :restart do

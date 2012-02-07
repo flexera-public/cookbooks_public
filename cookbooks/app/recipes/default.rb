@@ -7,6 +7,15 @@
 
 rs_utils_marker :begin
 
+# Setup default values for database resource
+#
+app "default" do
+  persist true
+  provider node[:app][:provider]
+  action :nothing
+end
+
+
 # Let others know we are an appserver
 right_link_tag "appserver:active=true"
 
