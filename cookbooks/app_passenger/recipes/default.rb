@@ -16,7 +16,9 @@ app "Setup Dev Headers" do
 end
 
 
-
+app "stop service" do
+  action :stop
+end
 
 
 
