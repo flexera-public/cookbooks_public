@@ -180,24 +180,14 @@ end
 
 action :install_server do
 
+  # == Installing MySQL server
+  #
   platform = node[:platform]
   # MySQL server depends on MySQL client
   action_install_client
 
-  # == Install MySQL 5.1 and other packages
+  # == Uninstall other packages we don't
   #
-  packages = node[:db_mysql][:server_packages_install]
-  packages.each do |p|
-    package p
-  end unless packages == ""
-
-  # Stop MySQL to allow custom configuration
-  service "mysql" do
-    supports :status => true, :restart => true, :reload => true
-    action :stop
-  end
-
-  # Uninstall other packages we don't
   packages = node[:db_mysql][:packages_uninstall]
   log "Packages to uninstall: #{packages.join(",")}" unless packages == ""
   packages.each do |p|
@@ -206,17 +196,18 @@ action :install_server do
      end
   end unless packages == ""
 
-  # Ubuntu requires deactivating upstart from starting mysql.
-  if platform == "ubuntu"
-    ubuntu_mysql_upstart_conf = "/etc/init/mysql.conf"
-    bash 'disable mysql upstart' do
-      only_if { ::File.exists?(ubuntu_mysql_upstart_conf) }
-      code <<-eof
-        flags "-ex"
-        pkill mysqld
-        mv #{ubuntu_mysql_upstart_conf} #{ubuntu_mysql_upstart_conf}.disabled
-      eof
-    end
+  # == Install MySQL 5.1 and other packages
+  #
+  packages = node[:db_mysql][:server_packages_install]
+  packages.each do |p|
+    package p
+  end unless packages == ""
+
+  # == Stop mysql service 
+  #
+  db_mysql_setup_service
+  service "mysql" do
+    action [ :stop ]
   end
 
   # Create MySQL server system tables
@@ -288,42 +279,18 @@ action :install_server do
   #
   execute "ulimit -n #{mysql_file_ulimit}"
 
-  # == Create mysql init scripts
-  #
-  # The usage of mysql vs mysqld for the service name is inconsistent.  Prior to
-  # MySQL 5.5 the rule was (CentOS/Ubuntu >= 10.04)  => mysql, (Ubuntu < 10.04) => mysqld
-  # With MySQL 5.5 on CentOS it is now mysqld.  The MySQL version number is not part of the
-  # opscode cookbooks where the service name is determined.  Modifing the code to do so
-  # would be messy.  Instead we create both service names on the server by making sure
-  # both /etc/init.d/mysql and /etc/init.d/mysqld exist.  Only one service is registered with
-  # chkconfig or upstart so two attempts to start the service will not be done on boot.  And
-  # any scripts / chef recipe that uses /etc/init.d/mysql[d] directly will work.
-
-  # If the init file does not exist create a symlink to the other one
-  mysql_file = "/etc/init.d/mysql"
-  mysqld_file = "/etc/init.d/mysqld"
-  link mysqld_file do
-    not_if { ::File.exists?(mysqld_file) }
-    to mysql_file
-  end
-
-  link mysql_file do
-    not_if { ::File.exists?(mysql_file) }
-    to mysqld_file
-  end
   # == Setup custom mysqld init script via /etc/sysconfig/mysqld.
   #
   # Timeouts enabled.
+  # Ubuntu's init script does not support configurable startup timeout
   #
-  template "/etc/sysconfig/mysqld" do
+  log_msg = ( platform =~ /redhat|centos/ ) ?  "  Setting mysql startup timeout" : "  Skipping mysql startup timeout setting for Ubuntu" 
+  log log_msg
+  template "/etc/sysconfig/#{node[:db_mysql][:service_name]}" do
     source "sysconfig-mysqld.erb"
     mode "0755"
     cookbook 'db_mysql'
-  end
-  template "/etc/sysconfig/mysql" do
-    source "sysconfig-mysqld.erb"
-    mode "0755"
-    cookbook 'db_mysql'
+    only_if { platform =~ /redhat|centos/ }
   end
 
   # == specific configs for ubuntu
@@ -357,9 +324,9 @@ action :install_server do
 
   # == Start MySQL
   #
+  log "  Server installed.  Starting MySQL"
   service "mysql" do
-    supports :status => true, :restart => true, :reload => true
-    action :start
+    action [ :restart ]
   end
 
 end
