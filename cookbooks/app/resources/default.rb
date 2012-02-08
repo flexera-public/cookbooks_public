@@ -18,7 +18,7 @@ actions :install
   attribute :packages, :kind_of => Array  #set of installed packages
 
 ########################
-actions :setup_host
+actions :setup_vhost
  attribute :app_root, :kind_of => String
  attribute :app_port, :kind_of => String
 
