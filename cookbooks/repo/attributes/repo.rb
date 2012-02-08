@@ -8,8 +8,8 @@
 
 set_unless[:repo][:default][:destination] = "/tmp/repo"
 set_unless[:repo][:default][:repository] = ""
-set_unless[:repo][:default][:revision] = ""
-set_unless[:repo][:default][:provider] = ""
+set_unless[:repo][:default][:revision] = "HEAD"
+set_unless[:repo][:default][:provider] = "repo_git"
 set_unless[:repo][:default][:svn_username] = ""
 set_unless[:repo][:default][:svn_password] = ""
 set_unless[:repo][:default][:ssh_key] = ""

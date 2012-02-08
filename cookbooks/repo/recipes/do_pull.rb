@@ -9,6 +9,10 @@
 
 rs_utils_marker :begin
 
+if ( node[:repo][:default][:destination]== "") then
+  node[:repo][:default][:destination]= "/tmp/repo"
+  log "you did not enter destination, so repo will be pulled to /tmp/repo"
+end
 
 repo "default" do
   destination                 node[:repo][:default][:destination]

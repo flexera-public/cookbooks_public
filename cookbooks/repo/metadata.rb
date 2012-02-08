@@ -31,6 +31,7 @@ attribute "repo/default/revision",
   :display_name => "Branch/Tag",
   :description => "",
   :required => "recommended",
+  :default => "HEAD",
   :recipes => ["repo::default"]
 
 #SVN
@@ -101,6 +102,6 @@ attribute "repo/default/perform_action",
 attribute "repo/default/destination",
   :display_name => "Project App root",
   :description => "Path to where project repo will be pulled",
-  :required => "optional",
+  :required => "recommended",
   :recipes => ["repo::do_pull"]
 
