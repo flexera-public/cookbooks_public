@@ -6,14 +6,18 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 action :stop do
-  service "apache2" do
-    action :stop
+  bash "Starting apache" do
+    code <<-EOH
+     /etc/init.d/#{node[:app_passenger][:apache][:demon]} stop
+    EOH
   end
 end
 
 action :start do
-  service "apache2" do
-    action :start
+  bash "Starting apache" do
+    code <<-EOH
+     /etc/init.d/#{node[:app_passenger][:apache][:demon]} start
+    EOH
   end
 end
 
@@ -26,7 +30,8 @@ end
 action :install do
 
   #Installing some apache development headers required for rubyEE
-  new_resource.packages.each do |p|
+  log "Packages which will be installed #{node[:app_passenger][:packages_install]}"
+  node[:app_passenger][:packages_install].each do |p|
     package p
   end
 

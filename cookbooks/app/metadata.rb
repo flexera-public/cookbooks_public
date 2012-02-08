@@ -19,3 +19,6 @@ recipe "app::do_loadbalancers_deny", "Denies connections from all load balancers
 recipe "app::request_loadbalancer_allow", "Sends a request to all application servers tagged with loadbalancer:app=<applistener_name> to allow connections from the server's private IP address.  This script should be run on a load balancer before any application servers are attached to it."
 
 recipe "app::request_loadbalancer_deny", "Sends a request to all application servers tagged with loadbalancer:app=<applistener_name> to deny connections from the server's private IP address.  This script should be run on a load balancer after disconnecting application servers or upon decommissioning."
+
+
+recipe "app::do_package_install", "Install packages reqiured for App server"

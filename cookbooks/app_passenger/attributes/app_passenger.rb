@@ -22,6 +22,7 @@ case node[:platform]
     set[:app_passenger][:apache][:log_dir]="/var/log/apache2"
     set[:app_passenger][:packages_install] = ["libopenssl-ruby", "libcurl4-openssl-dev", "apache2-mpm-prefork", "apache2-prefork-dev", "libapr1-dev", "libcurl4-openssl-dev"]
     #set[:app_passenger][:ruby_packages_install] = []
+      set[:app_passenger][:apache][:demon]="apache2"
 
   when "centos","redhat","redhatenterpriseserver","fedora","suse"
     set[:app_passenger][:apache][:user]="apache"
@@ -30,6 +31,7 @@ case node[:platform]
 
     set[:app_passenger][:packages_install] = ["zlib-devel", "openssl-devel", "readline-devel", "curl-devel", "openssl-devel", "httpd-devel", "apr-devel", "apr-util-devel", "readline-devel"]
     #set[:app_passenger][:ruby_packages_install] = ["]
+        set[:app_passenger][:apache][:demon]="httpd"
 
   else
     raise "Unrecognized distro #{node[:platform]}, exiting "

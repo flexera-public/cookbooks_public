@@ -15,7 +15,10 @@ app "Setup Dev Headers" do
   action :install
 end
 
-
+app "default" do
+#    provider "app_passenger"
+  action :start
+end
 
 =begin
 #Installing some apache development headers required for rubyEE

@@ -6,6 +6,14 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
+
+app "Setup apache vhost" do
+  provider "app_passenger"
+  app_root  node[:app_passenger][:public_root] #, :kind_of => String
+  app_port  node[:app_passenger][:apache][:port]#, :kind_of => String
+  action :setup_vhost
+end
+
 =begin
 service "apache2" do
   action :nothing
