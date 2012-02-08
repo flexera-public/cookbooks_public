@@ -28,10 +28,8 @@ node[:repo].each do |resource_name, entry|
   case entry[:provider]
     when "repo_git"
       branch = (entry[:revision]) ? entry[:revision] : "master"
-    when "repo_svn"
-      branch = (entry[:revision]) ? entry[:revision] : "HEAD"
     else
-      branch = (entry[:revision]) ? entry[:revision] : ""
+      branch = (entry[:revision]) ? entry[:revision] : "HEAD"
   end
 
   log "  Registering #{resource_name} prov: #{entry[:provider]}"
