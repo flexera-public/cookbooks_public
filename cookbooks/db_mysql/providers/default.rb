@@ -205,7 +205,6 @@ action :install_server do
 
   # == Stop mysql service 
   #
-  db_mysql_setup_service
   service "mysql" do
     action [ :stop ]
   end
