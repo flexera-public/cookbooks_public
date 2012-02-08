@@ -1,5 +1,6 @@
 #
-# Cookbook Name:: app
+# Cookbook Name::app
+# Recipe::do_setup_vhost
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -7,16 +8,8 @@
 
 rs_utils_marker :begin
 
-# Setup default values for database resource
-#
-log "Provider is #{node[:app][:provider]}"
 app "default" do
-  persist true
-  provider node[:app][:provider]
-  action :nothing
+    action :setup_vhost
 end
-
-# Let others know we are an appserver
-right_link_tag "appserver:active=true"
 
 rs_utils_marker :end

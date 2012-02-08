@@ -8,7 +8,7 @@
 
 rs_utils_marker :begin
 
-app "Setup Dev Headers" do
+app "default" do
     action :install
 end
 
