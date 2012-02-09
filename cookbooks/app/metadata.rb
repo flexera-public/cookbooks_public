@@ -27,4 +27,4 @@ recipe "app::do_setup_db_connection", "Recipe for setup_db_connection action exe
 recipe "app::do_start_app_server", "Recipe for start action execution"
 recipe "app::do_restart_app_server", "Recipe for restart action execution"
 recipe "app::do_stop_app_server", "Recipe for stop action execution"
-recipe "app::do_code_update", "Recipe for code_update action execution"
+recipe "app::do_update_code", "Recipe for code_update action execution"
