@@ -32,7 +32,8 @@
     "app::request_loadbalancer_allow": "Sends a request to all application servers tagged with loadbalancer:app=<applistener_name> to allow connections from the server's private IP address.  This script should be run on a load balancer before any application servers are attached to it.",
     "app::request_loadbalancer_deny": "Sends a request to all application servers tagged with loadbalancer:app=<applistener_name> to deny connections from the server's private IP address.  This script should be run on a load balancer after disconnecting application servers or upon decommissioning.",
     "app::do_package_install": "Install packages reqiured for App server",
-    "app::do_setup_vhost": "Recipe for setup_db_connection action execution",
+    "app::do_setup_vhost": "Recipe for setup_vhost action execution",
+    "app::do_setup_db_connection": "Recipe for setup_db_connection action execution",
     "app::do_start_app_server": "Recipe for start action execution",
     "app::do_restart_app_server": "Recipe for restart action execution",
     "app::do_stop_app_server": "Recipe for stop action execution"
