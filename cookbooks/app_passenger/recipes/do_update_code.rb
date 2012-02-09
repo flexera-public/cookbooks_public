@@ -1,5 +1,6 @@
 #
 # Cookbook Name::app_passenger
+# Recipe do_update_code
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -8,6 +9,16 @@
 rs_utils_marker :begin
 
 
+
+
+
+
+
+
+####################################################################
+####################################################################
+####################################################################
+=begin
 #Reading app name from tmp file (for execution in "operational" phase))
 if(node[:app_passenger][:deploy_dir]=="/home/rails/")
   app_name = IO.read('/tmp/appname')
@@ -118,5 +129,5 @@ log "INFO: Creating subversion config"
 
 end
 
-
+=end
 rs_utils_marker :end

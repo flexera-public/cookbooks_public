@@ -1,0 +1,22 @@
+# Mod_jk settings
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
+# Load mod_jk module
+LoadModule    jk_module  modules/mod_jk.so
+
+# Where to find workers.properties
+JkWorkersFile /etc/<%= @tomcat_name %>/workers.properties
+# Where to put jk shared memory
+JkShmFile     /var/log/<%= @tomcat_name %>/mod_jk.shm
+# Where to put jk logs
+JkLogFile     /var/log/<%= @tomcat_name %>/mod_jk.log
+# Set the jk log level [debug/error/info]
+JkLogLevel    info
+# Select the log format
+JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
+# JkOptions indicate to send SSL KEY SIZE,
+JkOptions     +ForwardKeySize +ForwardURICompat -ForwardDirectories
+# JkRequestLogFormat set the request format
+JkRequestLogFormat     "%w %V %T"

@@ -15,7 +15,7 @@ recipe  "app_tomcat::do_update_code", "Update application source files from the 
 recipe  "app_tomcat::setup_db_connection", "Set up the MySQL database db.tomcat connection file."
 recipe  "app_tomcat::setup_tomcat_configs", "Configure tomcat."
 recipe  "app_tomcat::setup_monitoring", "Install collectd monitoring for tomcat."
-
+recipe  "app_tomcat::setup_mod_jk_vhost", "Installs, configures mod_jk and creates vhost."
 attribute "tomcat",
   :display_name => "Tomcat Application Settings",
   :type => "hash"
@@ -36,46 +36,7 @@ attribute "tomcat/java",
   :display_name => "Tomcat java settings",
   :type => "hash"
 
-attribute "tomcat/code/repo_type",
-  :display_name => "Repository Type",
-  :description => "Choose type of Repository: SVN or GIT",
-  :choice => ["git", "svn"],
-  :default => "git",
-  :required => "optional",
-  :recipes => [ "app_tomcat::do_update_code" ]
-
-attribute "tomcat/code/url",
-  :display_name => "Repository URL",
-  :description => "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
-  :required => "required",
-  :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
-
-attribute "tomcat/code/credentials",
-  :display_name => "Repository Credentials",
-  :description => "The private SSH key of the git repository.",
-  :required => "optional",
-  :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
-
-attribute "tomcat/code/svn_username",
-  :display_name => "SVN username",
-  :description => "The SVN username that is used to checkout the application code from SVN repository..If you use git just change value to $ignore",
-  :required => "optional",
-  :default => "",
-  :recipes => [ "app_tomcat::do_update_code" ]
-
-attribute "tomcat/code/svn_password",
-  :display_name => "SVN password",
-  :description => "The SVN password that is used to checkout the application code from SVN repository..If you use git just change value to $ignore",
-  :required => "optional",
-  :default => "",
-  :recipes => [ "app_tomcat::do_update_code" ]
-
-attribute "tomcat/code/branch",
-  :display_name => "Repository Branch",
-  :description => "The name of the branch within the git repository where the application code should be pulled from. Ex: mybranch",
-  :required => "optional",
-  :default => "master",
-  :recipes => [ "app_tomcat::do_update_code", "app_tomcat::default" ]
+#Code repo attributes
 
 attribute "tomcat/code/root_war",
   :display_name => "War file for ROOT",
@@ -83,6 +44,15 @@ attribute "tomcat/code/root_war",
   :required => "optional",
   :recipes => [ "app_tomcat::do_update_code" ]
 
+
+attribute "tomcat/code/perform_action",
+  :display_name => "Type of repo pull",
+  :description => "Choose the pull action which will be performed, 'pull'- standard repo pull, 'capistrano_pull' standard pull and then capistrano  .",
+  :choice => ["pull", "capistrano_pull"],
+  :default => "pull",
+  :recipes => [ "app_tomcat::do_update_code" ]
+
+#Java tuning parameters
 attribute "tomcat/java/xms",
   :display_name => "Tomcat Java XMS",
   :description => "The java Xms argument (i.e. 512m)",
@@ -92,5 +62,29 @@ attribute "tomcat/java/xms",
 attribute "tomcat/java/xmx",
   :display_name => "Tomcat Java XMX",
   :description => "The java Xmx argument (i.e. 512m)",
+  :required => "optional",
+  :recipes => [ "app_tomcat::setup_tomcat_configs" ]
+
+attribute "tomcat/java/PermSize",
+  :display_name => "Tomcat Java PermSize",
+  :description => "The java PermSize argument (i.e. 256m)",
+  :required => "optional",
+  :recipes => [ "app_tomcat::setup_tomcat_configs" ]
+
+attribute "tomcat/java/MaxPermSize",
+  :display_name => "Tomcat Java MaxPermSize",
+  :description => "The java MaxPermSize argument (i.e. 256m)",
+  :required => "optional",
+  :recipes => [ "app_tomcat::setup_tomcat_configs" ]
+
+attribute "tomcat/java/NewSize",
+  :display_name => "Tomcat Java NewSize",
+  :description => "The java NewSize argument (i.e. 256m)",
+  :required => "optional",
+  :recipes => [ "app_tomcat::setup_tomcat_configs" ]
+
+attribute "tomcat/java/MaxNewSize",
+  :display_name => "Tomcat Java MaxNewSize",
+  :description => "The java MaxNewSize argument (i.e. 256m)",
   :required => "optional",
   :recipes => [ "app_tomcat::setup_tomcat_configs" ]

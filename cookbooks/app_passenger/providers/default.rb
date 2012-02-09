@@ -84,6 +84,46 @@ action :setup_vhost do
 
 end
 
+action :code_update do
+
+  #Reading app name from tmp file (for execution in "operational" phase))
+  if(node[:app_passenger][:deploy_dir]=="/home/rails/")
+    app_name = IO.read('/tmp/appname')
+    node[:app_passenger][:deploy_dir]="/home/rails/#{app_name.to_s.chomp}"
+  end
+
+  # Preparing dirs, required for apache+passenger
+  log "INFO: Creating directory for project deployment - <#{node[:app_passenger][:deploy_dir]}>"
+  directory node[:app_passenger][:deploy_dir] do
+    recursive true
+  end
+
+
+  directory "#{node[:app_passenger][:deploy_dir].chomp}/shared/log" do
+    recursive true
+  end
+
+  directory "#{node[:app_passenger][:deploy_dir].chomp}/shared/system" do
+    recursive true
+  end
+
+
+  #todo delete node[:app_passenger][:project][:migration_cmd]
+  #todo delete [:app_passenger][:repository]*
+  #todo add action input
+  # Downloading project repo
+  repo "default" do
+    destination node[:app_passenger][:deploy_dir]
+    action :capistrano_pull
+    app_user node[:app_passenger][:apache][:user]
+    environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
+    create_dirs_before_symlink
+  end
+
+
+
+end
+
 action :setup_db_connection do
 
   if node[:app_passenger][:project][:db][:adapter]=="mysql"
@@ -106,7 +146,8 @@ action :setup_db_connection do
 
   #creating database template
   log "INFO: Generating database.yml"
-  template "#{node[:app_passenger][:deploy_dir].chomp}/current/config/database.yml" do
+  #template "#{node[:app_passenger][:deploy_dir].chomp}/current/config/database.yml" do
+  template "#{node[:app_passenger][:deploy_dir].chomp}/config/database.yml" do
     owner node[:app_passenger][:apache][:user]
     source "database.yml.erb"
     action :create_if_missing
@@ -125,5 +166,14 @@ action :setup_db_connection do
   end
 
 end
+
+
+
+
+
+
+
+
+
 
 
