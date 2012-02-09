@@ -23,7 +23,7 @@ recipe "app::request_loadbalancer_deny", "Sends a request to all application ser
 
 recipe "app::do_package_install", "Install packages reqiured for App server"
 recipe "app::do_setup_vhost", "Recipe for setup_vhost action execution"
-recipe "app::do_setup_vhost", "Recipe for setup_db_connection action execution"
+recipe "app::do_setup_db_connection", "Recipe for setup_db_connection action execution"
 recipe "app::do_start_app_server", "Recipe for start action execution"
 recipe "app::do_restart_app_server", "Recipe for restart action execution"
 recipe "app::do_stop_app_server", "Recipe for stop action execution"
