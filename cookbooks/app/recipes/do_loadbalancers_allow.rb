@@ -8,7 +8,7 @@
 rs_utils_marker :begin
 
 class Chef::Recipe
-  include RightScale::LB::Helper
+  include RightScale::App::Helper
 end
 
 vhosts(node[:lb][:vhost_names]).each do | vhost_name |
