@@ -7,7 +7,7 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
-
+=begin
 etc_apache = "/etc/#{node[:apache][:config_subdir]}"
 
 #check if mod_jk is installed
@@ -18,18 +18,12 @@ if !File.exists?("#{etc_apache}/conf.d/mod_jk.conf")
 
   case node[:platform]
     when "ubuntu", "debian"
-
       ubuntu_p = ["apache2-mpm-prefork", "apache2-threaded-dev", "libapr1-dev", "libapache2-mod-jk"]
-
       ubuntu_p.each do |p|
         package p
-
-
-
       end
 
     when "centos","fedora","suse","redhat"
-
       if arch == "x86_64"
         bash "install_remove" do
           code <<-EOH
@@ -111,5 +105,5 @@ end
 else
   log "mod_jk already installed, skipping the recipe"
 end
-
+=end
 rs_utils_marker :end

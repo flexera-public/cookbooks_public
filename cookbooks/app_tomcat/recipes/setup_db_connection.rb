@@ -10,7 +10,7 @@
 #
 
 rs_utils_marker :begin
-
+=begin
 template "/etc/tomcat6/context.xml" do
   source "context_xml.erb"
   owner "root"
@@ -45,5 +45,5 @@ cookbook_file "/usr/share/tomcat6/lib/jstl-impl-1.2.jar" do
   group "root"
   mode "0644"
 end
-
+=end
 rs_utils_marker :end

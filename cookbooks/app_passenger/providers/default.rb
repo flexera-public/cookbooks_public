@@ -5,6 +5,7 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+#stop apache/passenger
 action :stop do
   bash "Starting apache" do
     flags "-ex"
@@ -14,6 +15,7 @@ action :stop do
   end
 end
 
+#start apache/passenger
 action :start do
   bash "Starting apache" do
     flags "-ex"
@@ -23,12 +25,13 @@ action :start do
   end
 end
 
+#restart apache/passenger
 action :restart do
   action_stop
   action_start
 end
 
-
+# Installing required packages to system
 action :install do
 
   #Installing some apache development headers required for rubyEE
@@ -66,7 +69,7 @@ action :install do
     code <<-EOH
       tar xzf /tmp/ruby-enterprise-installed.tar.gz -C /opt/
     EOH
-    only_if do File.exists?("/tmp/ruby-enterprise-installed.tar.gz")  end
+    only_if do ::File.exists?("/tmp/ruby-enterprise-installed.tar.gz")  end
   end
 
 
@@ -77,7 +80,7 @@ action :install do
     code <<-EOH
       /opt/ruby-enterprise/bin/gem install passenger -q --no-rdoc --no-ri
     EOH
-    not_if do (File.exists?("/opt/ruby-enterprise/bin/passenger-install-apache2-module")) end
+    not_if do (::File.exists?("/opt/ruby-enterprise/bin/passenger-install-apache2-module")) end
   end
 
 
@@ -91,6 +94,7 @@ action :install do
 
 end
 
+#setup apache/passenger virtual host
 action :setup_vhost do
 
   #Removing preinstalled apache ssl.conf as it conflicts with ports.conf of web:apache
@@ -128,7 +132,7 @@ action :setup_vhost do
 
 end
 
-
+#setup project db connection
 action :setup_db_connection do
 
   if node[:app_passenger][:project][:db][:adapter]=="mysql"

@@ -7,7 +7,7 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
-
+=begin
 template "/etc/tomcat6/tomcat6.conf" do
   action :create
   source "tomcat6_conf.erb"
@@ -33,5 +33,5 @@ service "tomcat6" do
   supports :status => true, :restart => true
   action [ :enable, :start ]
 end
-
+=end
 rs_utils_marker :end
