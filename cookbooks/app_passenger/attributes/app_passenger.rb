@@ -46,22 +46,22 @@ set[:app_passenger][:gem_bin]="/opt/ruby-enterprise/bin/gem"
 set[:app_passenger][:ruby_bin]="/opt/ruby-enterprise/bin/ruby"
 set[:app_passenger][:apache_psr_install_module]="/opt/ruby-enterprise/bin/passenger-install-apache2-module"
 
-set_unless[:app_passenger][:repository][:type]="git"
-set_unless[:app_passenger][:repository][:revision]="HEAD"
-set_unless[:app_passenger][:repository][:url]=""
-set_unless[:app_passenger][:repository][:svn][:password]=""
-set_unless[:app_passenger][:repository][:svn][:username]=""
-set_unless[:app_passenger][:repository][:git][:credentials]=""
+#set_unless[:app_passenger][:repository][:type]="git"
+#set_unless[:app_passenger][:repository][:revision]="HEAD"
+#set_unless[:app_passenger][:repository][:url]=""
+#set_unless[:app_passenger][:repository][:svn][:password]=""
+#set_unless[:app_passenger][:repository][:svn][:username]=""
+#set_unless[:app_passenger][:repository][:git][:credentials]=""
 
 set_unless[:app_passenger][:project][:environment]=""
 set_unless[:app_passenger][:project][:gem_list]=""
 set_unless[:app_passenger][:project][:custom_cmd]=""
 
-set_unless[:app_passenger][:project][:migration_cmd]=""
-set_unless[:app_passenger][:project][:migrate]=false
-if node[:app_passenger][:project][:migration_cmd]!=""
-  set_unless[:app_passenger][:project][:migrate]=true
-end
+#set_unless[:app_passenger][:project][:migration_cmd]=""
+#set_unless[:app_passenger][:project][:migrate]=false
+#if node[:app_passenger][:project][:migration_cmd]!=""
+#  set_unless[:app_passenger][:project][:migrate]=true
+#end
 
 set_unless[:app_passenger][:project][:db][:schema_name]=""
 set_unless[:app_passenger][:project][:db][:adapter]="mysql"

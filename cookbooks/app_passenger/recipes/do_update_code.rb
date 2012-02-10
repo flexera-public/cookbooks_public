@@ -34,7 +34,6 @@ rs_utils_marker :begin
 
   #todo delete node[:app_passenger][:project][:migration_cmd]
   #todo delete [:app_passenger][:repository]*
-  #todo add action input
   # Downloading project repo
   repo "default" do
     destination node[:app_passenger][:deploy_dir]
