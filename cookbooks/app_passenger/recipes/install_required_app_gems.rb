@@ -18,7 +18,9 @@ end
 # the required gems using "bundle install" command.
 #
 log "Bundler will install gems from Gemfile"
+
 bash "Bundle gem install" do
+  flags "-ex"
   code <<-EOH
     /opt/ruby-enterprise/bin/bundle install --gemfile=#{node[:app_passenger][:deploy_dir]}/current/Gemfile
   EOH

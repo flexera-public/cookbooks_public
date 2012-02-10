@@ -18,6 +18,7 @@ rs_utils_marker :begin
 
 log "Running user defined commands"
 bash "run commands" do
+  flags "-ex"
   cwd "#{node[:app_passenger][:deploy_dir]}/"
   code <<-EOH
     IFS=,  read -a ARRAY1 <<< "#{node[:app_passenger][:project][:custom_cmd]}"

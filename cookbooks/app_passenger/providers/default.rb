@@ -7,6 +7,7 @@
 
 action :stop do
   bash "Starting apache" do
+    flags "-ex"
     code <<-EOH
      /etc/init.d/#{node[:app_passenger][:apache][:demon]} stop
     EOH
@@ -15,6 +16,7 @@ end
 
 action :start do
   bash "Starting apache" do
+    flags "-ex"
     code <<-EOH
      /etc/init.d/#{node[:app_passenger][:apache][:demon]} start
     EOH

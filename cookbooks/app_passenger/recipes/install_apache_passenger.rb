@@ -10,6 +10,7 @@ rs_utils_marker :begin
 # Installing passenger module
 log"INFO: Installing passenger"
 bash "Install apache passenger gem" do
+  flags "-ex"
   code <<-EOH
 /opt/ruby-enterprise/bin/gem install passenger -q --no-rdoc --no-ri
   EOH
@@ -18,6 +19,7 @@ end
 
 
 bash "Install_apache_passenger_module" do
+  flags "-ex"
   code <<-EOH
     /opt/ruby-enterprise/bin/passenger-install-apache2-module --auto
   EOH
