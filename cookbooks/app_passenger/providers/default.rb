@@ -1,5 +1,5 @@
-# Cookbook Name:: repo
-# Provider:: repo_git
+# Cookbook Name:: app_passenger
+# Provider:: app_passenger
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -37,16 +37,61 @@ action :install do
     package p
   end
 
+  #Saving project name variables
+  ENV['RAILS_APP'] = node[:web_apache][:application_name]
+
+  bash "save global vars" do
+    code <<-EOH
+      echo $RAILS_APP >> /tmp/appname
+    EOH
+  end
+
+  log "  Installing Ruby Enterprise Edition..."
+  cookbook_file "/tmp/ruby-enterprise-installed.tar.gz" do
+    source "ruby-enterprise_x86_64.tar.gz"
+    mode "0644"
+    only_if do node[:kernel][:machine].include? "x86_64" end
+  end
+
+  cookbook_file "/tmp/ruby-enterprise-installed.tar.gz" do
+    source "ruby-enterprise_i686.tar.gz"
+    mode "0644"
+    only_if do node[:kernel][:machine].include? "i686" end
+  end
+
+  bash "install_ruby_EE" do
+    flags "-ex"
+    code <<-EOH
+      tar xzf /tmp/ruby-enterprise-installed.tar.gz -C /opt/
+    EOH
+    only_if do File.exists?("/tmp/ruby-enterprise-installed.tar.gz")  end
+  end
+
+
+  # Installing passenger module
+  log"INFO: Installing passenger"
+  bash "Install apache passenger gem" do
+    flags "-ex"
+    code <<-EOH
+      /opt/ruby-enterprise/bin/gem install passenger -q --no-rdoc --no-ri
+    EOH
+    not_if do (File.exists?("/opt/ruby-enterprise/bin/passenger-install-apache2-module")) end
+  end
+
+
+  bash "Install_apache_passenger_module" do
+    flags "-ex"
+    code <<-EOH
+      /opt/ruby-enterprise/bin/passenger-install-apache2-module --auto
+    EOH
+    not_if "test -e #{node[:app_passenger][:ruby_gem_base_dir].chomp}/gems/passenger*/ext/apache2/mod_passenger.so"
+  end
 
 end
 
 action :setup_vhost do
 
-#service "apache2" do
-#  action :nothing
-#end
-
-#Removing preinstalled apache ssl.conf as it conflicts with ports.conf of web:apache
+  #Removing preinstalled apache ssl.conf as it conflicts with ports.conf of web:apache
   file "/etc/httpd/conf.d/ssl.conf" do
     action :delete
     backup false
@@ -54,77 +99,33 @@ action :setup_vhost do
   end
 
 
-# Generation of new apache ports.conf, based on user prefs
+  # Generation of new apache ports.conf, based on user prefs
   template "#{node[:app_passenger][:apache][:install_dir]}/ports.conf" do
     source "ports.conf.erb"
     cookbook 'app_passenger'
   end
 
-#unlinking default apache vhost if it exists
+  #unlinking default apache vhost if it exists
   link "#{node[:app_passenger][:apache][:install_dir]}/sites-enabled/000-default" do
     action :delete
     only_if "test -L #{node[:app_passenger][:apache][:install_dir].chomp}/sites-enabled/000-default"
   end
 
-#application_root = new_resource.app_root
-#application_port = new_resource.app_port
 
 # Generation of new vhost config, based on user prefs
   log"INFO: Generating new apache vhost"
   web_app "http-#{node[:app_passenger][:apache][:port]}-#{node[:web_apache][:server_name]}.vhost" do
     template "basic_vhost.erb"
     docroot node[:app_passenger][:public_root]
-    # docroot application_root
     vhost_port node[:app_passenger][:apache][:port]
-    # vhost_port application_port
     server_name node[:web_apache][:server_name]
     rails_env node[:app_passenger][:project][:environment]
     cookbook 'app_passenger'
-  #  notifies :restart, resources(:service => "apache2"), :immediately
   end
 
 
 end
 
-action :code_update do
-
-  #Reading app name from tmp file (for execution in "operational" phase))
-  if(node[:app_passenger][:deploy_dir]=="/home/rails/")
-    app_name = IO.read('/tmp/appname')
-    node[:app_passenger][:deploy_dir]="/home/rails/#{app_name.to_s.chomp}"
-  end
-
-  # Preparing dirs, required for apache+passenger
-  log "INFO: Creating directory for project deployment - <#{node[:app_passenger][:deploy_dir]}>"
-  directory node[:app_passenger][:deploy_dir] do
-    recursive true
-  end
-
-
-  directory "#{node[:app_passenger][:deploy_dir].chomp}/shared/log" do
-    recursive true
-  end
-
-  directory "#{node[:app_passenger][:deploy_dir].chomp}/shared/system" do
-    recursive true
-  end
-
-
-  #todo delete node[:app_passenger][:project][:migration_cmd]
-  #todo delete [:app_passenger][:repository]*
-  #todo add action input
-  # Downloading project repo
-  repo "default" do
-    destination node[:app_passenger][:deploy_dir]
-    action :capistrano_pull
-    app_user node[:app_passenger][:apache][:user]
-    environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
-    create_dirs_before_symlink
-  end
-
-
-
-end
 
 action :setup_db_connection do
 

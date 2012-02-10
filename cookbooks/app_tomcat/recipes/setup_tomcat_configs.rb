@@ -1,4 +1,3 @@
-#
 # Cookbook Name:: app_tomcat
 # Recipe:: setup_tomcat_application_vhost
 #

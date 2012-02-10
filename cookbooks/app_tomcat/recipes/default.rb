@@ -8,7 +8,7 @@
 rs_utils_marker :begin
 
 
-
+=begin
   node[:tomcat][:package_dependencies].each do |p|
     log "installing #{p}"
     package p
@@ -77,5 +77,5 @@ rs_utils_marker :begin
       fi
     EOH
   end
-
+ =end
 rs_utils_marker :end
