@@ -9,6 +9,7 @@
 rs_utils_marker :begin
 
 app "default" do
+
   action :code_update
 end
 

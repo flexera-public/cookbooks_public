@@ -35,11 +35,7 @@ actions :code_update
 
 
 actions :setup_db_connection
-  attribute :db_host, :kind_of => String
-  attribute :db_port, :kind_of => String
-  attribute :db_provider, :kind_of => String
-  attribute :db_user, :kind_of => String
-  attribute :db_password, :kind_of => String
+
 
 actions :setup_monitoring
 
