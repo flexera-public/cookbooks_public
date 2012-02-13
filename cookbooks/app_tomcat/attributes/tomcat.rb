@@ -5,6 +5,7 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+set[:app][:provider] = "app_tomcat"
 # == Recommended attributes
 #
 set_unless[:tomcat][:server_name] = "myserver"  
@@ -35,6 +36,7 @@ set_unless[:tomcat][:code][:ros][:prefix] = ""
 
 set_unless[:tomcat][:code][:branch] = "HEAD"
 set_unless[:tomcat][:db_adapter] = "mysql"
+#TODo remove pull
 if set_unless[:tomcat][:code][:perform_action] == "pull"
   set_unless[:tomcat][:code][:perform_action] = :pull
 else

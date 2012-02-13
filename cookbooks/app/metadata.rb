@@ -7,6 +7,7 @@ version          "0.1"
 
 depends "sys_firewall"
 depends "rs_utils"
+depends "repo"
 
 
 
@@ -28,3 +29,4 @@ recipe "app::do_start_app_server", "Recipe for start action execution"
 recipe "app::do_restart_app_server", "Recipe for restart action execution"
 recipe "app::do_stop_app_server", "Recipe for stop action execution"
 recipe "app::do_update_code", "Recipe for code_update action execution"
+recipe "app::do_setup_monitoring", "Recipe for setup_monitoring action execution"

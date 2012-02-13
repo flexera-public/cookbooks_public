@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "sys_firewall": ">= 0.0.0",
-    "rs_utils": ">= 0.0.0"
+    "rs_utils": ">= 0.0.0",
+    "repo": ">= 0.0.0"
   },
   "recommendations": {
   },
@@ -37,7 +38,8 @@
     "app::do_start_app_server": "Recipe for start action execution",
     "app::do_restart_app_server": "Recipe for restart action execution",
     "app::do_stop_app_server": "Recipe for stop action execution",
-    "app::do_update_code": "Recipe for code_update action execution"
+    "app::do_update_code": "Recipe for code_update action execution",
+    "app::do_setup_monitoring": "Recipe for setup_monitoring action execution"
   },
   "version": "0.1.0"
 }

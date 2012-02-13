@@ -7,7 +7,7 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-
+=begin
 # add the collectd exec plugin to the set of collectd plugins if it isn't already there
 rs_utils_enable_collectd_plugin 'exec'
 
@@ -44,3 +44,4 @@ EOF
 else
   log("Collectd plugin for Tomcat already installed, skipping...")
 end
+=end

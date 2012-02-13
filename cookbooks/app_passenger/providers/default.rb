@@ -177,8 +177,44 @@ action :setup_db_connection do
 end
 
 
+action :code_update do
+
+  log "INFO: Creating directory for project deployment - <#{node[:app_passenger][:deploy_dir]}>"
+  directory node[:app_passenger][:deploy_dir] do
+    recursive true
+  end
+ #Reading app name from tmp file (for execution in "operational" phase))
+
+  if(node[:app_passenger][:deploy_dir]=="/home/rails/")
+    app_name = IO.read('/tmp/appname')
+    node[:app_passenger][:deploy_dir]="/home/rails/#{app_name.to_s.chomp}"
+  end
+
+  # Preparing dirs, required for apache+passenger
+  directory "#{node[:app_passenger][:deploy_dir].chomp}/shared/log" do
+    recursive true
+  end
+
+  directory "#{node[:app_passenger][:deploy_dir].chomp}/shared/system" do
+    recursive true
+  end
+
+#log "#{node[:repo].inspect}"
+
+repo = node[:repo][:default][:repository]
+  repo "Get project source" do
+    repository repo
+    revision node[:repo][:default][:revision]
+    provider node[:repo][:default][:provider] # "repo_git" #
+    destination node[:app_passenger][:deploy_dir]
+    action :capistrano_pull
+    app_user node[:app_passenger][:apache][:user]
+    environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
+    create_dirs_before_symlink
+  end
 
 
+  end
 
 
 
