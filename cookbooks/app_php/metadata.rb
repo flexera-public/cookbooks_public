@@ -32,7 +32,7 @@ attribute "php/modules_list",
 attribute "php/db_schema_name",
   :display_name => "Database Schema Name",
   :description => "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema will be backed up.  Ex: mydbschema",
-  :required => false,
+  :required => true,
   :recipes => [ "app_php::setup_db_connection" ]
 
 attribute "php/code",
