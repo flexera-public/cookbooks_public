@@ -7,6 +7,7 @@
 
 rs_utils_marker :begin
 
+log "default empty recipe for attributes initialization"
 
 =begin
   node[:tomcat][:package_dependencies].each do |p|
@@ -77,5 +78,5 @@ rs_utils_marker :begin
       fi
     EOH
   end
- =end
+=end
 rs_utils_marker :end

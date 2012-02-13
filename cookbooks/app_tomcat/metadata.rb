@@ -48,34 +48,40 @@ attribute "tomcat/java/xms",
   :display_name => "Tomcat Java XMS",
   :description => "The java Xms argument (i.e. 512m)",
   :required => "optional",
+  :default => "512m",
   :recipes => [ "app_tomcat::do_update_code" ]
 
 attribute "tomcat/java/xmx",
   :display_name => "Tomcat Java XMX",
   :description => "The java Xmx argument (i.e. 512m)",
   :required => "optional",
+  :default => "512m",
   :recipes => [ "app_tomcat::do_update_code" ]
 
 attribute "tomcat/java/PermSize",
   :display_name => "Tomcat Java PermSize",
   :description => "The java PermSize argument (i.e. 256m)",
   :required => "optional",
+  :default => "256m",
   :recipes => [ "app_tomcat::do_update_code" ]
 
 attribute "tomcat/java/MaxPermSize",
   :display_name => "Tomcat Java MaxPermSize",
   :description => "The java MaxPermSize argument (i.e. 256m)",
   :required => "optional",
+  :default => "256m",
   :recipes => [ "app_tomcat::do_update_code" ]
 
 attribute "tomcat/java/NewSize",
   :display_name => "Tomcat Java NewSize",
   :description => "The java NewSize argument (i.e. 256m)",
   :required => "optional",
+  :default => "256m",
   :recipes => [ "app_tomcat::do_update_code" ]
 
 attribute "tomcat/java/MaxNewSize",
   :display_name => "Tomcat Java MaxNewSize",
   :description => "The java MaxNewSize argument (i.e. 256m)",
   :required => "optional",
+  :default => "256m",
   :recipes => [ "app_tomcat::do_update_code" ]
