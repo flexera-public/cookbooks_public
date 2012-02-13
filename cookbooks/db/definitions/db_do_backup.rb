@@ -40,12 +40,12 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   # == Verify initalized database
   # Check the node state to verify that we have correctly initialized this server.
   db_state_assert :either
-  
-  log "  Performing pre-backup check..." 
+
+  log "  Performing pre-backup check..."
   db DATA_DIR do
     action :pre_backup_check
   end
-  
+
   # == Aquire the backup lock or die
   #
   # This lock is released in the 'backup' script for now.
@@ -56,12 +56,12 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     action :backup_lock_take
     force do_force
   end
-  
+
   log "  Performing (#{do_backup_type} backup) lock DB and write backup info file..."
   db DATA_DIR do
     action [ :lock, :write_backup_info ]
   end
-  
+
   log "  Performing (#{do_backup_type} backup)Snapshot with lineage #{node[:db][:backup][:lineage]}.."
   # Requires block_device node[:db][:block_device] to be instantiated
   # previously. Make sure block_device::default recipe has been run.
@@ -69,12 +69,12 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     lineage node[:db][:backup][:lineage]
     action :snapshot
   end
-  
+
   log "  Performing unlock DB..."
   db DATA_DIR do
     action :unlock
   end
-  
+
   log "  Performing (#{do_backup_type})Backup of lineage #{node[:db][:backup][:lineage]} and post-backup cleanup..."
   cloud = node[:cloud][:provider]
   # Log that storage rotation is not supported on ROS storage types
@@ -114,7 +114,8 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
 
   log "  background process = '#{background_exe}'"
   bash "backup.rb" do
-    environment ({ 
+    flags "-ex"
+    environment ({
                    "PRIMARY_STORAGE_KEY"      => node[:block_device][:backup][:primary][:cred][:user],
                    "PRIMARY_STORAGE_SECRET"   => node[:block_device][:backup][:primary][:cred][:secret],
                    "SECONDARY_STORAGE_KEY"    => node[:block_device][:backup][:secondary][:cred][:user],

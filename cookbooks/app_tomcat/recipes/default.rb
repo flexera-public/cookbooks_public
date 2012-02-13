@@ -47,7 +47,7 @@ rs_utils_marker :begin
     command "alternatives --auto java"
     action :run
   end
-  
+
   ## Link mysql-connector plugin to Tomcat6 lib
   # ln -sf /usr/share/java/mysql-connector-java.jar /usr/share/tomcat6/lib/mysql-connector-java.jar
   # todo: if /usr/share/tomcat6/lib/mysql-connector-java.jar exists delete it first
@@ -64,7 +64,7 @@ rs_utils_marker :begin
 
 
   # Moving tomcat logs to mnt
-  if ! File.directory?("/mnt/log/tomcat6") 
+  if ! File.directory?("/mnt/log/tomcat6")
     directory "/mnt/log/tomcat6" do
       owner "tomcat"
       group "tomcat"
@@ -80,14 +80,14 @@ rs_utils_marker :begin
       to "/mnt/log/tomcat6"
     end
   end
-  
+
   bash "Create /usr/lib/jvm-exports/java if possible" do
     flags "-ex"
     code <<-EOH
       if [ -d "/usr/lib/jvm-exports" ] && [ ! -d "/usr/lib/jvm-exports/java" ]; then
         cd /usr/lib/jvm-exports
         java_dir=`ls -d java-* -1 2>/dev/null | tail -1`
-  
+
         if test "$jboss_archive" = "" ; then
           ln -s $java_dir java
         fi

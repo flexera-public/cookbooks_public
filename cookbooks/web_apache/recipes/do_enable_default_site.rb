@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: db_mysql
+# Cookbook Name:: app_php
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -7,7 +7,15 @@
 
 rs_utils_marker :begin
 
-node[:db_mysql][:version] ||= "5.1"
-include_recipe "db::install_client"
+service "apache2" do
+  action :nothing
+end
+
+# disable default vhost
+log 'Enabling deafult vhost'
+apache_site "default" do
+  enable true
+  notifies :reload, resources(:service => "apache2")
+end
 
 rs_utils_marker :end

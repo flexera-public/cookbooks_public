@@ -91,7 +91,7 @@ if (! node[:delete_docroot_executed])
       end
 
   end
-end 
+end
 
 #    git_pull_output=$(git pull)
 #    if grep -i -q "Already up-to-date"<<<$git_pull_output && test "#{node[:delete_docroot_executed]}" = "true"; then

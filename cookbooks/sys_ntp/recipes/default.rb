@@ -19,7 +19,7 @@
 
 rs_utils_marker :begin
 
-case node[:platform] 
+case node[:platform]
 when "ubuntu","debian"
   package "ntpdate" do
     action :install
@@ -37,6 +37,7 @@ end
 #
 # NTP doesn't always stop on Ubunut.  Make sure the process is gone
 bash "kill ntp" do
+  flags "-ex"
   only_if { node[:platform] == 'ubuntu' }
   code <<-EOH
     pkill -9 -f ntp || true
@@ -47,6 +48,7 @@ end
 is_xen = ::File.exist?("/proc/sys/xen")
 log "  Configure Xen for independent wall clock..." if is_xen
 bash "independent wallclock" do
+  flags "-ex"
   only_if { is_xen }
   code <<-EOH
     echo 1 > /proc/sys/xen/independent_wallclock
@@ -56,6 +58,7 @@ end
 first_ntp_server = node[:sys_ntp][:servers].split(',')[0].strip
 log "  Update time using ntpdate and ntp server #{first_ntp_server}..."
 bash "update time" do
+  flags "-ex"
   code <<-EOH
     # TODO retry list of servers until succeed or all fail
     ntpdate #{first_ntp_server}

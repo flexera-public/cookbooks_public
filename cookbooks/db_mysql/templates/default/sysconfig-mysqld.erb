@@ -8,10 +8,5 @@
 # Managed by RightScale
 # DO NOT EDIT BY HAND
 #
-
-LoadPlugin mysql
-<Plugin mysql>
-  Host "localhost"
-  User "root"
-  Password ""
-</Plugin>
+START_TIMEOUT=<%= node[:db_mysql][:init_timeout] %>
+STOP_TIMEOUT=<%= node[:db_mysql][:init_timeout] %>

@@ -7,14 +7,14 @@
 
 rs_utils_marker :begin
 
-if node[:sys_firewall][:enabled] == "enabled" 
+if node[:sys_firewall][:enabled] == "enabled"
   include_recipe "iptables"
   sys_firewall "22" # SSH
   sys_firewall "80" # HTTP
   sys_firewall "443" # HTTPS
 else
   service "iptables" do
-    supports :status => true 
+    supports :status => true
     action [:disable, :stop]
   end
 end
@@ -36,8 +36,9 @@ conn_max = (mem_mb >= 2*GB) ? 65536 : 32*mem_mb
 
 log "Setup IP connection tracking limit of #{conn_max}"
 bash "Update net.ipv4.ip_conntrack_max" do
+  flags "-ex"
   only_if { node[:platform] =~ /redhat|centos/ }
-  code <<-EOH 
+  code <<-EOH
     sysctl -e -w net.ipv4.ip_conntrack_max=#{conn_max}
   EOH
 end

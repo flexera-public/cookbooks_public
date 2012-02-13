@@ -7,9 +7,15 @@
 
 rs_utils_marker :begin
 
+DATA_DIR = node[:db][:data_dir]
+
 include_recipe "db::do_secondary_restore"
 
 db_register_master
+
+db DATA_DIR do
+  action :setup_monitoring
+end
 
 include_recipe "db::setup_replication_privileges"
 # force first backup so that slaves can init from this master
