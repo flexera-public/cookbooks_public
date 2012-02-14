@@ -346,7 +346,7 @@ action :code_update do
   # Downloading project repo
   repo "default" do
     destination deploy_dir
-    action node[:tomcat][:code][:perform_action]
+    action :capistrano_pull
     app_user node[:tomcat][:app_user]
     persist false
   end
