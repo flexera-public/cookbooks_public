@@ -26,7 +26,6 @@ actions :setup_vhost
 actions :start
 actions :stop
 actions :restart
- attribute :service, :kind_of => String
 
 
 actions :code_update

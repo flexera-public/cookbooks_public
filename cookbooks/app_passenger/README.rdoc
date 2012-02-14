@@ -1,5 +1,8 @@
+= RightScale App Passenger Cookbook
+
 == DESCRIPTION:
 
+* Cookbook provides apache+passenger implementation of app LWRP.
 * Installs and configures, apache+passenger application server.
 
 == REQUIREMENTS:
@@ -11,18 +14,18 @@
 
 == SETUP:
 
-* Place app_passenger::default recipe into your runlist to setup the application server.  When
-  using a RightScale ServerTemplate, this will also automatically add the
+* Place app_passenger::default recipe into your runlist to setup the application server.
+* When using a RightScale ServerTemplate, this will also automatically add the
   common attributes to your ServerTemplate inputs.
 
 == USAGE:
 
-* Template con be combined in two modes:
+* Template can be combined in two modes:
   1 For apps with bundler support
     You have to add "install_required app gems" recipe, and "run_custom_rails_commands" for migration commands
   2 For apps without bundler support
     Y have to add "install_custom_gems"  recipe, and "run_custom_rails_commands" for migration commands
-  Anyway you can mix these recipes to fit needs of your project
+  Anyway you can mix these recipes to fit needs of your project.
 
 == KNOWN LIMITATIONS
 

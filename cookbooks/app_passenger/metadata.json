@@ -1,16 +1,16 @@
 {
   "name": "app_passenger",
   "description": "Installs/Configures Apache Passenger Rails application server",
-  "long_description": "== DESCRIPTION:\n\n* Installs and configures, apache+passenger application server.\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage\n\n* Tested on CentOS 5.6 RightImage\n* Tested on Ubuntu RightImage\n\n== SETUP:\n\n* Place app_passenger::default recipe into your runlist to setup the application server.  When\n  using a RightScale ServerTemplate, this will also automatically add the\n  common attributes to your ServerTemplate inputs.\n\n== USAGE:\n\n* Template con be combined in two modes:\n  1 For apps with bundler support\n    You have to add \"install_required app gems\" recipe, and \"run_custom_rails_commands\" for migration commands\n  2 For apps without bundler support\n    Y have to add \"install_custom_gems\"  recipe, and \"run_custom_rails_commands\" for migration commands\n  Anyway you can mix these recipes to fit needs of your project\n\n== KNOWN LIMITATIONS\n\n* none\n",
+  "long_description": "= RightScale App Passenger Cookbook\n\n== DESCRIPTION:\n\n* Cookbook provides apache+passenger implementation of app LWRP.\n* Installs and configures, apache+passenger application server.\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage\n\n* Tested on CentOS 5.6 RightImage\n* Tested on Ubuntu RightImage\n\n== SETUP:\n\n* Place app_passenger::default recipe into your runlist to setup the application server.\n* When using a RightScale ServerTemplate, this will also automatically add the\n  common attributes to your ServerTemplate inputs.\n\n== USAGE:\n\n* Template can be combined in two modes:\n  1 For apps with bundler support\n    You have to add \"install_required app gems\" recipe, and \"run_custom_rails_commands\" for migration commands\n  2 For apps without bundler support\n    Y have to add \"install_custom_gems\"  recipe, and \"run_custom_rails_commands\" for migration commands\n  Anyway you can mix these recipes to fit needs of your project.\n\n== KNOWN LIMITATIONS\n\n* none\n",
   "maintainer": "RightScale, Inc.",
   "maintainer_email": "support@rightscale.com",
-  "license": "All rights reserved",
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
   "platforms": {
   },
   "dependencies": {
     "rs_utils": ">= 0.0.0",
     "web_apache": ">= 0.0.0",
-    "repo_git": ">= 0.0.0",
+    "repo": ">= 0.0.0",
     "logrotate": ">= 0.0.0",
     "app": ">= 0.0.0",
     "db": ">= 0.0.0"
@@ -22,7 +22,6 @@
   "conflicting": {
   },
   "providing": {
-    "app": ">= 0.0.0"
   },
   "replacing": {
   },
@@ -90,28 +89,28 @@
       "description": "A space-separated list of optional gem(s). Format:  ruby-Gem1:version  ruby-Gem2:version ruby-Gem3 ",
       "required": "optional",
       "default": "",
+      "recipes": [
+        "app_passenger::install_custom_gems"
+      ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string",
-      "recipes": [
-
-      ]
+      "type": "string"
     },
     "app_passenger/project/custom_cmd": {
       "display_name": "Custom rails/bin/ command",
       "description": "A comma separated list of optional commands which will be executed in app directory. Ex: rake gems:install, rake db:create, rake get_common",
       "required": "optional",
       "default": "",
+      "recipes": [
+        "app_passenger::run_custom_rails_commands"
+      ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string",
-      "recipes": [
-
-      ]
+      "type": "string"
     },
     "app_passenger/project/db/schema_name": {
       "display_name": "Database schema name",
@@ -145,13 +144,9 @@
   "groupings": {
   },
   "recipes": {
-    "app_passenger::default": "default cookbook recipe",
     "app_passenger::install_custom_gems": "Custom gems install.",
     "app_passenger::install_required_app_gems": "Bundler gems Install. Gemfile must be present in app directory.",
-    "app_passenger::install_apache_passenger": "Install and apache passenger module",
-    "app_passenger::install_ruby_enterprise_edition": "Install Ruby EE",
-    "app_passenger::do_update_code": "Update application source files from the remote repository.",
     "app_passenger::run_custom_rails_commands": "Run specific user defined commands Commands will be executed in the app directory. Command path ../rails/bin/"
   },
-  "version": "0.0.1"
+  "version": "0.1.1"
 }

@@ -17,7 +17,8 @@ end
 
 #install required packages
 app "default" do
-    action :install
+  packages node[:app][:packages]
+  action :install
 end
 
 # Let others know we are an appserver

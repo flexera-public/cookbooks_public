@@ -1,10 +1,10 @@
 {
   "name": "app_tomcat",
   "description": "Installs the tomcat application server.",
-  "long_description": "= RightScale App Tomcat Cookbook (Beta)\n\n== DESCRIPTION:\n\n== DETAILS:\n\n== REQUIREMENTS:\n\n== SETUP: \n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n",
+  "long_description": "= RightScale App Tomcat Cookbook\n\n== DESCRIPTION:\n\n* Cookbook provides tomcat implementation of app LWRP.\n* Installs and configures, tomcat application server.\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage\n\n* Tested on CentOS 5.6 RightImage\n* Tested on Ubuntu RightImage\n\n== SETUP:\n\n* Place tomcat::default recipe into your runlist to setup the application server.\n* When  using a RightScale ServerTemplate, this will also automatically add the\n  common attributes to your ServerTemplate inputs.\n\n== USAGE:\n * Choose image and cloud.\n * Fill required input fields.\n\n== KNOWN LIMITATIONS\n\n* none\n",
   "maintainer": "RightScale, Inc.",
   "maintainer_email": "support@rightscale.com",
-  "license": "Apache v2.0",
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
   "platforms": {
   },
   "dependencies": {
@@ -28,137 +28,117 @@
       "display_name": "Database Name",
       "description": "Enter the name of the MySQL database to use. Ex: mydatabase",
       "required": "required",
-      "recipes": [
-        "app_tomcat::do_update_code"
-      ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string"
+      "type": "string",
+      "recipes": [
+
+      ]
     },
     "tomcat/code/root_war": {
       "display_name": "War file for ROOT",
       "description": "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
       "required": "optional",
-      "recipes": [
-        "app_tomcat::do_update_code"
-      ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string"
-    },
-    "tomcat/code/perform_action": {
-      "display_name": "Type of repo pull",
-      "description": "Choose the pull action which will be performed, 'pull'- standard repo pull, 'capistrano_pull' standard pull and then capistrano  .",
-      "choice": [
-        "pull",
-        "capistrano_pull"
-      ],
-      "default": "pull",
-      "recipes": [
-        "app_tomcat::do_update_code"
-      ],
-      "calculated": false,
       "type": "string",
-      "required": "optional"
+      "recipes": [
+
+      ]
     },
     "tomcat/java/xms": {
       "display_name": "Tomcat Java XMS",
       "description": "The java Xms argument (i.e. 512m)",
       "required": "optional",
       "default": "512m",
-      "recipes": [
-        "app_tomcat::do_update_code"
-      ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string"
+      "type": "string",
+      "recipes": [
+
+      ]
     },
     "tomcat/java/xmx": {
       "display_name": "Tomcat Java XMX",
       "description": "The java Xmx argument (i.e. 512m)",
       "required": "optional",
       "default": "512m",
-      "recipes": [
-        "app_tomcat::do_update_code"
-      ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string"
+      "type": "string",
+      "recipes": [
+
+      ]
     },
     "tomcat/java/PermSize": {
       "display_name": "Tomcat Java PermSize",
       "description": "The java PermSize argument (i.e. 256m)",
       "required": "optional",
       "default": "256m",
-      "recipes": [
-        "app_tomcat::do_update_code"
-      ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string"
+      "type": "string",
+      "recipes": [
+
+      ]
     },
     "tomcat/java/MaxPermSize": {
       "display_name": "Tomcat Java MaxPermSize",
       "description": "The java MaxPermSize argument (i.e. 256m)",
       "required": "optional",
       "default": "256m",
-      "recipes": [
-        "app_tomcat::do_update_code"
-      ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string"
+      "type": "string",
+      "recipes": [
+
+      ]
     },
     "tomcat/java/NewSize": {
       "display_name": "Tomcat Java NewSize",
       "description": "The java NewSize argument (i.e. 256m)",
       "required": "optional",
       "default": "256m",
-      "recipes": [
-        "app_tomcat::do_update_code"
-      ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string"
+      "type": "string",
+      "recipes": [
+
+      ]
     },
     "tomcat/java/MaxNewSize": {
       "display_name": "Tomcat Java MaxNewSize",
       "description": "The java MaxNewSize argument (i.e. 256m)",
       "required": "optional",
       "default": "256m",
-      "recipes": [
-        "app_tomcat::do_update_code"
-      ],
       "choice": [
 
       ],
       "calculated": false,
-      "type": "string"
+      "type": "string",
+      "recipes": [
+
+      ]
     }
   },
   "groupings": {
   },
   "recipes": {
-    "app_tomcat::default": "Installs the tomcat application server.",
-    "app_tomcat::do_update_code": "Update application source files from the remote repository.",
-    "app_tomcat::setup_db_connection": "Set up the MySQL database db.tomcat connection file.",
-    "app_tomcat::setup_tomcat_configs": "Configure tomcat.",
-    "app_tomcat::setup_monitoring": "Install collectd monitoring for tomcat.",
-    "app_tomcat::setup_mod_jk_vhost": "Installs, configures mod_jk and creates vhost."
+    "app_tomcat::default": "Installs the tomcat application server."
   },
-  "version": "0.1.2"
+  "version": "0.2.1"
 }

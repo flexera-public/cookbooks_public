@@ -1,13 +1,27 @@
-= RightScale App Tomcat Cookbook (Beta)
+= RightScale App Tomcat Cookbook
 
 == DESCRIPTION:
 
-== DETAILS:
+* Cookbook provides tomcat implementation of app LWRP.
+* Installs and configures, tomcat application server.
 
 == REQUIREMENTS:
 
-== SETUP: 
+* Requires a VM launched from a RightScale managed RightImage
+
+* Tested on CentOS 5.6 RightImage
+* Tested on Ubuntu RightImage
+
+== SETUP:
+
+* Place tomcat::default recipe into your runlist to setup the application server.
+* When  using a RightScale ServerTemplate, this will also automatically add the
+  common attributes to your ServerTemplate inputs.
 
 == USAGE:
+ * Choose image and cloud.
+ * Fill required input fields.
 
-== KNOWN LIMITATIONS:
+== KNOWN LIMITATIONS
+
+* none

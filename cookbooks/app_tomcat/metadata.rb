@@ -10,6 +10,7 @@ depends "db_mysql"
 depends "repo"
 depends "rs_utils"
 
+recipe  "app_tomcat::default", "Installs the tomcat application server."
 
 # optional attributes
 attribute "tomcat/db_name",
