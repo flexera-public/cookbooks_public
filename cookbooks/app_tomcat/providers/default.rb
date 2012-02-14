@@ -332,9 +332,11 @@ action :code_update do
 
    #Reading app name from tmp file (for execution in "operational" phase))
   #Waiting for "run_lists"
+  deploy_dir = node[:tomcat][:docroot]
   if(deploy_dir == "/srv/tomcat6/webapps/")
     app_name = IO.read('/tmp/appname')
     deploy_dir = "/srv/tomcat6/webapps/#{app_name.to_s.chomp}"
+
   end
 
   directory "/srv/tomcat6/webapps/" do

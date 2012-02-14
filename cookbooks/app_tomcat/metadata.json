@@ -41,6 +41,7 @@
       "display_name": "War file for ROOT",
       "description": "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
       "required": "optional",
+      "default": "",
       "choice": [
 
       ],

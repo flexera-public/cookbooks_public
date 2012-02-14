@@ -23,8 +23,8 @@ attribute "tomcat/db_name",
 attribute "tomcat/code/root_war",
   :display_name => "War file for ROOT",
   :description => "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
-  :required => "optional"
-
+  :required => "optional",
+  :default => ""
 
 #Java tuning parameters
 attribute "tomcat/java/xms",

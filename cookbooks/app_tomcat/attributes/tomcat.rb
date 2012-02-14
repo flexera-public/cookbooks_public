@@ -11,7 +11,7 @@ set[:app][:provider] = "app_tomcat"
 #
 set_unless[:tomcat][:server_name] = node[:web_apache][:server_name]
 set_unless[:tomcat][:application_name] = node[:web_apache][:application_name]
-
+set_unless[:tomcat][:code][:root_war] = ""
 set_unless[:tomcat][:java][:permsize] = "256m"
 set_unless[:tomcat][:java][:maxpermsize] = "256m"
 set_unless[:tomcat][:java][:newsize] = "256m"
