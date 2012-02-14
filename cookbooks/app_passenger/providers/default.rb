@@ -7,10 +7,10 @@
 
 #stop apache/passenger
 action :stop do
-  bash "Starting apache" do
+  bash "Stopping apache" do
     flags "-ex"
     code <<-EOH
-     /etc/init.d/#{node[:app_passenger][:apache][:demon]} stop
+     /etc/init.d/#{node[:apache][:config_subdir]} stop
     EOH
   end
 end
@@ -20,7 +20,7 @@ action :start do
   bash "Starting apache" do
     flags "-ex"
     code <<-EOH
-     /etc/init.d/#{node[:app_passenger][:apache][:demon]} start
+     /etc/init.d/#{node[:apache][:config_subdir]} start
     EOH
   end
 end
@@ -121,13 +121,13 @@ action :setup_vhost do
     only_if "test -L #{node[:app_passenger][:apache][:install_dir].chomp}/sites-enabled/000-default"
   end
 
-
+    port = new_resource.app_port
   # Generation of new vhost config, based on user prefs
   log"INFO: Generating new apache vhost"
-  web_app "http-#{node[:app_passenger][:apache][:port]}-#{node[:web_apache][:server_name]}.vhost" do
+  web_app "http-#{port}-#{node[:web_apache][:server_name]}.vhost" do
     template "basic_vhost.erb"
-    docroot node[:app_passenger][:public_root]
-    vhost_port node[:app_passenger][:apache][:port]
+    docroot  new_resource.app_root
+    vhost_port  port
     server_name node[:web_apache][:server_name]
     rails_env node[:app_passenger][:project][:environment]
     cookbook 'app_passenger'
@@ -181,6 +181,7 @@ end
 
 
 action :code_update do
+  node[:app_passenger][:deploy_dir] = new_resource.destination
 
   log "INFO: Creating directory for project deployment - <#{node[:app_passenger][:deploy_dir]}>"
   directory node[:app_passenger][:deploy_dir] do

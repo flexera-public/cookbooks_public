@@ -42,6 +42,20 @@
 
       ]
     },
+    "app_passenger/project/environment": {
+      "display_name": "Rails Environment",
+      "description": "Creates a Rails RAILS ENV environment variable. ",
+      "required": "optional",
+      "default": "",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "recipes": [
+
+      ]
+    },
     "app_passenger/apache/maintenance_page": {
       "display_name": "Apache maintenance page",
       "description": "Maintenance URI to show if the page exists (based on document root). Default: [document root]/system/maintenance.html.  If this file exists, your site will show a &quot;Under Maintenance&quot; page and your site will not be available.",
@@ -61,20 +75,6 @@
       "description": "This option tells Apache whether it should serve the (static) content itself. Currently, it will omit PHP and TomCat dynamic content, such as *.php, *.action, *.jsp, and *.do    Ex:  true",
       "required": "optional",
       "default": "true",
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string",
-      "recipes": [
-
-      ]
-    },
-    "app_passenger/project/environment": {
-      "display_name": "Rails Environment",
-      "description": "Creates a Rails RAILS ENV environment variable. ",
-      "required": "optional",
-      "default": "",
       "choice": [
 
       ],

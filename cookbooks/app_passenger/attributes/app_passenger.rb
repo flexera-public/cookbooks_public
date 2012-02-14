@@ -7,38 +7,33 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+#LWRP options
 set[:app][:provider] = "app_passenger"
+set[:app][:app_port] = "8000"
+set[:app][:destination]="/home/rails/#{node[:web_apache][:application_name]}"
+set[:app][:app_root] = "#{node[:app][:destination]}/public"
 
 set_unless[:app_passenger][:rails_spawn_method]="conservative"
 set_unless[:app_passenger][:apache][:maintenance_page]=""
-set_unless[:app_passenger][:apache][:php_enable]="false"
 set_unless[:app_passenger][:apache][:serve_local_files]="true"
-set_unless[:app_passenger][:apache][:port]="8000"
+
 
 case node[:platform]
   when "ubuntu","debian"
     set[:app_passenger][:apache][:user]="www-data"
     set[:app_passenger][:apache][:install_dir]="/etc/apache2"
     set[:app_passenger][:apache][:log_dir]="/var/log/apache2"
-   # set[:app_passenger][:packages_install] = ["libopenssl-ruby", "libcurl4-openssl-dev", "apache2-mpm-prefork", "apache2-prefork-dev", "libapr1-dev", "libcurl4-openssl-dev"]
     set[:app][:packages] = ["libopenssl-ruby", "libcurl4-openssl-dev", "apache2-mpm-prefork", "apache2-prefork-dev", "libapr1-dev", "libcurl4-openssl-dev"]
-    set[:app_passenger][:apache][:demon]="apache2"
 
   when "centos","redhat","redhatenterpriseserver","fedora","suse"
     set[:app_passenger][:apache][:user]="apache"
     set[:app_passenger][:apache][:install_dir]="/etc/httpd"
     set[:app_passenger][:apache][:log_dir]="/var/log/httpd"
-
-    #set[:app_passenger][:packages_install] = ["zlib-devel", "openssl-devel", "readline-devel", "curl-devel", "openssl-devel", "httpd-devel", "apr-devel", "apr-util-devel", "readline-devel"]
     set[:app][:packages] = ["zlib-devel", "openssl-devel", "readline-devel", "curl-devel", "openssl-devel", "httpd-devel", "apr-devel", "apr-util-devel", "readline-devel"]
-    set[:app_passenger][:apache][:demon]="httpd"
 
   else
     raise "Unrecognized distro #{node[:platform]}, exiting "
 end
-
-set[:app_passenger][:deploy_dir]="/home/rails/#{node[:web_apache][:application_name]}"
-set[:app_passenger][:public_root]="#{node[:app_passenger][:deploy_dir]}/public"
 
 set[:app_passenger][:ruby_gem_base_dir]="/opt/ruby-enterprise/lib/ruby/gems/1.8"
 set[:app_passenger][:gem_bin]="/opt/ruby-enterprise/bin/gem"

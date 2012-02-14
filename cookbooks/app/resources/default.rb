@@ -1,14 +1,6 @@
 #
-# Cookbook Name:: repo
-# Resource:: repo
-#
-#
-# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
-# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
-# if applicable, other agreements such as a RightScale Master Subscription Agreement.
-
-#
 # Cookbook Name:: app
+# Resource:: app::default
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -34,8 +26,5 @@ actions :code_update
 
 
 actions :setup_db_connection
-
-
 actions :setup_monitoring
 
-##########################
