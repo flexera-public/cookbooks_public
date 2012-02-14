@@ -192,6 +192,7 @@ action :code_update do
   end
 
   #Reading app name from tmp file (for execution in "operational" phase))
+  #Waiting for "run_lists"
   if(deploy_dir == "/home/rails/")
     app_name = IO.read('/tmp/appname')
     deploy_dir = "/home/rails/#{app_name.to_s.chomp}"

@@ -33,7 +33,8 @@ end
 
 action :install do
 
-  node[:tomcat][:package_dependencies].each do |p|
+  packages = new_resource.packages
+  packages .each do |p|
     log "installing #{p}"
     package p
 
