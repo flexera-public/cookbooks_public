@@ -40,7 +40,7 @@ PassengerRuby <%=node[:app_passenger][:ruby_bin]%>
 RailsSpawnMethod  <%=node[:app_passenger][:rails_spawn_method]%>
 RailsEnv <%= @params[:rails_env] %>
 
-PassengerAppRoot <%="#{node[:app_passenger][:deploy_dir].chomp}"%>
+PassengerAppRoot <%="#{node[:app][:destination].chomp}"%>
 
 
 # Enable status page for monitoring purposes

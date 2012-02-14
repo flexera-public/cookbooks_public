@@ -122,7 +122,7 @@ action :setup_vhost do
   end
 
 
-    port = new_resource.app_port
+  port = new_resource.app_port
   project_root = new_resource.app_root
   # Generation of new vhost config, based on user prefs
   log"INFO: Generating new apache vhost"

@@ -6,8 +6,8 @@
 # DO NOT EDIT BY HAND
 #
 
-Listen <%=node[:app_passenger][:apache][:port]%>
-NameVirtualHost *:<%=node[:app_passenger][:apache][:port]%>
+Listen <%=node[:app][:app_port]%>
+NameVirtualHost *:<%=node[:app][:app_port]%>
 
 #Listen 80
 #NameVirtualHost *:80
