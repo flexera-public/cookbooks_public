@@ -48,6 +48,7 @@ action :install do
   ENV['RAILS_APP'] = node[:web_apache][:application_name]
 
   bash "save global vars" do
+    flags "-ex"
     code <<-EOH
       echo $RAILS_APP >> /tmp/appname
     EOH

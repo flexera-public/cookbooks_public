@@ -103,6 +103,15 @@ action :install do
     EOH
   end
 
+    ENV['RAILS_APP'] = node[:web_apache][:application_name]
+
+  bash "save global vars" do
+    flags "-ex"
+    code <<-EOH
+      echo $RAILS_APP >> /tmp/appname
+    EOH
+  end
+
 end
 
 action :setup_vhost do
@@ -321,7 +330,12 @@ action :code_update do
   # Check that we have the required attributes set
   raise "You must provide a destination for your application code." if ("#{node[:tomcat][:docroot]}" == "")
 
-  node[:tomcat][:docroot] = "/srv/tomcat6/webapps/#{node[:tomcat][:application_name]}"
+   #Reading app name from tmp file (for execution in "operational" phase))
+  #Waiting for "run_lists"
+  if(deploy_dir == "/srv/tomcat6/webapps/")
+    app_name = IO.read('/tmp/appname')
+    deploy_dir = "/srv/tomcat6/webapps/#{app_name.to_s.chomp}"
+  end
 
   directory "/srv/tomcat6/webapps/" do
     recursive true
@@ -329,7 +343,7 @@ action :code_update do
 
   # Downloading project repo
   repo "default" do
-    destination node[:tomcat][:docroot]
+    destination deploy_dir
     action node[:tomcat][:code][:perform_action]
     app_user node[:tomcat][:app_user]
     persist false
