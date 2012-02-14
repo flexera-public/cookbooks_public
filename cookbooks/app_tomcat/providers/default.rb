@@ -105,7 +105,6 @@ action :install do
 end
 
 action :setup_vhost do
-#app_tomcat::setup_tomcat_configs
 
   template "/etc/tomcat6/tomcat6.conf" do
     action :create
@@ -132,16 +131,9 @@ action :setup_vhost do
   end
 
 
-#TODO remove
-#  service "tomcat6" do
-#    supports :status => true, :restart => true
-#    action [ :enable, :start ]
-#  end
     action_start
 
-#app_tomcat::setup_mod_jk_vhost
-
-
+  #Setup mod_jk vhost start
   etc_apache = "/etc/#{node[:apache][:config_subdir]}"
 
   #check if mod_jk is installed
@@ -236,12 +228,6 @@ action :setup_vhost do
       cookbook 'app_tomcat'
     end
 
-#TODO remove
-#TODO implement apache demon restart to "restart" actions
-#    service "#{node[:apache][:config_subdir]}" do
-#      action :restart
-#    end
-
     bash "ReStarting apache" do
       flags "-ex"
       code <<-EOH
@@ -249,7 +235,6 @@ action :setup_vhost do
       EOH
     end
 
-    #action_restart
   else
     log "mod_jk already installed, skipping the recipe"
   end
@@ -324,64 +309,47 @@ rs_utils_enable_collectd_plugin 'exec'
     end
 
     action_restart
-#TODO remove
-#    service "tomcat6" do
-#      action [ :stop ]
-#    end
-
-#    sleep 5
-#TODO remove
-#    service "tomcat6" do
-#      action [ :start ]
-#    end
-
   else
     log("Collectd plugin for Tomcat already installed, skipping...")
   end
-
 
 end
 
 action :code_update do
 
-# Check that we have the required attributes set
-raise "You must provide a destination for your application code." if ("#{node[:tomcat][:docroot]}" == "")
+  # Check that we have the required attributes set
+  raise "You must provide a destination for your application code." if ("#{node[:tomcat][:docroot]}" == "")
 
-node[:tomcat][:docroot] = "/srv/tomcat6/webapps/#{node[:tomcat][:application_name]}"
+  node[:tomcat][:docroot] = "/srv/tomcat6/webapps/#{node[:tomcat][:application_name]}"
 
   directory "/srv/tomcat6/webapps/" do
     recursive true
   end
 
-service "tomcat6" do
-  action :nothing
-end
+  # Downloading project repo
+  repo "default" do
+    destination node[:tomcat][:docroot]
+    action node[:tomcat][:code][:perform_action]
+    app_user node[:tomcat][:app_user]
+    persist false
+  end
 
+  # Set ROOT war and code ownership
+  bash "set_root_war_and_chown_home" do
+    flags "-ex"
+    code <<-EOH
+      cd #{node[:tomcat][:docroot]}
+      if [ ! -z "#{node[:tomcat][:code][:root_war]}" -a -e "#{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root_war]}" ] ; then
+        mv #{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root_war]} #{node[:tomcat][:docroot]}/ROOT.war
+      fi
+      chown -R #{node[:tomcat][:app_user]}:#{node[:tomcat][:app_user]} #{node[:tomcat][:docroot]}
+      sleep 5
+    EOH
+  end
 
-# Downloading project repo
-repo "default" do
-  destination node[:tomcat][:docroot]
-  action node[:tomcat][:code][:perform_action]
-  app_user node[:tomcat][:app_user]
-  persist false
-end
+  action_restart
 
-
-# Set ROOT war and code ownership
-bash "set_root_war_and_chown_home" do
-  flags "-ex"
-  code <<-EOH
-    cd #{node[:tomcat][:docroot]}
-    if [ ! -z "#{node[:tomcat][:code][:root_war]}" -a -e "#{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root_war]}" ] ; then
-      mv #{node[:tomcat][:docroot]}/#{node[:tomcat][:code][:root_war]} #{node[:tomcat][:docroot]}/ROOT.war
-    fi
-    chown -R #{node[:tomcat][:app_user]}:#{node[:tomcat][:app_user]} #{node[:tomcat][:docroot]}
-    sleep 5
-    service tomcat6 restart
-  EOH
-end
-
-node[:delete_docroot_executed] = true
+  node[:delete_docroot_executed] = true
 
 end
 

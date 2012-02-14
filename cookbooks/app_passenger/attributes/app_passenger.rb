@@ -53,7 +53,7 @@ set[:app_passenger][:apache_psr_install_module]="/opt/ruby-enterprise/bin/passen
 #set_unless[:app_passenger][:repository][:svn][:username]=""
 #set_unless[:app_passenger][:repository][:git][:credentials]=""
 
-set_unless[:app_passenger][:project][:environment]=""
+set_unless[:app_passenger][:project][:environment]="development"
 set_unless[:app_passenger][:project][:gem_list]=""
 set_unless[:app_passenger][:project][:custom_cmd]=""
 

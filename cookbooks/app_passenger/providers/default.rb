@@ -28,6 +28,7 @@ end
 #restart apache/passenger
 action :restart do
   action_stop
+  sleep 5
   action_start
 end
 
@@ -118,7 +119,7 @@ action :setup_vhost do
   end
 
 
-# Generation of new vhost config, based on user prefs
+  # Generation of new vhost config, based on user prefs
   log"INFO: Generating new apache vhost"
   web_app "http-#{node[:app_passenger][:apache][:port]}-#{node[:web_apache][:server_name]}.vhost" do
     template "basic_vhost.erb"
@@ -155,7 +156,6 @@ action :setup_db_connection do
 
   #creating database template
   log "INFO: Generating database.yml"
-  #template "#{node[:app_passenger][:deploy_dir].chomp}/current/config/database.yml" do
   template "#{node[:app_passenger][:deploy_dir].chomp}/config/database.yml" do
     owner node[:app_passenger][:apache][:user]
     source "database.yml.erb"
@@ -183,8 +183,8 @@ action :code_update do
   directory node[:app_passenger][:deploy_dir] do
     recursive true
   end
- #Reading app name from tmp file (for execution in "operational" phase))
 
+  #Reading app name from tmp file (for execution in "operational" phase))
   if(node[:app_passenger][:deploy_dir]=="/home/rails/")
     app_name = IO.read('/tmp/appname')
     node[:app_passenger][:deploy_dir]="/home/rails/#{app_name.to_s.chomp}"
@@ -199,7 +199,6 @@ action :code_update do
     recursive true
   end
 
-#log "#{node[:repo].inspect}"
   repo "default" do
    destination node[:app_passenger][:deploy_dir]
    action :capistrano_pull
