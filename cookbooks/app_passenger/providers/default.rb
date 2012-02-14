@@ -201,13 +201,13 @@ action :code_update do
 
 #log "#{node[:repo].inspect}"
   repo "default" do
-  destination node[:app_passenger][:deploy_dir]
-  action :capistrano_pull
-  app_user node[:app_passenger][:apache][:user]
-  environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
-  create_dirs_before_symlink
-  persist false
-end
+   destination node[:app_passenger][:deploy_dir]
+   action :capistrano_pull
+   app_user node[:app_passenger][:apache][:user]
+   environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
+   create_dirs_before_symlink
+   persist false
+  end
 
 end
 
