@@ -122,11 +122,12 @@ action :setup_vhost do
   end
 
     port = new_resource.app_port
+  project_root = new_resource.app_root
   # Generation of new vhost config, based on user prefs
   log"INFO: Generating new apache vhost"
   web_app "http-#{port}-#{node[:web_apache][:server_name]}.vhost" do
     template "basic_vhost.erb"
-    docroot  new_resource.app_root
+    docroot  project_root
     vhost_port  port
     server_name node[:web_apache][:server_name]
     rails_env node[:app_passenger][:project][:environment]
