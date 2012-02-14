@@ -66,13 +66,12 @@ attribute "app_passenger/project/custom_cmd",
 attribute "app_passenger/project/db/schema_name",
   :display_name => "Database schema name",
   :description => "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up. This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema is getting backed up.  Ex: mydbschema",
-  :required => "required",
-  :default => ""
+  :required => "required"
+
 
 
 attribute "app_passenger/project/db/adapter",
   :display_name => "Database adapter for database.yml ",
   :description => "Enter database adpter wich will be used to connect to the database Default: mysql",
-  :required => "required",
   :default => "mysql"
 
