@@ -156,10 +156,10 @@ action :setup_db_connection do
     end
   end
 
-
+  deploy_dir = new_resource.destination
   #creating database template
   log "INFO: Generating database.yml"
-  template "#{node[:app_passenger][:deploy_dir].chomp}/config/database.yml" do
+  template "#{deploy_dir.chomp}/config/database.yml" do
     owner node[:app_passenger][:apache][:user]
     source "database.yml.erb"
     action :create_if_missing
@@ -181,30 +181,30 @@ end
 
 
 action :code_update do
-  node[:app_passenger][:deploy_dir] = new_resource.destination
+ deploy_dir = new_resource.destination
 
-  log "INFO: Creating directory for project deployment - <#{node[:app_passenger][:deploy_dir]}>"
-  directory node[:app_passenger][:deploy_dir] do
+  log "INFO: Creating directory for project deployment - <#{deploy_dir}>"
+  directory deploy_dir do
     recursive true
   end
 
   #Reading app name from tmp file (for execution in "operational" phase))
-  if(node[:app_passenger][:deploy_dir]=="/home/rails/")
+  if(deploy_dir == "/home/rails/")
     app_name = IO.read('/tmp/appname')
-    node[:app_passenger][:deploy_dir]="/home/rails/#{app_name.to_s.chomp}"
+    deploy_dir = "/home/rails/#{app_name.to_s.chomp}"
   end
 
   # Preparing dirs, required for apache+passenger
-  directory "#{node[:app_passenger][:deploy_dir].chomp}/shared/log" do
+  directory "#{deploy_dir.chomp}/shared/log" do
     recursive true
   end
 
-  directory "#{node[:app_passenger][:deploy_dir].chomp}/shared/system" do
+  directory "#{deploy_dir.chomp}/shared/system" do
     recursive true
   end
 
   repo "default" do
-   destination node[:app_passenger][:deploy_dir]
+   destination deploy_dir
    action :capistrano_pull
    app_user node[:app_passenger][:apache][:user]
    environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"

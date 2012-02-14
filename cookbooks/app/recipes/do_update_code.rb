@@ -9,7 +9,7 @@
 rs_utils_marker :begin
 
 app "default" do
-
+  destination node[:app][:destination]
   action :code_update
 end
 

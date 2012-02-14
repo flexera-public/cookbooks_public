@@ -9,7 +9,9 @@
 rs_utils_marker :begin
 
 app "default" do
-    action :setup_vhost
+  app_root node[:app][:app_root]
+  app_port node[:app][:app_port]
+  action :setup_vhost
 end
 
 rs_utils_marker :end
