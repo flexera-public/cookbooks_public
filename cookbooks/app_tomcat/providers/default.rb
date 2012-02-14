@@ -363,6 +363,7 @@ repo "default" do
   destination node[:tomcat][:docroot]
   action node[:tomcat][:code][:perform_action]
   app_user node[:tomcat][:app_user]
+  persist false
 end
 
 

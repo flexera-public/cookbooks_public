@@ -8,12 +8,16 @@
 rs_utils_marker :begin
 
 # Setup default values for database resource
-#
 log "Provider is #{node[:app][:provider]}"
 app "default" do
   persist true
   provider node[:app][:provider]
   action :nothing
+end
+
+#install required packages
+app "default" do
+    action :install
 end
 
 # Let others know we are an appserver
