@@ -35,6 +35,8 @@ case node[:platform]
     raise "Unrecognized distro #{node[:platform]}, exiting "
 end
 
+set[:app_passenger][:deploy_dir]="/home/rails/#{node[:web_apache][:application_name]}"
+
 set[:app_passenger][:ruby_gem_base_dir]="/opt/ruby-enterprise/lib/ruby/gems/1.8"
 set[:app_passenger][:gem_bin]="/opt/ruby-enterprise/bin/gem"
 set[:app_passenger][:ruby_bin]="/opt/ruby-enterprise/bin/ruby"

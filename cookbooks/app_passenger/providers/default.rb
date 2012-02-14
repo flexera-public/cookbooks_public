@@ -121,6 +121,7 @@ action :setup_vhost do
     only_if "test -L #{node[:app_passenger][:apache][:install_dir].chomp}/sites-enabled/000-default"
   end
 
+
     port = new_resource.app_port
   project_root = new_resource.app_root
   # Generation of new vhost config, based on user prefs
@@ -156,6 +157,7 @@ action :setup_db_connection do
         log "Nothing to do!"
     end
   end
+
 
   deploy_dir = new_resource.destination
   #creating database template
