@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-= RightScale Repo Cookbook 
-
-== DESCRIPTION:
-
-== DETAILS:
-
-== REQUIREMENTS:
-
-== SETUP:
-
-== USAGE:
-
-== KNOWN LIMITATIONS:
-
-= LICENSE
-
-Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
-RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
-if applicable, other agreements such as a RightScale Master Subscription Agreement.
-=======
 = RightScale Repo Resource
 
 == DESCRIPTION:
@@ -100,4 +79,3 @@ end
 Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 if applicable, other agreements such as a RightScale Master Subscription Agreement.
->>>>>>> origin/sprint31_30015_repo_provider_2
