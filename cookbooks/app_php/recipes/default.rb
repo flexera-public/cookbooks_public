@@ -6,7 +6,7 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
-
+=begin
 # == Install user-specified Packages and Modules
 #
 [ node[:php][:package_dependencies] | node[:php][:modules_list] ].flatten.each do |p|
@@ -16,5 +16,5 @@ end
 node[:php][:module_dependencies].each do |mod|
   apache_module mod
 end
-
+=end
 rs_utils_marker :end

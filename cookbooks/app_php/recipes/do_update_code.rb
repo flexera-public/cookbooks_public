@@ -6,7 +6,7 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
-
+=begin
 # Check that we have the required attributes set
 raise "You must provide a URL to your application code repository" if ("#{node[:php][:code][:url]}" == "")
 raise "You must provide a destination for your application code." if ("#{node[:web_apache][:docroot]}" == "")
@@ -30,5 +30,5 @@ bash "chown_home" do
     chown -R #{node[:php][:app_user]}:#{node[:php][:app_user]} #{node[:web_apache][:docroot]}
   EOH
 end
-
+=end
 rs_utils_marker :end

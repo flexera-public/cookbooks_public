@@ -6,7 +6,7 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
-
+=begin
 # == Setup PHP Database Connection
 #
 # Make sure config dir exists
@@ -24,5 +24,5 @@ db_mysql_connect_app File.join(node[:web_apache][:docroot], "config", "db.php") 
   owner node[:php][:app_user]
   group node[:php][:app_user]
 end
-
+=end
 rs_utils_marker :end

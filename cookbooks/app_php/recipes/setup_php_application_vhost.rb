@@ -6,7 +6,7 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
-
+=begin
 service "apache2" do
   action :nothing
 end
@@ -37,5 +37,5 @@ web_app node[:web_apache][:application_name] do
   cookbook "web_apache"
   notifies :restart, resources(:service => "apache2"), :immediately
 end
-
+=end
 rs_utils_marker :end

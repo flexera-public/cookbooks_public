@@ -38,8 +38,7 @@ action :install do
   #Installing some apache development headers required for rubyEE
   packages = new_resource.packages
   log "Packages which will be installed #{packages}"
-  #log "Packages which will be installed #{node[:app_passenger][:packages_install]}"
-  #node[:app_passenger][:packages_install].each do |p|
+
   packages.each do |p|
     package p
   end
