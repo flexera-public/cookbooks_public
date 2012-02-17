@@ -119,7 +119,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     secondary_storage_cloud && do_backup_type == "secondary" ? "--secondary-storage-cloud #{secondary_storage_cloud}":"",
     secondary_storage_container && do_backup_type == "secondary" ? "--secondary-storage-container #{secondary_storage_container}":"",
     (get_device_or_default(node, :device1, :rackspace_snet) == false) ? '--no-snet' : '',
-    max_snapshots ? "--max-snapshots #{max_snapshtos}" : '',
+    max_snapshots ? "--max-snapshots #{max_snapshots}" : '',
     keep_daily    ? "--keep-daily #{keep_daily}"       : '',
     keep_weekly   ? "--keep-weekly #{keep_weekly}"     : '',
     keep_monthly  ? "--keep-monthly #{keep_monthly}"   : '',
