@@ -137,7 +137,7 @@ action :code_update do
 #  end
 
   # Check that we have the required attributes set
-  raise "You must provide a destination for your application code." if ("#{deploy_dir}" == "")
+  log "You must provide a destination for your application code." if ("#{deploy_dir}" == "")
 
   repo "default" do
     destination deploy_dir
