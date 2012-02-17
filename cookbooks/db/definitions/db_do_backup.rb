@@ -21,15 +21,15 @@
 # If database is not 'initialized', will raise.
 
 
-class Chef::Recipe
-  include RightScale::BlockDeviceHelper
-end
-
-class Chef::Resource::BlockDevice
-  include RightScale::BlockDeviceHelper
-end
-
 define :db_do_backup, :force => false, :backup_type => "primary" do
+
+  class Chef::Recipe
+    include RightScale::BlockDeviceHelper
+  end
+
+  class Chef::Resource::Bash
+    include RightScale::BlockDeviceHelper
+  end
 
   NICKNAME = get_device_or_default(node, :device1, :nickname)
   DATA_DIR = node[:db][:data_dir]
