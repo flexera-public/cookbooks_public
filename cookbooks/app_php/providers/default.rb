@@ -52,6 +52,7 @@ action :install do
     apache_module mod
   end
 
+  node[:app][:destination]="#{node[:web_apache][:docroot]}"
   ENV['APP_NAME'] = "#{node[:web_apache][:docroot]}}"
   bash "save global vars" do
     flags "-ex"
@@ -126,7 +127,7 @@ action :code_update do
   #Waiting for "run_lists"
   deploy_dir = node[:app][:destination]
 
-  log "INFO: Creating directory for project deployment - <#{deploy_dir}>"
+  log "INFO: Creating directory for project deployment - <#{deploy_dir}> #{node[:web_apache][:docroot]}"
   directory deploy_dir do
     recursive true
   end
