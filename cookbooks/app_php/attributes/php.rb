@@ -6,12 +6,14 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 set[:app][:provider] = "app_php"
-set[:app][:destination]=node[:web_apache][:docroot]
+set[:app][:app_port] = "8000"
+set[:app][:destination]="#{node[:web_apache][:docroot]}"
 
 # == Recommended attributes
 #
-set_unless[:php][:application_name] = "myapp"
+#set_unless[:php][:application_name] = "myapp"
 
+#set[:app][:destination]=node[:web_apache][:docroot]
 # == Optional attributes
 #
 set_unless[:php][:db_schema_name] = ""

@@ -52,6 +52,14 @@ action :install do
     apache_module mod
   end
 
+  ENV['APP_NAME'] = "#{node[:web_apache][:docroot]}}"
+  bash "save global vars" do
+    flags "-ex"
+    code <<-EOH
+      echo $APP_NAME >> /tmp/appname
+    EOH
+  end
+
 end
 
 action :setup_vhost do
@@ -78,7 +86,8 @@ action :setup_vhost do
   #web_app node[:php][:application_name] do
   web_app node[:web_apache][:application_name] do
     template "app_server.erb"
-    docroot node[:web_apache][:docroot]
+#    docroot node[:web_apache][:docroot]
+    docroot node[:app][:destination]
     vhost_port node[:app][:port]
     server_name node[:web_apache][:server_name]
     cookbook "web_apache"
@@ -92,14 +101,14 @@ action :setup_db_connection do
   # == Setup PHP Database Connection
   #
   # Make sure config dir exists
-  directory File.join(node[:web_apache][:docroot], "config") do
+  directory ::File.join(node[:web_apache][:docroot], "config") do
     recursive true
     owner node[:php][:app_user]
     group node[:php][:app_user]
   end
 
   # Tell MySQL to fill in our connection template
-  db_mysql_connect_app File.join(node[:web_apache][:docroot], "config", "db.php") do
+  db_mysql_connect_app ::File.join(node[:web_apache][:docroot], "config", "db.php") do
     template "db.php.erb"
     cookbook "app_php"
     database node[:php][:db_schema_name]
@@ -111,7 +120,21 @@ end
 
 action :code_update do
 
+
+
+     #Reading app name from tmp file (for execution in "operational" phase))
+  #Waiting for "run_lists"
   deploy_dir = new_resource.destination
+
+  log "INFO: Creating directory for project deployment - <#{deploy_dir}>"
+  directory deploy_dir do
+    recursive true
+  end
+
+#  if(deploy_dir == "/srv/tomcat6/webapps/")
+#    app_name = IO.read('/tmp/appname')
+#    deploy_dir = "/srv/tomcat6/webapps/#{app_name.to_s.chomp}"
+#  end
 
   # Check that we have the required attributes set
   raise "You must provide a destination for your application code." if ("#{deploy_dir}" == "")

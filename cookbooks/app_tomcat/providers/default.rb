@@ -80,10 +80,12 @@ action :install do
       action :create
       recursive true
     end
+
     directory "/var/log/tomcat6" do
       action :delete
       recursive true
     end
+
     link "/var/log/tomcat6" do
       to "/mnt/log/tomcat6"
     end
@@ -103,12 +105,11 @@ action :install do
     EOH
   end
 
-    ENV['RAILS_APP'] = node[:web_apache][:application_name]
-
+  ENV['APP_NAME'] = node[:web_apache][:application_name]
   bash "save global vars" do
     flags "-ex"
     code <<-EOH
-      echo $RAILS_APP >> /tmp/appname
+      echo $APP_NAME >> /tmp/appname
     EOH
   end
 

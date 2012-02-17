@@ -6,6 +6,11 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 rs_utils_marker :begin
+
+#TODO Code Cleanup
+log "default empty recipe for attributes initialization"
+
+
 =begin
 # == Install user-specified Packages and Modules
 #
