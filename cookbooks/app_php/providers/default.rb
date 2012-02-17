@@ -124,7 +124,7 @@ action :code_update do
 
      #Reading app name from tmp file (for execution in "operational" phase))
   #Waiting for "run_lists"
-  deploy_dir = new_resource.destination
+  deploy_dir = node[:app][:destination]
 
   log "INFO: Creating directory for project deployment - <#{deploy_dir}>"
   directory deploy_dir do
