@@ -30,11 +30,13 @@ module RightScale
           begin
             require 'rightscale_tools'
           rescue LoadError
-            Chef::Log.warn("This database cookbook requires our premium 'rightscale_tools' gem.")
-            Chef::Log.warn("Please contact Rightscale to upgrade your account.")
+            Chef::Log.warn "This database cookbook requires our premium 'rightscale_tools' gem." 
+            Chef::Log.warn "Please contact Rightscale to upgrade your account." 
           end
           mount_point = new_resource.name
-          version = node[:db_mysql][:version].to_i > 5.1 ? :mysql55 : :mysql
+          version = node[:db_mysql][:version].to_f > 5.1 ? :mysql55 : :mysql
+          Chef::Log.info "Using version: #{version} : #{node[:db_mysql][:version]}"
+      
           RightScale::Tools::Database.factory(version, new_resource.user, new_resource.password, mount_point, Chef::Log)
         end
 

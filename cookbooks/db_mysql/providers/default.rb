@@ -17,6 +17,11 @@ action :start do
   @db.start
 end
 
+action :restart do
+  @db = init(new_resource)
+  @db.restart
+end
+
 action :status do
   @db = init(new_resource)
   status = @db.status
@@ -205,8 +210,9 @@ action :install_server do
 
   # == Stop mysql service 
   #
-  service "mysql" do
+  db node[:db][:data_dir] do
     action [ :stop ]
+    persist false
   end
 
   # Create MySQL server system tables
@@ -324,8 +330,9 @@ action :install_server do
   # == Start MySQL
   #
   log "  Server installed.  Starting MySQL"
-  service "mysql" do
-    action [ :restart ]
+  db node[:db][:data_dir] do
+    action [ :start ]
+    persist false
   end
 
 end
@@ -414,7 +421,7 @@ action :promote do
     cookbook 'db_mysql'
   end
   
-  service "mysql" do
+  service node[:db][:data_dir] do
     action :start
     only_if do
       log_bin = RightScale::Database::MySQL::Helper.do_query(node, "show variables like 'log_bin'", 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
@@ -567,7 +574,7 @@ action :enable_replication do
   # service provider uses the status command to decide if it
   # has to run the start command again.
   10.times do
-    service "mysql" do
+    service node[:db][:data_dir] do
       action :start
     end
   end
