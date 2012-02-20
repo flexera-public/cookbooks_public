@@ -165,7 +165,6 @@ action :setup_db_connection do
   template "#{deploy_dir.chomp}/config/database.yml" do
     owner node[:app_passenger][:apache][:user]
     source "database.yml.erb"
-    action :create_if_missing
     cookbook 'app_passenger'
   end
 
