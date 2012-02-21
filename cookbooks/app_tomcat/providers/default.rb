@@ -262,7 +262,7 @@ action :setup_db_connection do
     variables(
       :user      => node[:db][:application][:user],
       :password  => node[:db][:application][:password],
-      :fqdn      => node[:db][:fqdn],
+      :fqdn      => node[:db][:dns][:master][:fqdn],
       :database  => node[:tomcat][:db_name]
     )
   cookbook 'app_tomcat'
