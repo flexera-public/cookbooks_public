@@ -23,9 +23,8 @@ require 'chef'
 #require 'json'
 require 'yard'
 
-YARD::Rake::YardocTask.new do |yard|
-  yard.options = ['--load=chef-yard.rb']
-end
+YARD::Config.load_plugin 'chef'
+YARD::Rake::YardocTask.new
 
 # Make sure you have loaded constants first
 require File.join(File.dirname(__FILE__), 'config', 'rake')
