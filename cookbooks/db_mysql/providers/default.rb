@@ -421,8 +421,9 @@ action :promote do
     cookbook 'db_mysql'
   end
   
-  service node[:db][:data_dir] do
+  db node[:db][:data_dir] do
     action :start
+    persist false
     only_if do
       log_bin = RightScale::Database::MySQL::Helper.do_query(node, "show variables like 'log_bin'", 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
       if log_bin['Value'] == 'OFF'
@@ -574,8 +575,9 @@ action :enable_replication do
   # service provider uses the status command to decide if it
   # has to run the start command again.
   10.times do
-    service node[:db][:data_dir] do
+    db node[:db][:data_dir] do
       action :start
+      persist false
     end
   end
 
