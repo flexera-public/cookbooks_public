@@ -1,4 +1,4 @@
-= RightScale Block Device Cookbook (Beta)
+= RightScale Block Device Cookbook 
 
 == DESCRIPTION:
 

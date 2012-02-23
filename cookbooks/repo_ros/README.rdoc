@@ -1,0 +1,32 @@
+= RightScale "repo_ros" Provider
+
+== DESCRIPTION:
+
+Provides the Remote Object Store implementation of the 'repo' resource to
+manage source code download from ROS repositories (Amazon S3, Rackspace Cloudfiles).
+
+
+== DETAILS:
+
+=== General
+The 'repo' implementation is defined by a Lightweight Provider, which can be
+found in the providers/default.rb file.
+
+
+== SETUP:
+
+* Provider will be automatically initialized when you add "repo:default" recipe to your ServerTemplate runlist
+
+== USAGE:
+
+=== Basic usage
+Once setup, use the recipes in the 'repo' cookbook to install and manage your
+code repo.  See the repo/README.rdoc for usage details.
+
+
+
+= LICENSE
+
+Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+if applicable, other agreements such as a RightScale Master Subscription Agreement.

@@ -1,8 +1,8 @@
-= RightScale App Cookbook (Beta)
+= RightScale App Cookbook 
 
 == DESCRIPTION:
 
-RightScale application server management cookbook (beta) 
+RightScale application server management cookbook  
 
 This cookbook contains recipes that generally applicable to all application
 servers.

@@ -34,6 +34,7 @@ connectors_source = "tomcat-connectors-1.2.32-src.tar.gz"
 
 if arch == "x86_64"
   bash "install_remove" do
+    flags "-ex"
     code <<-EOH
       yum install apr-devel.x86_64 -y
       yum remove apr-devel.i386 -y

@@ -14,6 +14,7 @@ def clean_swap(swap_file)
 
   # Turn off swap on swap_file if turned on
   bash 'deactivate swapfile' do
+    flags "-ex"
     only_if { File.open('/proc/swaps').grep(/^#{swap_file}\b/).any? }
     code <<-eof
       swapoff #{swap_file}
@@ -39,6 +40,7 @@ def create_swap(swap_file, swap_size)
 
   # Make sure swapfile directory exists, create swapfile, set it as swap, and turn swap on
   bash 'create swapfile' do
+    flags "-ex"
     not_if { File.exists?(swap_file) }
     code <<-eof
       mkdir -p `dirname #{swap_file}`
@@ -48,8 +50,8 @@ def create_swap(swap_file, swap_size)
       swapon #{swap_file}
     eof
   end
-  
-  # add swap to /etc/fstab 
+
+  # add swap to /etc/fstab
   mount '/dev/null' do
     action :enable
     device "#{swap_file}"

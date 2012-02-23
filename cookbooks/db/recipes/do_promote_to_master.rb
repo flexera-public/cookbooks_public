@@ -7,6 +7,8 @@
 
 rs_utils_marker :begin
 
+DATA_DIR = node[:db][:data_dir]
+
 # == Verify initalized database
 # Check the node state to verify that we have correctly initialized this server.
 #
@@ -26,14 +28,14 @@ end
 #
 include_recipe "db::setup_replication_privileges"
 
-db node[:db][:data_dir] do
+db DATA_DIR do
   action :promote
 end
 
 # == Schedule backups on slave
-# This should be done before calling db::do_lookup_master 
-# changes current_master from old to new. 
-# 
+# This should be done before calling db::do_lookup_master
+# changes current_master from old to new.
+#
 remote_recipe "enable slave backups on oldmaster" do
   recipe "db::do_primary_backup_schedule_enable"
   recipients_tags "rs_dbrepl:master_instance_uuid=#{node[:db][:current_master_uuid]}"
@@ -54,6 +56,11 @@ end
 # Changes master status tags and node state
 #
 db_register_master
+
+# == Setup collected to monitor for a master db
+db DATA_DIR do
+  action :setup_monitoring
+end
 
 # == force a backup
 #

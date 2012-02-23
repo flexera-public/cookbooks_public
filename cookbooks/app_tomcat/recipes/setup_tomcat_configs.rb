@@ -37,7 +37,7 @@ bash "Add optional Java XMS and XMX parameters" do
   code <<-EOH
     tc_conf=/etc/tomcat6/tomcat6.conf
 
-    if [ -z "$(grep "OPTS -Xms" $tc_conf)" ] ; then 
+    if [ -z "$(grep "OPTS -Xms" $tc_conf)" ] ; then
       xms_val="512m"
       xmx_val="512m"
       [ -n "#{node[:tomcat][:java][:xms]}" ] && xms_val="#{node[:tomcat][:java][:xms]}"

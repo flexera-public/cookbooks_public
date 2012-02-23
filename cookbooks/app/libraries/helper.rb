@@ -38,6 +38,11 @@ module RightScale
         node[:app][:port]
       end
 
+      # Returns array from a comma seperated list
+      def vhosts(vhost_list)
+        return vhost_list.gsub(/\s+/, "").split(",").uniq.each
+      end
+
     end
   end
 end

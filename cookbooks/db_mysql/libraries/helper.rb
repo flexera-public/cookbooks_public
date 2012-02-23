@@ -12,24 +12,32 @@ module RightScale
         
       	require 'timeout'
       	require 'yaml'
+      	require 'ipaddr'
 
       	SNAPSHOT_POSITION_FILENAME = 'rs_snapshot_position.yaml'
       	DEFAULT_CRITICAL_TIMEOUT = 7
 
+        # == Create numeric UUID
+        # MySQL server_id must be a unique number  - use the ip address integer representation
+        # 
+        # Duplicate IP's and server_id's may occur with cross cloud replication.
         def mycnf_uuid
-          node[:db_mysql][:mycnf_uuid] ||= Time.new.to_i
-          node[:db_mysql][:mycnf_uuid]
+          # Always set to support stop/start
+          node[:db_mysql][:mycnf_uuid] = IPAddr.new(node[:cloud][:private_ips][0]).to_i
         end
 
         def init(new_resource)
           begin
             require 'rightscale_tools'
           rescue LoadError
-            Chef::Log.warn("This database cookbook requires our premium 'rightscale_tools' gem.")
-            Chef::Log.warn("Please contact Rightscale to upgrade your account.")
+            Chef::Log.warn "This database cookbook requires our premium 'rightscale_tools' gem." 
+            Chef::Log.warn "Please contact Rightscale to upgrade your account." 
           end
           mount_point = new_resource.name
-          RightScale::Tools::Database.factory(:mysql, new_resource.user, new_resource.password, mount_point, Chef::Log)
+          version = node[:db_mysql][:version].to_f > 5.1 ? :mysql55 : :mysql
+          Chef::Log.info "Using version: #{version} : #{node[:db_mysql][:version]}"
+      
+          RightScale::Tools::Database.factory(version, new_resource.user, new_resource.password, mount_point, Chef::Log)
         end
 
       	def self.load_replication_info(node)

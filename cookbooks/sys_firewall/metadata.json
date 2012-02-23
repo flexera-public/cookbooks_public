@@ -1,15 +1,11 @@
 {
-  "groupings": {
-
+  "dependencies": {
+    "sys": ">= 0.0.0",
+    "iptables": ">= 0.0.0",
+    "rs_utils": ">= 0.0.0"
   },
-  "recommendations": {
-
-  },
-  "maintainer": "RightScale, Inc.",
-  "description": "Installs/Configures firewall",
-  "suggestions": {
-
-  },
+  "name": "sys_firewall",
+  "maintainer_email": "support@rightscale.com",
   "attributes": {
     "sys_firewall/rule/ip_address": {
       "required": "optional",
@@ -85,37 +81,28 @@
       "description": "Enables iptables firewall for this server which allows port 22, 80 and 443 open by default.  Use sys_firewall::setup_rule recipe to enable/disable extra ports."
     }
   },
-  "maintainer_email": "support@rightscale.com",
-  "long_description": "= RightScale System Firewall Cookbook (Beta)\n\n== DESCRIPTION:\n\nRightScale firewall cookbook (beta) \n\nBuilt upon the opscode iptables cookbook, this coobook provides a LWRP\nfor managing access to mutliple servers in a deployment using machine \ntags.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n\n== USAGE:\n\n * Use the default recipe in conjunction with the 'Firewall' input to \n   enable or disable iptables.\n\n * Use setup_rule recipe for enabling/disabling specific ports.\n\n=== Updating firewall rules using tags*\n\n==== Update Action\nTo open a local port to all servers with a given tag use:\n\n  sys_firewall \"Open this database's ports to all appservers\" do\n    machine_tag \"appserver:active=true\"\n    port 3306\n    enable true\n    action :update\n  end\n  \nThis can be useful as a server is booting to open up access for multiple \nsystems at once.\n\n==== Update Request Action\nTo request all servers with a given tag close a port to a given IP address use:\n\n  sys_firewall \"Request all appservers close ports to this loadbalancer\" do\n    machine_tag \"loadbalancer:app=www\"\n    port 8000\n    enable false\n    ip_addr node[:cloud][:private_ips][0]\n    action :update_request\n  end\n  \nThis can be useful when decommissioning a running server that had previously\nrequested ports opened.\n\n  \n* all tag based actions are scoped to the deployment\n\n== KNOWN LIMITATIONS\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "conflicting": {
-
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "suggestions": {
+  },
+  "platforms": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "long_description": "= RightScale System Firewall Cookbook \n\n== DESCRIPTION:\n\nRightScale firewall cookbook  \n\nBuilt upon the opscode iptables cookbook, this coobook provides a LWRP\nfor managing access to mutliple servers in a deployment using machine \ntags.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n\n== USAGE:\n\n * Use the default recipe in conjunction with the 'Firewall' input to \n   enable or disable iptables.\n\n * Use setup_rule recipe for enabling/disabling specific ports.\n\n=== Updating firewall rules using tags*\n\n==== Update Action\nTo open a local port to all servers with a given tag use:\n\n  sys_firewall \"Open this database's ports to all appservers\" do\n    machine_tag \"appserver:active=true\"\n    port 3306\n    enable true\n    action :update\n  end\n  \nThis can be useful as a server is booting to open up access for multiple \nsystems at once.\n\n==== Update Request Action\nTo request all servers with a given tag close a port to a given IP address use:\n\n  sys_firewall \"Request all appservers close ports to this loadbalancer\" do\n    machine_tag \"loadbalancer:app=www\"\n    port 8000\n    enable false\n    ip_addr node[:cloud][:private_ips][0]\n    action :update_request\n  end\n  \nThis can be useful when decommissioning a running server that had previously\nrequested ports opened.\n\n  \n* all tag based actions are scoped to the deployment\n\n== KNOWN LIMITATIONS\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "version": "0.1.0",
+  "recommendations": {
   },
   "recipes": {
     "sys_firewall::default": "Use in conjunction with the 'Firewall' input to enable or disable iptables.",
     "sys_firewall::do_list_rules": "List the firewall rules.",
     "sys_firewall::setup_rule": "Use for enabling/disabling specific firewall ports."
   },
-  "platforms": {
-
+  "groupings": {
   },
-  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "providing": {
-
+  "conflicting": {
   },
-  "name": "sys_firewall",
   "replacing": {
-
   },
-  "version": "0.1.0",
-  "dependencies": {
-    "sys": [
-
-    ],
-    "iptables": [
-
-    ],
-    "rs_utils": [
-
-    ]
+  "description": "Installs/Configures firewall",
+  "providing": {
   }
 }

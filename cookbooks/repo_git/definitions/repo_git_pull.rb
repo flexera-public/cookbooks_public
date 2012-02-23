@@ -8,10 +8,19 @@
 require 'uri'
 
 define :repo_git_pull, :url => "", :branch => "master", :dest => "", :cred => "" do
-  
+
+  ruby_block "Previous repo check" do
+    block do
+      Chef::Log.info("check previous repo in case of action change")
+      if (::File.exists?("#{params[:dest]}") == true && ::File.symlink?("#{params[:dest]}") == true && ::File.exists?("/tmp/capistrano_repo") == true)
+        ::File.rename("#{params[:dest]}", "/tmp/capistrano_repo/releases/capistrano_old_"+::Time.now.strftime("%Y%m%d%H%M"))
+      end
+    end
+  end
+
   # include the public recipe to install git
   include_recipe "git"
-   
+
   # add repository credentials
   keyfile = nil
   if "#{params[:cred]}" != ""

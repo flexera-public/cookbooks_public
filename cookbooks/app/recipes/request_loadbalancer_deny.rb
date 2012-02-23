@@ -7,12 +7,18 @@
 
 rs_utils_marker :begin
 
-sys_firewall "Request all appservers close ports to this loadbalancer" do
-  machine_tag "loadbalancer:app=#{node[:lb][:applistener_name]}"
-  port node[:app][:port]
-  enable false
-  ip_addr node[:cloud][:private_ips][0]
-  action :update_request
+class Chef::Recipe
+  include RightScale::App::Helper
+end
+
+vhosts(node[:lb][:vhost_names]).each do | vhost_name |
+  sys_firewall "Request all appservers close ports to this loadbalancer" do
+    machine_tag "loadbalancer:#{vhost_name}=app"
+    port node[:app][:port]
+    enable false
+    ip_addr node[:cloud][:private_ips][0]
+    action :update_request
+  end
 end
 
 rs_utils_marker :end

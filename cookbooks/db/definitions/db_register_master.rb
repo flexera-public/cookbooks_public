@@ -17,8 +17,13 @@ define :db_register_master do
   # == Set master DNS
   # Do this first so that DNS can propagate while the recipe runs
   #
-  include_recipe "sys_dns::do_set_private"
-
+  private_ip = node[:cloud][:private_ips][0]
+  log "   Setting master database #{node[:db][:dns][:master][:fqdn]} to #{private_ip}"
+  sys_dns "default" do
+    id node[:db][:dns][:master][:id]
+    address private_ip
+    action :set_private
+  end
   
   # == Set master tags
   # Tag the server with the master tags rs_dbrepl:master_active 

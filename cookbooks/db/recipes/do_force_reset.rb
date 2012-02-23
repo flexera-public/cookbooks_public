@@ -8,7 +8,7 @@
 # Attempt to return the instance to a pristine / newly launched state.
 # This is for development and test purpose and should not be used on
 # production servers.
- 
+
 rs_utils_marker :begin
 
 raise "Force reset safety not off.  Override db/force_safety to run this recipe" unless node[:db][:force_safety] == "off"
@@ -39,6 +39,7 @@ tags_to_remove.each do |each_tag|
   each_tag = each_tag.strip.chomp.chomp(',').gsub(/^\"|\"$/, '')
   log "  Remove #{each_tag}..."
   bash "remove tags" do
+    flags "-ex"
     code <<-EOH
     rs_tag -r '#{each_tag}'
     EOH
@@ -65,6 +66,11 @@ log "  Cleaning cron..."
 block_device NICKNAME do
   cron_backup_recipe "#{self.cookbook_name}::do_primary_backup"
   action :backup_schedule_disable
+end
+
+log "  resetting collectd config..."
+db DATA_DIR do
+  action :setup_monitoring
 end
 
 rs_utils_marker :end

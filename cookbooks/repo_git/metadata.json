@@ -1,31 +1,32 @@
 {
-  "dependencies": {
-    "git": ">= 0.0.0"
-  },
   "name": "repo_git",
+  "description": "Manages the Git fast version control system",
+  "long_description": "= RightScale \"repo_git\" Provider\n\n== DESCRIPTION:\n\nProvides the GIT implementation of the 'repo' resource to\nmanage source code download from GIT repositories.\n\n\n== DETAILS:\n\n=== General\nThe 'repo' implementation is defined by a Lightweight Provider, which can be\nfound in the providers/default.rb file.\n\n\n== SETUP:\n\n* Provider will be automatically initialized when you add \"repo:default\" recipe to your ServerTemplate runlist\n\n== USAGE:\n\n=== Basic usage\nOnce setup, use the recipes in the 'repo' cookbook to install and manage your\ncode repo.  See the repo/README.rdoc for usage details.\n\n\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "maintainer": "RightScale, Inc.",
   "maintainer_email": "support@rightscale.com",
-  "attributes": {
-  },
-  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
-  "suggestions": {
-  },
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
   "platforms": {
   },
-  "maintainer": "RightScale, Inc.",
-  "long_description": "",
-  "version": "0.0.1",
+  "dependencies": {
+    "git": ">= 0.0.0",
+    "repo": ">= 0.0.0"
+  },
   "recommendations": {
   },
-  "recipes": {
-  },
-  "groupings": {
+  "suggestions": {
   },
   "conflicting": {
   },
+  "providing": {
+  },
   "replacing": {
   },
-  "description": "Installs Git's Fast Version Control System.",
-  "providing": {
-    "repo_git": ">= 0.0.0"
-  }
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "repo_git::default": "Default pattern of loading packages"
+  },
+  "version": "0.0.1"
 }

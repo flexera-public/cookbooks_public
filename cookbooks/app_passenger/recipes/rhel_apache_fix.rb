@@ -22,6 +22,7 @@ case node[:platform]
     #Fixing  centos root certificate authority issues
     #Backup old certs
     bash "fix certs" do
+      flags "-ex"
       code <<-EOH
         cp /etc/pki/tls/certs/ca-bundle.crt /root/
       EOH

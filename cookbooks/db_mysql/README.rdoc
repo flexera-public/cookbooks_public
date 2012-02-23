@@ -1,4 +1,4 @@
-= RightScale Database Manager for MySQL (Beta) 
+= RightScale Database Manager for MySQL  
 
 == DESCRIPTION:
 

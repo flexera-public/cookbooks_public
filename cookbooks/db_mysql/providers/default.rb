@@ -17,6 +17,11 @@ action :start do
   @db.start
 end
 
+action :restart do
+  @db = init(new_resource)
+  @db.restart
+end
+
 action :status do
   @db = init(new_resource)
   status = @db.status
@@ -77,6 +82,14 @@ action :write_backup_info do
     masterstatus['File'] = slavestatus['Relay_Master_Log_File']
     masterstatus['Position'] = slavestatus['Exec_Master_Log_Pos']
   end
+
+  # Save the db provider (MySQL) and version number as set in the node
+  version=node[:db_mysql][:version]
+  provider=node[:db][:provider]
+  Chef::Log.info "  Saving #{provider} version #{version} in master info file"
+  masterstatus['DB_Provider']=provider
+  masterstatus['DB_Version']=version
+
   Chef::Log.info "Saving master info...:\n#{masterstatus.to_yaml}"
   ::File.open(::File.join(node[:db][:data_dir], RightScale::Database::MySQL::Helper::SNAPSHOT_POSITION_FILENAME), ::File::CREAT|::File::TRUNC|::File::RDWR) do |out|
     YAML.dump(masterstatus, out)
@@ -89,6 +102,27 @@ action :pre_restore_check do
 end
 
 action :post_restore_cleanup do
+  # Performs checks for snapshot compatibility with current server
+  ruby_block "validate_backup" do
+    block do
+      master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
+      # Check version matches
+      # Not all 11H2 snapshots (prior to 5.5 release) saved provider or version.  
+      # Assume MySQL 5.1 if nil
+      snap_version=master_info['DB_Version']||='5.1'
+      snap_provider=master_info['DB_Provider']||='db_mysql'
+      current_version= node[:db_mysql][:version]
+      current_provider=master_info['DB_Provider']||=node[:db][:provider]
+      Chef::Log.info "  Snapshot from #{snap_provider} version #{snap_version}"
+      # skip check if restore version check is false
+      if node[:db][:backup][:restore_version_check] == "true"
+        raise "FATAL: Attempting to restore #{snap_provider} #{snap_version} snapshot to #{current_provider} #{current_version} with :restore_version_check enabled." unless ( snap_version == current_version ) && ( snap_provider == current_provider )
+      else
+        Chef::Log.info "  Skipping #{provider} restore version check"
+      end
+    end
+  end
+
   @db = init(new_resource)
   @db.symlink_datadir("/var/lib/mysql", node[:db][:data_dir])
   @db.post_restore_cleanup
@@ -119,50 +153,22 @@ end
 
 action :install_client do
 
-  # == Install MySQL 5.1 package(s)
+  # == Install MySQL client packages
+  # Must install during the compile stage because mysql gem build depends on the libs
   if node[:platform] =~ /redhat|centos/
-
     # Install MySQL GPG Key (http://download.oracle.com/docs/cd/E17952_01/refman-5.5-en/checking-gpg-signature.html)
     gpgkey = ::File.join(::File.dirname(__FILE__), "..", "files", "centos", "mysql_pubkey.asc")
     `rpm --import #{gpgkey}`
-
-    # Packages from rightscale-software repository for MySQL 5.1
-    packages = ["MySQL-shared-compat", "MySQL-devel-community", "MySQL-client-community" ]
-    Chef::Log.info("Packages to install: #{packages.join(",")}")
-    packages.each do |p|
-      r = package p do
-        action :nothing
-      end
-      r.run_action(:install)
-    end
-
-  else
-
-    # Install development library in compile phase
-    p = package "mysql-dev" do
-      package_name value_for_platform(
-        "ubuntu" => {
-          "8.04" => "libmysqlclient15-dev",
-          "8.10" => "libmysqlclient15-dev",
-          "9.04" => "libmysqlclient15-dev"
-        },
-        "default" => 'libmysqlclient-dev'
-      )
-      action :nothing
-    end
-    p.run_action(:install)
-
-    # install client in converge phase
-    package "mysql-client" do
-      package_name value_for_platform(
-        [ "centos", "redhat", "suse" ] => { "default" => "mysql" },
-        "default" => "mysql-client"
-      )
-      action :install
-    end
-
   end
 
+  packages = node[:db_mysql][:client_packages_install]
+  log "Packages to install: #{packages.join(",")}" unless packages == ""
+  packages.each do |p|
+    r = package p do
+      action :nothing
+    end
+    r.run_action(:install)
+  end
 
   # == Install MySQL client gem
   #
@@ -179,38 +185,34 @@ end
 
 action :install_server do
 
+  # == Installing MySQL server
+  #
+  platform = node[:platform]
   # MySQL server depends on MySQL client
   action_install_client
 
-  # == Install MySQL 5.1 and other packages
+  # == Uninstall other packages we don't
   #
-  node[:db_mysql][:packages_install].each do |p|
-    package p
-  end unless node[:db_mysql][:packages_install] == ""
-
-  # Stop MySQL to allow custom configuration
-  service "mysql" do
-    supports :status => true, :restart => true, :reload => true
-    action :stop
-  end
-
-  # Uninstall other packages we don't
-  node[:db_mysql][:packages_uninstall].each do |p|
+  packages = node[:db_mysql][:packages_uninstall]
+  log "Packages to uninstall: #{packages.join(",")}" unless packages == ""
+  packages.each do |p|
      package p do
        action :remove
      end
-  end unless node[:db_mysql][:packages_uninstall] == ""
+  end unless packages == ""
 
-  # Ubuntu requires deactivating upstart from starting mysql.
-  if node[:platform] == "ubuntu"
-    ubuntu_mysql_upstart_conf = "/etc/init/mysql.conf"
-    bash 'disable mysql upstart' do
-      only_if { ::File.exists?(ubuntu_mysql_upstart_conf) }
-      code <<-eof
-        pkill mysqld
-        mv #{ubuntu_mysql_upstart_conf} #{ubuntu_mysql_upstart_conf}.disabled
-      eof
-    end
+  # == Install MySQL 5.1 and other packages
+  #
+  packages = node[:db_mysql][:server_packages_install]
+  packages.each do |p|
+    package p
+  end unless packages == ""
+
+  # == Stop mysql service 
+  #
+  db node[:db][:data_dir] do
+    action [ :stop ]
+    persist false
   end
 
   # Create MySQL server system tables
@@ -252,7 +254,6 @@ action :install_server do
     owner "mysql"
     group "mysql"
   end
-
   # Setup my.cnf
   template_source = "my.cnf.erb"
   template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
@@ -268,12 +269,7 @@ action :install_server do
 
   # == Setup MySQL user limits
   #
-  # Set the mysql and root users max open files to a really large number.
-  # 1/3 of the overall system file max should be large enough.  The percentage can be
-  # adjusted if necessary.
-  #
-  mysql_file_ulimit = `sysctl -n fs.file-max`.to_i/33
-
+  mysql_file_ulimit = node[:db_mysql][:file_ulimit]
   template "/etc/security/limits.d/mysql.limits.conf" do
     source "mysql.limits.conf.erb"
     variables({
@@ -288,76 +284,101 @@ action :install_server do
   #
   execute "ulimit -n #{mysql_file_ulimit}"
 
-
-  # == Drop in best practice replacement for mysqld startup.
+  # == Setup custom mysqld init script via /etc/sysconfig/mysqld.
   #
   # Timeouts enabled.
+  # Ubuntu's init script does not support configurable startup timeout
   #
-  template "/etc/init.d/mysql" do
-    source "init-mysql.erb"
+  log_msg = ( platform =~ /redhat|centos/ ) ?  "  Setting mysql startup timeout" : "  Skipping mysql startup timeout setting for Ubuntu" 
+  log log_msg
+  template "/etc/sysconfig/#{node[:db_mysql][:service_name]}" do
+    source "sysconfig-mysqld.erb"
     mode "0755"
     cookbook 'db_mysql'
+    only_if { platform =~ /redhat|centos/ }
   end
-
 
   # == specific configs for ubuntu
   #  - set config file localhost access w/ root and no password
   #  - disable the 'check_for_crashed_tables'.
   #
   remote_file "/etc/mysql/debian.cnf" do
-    only_if { node[:platform] == "ubuntu" }
+    only_if { platform == "ubuntu" }
     mode "0600"
     source "debian.cnf"
     cookbook 'db_mysql'
   end
 
   remote_file "/etc/mysql/debian-start" do
-    only_if { node[:platform] == "ubuntu" }
+    only_if { platform == "ubuntu" }
     mode "0755"
     source "debian-start"
     cookbook 'db_mysql'
   end
 
+  # == Fix permissions
+  # During the first startup after install some of the file are created with root:root
+  # so MySQL can not read them.
+  dir=node[:db_mysql][:datadir]
+  bash "chown mysql #{dir}" do
+    flags "-ex"
+    code <<-EOH
+      chown -R mysql:mysql #{dir}
+    EOH
+  end
+
   # == Start MySQL
   #
-  service "mysql" do
-    supports :status => true, :restart => true, :reload => true
-    action :start
+  log "  Server installed.  Starting MySQL"
+  db node[:db][:data_dir] do
+    action [ :start ]
+    persist false
   end
 
 end
 
 action :setup_monitoring do
+
+  ruby_block "evaluate db type" do
+    block do
+      if node[:db][:init_status].to_s == "initialized"
+        node[:db_mysql][:collectd_master_slave_mode] = ( node[:db][:this_is_master] == true ? "Master" : "Slave" ) + "Stats true"
+      else
+        node[:db_mysql][:collectd_master_slave_mode] = ""
+      end
+    end
+  end
+
   service "collectd" do
     action :nothing
   end
 
   arch = node[:kernel][:machine]
   arch = "i386" if arch == "i686"
-
+  platform = node[:platform]
   # Centos specific items
   TMP_FILE = "/tmp/collectd.rpm"
   remote_file TMP_FILE do
-    only_if { node[:platform] =~ /redhat|centos/ }
+    only_if { platform =~ /redhat|centos/ }
     source "collectd-mysql-4.10.0-4.el5.#{arch}.rpm"
     cookbook 'db_mysql'
   end
   package TMP_FILE do
-    only_if { node[:platform] =~ /redhat|centos/ }
+    only_if { platform =~ /redhat|centos/ }
     source TMP_FILE
   end
 
-  cookbook_file ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
+  template ::File.join(node[:rs_utils][:collectd_plugin_dir], 'mysql.conf') do
+    source "collectd-plugin-mysql.conf.erb"
     mode "0644"
     backup false
-    source "collectd-plugin-mysql.conf"
-    notifies :restart, resources(:service => "collectd")
     cookbook 'db_mysql'
+    notifies :restart, resources(:service => "collectd")
   end
 
   # Send warning if not centos/redhat or ubuntu
-  log "WARNING: attempting to install collectd-mysql on unsupported platform #{node[:platform]}, continuing.." do
-    only_if { node[:platform] != "centos" && node[:platform] != "redhat" && node[:platform] != "ubuntu" }
+  log "WARNING: attempting to install collectd-mysql on unsupported platform #{platform}, continuing.." do
+    only_if { platform != "centos" && platform != "redhat" && platform != "ubuntu" }
     level :warn
   end
 
@@ -400,8 +421,9 @@ action :promote do
     cookbook 'db_mysql'
   end
   
-  service "mysql" do
+  db node[:db][:data_dir] do
     action :start
+    persist false
     only_if do
       log_bin = RightScale::Database::MySQL::Helper.do_query(node, "show variables like 'log_bin'", 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
       if log_bin['Value'] == 'OFF'
@@ -458,7 +480,7 @@ action :promote do
 
   Chef::Log.info "Stopping slave and misconfiguring master"
   RightScale::Database::MySQL::Helper.do_query(node, "STOP SLAVE")
-  RightScale::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST=''")
+  RightScale::Database::MySQL::Helper.do_query(node, "CHANGE MASTER TO MASTER_HOST='MASTER misconfigured on purpose during slave promotion'")
   action_grant_replication_slave
   RightScale::Database::MySQL::Helper.do_query(node, 'SET GLOBAL READ_ONLY=0')
 
@@ -482,6 +504,30 @@ end
 
 
 action :enable_replication do
+
+  # Check the volume before performing any actions.  If invalid raise error and exit.
+  ruby_block "validate_master" do
+    block do
+      master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
+      # Check that the snapshot is from the current master or a slave associated with the current master
+
+      # 11H2 backup
+      if master_info['Master_instance_uuid']
+        if master_info['Master_instance_uuid'] != node[:db][:current_master_uuid]
+          raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_uuid']} != current master: #{node[:db][:current_master_uuid]}"
+        end
+      # 11H1 backup
+      elsif master_info['Master_instance_id']
+        Chef::Log.info "  Detected 11H1 snapshot to migrate"
+        if master_info['Master_instance_id'] != node[:db][:current_master_ec2_id]
+          raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_id']} != current master: #{node[:db][:current_master_ec2_id]}"
+        end
+      # File not found or does not contain info
+      else
+        raise "Position and file not saved!"
+      end
+    end
+  end
 
   ruby_block "wipe_existing_runtime_config" do
     block do
@@ -529,32 +575,9 @@ action :enable_replication do
   # service provider uses the status command to decide if it
   # has to run the start command again.
   10.times do
-    service "mysql" do
+    db node[:db][:data_dir] do
       action :start
-    end
-  end
-
-  # checks for valid backup and that current master matches backup
-  ruby_block "validate_backup" do
-    block do
-      master_info = RightScale::Database::MySQL::Helper.load_replication_info(node)
-      # Check that the snapshot is from the current master or a slave associated with the current master
-
-      # 11H2 backup
-      if master_info['Master_instance_uuid']
-        if master_info['Master_instance_uuid'] != node[:db][:current_master_uuid]
-          raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_uuid']} != current master: #{node[:db][:current_master_uuid]}"
-        end
-      # 11H1 backup
-      elsif master_info['Master_instance_id']
-        Chef::Log.info "  Detected 11H1 snapshot to migrate"
-        if master_info['Master_instance_id'] != node[:db][:current_master_ec2_id]
-          raise "FATAL: snapshot was taken from a different master! snap_master was:#{master_info['Master_instance_id']} != current master: #{node[:db][:current_master_ec2_id]}"
-        end
-      # File not found or does not contain info
-      else
-        raise "Position and file not saved!"
-      end
+      persist false
     end
   end
 
@@ -616,6 +639,7 @@ action :restore_from_dump_file do
   bash "Import MySQL dump file: #{dumpfile}" do
     only_if { db_check.empty? }
     user "root"
+    flags "-ex"
     code <<-EOH
       set -e
       if [ ! -f #{dumpfile} ] 
