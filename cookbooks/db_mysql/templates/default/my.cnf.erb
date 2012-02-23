@@ -99,7 +99,8 @@ innodb_log_group_home_dir = /var/lib/mysql
 
 <% if node[:db_mysql][:version] == '5.5' %>
 # some MySQL 5.5 specific config
-# None to date
+# Work around for bug Bug #59733
+old_alter_table=0
 <% end %>
 
 innodb_file_per_table
