@@ -10,29 +10,29 @@
 <%= @environment %>:
   adapter: <%= @adapter %>
   database: <%= @database %>
-  username: <%= @db_user %>
-  password: <%= @db_password %>
-  host: <%= @db_sever %>
+  username: <%= @user %>
+  password: <%= @password %>
+  host: <%= @fqdn %>
   encoding: utf8
   #socket: /var/lib/mysql/mysql.sock
 <%  when "sqlite3","sqlite"%>
 # SQLite version 3.x
 <%= @environment %>:
-  host: <%= @db_sever %>
+  host: <%= @fqdn %>
   adapter: <%= @adapter %>
   database: <%= @database %>
   pool: 5
   timeout: 5000
 <%  when "postgresql"%>
 <%= @environment %>:
-  host: <%= @db_sever %>
+  host: <%= @fqdn %>
   adapter: <%= @adapter %>
   database: <%= @database %>
-  username: <%= @db_user %>
-  password: <%= @db_password %>
+  username: <%= @user %>
+  password: <%= @password %>
 <%  else%>
 <%= @environment %>:
-  host: <%= @db_sever %>
+  host: <%= @sever %>
   adapter: <%= @adapter %>
   database: <%= @database %>
 

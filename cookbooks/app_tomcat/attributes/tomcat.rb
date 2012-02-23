@@ -7,9 +7,7 @@
 
 set[:app][:provider] = "app_tomcat"
 set[:app][:database_name] = node[:tomcat][:db_name]
-set[:app][:database_user] = node[:db][:application][:user]
-set[:app][:database_password] = node[:db][:application][:password]
-set[:app][:database_sever_fqdn] =  node[:db][:dns][:master][:fqdn]
+
 
 # == Recommended attributes
 #

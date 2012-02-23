@@ -161,32 +161,25 @@ action :setup_db_connection do
   db_password = new_resource.database_password
   db_sever_fqdn = new_resource.database_sever_fqdn
 
-   ruby_block "Backup of old db config " do
-      block do
-        Chef::Log.info("check previous database.yml and backup it")
-        if (::File.exists?("#{deploy_dir.chomp}/config/database.yml") == true)
-          ::File.rename("#{deploy_dir.chomp}/config/database.yml", "#{deploy_dir.chomp}/config/database.yml_old_"+::Time.now.strftime("%Y%m%d%H%M"))
-        end
-      end
-    end
 
     # Tell MySQL to fill in our connection template
   log "  Generating database.yml"
-  db_mysql_connect_app "#{deploy_dir.chomp}/config/database.yml"  do
-    template      "database.yml.erb"
-    cookbook      "app_passenger"
-    owner         node[:app_passenger][:apache][:user]
-    group         node[:app_passenger][:apache][:user]
-    adapter       node[:app_passenger][:project][:db][:adapter]
-    environment   node[:app_passenger][:project][:environment]
-    database      db_name
-    db_user       db_user
-    db_password   db_password
-    db_sever      db_sever_fqdn
+
+  template "#{deploy_dir.chomp}/config/database.yml" do
+    owner node[:app_passenger][:apache][:user]
+    source "database.yml.erb"
+    cookbook 'app_passenger'
+    variables(
+      :adapter =>      node[:app_passenger][:project][:db][:adapter],
+      :environment =>  node[:app_passenger][:project][:environment],
+      :database =>     db_name,
+      :user =>         db_user,
+      :password =>     db_password,
+      :fqdn =>         db_sever_fqdn
+          )
   end
 
-
-  #setting $RAILS_ENV
+  #defining $RAILS_ENV
   ENV['RAILS_ENV'] = node[:app_passenger][:project][:environment]
 
   #Creating bash file for manual $RAILS_ENV setup

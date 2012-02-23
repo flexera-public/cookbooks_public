@@ -280,9 +280,6 @@ action :setup_db_connection do
   log "  Setup project db connection"
 
   db_name = new_resource.database_name
-  db_user = new_resource.database_user
-  db_password = new_resource.database_password
-  db_sever_fqdn = new_resource.database_sever_fqdn
 
   log "  Creating context.xml"
   db_mysql_connect_app "/etc/tomcat6/context.xml"  do
@@ -290,9 +287,6 @@ action :setup_db_connection do
     owner         "root"
     group         "root"
     mode          "0644"
-    user          db_user
-    password      db_password
-    fqdn          db_sever_fqdn
     database      db_name
     cookbook      'app_tomcat'
   end
