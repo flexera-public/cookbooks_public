@@ -161,6 +161,15 @@ action :setup_db_connection do
   db_password = new_resource.database_password
   db_sever_fqdn = new_resource.database_sever_fqdn
 
+   ruby_block "Backup of old db config " do
+      block do
+        Chef::Log.info("check previous database.yml and backup it")
+        if (::File.exists?("#{deploy_dir.chomp}/config/database.yml") == true)
+          ::File.rename("#{deploy_dir.chomp}/config/database.yml", "#{deploy_dir.chomp}/config/database.yml_old_"+::Time.now.strftime("%Y%m%d%H%M"))
+        end
+      end
+    end
+
     # Tell MySQL to fill in our connection template
   log "  Generating database.yml"
   db_mysql_connect_app "#{deploy_dir.chomp}/config/database.yml"  do
