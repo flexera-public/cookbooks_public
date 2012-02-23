@@ -123,7 +123,7 @@
       <!-- Define the default virtual host
            Note: XML Schema validation will not work with Xerces 2.2.
        -->
-      <Host name="localhost"  appBase="<%=node[:tomcat][:docroot]%>"
+      <Host name="localhost"  appBase="<%=@doc_root%>"
             unpackWARs="true" autoDeploy="true"
             xmlValidation="false" xmlNamespaceAware="false">
 

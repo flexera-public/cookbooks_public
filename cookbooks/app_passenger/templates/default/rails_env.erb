@@ -1,11 +1,9 @@
 #
-#
 #Rails environment script, version 1.
 #
 # Managed by RightScale
 # DO NOT EDIT BY HAND
 #
 
-
 #! /bin/bash -f
-export RAILS_ENV=<%=node[:app_passenger][:project][:environment]%>
+export RAILS_ENV=<%=@params[:environment]%>

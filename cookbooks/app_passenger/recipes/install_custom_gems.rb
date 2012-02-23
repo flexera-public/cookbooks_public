@@ -14,7 +14,7 @@ rs_utils_marker :begin
 #
 #   ruby-Gem1:version  ruby-Gem2:version ruby-Gem3:version
 #
-log "Installing user specified gems:"
+log "  Installing user specified gems:"
 ruby_block "Install custom gems" do
   block do
     gem_list = node[:app_passenger][:project][:gem_list]

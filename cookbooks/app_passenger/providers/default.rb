@@ -7,6 +7,7 @@
 
 #stop apache/passenger
 action :stop do
+  log "  Running stop sequence"
   bash "Stopping apache" do
     flags "-ex"
     code <<-EOH
@@ -17,6 +18,7 @@ end
 
 #start apache/passenger
 action :start do
+  log "  Running start sequence"
   bash "Starting apache" do
     flags "-ex"
     code <<-EOH
@@ -27,6 +29,7 @@ end
 
 #restart apache/passenger
 action :restart do
+  log "  Running restart sequence"
   action_stop
   sleep 5
   action_start
@@ -37,8 +40,7 @@ action :install do
 
   #Installing some apache development headers required for rubyEE
   packages = new_resource.packages
-  log "Packages which will be installed #{packages}"
-
+  log "  Packages which will be installed: #{packages}"
   packages.each do |p|
     package p
   end
@@ -78,7 +80,7 @@ action :install do
 
 
   # Installing passenger module
-  log"INFO: Installing passenger"
+  log"  Installing passenger"
   bash "Install apache passenger gem" do
     flags "-ex"
     code <<-EOH
@@ -102,6 +104,7 @@ end
 action :setup_vhost do
 
   #Removing preinstalled apache ssl.conf as it conflicts with ports.conf of web:apache
+  log "  Removing ssl.conf"
   file "/etc/httpd/conf.d/ssl.conf" do
     action :delete
     backup false
@@ -110,29 +113,40 @@ action :setup_vhost do
 
 
   # Generation of new apache ports.conf, based on user prefs
+  log "  Generating new apache ports.conf"
   template "#{node[:app_passenger][:apache][:install_dir]}/ports.conf" do
-    source "ports.conf.erb"
-    cookbook 'app_passenger'
+    source      "ports.conf.erb"
+    cookbook    'app_passenger'
+    variables(
+        :vhost_port => node[:app][:app_port]
+      )
   end
 
-  #unlinking default apache vhost if it exists
-  link "#{node[:app_passenger][:apache][:install_dir]}/sites-enabled/000-default" do
-    action :delete
-    only_if "test -L #{node[:app_passenger][:apache][:install_dir].chomp}/sites-enabled/000-default"
+  log "  Unlinking default apache vhost"
+  apache_site "000-default" do
+    enable false
   end
-
 
   port = new_resource.app_port
   project_root = new_resource.app_root
   # Generation of new vhost config, based on user prefs
-  log"INFO: Generating new apache vhost"
+  log"  Generating new apache vhost"
   web_app "http-#{port}-#{node[:web_apache][:server_name]}.vhost" do
-    template "basic_vhost.erb"
-    docroot  project_root
-    vhost_port  port
-    server_name node[:web_apache][:server_name]
-    rails_env node[:app_passenger][:project][:environment]
-    cookbook 'app_passenger'
+    template                   "basic_vhost.erb"
+    cookbook                   'app_passenger'
+    docroot                    project_root
+    vhost_port                 port
+    server_name                node[:web_apache][:server_name]
+    rails_env                  node[:app_passenger][:project][:environment]
+    apache_install_dir         node[:app_passenger][:apache][:install_dir]
+    apache_log_dir             node[:app_passenger][:apache][:log_dir]
+    ruby_bin                   node[:app_passenger][:ruby_bin]
+    ruby_base_dir              node[:app_passenger][:ruby_gem_base_dir]
+    rails_spawn_method         node[:app_passenger][:rails_spawn_method]
+    destination                node[:app][:destination]
+    apache_maintenance_page    node[:app_passenger][:apache][:maintenance_page]
+    apache_serve_local_files   node[:app_passenger][:apache][:serve_local_files]
+
   end
 
 
@@ -141,56 +155,55 @@ end
 #setup project db connection
 action :setup_db_connection do
 
-  if node[:app_passenger][:project][:db][:adapter]=="mysql"
-
-    #packages required for mysql gem
-    node[:app_passenger][:mysql_packages_install]= ["mysql", "mysql-devel","mysqlclient15", "mysqlclient15-devel"]
-
-    case node[:platform]
-
-      when "redhat","redhatenterpriseserver", "centos"
-        node[:app_passenger][:mysql_packages_install].each do |p|
-          package p
-       end
-
-      when "ubuntu","debian"
-        log "Nothing to do!"
-    end
-  end
-
-
   deploy_dir = new_resource.destination
-  #creating database template
-  log "INFO: Generating database.yml"
-  template "#{deploy_dir.chomp}/config/database.yml" do
-    owner node[:app_passenger][:apache][:user]
-    source "database.yml.erb"
-    cookbook 'app_passenger'
+  db_name = new_resource.database_name
+  db_user = new_resource.database_user
+  db_password = new_resource.database_password
+  db_sever_fqdn = new_resource.database_sever_fqdn
+
+    # Tell MySQL to fill in our connection template
+  log "  Generating database.yml"
+  db_mysql_connect_app "#{deploy_dir.chomp}/config/database.yml"  do
+    template      "database.yml.erb"
+    cookbook      "app_passenger"
+    owner         node[:app_passenger][:apache][:user]
+    group         node[:app_passenger][:apache][:user]
+    adapter       node[:app_passenger][:project][:db][:adapter]
+    environment   node[:app_passenger][:project][:environment]
+    database      db_name
+    db_user       db_user
+    db_password   db_password
+    db_sever      db_sever_fqdn
   end
+
 
   #setting $RAILS_ENV
   ENV['RAILS_ENV'] = node[:app_passenger][:project][:environment]
 
   #Creating bash file for manual $RAILS_ENV setup
-  log "INFO: Creating bash file for manual $RAILS_ENV setup"
+  log "  Creating bash file for manual $RAILS_ENV setup"
   template "/etc/profile.d/rails_env.sh" do
-    mode '0744'
-    source "rails_env.erb"
-    cookbook 'app_passenger'
+    mode         '0744'
+    source       "rails_env.erb"
+    cookbook     'app_passenger'
+    variables(
+        :environment => node[:app_passenger][:project][:environment]
+      )
   end
 
 end
 
 
 action :code_update do
- deploy_dir = new_resource.destination
+  deploy_dir = new_resource.destination
 
-  log "INFO: Creating directory for project deployment - <#{deploy_dir}>"
+  log "  Creating directory for project deployment - <#{deploy_dir}>"
   directory deploy_dir do
     recursive true
+    not_if do ::File.exists?(deploy_dir.chomp)  end
   end
 
-  #Reading app name from tmp file (for execution in "operational" phase))
+  #Reading app name from tmp file (for recipe execution in "operational" phase))
   #Waiting for "run_lists"
   if(deploy_dir == "/home/rails/")
     app_name = IO.read('/tmp/appname')
@@ -205,14 +218,14 @@ action :code_update do
   directory "#{deploy_dir.chomp}/shared/system" do
     recursive true
   end
-
+  log "  Starting source code download sequence..."
   repo "default" do
-   destination deploy_dir
-   action :capistrano_pull
-   app_user node[:app_passenger][:apache][:user]
-   environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
-   create_dirs_before_symlink
-   persist false
+    destination deploy_dir
+    action :capistrano_pull
+    app_user node[:app_passenger][:apache][:user]
+    environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
+    create_dirs_before_symlink
+    persist false
   end
 
 end

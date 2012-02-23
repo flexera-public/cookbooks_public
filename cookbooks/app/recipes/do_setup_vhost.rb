@@ -8,6 +8,7 @@
 
 rs_utils_marker :begin
 
+log "  Configuring vhost file for App server"
 app "default" do
   app_root node[:app][:app_root]
   app_port node[:app][:app_port]

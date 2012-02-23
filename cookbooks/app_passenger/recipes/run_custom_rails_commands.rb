@@ -16,7 +16,7 @@ rs_utils_marker :begin
 #   command1, command2
 #
 
-log "Running user defined commands"
+log "  Running user defined commands"
 bash "run commands" do
   flags "-ex"
   cwd "#{node[:app_passenger][:deploy_dir]}/"

@@ -6,8 +6,8 @@
 # DO NOT EDIT BY HAND
 #
 
-Listen <%=node[:app][:app_port]%>
-NameVirtualHost *:<%=node[:app][:app_port]%>
+Listen <%=@params[:vhost_port]%>
+NameVirtualHost *:<%=@params[:vhost_port]%>
 
 #Listen 80
 #NameVirtualHost *:80

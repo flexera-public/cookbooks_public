@@ -17,7 +17,7 @@ end
 # If the checked application contains a Gemfile, then we can install all
 # the required gems using "bundle install" command.
 #
-log "Bundler will install gems from Gemfile"
+log "  Bundler will install gems from Gemfile"
 
 bash "Bundle gem install" do
   flags "-ex"

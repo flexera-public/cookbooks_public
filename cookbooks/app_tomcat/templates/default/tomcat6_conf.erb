@@ -28,7 +28,7 @@ CATALINA_TMPDIR="/var/tmp/tomcat6"
 #JAVA_OPTS="-Djava.library.path=/usr/lib"
 
 # What user should run tomcat
-TOMCAT_USER="<%=node[:tomcat][:app_user]%>"
+TOMCAT_USER="<%=@app_user%>"
 
 # You can change your tomcat locale here
 #LANG="en_US"
@@ -56,13 +56,13 @@ CATALINA_PID="/var/run/tomcat6.pid"
 # see http://www.tomcatexpert.com/blog/2011/11/22/performance-tuning-jvm-running-tomcat
 
 # XMX and XMS
-CATALINA_OPTS=" -Xms<%=node[:tomcat][:java][:xms]%> -Xmx<%=node[:tomcat][:java][:xms]%>"
+CATALINA_OPTS=" -Xms<%=@java_xms%> -Xmx<%=@java_xmx%>"
 
 #PermSize and MaxPermSize
-CATALINA_OPTS=" -XX:PermSize=<%=node[:tomcat][:java][:permsize]%> -XX:MaxPermSize=<%=node[:tomcat][:java][:maxpermsize]%>"
+CATALINA_OPTS=" -XX:PermSize=<%=@java_permsize%> -XX:MaxPermSize=<%=@java_maxpermsize%>"
 
 #NewSize and MaxNewSize
-CATALINA_OPTS=" -XX:NewSize=<%=node[:tomcat][:java][:newsize]%> -XX:MaxNewSize=<%=node[:tomcat][:java][:maxnewsize]%>"
+CATALINA_OPTS=" -XX:NewSize=<%=@java_newsize%> -XX:MaxNewSize=<%=@java_maxnewsize%>"
 
 #Collectd
 

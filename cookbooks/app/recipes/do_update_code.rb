@@ -8,6 +8,7 @@
 
 rs_utils_marker :begin
 
+log "  Updating project code repository"
 app "default" do
   destination node[:app][:destination]
   action :code_update

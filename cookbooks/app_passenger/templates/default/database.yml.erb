@@ -5,35 +5,35 @@
 # DO NOT EDIT BY HAND
 #
 
-<%  case node[:app_passenger][:project][:db][:adapter]
+<%  case @params[:adapter]
     when "mysql" %>
-<%= node[:app_passenger][:project][:environment] %>:
-  adapter: <%= node[:app_passenger][:project][:db][:adapter] %>
-  database: <%= node[:app_passenger][:project][:db][:schema_name] %>
-  username: <%= node[:db][:application][:user] %>
-  password: <%= node[:db][:application][:password] %>
-  host: <%= node[:db][:dns][:master][:fqdn] %>
+<%= @params[:environment] %>:
+  adapter: <%= @params[:adapter] %>
+  database: <%= @params[:database] %>
+  username: <%= @params[:db_user] %>
+  password: <%= @params[:db_password] %>
+  host: <%= @params[:db_sever] %>
   encoding: utf8
   #socket: /var/lib/mysql/mysql.sock
 <%  when "sqlite3","sqlite"%>
 # SQLite version 3.x
-<%= node[:app_passenger][:project][:environment] %>:
-  host: <%= node[:db][:dns][:master][:fqdn] %>
-  adapter: <%= node[:app_passenger][:project][:db][:adapter] %>
-  database: <%= node[:app_passenger][:project][:db][:schema_name] %>
+<%= @params[:environment] %>:
+  host: <%= @params[:db_sever] %>
+  adapter: <%= @params[:adapter] %>
+  database: <%= @params[:database] %>
   pool: 5
   timeout: 5000
 <%  when "postgresql"%>
-<%= node[:app_passenger][:project][:environment] %>:
-  host: <%= node[:db][:dns][:master][:fqdn] %>
-  adapter: <%= node[:app_passenger][:project][:db][:adapter] %>
-  database: <%= node[:app_passenger][:project][:db][:schema_name] %>
-  username: <%= node[:db][:application][:user] %>
-  password: <%= node[:db][:application][:password] %>
+<%= @params[:environment] %>:
+  host: <%= @params[:db_sever] %>
+  adapter: <%= @params[:adapter] %>
+  database: <%= @params[:database] %>
+  username: <%= @params[:db_user] %>
+  password: <%= @params[:db_password] %>
 <%  else%>
-<%= node[:app_passenger][:project][:environment] %>:
-  host: <%= node[:db][:dns][:master][:fqdn] %>
-  adapter: <%= node[:app_passenger][:project][:db][:adapter] %>
-  database: <%= node[:app_passenger][:project][:db][:schema_name] %>
+<%= @params[:environment] %>:
+  host: <%= @params[:db_sever] %>
+  adapter: <%= @params[:adapter] %>
+  database: <%= @params[:database] %>
 
 <%end%>

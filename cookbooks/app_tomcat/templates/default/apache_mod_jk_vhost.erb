@@ -66,8 +66,8 @@
      # <CUSTOM RULES BEFORE FORWARDING END>
 
      # Setup the logs in the appropriate directory
-     CustomLog <%= node[:apache][:log_dir] %>/access_log combined
-     ErrorLog  <%= node[:apache][:log_dir] %>/error_log
+     CustomLog <%= @apache_log_dir %>/access_log combined
+     ErrorLog  <%= @apache_log_dir %>/error_log
 
      #Remote logging -- handle by syslog
      ErrorLog "|logger -p local3.info -t httperror"

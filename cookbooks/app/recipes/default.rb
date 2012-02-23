@@ -7,19 +7,17 @@
 
 rs_utils_marker :begin
 
-# Setup default values for database resource
-log "Provider is #{node[:app][:provider]}"
+log "  Provider is #{node[:app][:provider]}"
+log "  Installing #{node[:app][:packages]}"
+
+# Setup default values for database resource and install required packages
 app "default" do
   persist true
   provider node[:app][:provider]
-  action :nothing
-end
-
-#install required packages
-app "default" do
   packages node[:app][:packages]
   action :install
 end
+
 
 # Let others know we are an appserver
 right_link_tag "appserver:active=true"

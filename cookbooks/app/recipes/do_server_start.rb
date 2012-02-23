@@ -1,6 +1,6 @@
 #
 # Cookbook Name::app
-# Recipe::do_package_install
+# Recipe::do_server_start
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -8,8 +8,9 @@
 
 rs_utils_marker :begin
 
+log "  App Server Start"
 app "default" do
-    action :install
+    action :start
 end
 
 rs_utils_marker :end

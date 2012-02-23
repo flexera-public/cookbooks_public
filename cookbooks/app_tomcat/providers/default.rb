@@ -6,6 +6,7 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 action :stop do
+  log "  Running stop sequence"
   bash "Stopping tomcat" do
     flags "-ex"
     code <<-EOH
@@ -15,6 +16,7 @@ action :stop do
 end
 
 action :start do
+  log "  Running start sequence"
   bash "Starting tomcat" do
     flags "-ex"
     code <<-EOH
@@ -25,6 +27,7 @@ action :start do
 end
 
 action :restart do
+  log "  Running restart sequence"
   action_stop
      sleep 5
   action_start
@@ -34,6 +37,7 @@ end
 action :install do
 
   packages = new_resource.packages
+  log "  Packages which will be installed: #{packages}"
   packages .each do |p|
     log "installing #{p}"
     package p
@@ -117,6 +121,7 @@ end
 
 action :setup_vhost do
 
+  log "  Creating tomcat6.conf"
   template "/etc/tomcat6/tomcat6.conf" do
     action :create
     source "tomcat6_conf.erb"
@@ -124,8 +129,18 @@ action :setup_vhost do
     owner "root"
     mode "0644"
     cookbook 'app_tomcat'
+    variables(
+      :app_user => node[:tomcat][:app_user],
+      :java_xms => node[:tomcat][:java][:xms],
+      :java_xmx => node[:tomcat][:java][:xms],
+      :java_permsize => node[:tomcat][:java][:permsize],
+      :java_maxpermsize => node[:tomcat][:java][:maxpermsize],
+      :java_newsize => node[:tomcat][:java][:newsize],
+      :java_maxnewsize => node[:tomcat][:java][:maxnewsize]
+    )
   end
 
+  log "  Creating server.xml"
   template "/etc/tomcat6/server.xml" do
     action :create
     source "server_xml.erb"
@@ -133,8 +148,12 @@ action :setup_vhost do
     owner "root"
     mode "0644"
     cookbook 'app_tomcat'
+    variables(
+            :doc_root => node[:tomcat][:docroot]
+          )
   end
 
+  log "  Setup logrotate for tomcat"
   template "/etc/logrotate.d/tomcat6" do
     source "tomcat6_logrotate.conf.erb"
     variables :tomcat_name => "tomcat6"
@@ -144,6 +163,7 @@ action :setup_vhost do
 
     action_start
 
+  log "  Setup mod_jk vhost"
   #Setup mod_jk vhost start
   etc_apache = "/etc/#{node[:apache][:config_subdir]}"
 
@@ -201,7 +221,10 @@ action :setup_vhost do
     template "/etc/tomcat6/workers.properties" do
       action :create
       source "tomcat_workers.properties.erb"
-      variables :tomcat_name => "tomcat6"
+      variables(
+      :tomcat_name => "tomcat6",
+      :config_subdir => node[:apache][:config_subdir]
+      )
       cookbook 'app_tomcat'
     end
 
@@ -227,19 +250,20 @@ action :setup_vhost do
       docroot4apache = "#{node[:tomcat][:docroot]}/ROOT"
     end
 
-    #Configure apache vhost for tomcat
+    log "  Configure apache vhost for tomcat"
     template "#{etc_apache}/sites-enabled/#{node[:web_apache][:application_name]}.conf" do
       action :create_if_missing
       source "apache_mod_jk_vhost.erb"
       variables(
         :docroot     => docroot4apache,
         :vhost_port  => node[:app][:port],
-        :server_name => node[:web_apache][:server_name]
+        :server_name => node[:web_apache][:server_name],
+        :apache_log_dir => node[:apache][:log_dir]
       )
       cookbook 'app_tomcat'
     end
 
-    bash "ReStarting apache" do
+    bash "Restarting apache" do
       flags "-ex"
       code <<-EOH
         /etc/init.d/#{node[:apache][:config_subdir]} restart
@@ -247,27 +271,33 @@ action :setup_vhost do
     end
 
   else
-    log "mod_jk already installed, skipping the recipe"
+    log "  mod_jk already installed, skipping the recipe"
   end
 
 end
 
 action :setup_db_connection do
+  log "  Setup project db connection"
 
-  template "/etc/tomcat6/context.xml" do
-    source "context_xml.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    variables(
-      :user      => node[:db][:application][:user],
-      :password  => node[:db][:application][:password],
-      :fqdn      => node[:db][:dns][:master][:fqdn],
-      :database  => node[:tomcat][:db_name]
-    )
-  cookbook 'app_tomcat'
+  db_name = new_resource.database_name
+  db_user = new_resource.database_user
+  db_password = new_resource.database_password
+  db_sever_fqdn = new_resource.database_sever_fqdn
+
+  log "  Creating context.xml"
+  db_mysql_connect_app "/etc/tomcat6/context.xml"  do
+    template      "context_xml.erb"
+    owner         "root"
+    group         "root"
+    mode          "0644"
+    user          db_user
+    password      db_password
+    fqdn          db_sever_fqdn
+    database      db_name
+    cookbook      'app_tomcat'
   end
 
+  log "  Creating context.xml"
   template "/etc/tomcat6/web.xml" do
     source "web_xml.erb"
     owner "root"
@@ -296,6 +326,7 @@ end
 
 action :setup_monitoring do
 
+  log "  Setup of collectd monitoring for tomcat"
 rs_utils_enable_collectd_plugin 'exec'
 
   if !::File.exists?("/usr/share/java/collectd.jar")
@@ -321,13 +352,14 @@ rs_utils_enable_collectd_plugin 'exec'
 
     action_restart
   else
-    log("Collectd plugin for Tomcat already installed, skipping...")
+    log "  Collectd plugin for Tomcat already installed, skipping..."
   end
 
 end
 
 action :code_update do
 
+  log "  Starting code update sequence"
   # Check that we have the required attributes set
   raise "You must provide a destination for your application code." if ("#{node[:tomcat][:docroot]}" == "")
 
@@ -344,7 +376,7 @@ action :code_update do
     recursive true
   end
 
-  # Downloading project repo
+   log "  Downloading project repo"
   repo "default" do
     destination deploy_dir
     action :capistrano_pull
@@ -352,7 +384,7 @@ action :code_update do
     persist false
   end
 
-  # Set ROOT war and code ownership
+  log "  Set ROOT war and code ownership"
   bash "set_root_war_and_chown_home" do
     flags "-ex"
     code <<-EOH

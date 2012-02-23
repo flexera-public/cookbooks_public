@@ -66,7 +66,6 @@ end
 action :setup_vhost do
 
 
-  #TODO implement to passenger
   # disable default vhost
   apache_site "000-default" do
     enable false
