@@ -253,7 +253,7 @@ action :setup_vhost do
     end
 
     log "  Generating new apache ports.conf"
-    template "  /etc/#{node[:apache][:config_subdir]}/ports.conf" do
+    template "/etc/#{node[:apache][:config_subdir]}/ports.conf" do
       source      "ports.conf.erb"
       cookbook    'app_tomcat'
     end
