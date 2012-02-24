@@ -242,6 +242,11 @@ action :setup_vhost do
       command "a2enmod rewrite && a2enmod deflate"
     end
 
+    execute "Enable a2enmod apache module" do
+      command "a2enmod proxy"
+      only_if do node[:platform] == "redhat" end
+    end
+
     if ("#{node[:tomcat][:code][:root_war]}" == "")
       log "root_war not defined, setting apache docroot to #{node[:tomcat][:docroot]}"
       docroot4apache = "#{node[:tomcat][:docroot]}"
