@@ -7,8 +7,11 @@
 
 rs_utils_marker :begin
 
+
+
+
 # Install specified gems
-#
+
 # Variable node[:app_passenger][:opt_gems_list] contains space separated list of Gems along
 # with their versions in the format:
 #
@@ -17,6 +20,7 @@ rs_utils_marker :begin
 log "  Installing user specified gems:"
 ruby_block "Install custom gems" do
   block do
+
     gem_list = node[:app_passenger][:project][:gem_list]
 
     #split gem_list into an array
