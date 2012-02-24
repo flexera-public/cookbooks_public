@@ -155,7 +155,7 @@ end
 #setup project db connection
 action :setup_db_connection do
 
-  deploy_dir = new_resource.destination
+
   db_name = new_resource.database_name
   db_user = new_resource.database_user
   db_password = new_resource.database_password
@@ -165,6 +165,17 @@ action :setup_db_connection do
     # Tell MySQL to fill in our connection template
   log "  Generating database.yml"
 
+  db_mysql_connect_app "#{deploy_dir.chomp}/config/database.yml"  do
+    template      "database.yml.erb"
+    cookbook      "app_passenger"
+    owner         node[:app_passenger][:apache][:user]
+    group         node[:app_passenger][:apache][:user]
+#    adapter       node[:app_passenger][:project][:db][:adapter]
+#    environment   node[:app_passenger][:project][:environment]
+    database      db_name
+  end
+
+=begin
   template "#{deploy_dir.chomp}/config/database.yml" do
     owner node[:app_passenger][:apache][:user]
     source "database.yml.erb"
@@ -178,6 +189,7 @@ action :setup_db_connection do
       :fqdn =>         db_sever_fqdn
           )
   end
+=end
 
   #defining $RAILS_ENV
   ENV['RAILS_ENV'] = node[:app_passenger][:project][:environment]

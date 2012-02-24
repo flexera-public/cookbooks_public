@@ -5,10 +5,10 @@
 # DO NOT EDIT BY HAND
 #
 
-<%  case @adapter
+<%  case node[:app_passenger][:project][:db][:adapter]
     when "mysql" %>
-<%= @environment %>:
-  adapter: <%= @adapter %>
+<%= node[:app_passenger][:project][:environment] %>:
+  adapter: <%= node[:app_passenger][:project][:db][:adapter] %>
   database: <%= @database %>
   username: <%= @user %>
   password: <%= @password %>
@@ -17,23 +17,23 @@
   #socket: /var/lib/mysql/mysql.sock
 <%  when "sqlite3","sqlite"%>
 # SQLite version 3.x
-<%= @environment %>:
+<%= node[:app_passenger][:project][:environment] %>:
   host: <%= @fqdn %>
-  adapter: <%= @adapter %>
+  adapter: <%= node[:app_passenger][:project][:db][:adapter] %>
   database: <%= @database %>
   pool: 5
   timeout: 5000
 <%  when "postgresql"%>
-<%= @environment %>:
+<%= node[:app_passenger][:project][:environment] %>:
   host: <%= @fqdn %>
-  adapter: <%= @adapter %>
+  adapter: <%= node[:app_passenger][:project][:db][:adapter] %>
   database: <%= @database %>
   username: <%= @user %>
   password: <%= @password %>
 <%  else%>
-<%= @environment %>:
+<%= node[:app_passenger][:project][:environment] %>:
   host: <%= @sever %>
-  adapter: <%= @adapter %>
+  adapter: <%= node[:app_passenger][:project][:db][:adapter] %>
   database: <%= @database %>
 
 <%end%>
