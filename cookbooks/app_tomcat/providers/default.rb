@@ -252,6 +252,14 @@ action :setup_vhost do
       only_if do node[:platform] == "redhat" end
     end
 
+    log "  Generating new apache ports.conf"
+    template "  /etc/#{node[:apache][:config_subdir]}/ports.conf" do
+      source      "ports.conf.erb"
+      cookbook    'app_tomcat'
+    end
+
+
+
     if ("#{node[:tomcat][:code][:root_war]}" == "")
       log "root_war not defined, setting apache docroot to #{node[:tomcat][:docroot]}"
       docroot4apache = "#{node[:tomcat][:docroot]}"

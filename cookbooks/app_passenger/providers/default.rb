@@ -155,7 +155,7 @@ end
 #setup project db connection
 action :setup_db_connection do
 
-
+  deploy_dir = new_resource.destination
   db_name = new_resource.database_name
   db_user = new_resource.database_user
   db_password = new_resource.database_password
