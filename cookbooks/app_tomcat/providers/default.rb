@@ -242,8 +242,13 @@ action :setup_vhost do
       command "a2enmod rewrite && a2enmod deflate"
     end
 
-    execute "Enable a2enmod apache module" do
+    execute "Enable mod_proxy apache module" do
       command "a2enmod proxy"
+      only_if do node[:platform] == "redhat" end
+    end
+
+    file "/etc/httpd/conf.d/README" do
+      action :delete
       only_if do node[:platform] == "redhat" end
     end
 
