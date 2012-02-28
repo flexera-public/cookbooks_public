@@ -2,15 +2,14 @@
 
 == DESCRIPTION:
 
-* Cookbook provides apache+passenger implementation of app LWRP.
+* Cookbook provides apache+passenger implementation of the app LWRP.
 * Installs and configures, apache+passenger application server.
 
 == REQUIREMENTS:
 
 * Requires a VM launched from a RightScale managed RightImage
-
 * Tested on CentOS 5.6 RightImage
-* Tested on Ubuntu RightImage
+* Tested on Ubuntu 10.04 RightImage
 
 == SETUP:
 
@@ -24,7 +23,7 @@
   1 For apps with bundler support
     You have to add "install_required app gems" recipe, and "run_custom_rails_commands" for migration commands
   2 For apps without bundler support
-    Y have to add "install_custom_gems"  recipe, and "run_custom_rails_commands" for migration commands
+    You have to add "install_custom_gems"  recipe, and "run_custom_rails_commands" for migration commands
   Anyway you can mix these recipes to fit needs of your project.
 
 == KNOWN LIMITATIONS

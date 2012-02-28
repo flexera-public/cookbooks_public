@@ -1,6 +1,5 @@
 #
 # Cookbook Name::app
-# Recipe::do_server_start
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -8,7 +7,7 @@
 
 rs_utils_marker :begin
 
-log "  App Server Start"
+log "  Starting application server now..."
 app "default" do
     action :start
 end

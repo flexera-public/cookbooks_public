@@ -7,48 +7,48 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 
- #install packages required for application server setup
+# Install packages required for application server setup
 actions :install
-  #set of installed packages
+  # Set of installed packages
   attribute :packages, :kind_of => Array
 
-#Set up the application vhost on port 8000
-#Action designed to setup APP LWRP with common parameters required for apache vhost file
+# Set up the application vhost on port 8000
+# Action designed to setup APP LWRP with common parameters required for apache vhost file
 actions :setup_vhost
-  #Application root
+  # Application root
   attribute :app_root, :kind_of => String
-  #Application port
+  # Application port
   attribute :app_port, :kind_of => String
 
 
-#Runs application server start sequence
+# Runs application server start sequence
 actions :start
 
-#Runs application server stop sequence
+# Runs application server stop sequence
 actions :stop
 
-#Runs application server restart sequence
+# Runs application server restart sequence
 actions :restart
 
-#Updates application source files from the remote repository
-#Action designed to setup APP LWRP with common parameters required for source code update/download
+# Updates application source files from the remote repository
+# Action designed to setup APP LWRP with common parameters required for source code update/download
 actions :code_update
   #Destination for source code download
   attribute :destination, :kind_of => String
 
 
-#Set up the database connection file
-#Action designed to setup APP LWRP with common parameters required for database configuration file creation
+# Set up the database connection file
+# Action designed to setup APP LWRP with common parameters required for database configuration file creation
 actions :setup_db_connection
-  #Name of the required database
+  # Name of the required database
   attribute :database_name, :kind_of => String
-  #Database user
+  # Database user
   attribute :database_user, :kind_of => String
-  #Database password
+  # Database password
   attribute :database_password, :kind_of => String
-  #Database server fqdn
+  # Database server fqdn
   attribute :database_sever_fqdn, :kind_of => String
 
-#Action designed to setup APP LWRP with common parameters required for install and configuration of required monitoring software
+# Action designed to setup APP LWRP with common parameters required for install and configuration of required monitoring software
 actions :setup_monitoring
 

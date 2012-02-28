@@ -7,9 +7,6 @@
 
 rs_utils_marker :begin
 
-
-
-
 # Install specified gems
 
 # Variable node[:app_passenger][:opt_gems_list] contains space separated list of Gems along
