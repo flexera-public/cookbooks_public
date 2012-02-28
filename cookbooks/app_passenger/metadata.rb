@@ -6,14 +6,14 @@ license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1.1"
 
-depends 'rs_utils'
-depends 'web_apache'
+depends "rs_utils"
+depends "web_apache"
 depends "repo"
 depends "logrotate"
 depends "app"
 depends "db"
 
-
+recipe "app_passenger::default", "default cookbook recipe which.set provider specific attributes for rails-passenger"
 recipe "app_passenger::install_custom_gems", "Custom gems install."
 recipe "app_passenger::install_required_app_gems", "Bundler gems Install. Gemfile must be present in app directory."
 recipe "app_passenger::run_custom_rails_commands", "Run specific user defined commands Commands will be executed in the app directory. Command path ../rails/bin/"
