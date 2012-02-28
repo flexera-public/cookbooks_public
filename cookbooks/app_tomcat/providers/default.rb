@@ -7,7 +7,7 @@
 
 action :stop do
   log "  Running stop sequence"
-  service "#{node[:tomcat][:app_user]}" do
+  service "tomcat6" do
     action :stop
     persist false
   end
@@ -15,7 +15,7 @@ end
 
 action :start do
   log "  Running start sequence"
-  service "#{node[:tomcat][:app_user]}" do
+  service "tomcat6" do
     action :start
     persist false
   end
