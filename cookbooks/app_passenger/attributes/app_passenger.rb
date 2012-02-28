@@ -7,21 +7,9 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-#LWRP options
-set[:app][:provider] = "app_passenger"
-set[:app][:app_port] = "8000"
-set[:app][:destination]="/home/rails/#{node[:web_apache][:application_name]}"
-set[:app][:app_root] = "#{node[:app][:destination]}/public"
-set[:app][:database_name] = node[:app_passenger][:project][:db][:schema_name]
-#set[:app][:database_user] = node[:db][:application][:user]
-#set[:app][:database_password] = node[:db][:application][:password]
-#set[:app][:database_sever_fqdn] =  node[:db][:dns][:master][:fqdn]
-
-
 set_unless[:app_passenger][:rails_spawn_method]="conservative"
 set_unless[:app_passenger][:apache][:maintenance_page]=""
 set_unless[:app_passenger][:apache][:serve_local_files]="true"
-
 
 case node[:platform]
   when "ubuntu","debian"
