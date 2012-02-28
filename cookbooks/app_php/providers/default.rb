@@ -8,7 +8,7 @@
 # Stop apache
 action :stop do
   log "  Running start sequence"
-  service "#{node[:apache][:config_subdir]}" do
+  service "apache2" do
     action :start
     persist false
   end
@@ -18,7 +18,7 @@ end
 # Start apache
 action :start do
     log "  Running start sequence"
-  service "#{node[:apache][:config_subdir]}" do
+  service "apache2" do
     action :start
     persist false
   end

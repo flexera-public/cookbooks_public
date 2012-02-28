@@ -22,6 +22,7 @@
 == USAGE:
 
 * Template can be combined in two modes:
+
   1 For apps with bundler support
     You have to add "install_required app gems" recipe, and "run_custom_rails_commands" for migration commands
   2 For apps without bundler support
@@ -31,6 +32,12 @@
 == KNOWN LIMITATIONS
 
 * none
+
+== DETAILS
+
+RubyEE packages coming from official RubyEE project page
+http://code.google.com/p/rubyenterpriseedition/downloads/detail?name=ruby-enterprise-1.8.7-2011.03.tar.gz&can=2&q=
+configured and packed for Ubuntu CentOS and RHEL.
 
 = LICENSE
 

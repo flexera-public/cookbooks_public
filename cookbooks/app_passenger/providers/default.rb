@@ -8,7 +8,7 @@
 # Stop apache/passenger
 action :stop do
   log "  Running stop sequence"
-  service "#{node[:apache][:config_subdir]}" do
+  service "apache2" do
     action :stop
     persist false
   end
@@ -18,7 +18,7 @@ end
 # Start apache/passenger
 action :start do
   log "  Running start sequence"
-  service "#{node[:apache][:config_subdir]}" do
+  service "apache2" do
     action :start
     persist false
   end
@@ -181,7 +181,7 @@ action :setup_db_connection do
 
 end
 
-#Download/Update application repository
+# Download/Update application repository
 action :code_update do
   deploy_dir = new_resource.destination
 
