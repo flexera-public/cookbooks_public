@@ -7,7 +7,7 @@
 
 rs_utils_marker :begin
 
-#Installing bundler
+# Installing bundler
 gem_package "bundler" do
   gem_binary "#{node[:app_passenger][:gem_bin]}"
 end
