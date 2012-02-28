@@ -1,7 +1,5 @@
 #
 # Cookbook Name:: app_passenger
-# Attributes:: app_passenger
-#
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -14,15 +12,11 @@ set_unless[:app_passenger][:apache][:serve_local_files]="true"
 case node[:platform]
   when "ubuntu","debian"
     set[:app_passenger][:apache][:user]="www-data"
-    set[:app_passenger][:apache][:install_dir]="/etc/apache2"
     set[:app_passenger][:apache][:log_dir]="/var/log/apache2"
-    set[:app][:packages] = ["libopenssl-ruby", "libcurl4-openssl-dev", "apache2-mpm-prefork", "apache2-prefork-dev", "libapr1-dev", "libcurl4-openssl-dev"]
 
   when "centos","redhat","redhatenterpriseserver","fedora","suse"
     set[:app_passenger][:apache][:user]="apache"
-    set[:app_passenger][:apache][:install_dir]="/etc/httpd"
-    set[:app_passenger][:apache][:log_dir]="/var/log/httpd"
-    set[:app][:packages] = ["zlib-devel", "openssl-devel", "readline-devel", "curl-devel", "openssl-devel", "httpd-devel", "apr-devel", "apr-util-devel", "readline-devel"]
+       set[:app_passenger][:apache][:log_dir]="/var/log/httpd"
 
   else
     raise "Unrecognized distro #{node[:platform]}, exiting "

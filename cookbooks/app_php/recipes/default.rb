@@ -7,19 +7,18 @@
 
 rs_utils_marker :begin
 
-#TODO Code Cleanup
-log "default empty recipe for attributes initialization"
+log "  Setting provider specific settings for php application server."
 
+node[:app][:provider] = "app_php"
+node[:app][:app_port] = "8000"
+node[:app][:destination]="#{node[:web_apache][:docroot]}"
 
-=begin
-# == Install user-specified Packages and Modules
-#
-[ node[:php][:package_dependencies] | node[:php][:modules_list] ].flatten.each do |p|
-  package p
+case node[:platform]
+  when "ubuntu", "debian"
+    node[:app][:packages] = ["php5", "php5-mysql", "php-pear", "libapache2-mod-php5"]
+  when "centos","fedora","suse","redhat"
+    node[:app][:packages] = ["php53u", "php53u-mysql", "php53u-pear", "php53u-zts"]
+  else
+    raise "Unrecognized distro #{node[:platform]}, exiting "
 end
-
-node[:php][:module_dependencies].each do |mod|
-  apache_module mod
-end
-=end
 rs_utils_marker :end

@@ -2,21 +2,31 @@
 
 == DESCRIPTION:
 
-RightScale PHP application server management cookbook
-
-Installs and configures a PHP application server.
-
-== DETAILS:
+* Cookbook provides PHP  implementation of the app LWRP.
+* Installs and configures, PHP application server.
 
 == REQUIREMENTS:
 
-Requires a VM launched from a RightScale managed RightImage 
+* Requires a VM launched from a RightScale managed RightImage
+* Tested on CentOS 5.6 RightImage
+* Tested on Ubuntu 10.04 RightImage
 
 == SETUP:
 
+* Place app_php::default recipe into your runlist to setup the application
+  server. Since this sets up the app provider, it must be run before the
+  app::default recipe (which expects a provider to already be set)
+* When using a RightScale ServerTemplate, this will also automatically add the
+  common attributes to your ServerTemplate inputs.
+
 == USAGE:
 
+* Choose image and cloud.
+* Fill required input fields.
+
 == KNOWN LIMITATIONS:
+
+* none
 
 = LICENSE
 

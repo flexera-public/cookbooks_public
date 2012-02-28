@@ -1,31 +1,31 @@
+#
 # Cookbook Name:: app_php
-# Provider:: app_php
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-#stop apache
+# Stop apache
 action :stop do
-  bash "Stopping apache" do
-    flags "-ex"
-    code <<-EOH
-     /etc/init.d/#{node[:apache][:config_subdir]} stop
-    EOH
+  log "  Running start sequence"
+  service "#{node[:apache][:config_subdir]}" do
+    action :start
+    persist false
   end
 end
 
-#start apache
+
+# Start apache
 action :start do
-  bash "Starting apache" do
-    flags "-ex"
-    code <<-EOH
-     /etc/init.d/#{node[:apache][:config_subdir]} start
-    EOH
+    log "  Running start sequence"
+  service "#{node[:apache][:config_subdir]}" do
+    action :start
+    persist false
   end
 end
 
 
+# Restart apache
 action :restart do
   action_stop
      sleep 5
@@ -34,9 +34,7 @@ end
 
 
 action :install do
-
-  # == Install user-specified Packages and Modules
-  #
+  # Install user-specified Packages and Modules
   packages = new_resource.packages
   log "Packages which will be installed #{packages}"
 
@@ -51,7 +49,7 @@ action :install do
   node[:php][:module_dependencies].each do |mod|
     apache_module mod
   end
-
+  # Saving project name variables for use in operational mode
   node[:app][:destination]="#{node[:web_apache][:docroot]}"
   ENV['APP_NAME'] = "#{node[:web_apache][:docroot]}}"
   bash "save global vars" do
@@ -63,15 +61,18 @@ action :install do
 
 end
 
+
+# Setup apache PHP virtual host
 action :setup_vhost do
 
+  project_root = new_resource.destination
+  php_port = new_resource.app_port
 
-  # disable default vhost
+  # Disable default vhost
   apache_site "000-default" do
     enable false
   end
 
-  php_port = node[:app][:port].to_s
   node[:apache][:listen_ports] << php_port unless node[:apache][:listen_ports].include?(php_port)
 
   template "#{node[:apache][:dir]}/ports.conf" do
@@ -79,36 +80,35 @@ action :setup_vhost do
     source "ports.conf.erb"
     variables :apache_listen_ports => node[:apache][:listen_ports]
   end
-  action_restart
 
-  # == Configure apache vhost for PHP
-  #
-  #web_app node[:php][:application_name] do
+
+
+  # Configure apache vhost for PHP
   web_app node[:web_apache][:application_name] do
     template "app_server.erb"
-#    docroot node[:web_apache][:docroot]
-    docroot node[:app][:destination]
-    vhost_port node[:app][:port]
+    docroot project_root
+    vhost_port php_port
     server_name node[:web_apache][:server_name]
     cookbook "web_apache"
   end
+  # Restarting apache
   action_restart
 
 end
 
-action :setup_db_connection do
 
-  # == Setup PHP Database Connection
-  #
+# Setup PHP Database Connection
+action :setup_db_connection do
+  project_root = new_resource.destination
   # Make sure config dir exists
-  directory ::File.join(node[:web_apache][:docroot], "config") do
+  directory ::File.join(project_root, "config") do
     recursive true
     owner node[:php][:app_user]
     group node[:php][:app_user]
   end
 
   # Tell MySQL to fill in our connection template
-  db_mysql_connect_app ::File.join(node[:web_apache][:docroot], "config", "db.php") do
+  db_mysql_connect_app ::File.join(project_root, "config", "db.php") do
     template "db.php.erb"
     cookbook "app_php"
     database node[:php][:db_schema_name]
@@ -118,27 +118,28 @@ action :setup_db_connection do
 
 end
 
+
+# Download/Update application repository
 action :code_update do
 
+  deploy_dir = new_resource.destination
 
+  # Reading app name from tmp file (for execution in "operational" phase))
+  # Waiting for "run_lists"
+  if(deploy_dir == "")
+    app_name = IO.read('/tmp/appname')
+    deploy_dir = "#{app_name.to_s.chomp}"
+  end
 
-     #Reading app name from tmp file (for execution in "operational" phase))
-  #Waiting for "run_lists"
-  deploy_dir = node[:app][:destination]
-
-  log "INFO: Creating directory for project deployment - <#{deploy_dir}> #{node[:web_apache][:docroot]}"
+  log "  Creating directory for project deployment - <#{deploy_dir}>"
   directory deploy_dir do
     recursive true
   end
 
-#  if(deploy_dir == "/srv/tomcat6/webapps/")
-#    app_name = IO.read('/tmp/appname')
-#    deploy_dir = "/srv/tomcat6/webapps/#{app_name.to_s.chomp}"
-#  end
-
   # Check that we have the required attributes set
   log "You must provide a destination for your application code." if ("#{deploy_dir}" == "")
 
+  log "  Starting source code download sequence..."
   repo "default" do
     destination deploy_dir
     action :capistrano_pull
@@ -146,6 +147,7 @@ action :code_update do
     persist false
   end
 
+  # Restarting apache
   action_restart
 
 end

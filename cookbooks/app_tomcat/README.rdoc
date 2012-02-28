@@ -8,20 +8,26 @@
 == REQUIREMENTS:
 
 * Requires a VM launched from a RightScale managed RightImage
-
 * Tested on CentOS 5.6 RightImage
 * Tested on Ubuntu RightImage
 
 == SETUP:
 
 * Place tomcat::default recipe into your runlist to setup the application server.
-* When  using a RightScale ServerTemplate, this will also automatically add the
+* When using a RightScale ServerTemplate, this will also automatically add the
   common attributes to your ServerTemplate inputs.
 
 == USAGE:
+
  * Choose image and cloud.
  * Fill required input fields.
 
 == KNOWN LIMITATIONS
 
 * none
+
+= LICENSE
+
+Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+if applicable, other agreements such as a RightScale Master Subscription Agreement.

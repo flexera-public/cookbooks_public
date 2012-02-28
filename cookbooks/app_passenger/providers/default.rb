@@ -1,5 +1,5 @@
+#
 # Cookbook Name:: app_passenger
-# Provider:: app_passenger
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -8,22 +8,19 @@
 # Stop apache/passenger
 action :stop do
   log "  Running stop sequence"
-  bash "Stopping apache" do
-    flags "-ex"
-    code <<-EOH
-     /etc/init.d/#{node[:apache][:config_subdir]} stop
-    EOH
+  service "#{node[:apache][:config_subdir]}" do
+    action :stop
+    persist false
   end
+
 end
 
 # Start apache/passenger
 action :start do
   log "  Running start sequence"
-  bash "Starting apache" do
-    flags "-ex"
-    code <<-EOH
-     /etc/init.d/#{node[:apache][:config_subdir]} start
-    EOH
+  service "#{node[:apache][:config_subdir]}" do
+    action :start
+    persist false
   end
 end
 
@@ -45,7 +42,7 @@ action :install do
     package p
   end
 
-  # Saving project name variables
+  # Saving project name variables for use in operational mode
   ENV['RAILS_APP'] = node[:web_apache][:application_name]
 
   bash "save global vars" do
@@ -102,6 +99,8 @@ end
 
 # Setup apache/passenger virtual host
 action :setup_vhost do
+  port = new_resource.app_port
+  project_root = new_resource.app_root
 
   # Removing preinstalled apache ssl.conf as it conflicts with ports.conf of web:apache
   log "  Removing ssl.conf"
@@ -112,14 +111,14 @@ action :setup_vhost do
   end
 
 
-  # Generation of new apache ports.conf, based on user prefs
+  # Generation of new apache ports.conf
   log "  Generating new apache ports.conf"
-  template "#{node[:app_passenger][:apache][:install_dir]}/ports.conf" do
-    source      "ports.conf.erb"
-    cookbook    'app_passenger'
-    variables(
-        :vhost_port => node[:app][:app_port]
-      )
+  node[:apache][:listen_ports] = port
+
+  template "#{node[:apache][:dir]}/ports.conf" do
+    cookbook "apache2"
+    source "ports.conf.erb"
+    variables :apache_listen_ports => node[:apache][:listen_ports]
   end
 
   log "  Unlinking default apache vhost"
@@ -127,8 +126,6 @@ action :setup_vhost do
     enable false
   end
 
-  port = new_resource.app_port
-  project_root = new_resource.app_root
   # Generation of new vhost config, based on user prefs
   log"  Generating new apache vhost"
   web_app "http-#{port}-#{node[:web_apache][:server_name]}.vhost" do
@@ -157,10 +154,6 @@ action :setup_db_connection do
 
   deploy_dir = new_resource.destination
   db_name = new_resource.database_name
-  db_user = new_resource.database_user
-  db_password = new_resource.database_password
-  db_sever_fqdn = new_resource.database_sever_fqdn
-
 
   # Tell MySQL to fill in our connection template
   log "  Generating database.yml"
@@ -188,7 +181,7 @@ action :setup_db_connection do
 
 end
 
-
+#Download/Update application repository
 action :code_update do
   deploy_dir = new_resource.destination
 
@@ -222,6 +215,16 @@ action :code_update do
     environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
     create_dirs_before_symlink
     persist false
+  end
+
+  log"  Generating new logrotatate config for rails application"
+  rs_utils_logrotate_app "rails" do
+    cookbook "app_passenger"
+    template "logrotate_rails.erb"
+    path ["#{deploy_dir}/log/*.log" ]
+    frequency "daily"
+    rotate 7
+    create "660 #{node[:app_passenger][:apache][:user]} #{node[:app_passenger][:apache][:user]}"
   end
 
 end
