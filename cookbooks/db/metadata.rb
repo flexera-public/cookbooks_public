@@ -1,9 +1,9 @@
-maintainer "RightScale, Inc."
+maintainer       "RightScale, Inc."
 maintainer_email "support@rightscale.com"
-license IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'LICENSE')))
-description "RightScale Database Manager"
+license          "Copyright RightScale, Inc. All rights reserved."
+description      "RightScale Database Manager"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
-version "0.2"
+version          "0.2"
 
 depends "rs_utils"
 depends "block_device"

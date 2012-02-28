@@ -1,32 +1,32 @@
 {
-  "name": "repo_git",
-  "description": "Manages the Git fast version control system",
-  "long_description": "= RightScale \"repo_git\" Provider\n\n== DESCRIPTION:\n\nProvides the GIT implementation of the 'repo' resource to\nmanage source code download from GIT repositories.\n\n\n== DETAILS:\n\n=== General\nThe 'repo' implementation is defined by a Lightweight Provider, which can be\nfound in the providers/default.rb file.\n\n\n== SETUP:\n\n* Provider will be automatically initialized when you add \"repo:default\" recipe to your ServerTemplate runlist\n\n== USAGE:\n\n=== Basic usage\nOnce setup, use the recipes in the 'repo' cookbook to install and manage your\ncode repo.  See the repo/README.rdoc for usage details.\n\n\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "maintainer": "RightScale, Inc.",
-  "maintainer_email": "support@rightscale.com",
-  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "platforms": {
-  },
   "dependencies": {
-    "git": ">= 0.0.0",
-    "repo": ">= 0.0.0"
+    "repo": ">= 0.0.0",
+    "git": ">= 0.0.0"
   },
-  "recommendations": {
-  },
-  "suggestions": {
-  },
-  "conflicting": {
-  },
-  "providing": {
-  },
-  "replacing": {
-  },
+  "name": "repo_git",
+  "maintainer_email": "support@rightscale.com",
   "attributes": {
   },
-  "groupings": {
+  "license": "Copyright RightScale, Inc. All rights reserved.",
+  "suggestions": {
+  },
+  "platforms": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "long_description": "= RightScale \"repo_git\" Provider\r\n\r\n== DESCRIPTION:\r\n\r\nProvides the GIT implementation of the 'repo' resource to\r\nmanage source code download from GIT repositories.\r\n\r\n\r\n== DETAILS:\r\n\r\n=== General\r\nThe 'repo' implementation is defined by a Lightweight Provider, which can be\r\nfound in the providers/default.rb file.\r\n\r\n\r\n== SETUP:\r\n\r\n* Provider will be automatically initialized when you add \"repo:default\" recipe to your ServerTemplate runlist\r\n\r\n== USAGE:\r\n\r\n=== Basic usage\r\nOnce setup, use the recipes in the 'repo' cookbook to install and manage your\r\ncode repo.  See the repo/README.rdoc for usage details.\r\n\r\n\r\n\r\n= LICENSE\r\n\r\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\r\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\r\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\r\n",
+  "version": "0.0.1",
+  "recommendations": {
   },
   "recipes": {
     "repo_git::default": "Default pattern of loading packages"
   },
-  "version": "0.0.1"
+  "groupings": {
+  },
+  "conflicting": {
+  },
+  "replacing": {
+  },
+  "description": "Manages the Git fast version control system",
+  "providing": {
+  }
 }

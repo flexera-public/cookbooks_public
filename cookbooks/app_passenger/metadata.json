@@ -264,7 +264,7 @@
       "description": "Creates a Rails RAILS ENV environment variable. "
     }
   },
-  "license": "All rights reserved",
+  "license": "Copyright RightScale, Inc. All rights reserved.",
   "suggestions": {
   },
   "platforms": {

@@ -1,9 +1,9 @@
-maintainer        "Opscode, Inc."
-maintainer_email  "cookbooks@opscode.com"
-license           "Apache 2.0"
-description       "Installs and configures ntp as a client or server"
-long_description  IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
-version           "1.0.0"
+maintainer       "RightScale, Inc."
+maintainer_email "support@rightscale.com"
+license          "Copyright RightScale, Inc. All rights reserved."
+description      "Installs and configures ntp as a client or server"
+long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
+version          "1.0.0"
 
 depends "rs_utils"
 

@@ -3,7 +3,7 @@
     "rs_utils": ">= 0.0.0"
   },
   "name": "sys_ntp",
-  "maintainer_email": "cookbooks@opscode.com",
+  "maintainer_email": "support@rightscale.com",
   "attributes": {
     "sys_ntp/servers": {
       "required": "optional",
@@ -20,7 +20,7 @@
       "description": "Array of servers we should talk to"
     }
   },
-  "license": "Apache 2.0",
+  "license": "Copyright RightScale, Inc. All rights reserved.",
   "suggestions": {
   },
   "platforms": {
@@ -30,7 +30,7 @@
     "ubuntu": ">= 0.0.0",
     "redhat": ">= 0.0.0"
   },
-  "maintainer": "Opscode, Inc.",
+  "maintainer": "RightScale, Inc.",
   "long_description": "DESCRIPTION\n===========\n\nInstalls and configures ntp client.\n\nREQUIREMENTS\n============\n\nShould work on any Red Hat-family or Debian-family Linux distribution.\n\n\n",
   "version": "1.0.0",
   "recommendations": {
