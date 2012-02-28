@@ -6,9 +6,7 @@
 #
 
 
-<% if !File.exists?("#{@params[:apache_install_dir]}/ports.conf") %>
-Listen <%=@params[:vhost_port]%>
-<%end%>
+
 <VirtualHost *:<%=@params[:vhost_port]%>>
 
  ServerName <%=@params[:server_name] %>
