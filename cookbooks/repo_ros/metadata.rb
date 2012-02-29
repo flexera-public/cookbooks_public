@@ -6,6 +6,10 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
 
 depends "repo"
-#depends "rs_tools"
+depends "rs_tools"
+
+
+
 
 recipe  "repo_ros::default", "Default pattern of loading packages and resources provided"
+
