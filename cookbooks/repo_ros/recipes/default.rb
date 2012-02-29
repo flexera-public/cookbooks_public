@@ -9,6 +9,4 @@
 
 rs_utils_marker :begin
 
-include_recipe "rs_tools::default"
-
 rs_utils_marker :end
