@@ -134,6 +134,7 @@ action :code_update do
   log "  Creating directory for project deployment - <#{deploy_dir}>"
   directory deploy_dir do
     recursive true
+    not_if do ::File.exists?(deploy_dir.chomp)  end
   end
 
   # Check that we have the required attributes set
