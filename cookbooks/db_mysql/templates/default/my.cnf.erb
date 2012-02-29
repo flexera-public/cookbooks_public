@@ -80,7 +80,7 @@ log-queries-not-using-indexes
 server-id               = <%= @server_id %>
 <% if node[:db_mysql][:log_bin_enabled] %>
 <%= "log_bin = #{node[:db_mysql][:log_bin]}" %>
-<%= "expire_logs_days        = #{node[:expire_logs_days]}" %>
+<%= "expire_logs_days        = #{node[:db_mysql][:tuneable][:expire_logs_days]}" %>
 <% end %>
 max_binlog_size         = 100M
 #
@@ -99,8 +99,6 @@ innodb_log_group_home_dir = /var/lib/mysql
 
 <% if node[:db_mysql][:version] == '5.5' %>
 # some MySQL 5.5 specific config
-# Work around for bug Bug #59733
-old_alter_table=0
 <% end %>
 
 innodb_file_per_table
