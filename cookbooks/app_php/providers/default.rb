@@ -91,8 +91,6 @@ action :setup_vhost do
     server_name node[:web_apache][:server_name]
     cookbook "web_apache"
   end
-  # Restarting apache
-  action_restart
 
 end
 
