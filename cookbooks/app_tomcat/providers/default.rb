@@ -355,7 +355,6 @@ rs_utils_enable_collectd_plugin 'exec'
       EOH
     end
 
-t
 
 end
 
