@@ -338,9 +338,7 @@ action :setup_monitoring do
   log "  Setup of collectd monitoring for tomcat"
 rs_utils_enable_collectd_plugin 'exec'
 
-  if !::File.exists?("/usr/share/java/collectd.jar")
-    # Rebuild the collectd configuration file if necessary
-
+    #installing and configuring collectd for tomcat
     cookbook_file "/usr/share/java/collectd.jar" do
       source "collectd.jar"
       mode "0644"
@@ -354,14 +352,10 @@ rs_utils_enable_collectd_plugin 'exec'
 
         cat <<EOF>>/etc/tomcat6/tomcat6.conf
           CATALINA_OPTS="\$CATALINA_OPTS -Djcd.host=#{node[:rightscale][:instance_uuid]} -Djcd.instance=tomcat6 -Djcd.dest=udp://#{node[:rightscale][:servers][:sketchy][:hostname]}:3011 -Djcd.tmpl=javalang,tomcat -javaagent:/usr/share/tomcat6/lib/collectd.jar"
-        EOF
       EOH
     end
 
     action_restart
-  else
-    log "  Collectd plugin for Tomcat already installed, skipping..."
-  end
 
 end
 
