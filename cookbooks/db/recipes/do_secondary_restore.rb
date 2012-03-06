@@ -7,8 +7,16 @@
 
 rs_utils_marker :begin
 
+class Chef::Recipe
+  include RightScale::BlockDeviceHelper
+end
+
+class Chef::Resource::BlockDevice
+  include RightScale::BlockDeviceHelper
+end
+
 DATA_DIR = node[:db][:data_dir]
-NICKNAME = node[:block_device][:nickname]
+NICKNAME = get_device_or_default(node, :device1, :nickname)
 
 db_init_status :check do
   expected_state :uninitialized
@@ -36,7 +44,7 @@ db DATA_DIR do
   action :stop
 end
 
-secondary_storage_cloud = node[:block_device][:backup][:secondary][:cloud]
+secondary_storage_cloud = get_device_or_default(node, :device1, :backup, :secondary, :cloud)
 if secondary_storage_cloud =~ /aws/i
   secondary_storage_cloud = "s3"
 elsif secondary_storage_cloud =~ /rackspace/i
@@ -51,12 +59,12 @@ block_device NICKNAME do
   lineage_override node[:db][:backup][:lineage_override]
   timestamp_override node[:db][:backup][:timestamp_override]
 
-  volume_size node[:block_device][:volume_size]
+  volume_size get_device_or_default(node, :device1, :volume_size)
 
   secondary_cloud secondary_storage_cloud
-  secondary_container node[:block_device][:backup][:secondary][:container]
-  secondary_user node[:block_device][:backup][:secondary][:cred][:user]
-  secondary_secret node[:block_device][:backup][:secondary][:cred][:secret]
+  secondary_container get_device_or_default(node, :device1, :backup, :secondary, :container)
+  secondary_user get_device_or_default(node, :device1, :backup, :secondary, :cred, :user)
+  secondary_secret get_device_or_default(node, :device1, :backup, :secondary, :cred, :secret)
 
   action :secondary_restore
 end

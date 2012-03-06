@@ -7,8 +7,12 @@
 
 rs_utils_marker :begin
 
+class Chef::Recipe
+  include RightScale::BlockDeviceHelper
+end
+
 DATA_DIR = node[:db][:data_dir]
-NICKNAME = node[:block_device][:nickname]
+NICKNAME = get_device_or_default(node, :device1, :nickname)
 
 log "  Verify if database state is 'uninitialized'..."
 db_init_status :check do
