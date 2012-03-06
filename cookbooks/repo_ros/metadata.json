@@ -1,7 +1,6 @@
 {
   "dependencies": {
-    "repo": ">= 0.0.0",
-    "rs_tools": ">= 0.0.0"
+    "repo": ">= 0.0.0"
   },
   "name": "repo_ros",
   "maintainer_email": "support@rightscale.com",
