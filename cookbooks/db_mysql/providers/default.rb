@@ -8,18 +8,21 @@
 include RightScale::Database::MySQL::Helper
 
 action :stop do
-  @db = init(new_resource)
-  @db.stop
+  service node[:db_mysql][:service_name] do
+    action :stop
+  end
 end
 
 action :start do
-  @db = init(new_resource)
-  @db.start
+  service node[:db_mysql][:service_name] do
+    action :start
+  end
 end
 
 action :restart do
-  @db = init(new_resource)
-  @db.restart
+  service node[:db_mysql][:service_name] do
+    action :restart
+  end
 end
 
 action :status do
