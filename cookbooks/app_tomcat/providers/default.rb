@@ -336,24 +336,29 @@ end
 action :setup_monitoring do
 
   log "  Setup of collectd monitoring for tomcat"
-rs_utils_enable_collectd_plugin 'exec'
+  rs_utils_enable_collectd_plugin 'exec'
 
-    #installing and configuring collectd for tomcat
-    cookbook_file "/usr/share/java/collectd.jar" do
-      source "collectd.jar"
-      mode "0644"
-      cookbook 'app_tomcat'
-    end
+  #installing and configuring collectd for tomcat
+  cookbook_file "/usr/share/java/collectd.jar" do
+    source "collectd.jar"
+    mode "0644"
+    cookbook 'app_tomcat'
+  end
 
-    bash "Configure collectd for tomcat" do
-      flags "-ex"
-      code <<-EOH
-        [ -d /usr/share/tomcat6/lib ] && ln -s /usr/share/java/collectd.jar /usr/share/tomcat6/lib
+  #Linking collectd
+  link "/usr/share/tomcat6/lib/collectd.jar" do
+    to "/usr/share/java/collectd.jar"
+    not_if do !::File.exists?("/usr/share/java/collectd.jar") end
+  end
 
-        cat <<EOF>>/etc/tomcat6/tomcat6.conf
-        CATALINA_OPTS="\$CATALINA_OPTS -Djcd.host=#{node[:rightscale][:instance_uuid]} -Djcd.instance=tomcat6 -Djcd.dest=udp://#{node[:rightscale][:servers][:sketchy][:hostname]}:3011 -Djcd.tmpl=javalang,tomcat -javaagent:/usr/share/tomcat6/lib/collectd.jar"
-      EOH
-    end
+  #Add collectd support to tomcat.conf
+  bash "Add collectd to tomcat.conf" do
+    flags "-ex"
+    code <<-EOH
+      cat <<EOF>>/etc/tomcat6/tomcat6.conf
+      CATALINA_OPTS="\$CATALINA_OPTS -Djcd.host=#{node[:rightscale][:instance_uuid]} -Djcd.instance=tomcat6 -Djcd.dest=udp://#{node[:rightscale][:servers][:sketchy][:hostname]}:3011 -Djcd.tmpl=javalang,tomcat -javaagent:/usr/share/tomcat6/lib/collectd.jar"
+    EOH
+  end
 
 
 end
