@@ -29,8 +29,12 @@ rs_utils_marker :begin
 
 raise "Server terminate safety not off.  Override db/terminate_safety to run this recipe" unless node[:db][:terminate_safety] == "off"
 
+class Chef::Recipe
+  include RightScale::BlockDeviceHelper
+end
+
 DATA_DIR = node[:db][:data_dir]
-NICKNAME = node[:block_device][:nickname]
+NICKNAME = get_device_or_default(node, :device1, :nickname)
 
 log "  Resetting the database..."
 db DATA_DIR do

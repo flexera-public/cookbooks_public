@@ -13,10 +13,14 @@ rs_utils_marker :begin
 
 raise "Force reset safety not off.  Override db/force_safety to run this recipe" unless node[:db][:force_safety] == "off"
 
+class Chef::Recipe
+  include RightScale::BlockDeviceHelper
+end
+
 log "  Brute force tear down of the setup....."
 
 DATA_DIR = node[:db][:data_dir]
-NICKNAME = node[:block_device][:nickname]
+NICKNAME = get_device_or_default(node, :device1, :nickname)
 
 log "  Resetting the database..."
 db DATA_DIR do
