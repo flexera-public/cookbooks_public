@@ -183,7 +183,11 @@ action :install_client do
     options '-- --build-flags --with-mysql-config'
   end
 
-  Gem.clear_paths
+  ruby_block 'clear gem paths for mysql' do
+    block do
+      Gem.clear_paths
+    end
+  end
   log "Gem reload forced with Gem.clear_paths"
 end
 
