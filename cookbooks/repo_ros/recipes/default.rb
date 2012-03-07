@@ -9,6 +9,6 @@
 
 rs_utils_marker :begin
 
-include_recipe "rs_tools::default"
+raise "  ROS gem missing, please add rs_utils::install_tools or rs_tools::default recipes to runlist." unless File.exists?("/opt/rightscale/sandbox/bin/ros_util")
 
 rs_utils_marker :end
