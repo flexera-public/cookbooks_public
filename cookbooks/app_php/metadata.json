@@ -1,138 +1,73 @@
 {
-    "version": "0.0.1",
-    "recipes": {
-      "app_php::do_update_code": "Updates application source files from the remote repository.",
-      "app_php::setup_php_application_vhost": "Set up the application vhost on port 8000.",
-      "app_php::setup_db_connection": "Set up the MySQL database db.php connection file.",
-      "app_php::default": "Installs the php application server."
-    },
-    "maintainer_email": "support@rightscale.com",
-    "conflicting": {
-    },
-    "attributes": {
-      "php/db_schema_name": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::setup_db_connection"
-        ],
-        "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema will be backed up.  Ex: mydbschema",
-        "display_name": "Database Schema Name"
-      },
-      "php/code/branch": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::do_update_code"
-        ],
-        "description": "The name of the branch/tag/SHA within the git repository where the application code should be pulled from. Ex: mybranch",
-        "display_name": "Repository Branch"
-      },
-      "php": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "hash",
-        "recipes": [
-
-        ],
-        "display_name": "PHP Application Settings"
-      },
-      "php/modules_list": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "array",
-        "recipes": [
-          "app_php::default"
-        ],
-        "description": "An optional list of php module packages to install.  Accepts an array of package names (IE: php53u-mysql,php53u-pecl-memcache).  When using CentOS, package names are prefixed with php53u instead of php.  To see a list of available php modules on CentOS, run 'yum search php53u' on the server.",
-        "display_name": "PHP module packages"
-      },
-      "php/code/credentials": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "default": "",
-        "type": "string",
-        "recipes": [
-          "app_php::do_update_code"
-        ],
-        "description": "The private SSH key of the git repository.",
-        "display_name": "Repository Credentials"
-      },
-      "php/code": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "hash",
-        "recipes": [
-
-        ],
-        "display_name": "PHP Application Code"
-      },
-      "php/code/url": {
-        "required": "required",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "type": "string",
-        "recipes": [
-          "app_php::do_update_code"
-        ],
-        "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git",
-        "display_name": "Repository URL"
-      }
-    },
-    "providing": {
-    },
-    "dependencies": {
-      "db_mysql": [
+  "name": "app_php",
+  "description": "Installs the php application server.",
+  "long_description": "= RightScale App PHP Cookbook \n\n== DESCRIPTION:\n\nRightScale PHP application server management cookbook\n\nInstalls and configures a PHP application server.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "maintainer": "RightScale, Inc.",
+  "maintainer_email": "support@rightscale.com",
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "platforms": {
+  },
+  "dependencies": {
+    "app": ">= 0.0.0",
+    "web_apache": ">= 0.0.0",
+    "db_mysql": ">= 0.0.0",
+    "repo": ">= 0.0.0",
+    "rs_utils": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+    "php": {
+      "display_name": "PHP Application Settings",
+      "type": "hash",
+      "choice": [
 
       ],
-      "app": [
-
-      ],
-      "web_apache": [
-
-      ],
-      "repo_git": [
-
-      ],
-      "rs_utils": [
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
 
       ]
     },
-    "replacing": {
+    "php/modules_list": {
+      "display_name": "PHP module packages",
+      "description": "An optional list of php module packages to install.  Accepts an array of package names (IE: php53u-mysql,php53u-pecl-memcache).  When using CentOS, package names are prefixed with php53u instead of php.  To see a list of available php modules on CentOS, run 'yum search php53u' on the server.",
+      "required": "optional",
+      "type": "array",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
     },
-    "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-    "groupings": {
-    },
-    "long_description": "= RightScale App PHP Cookbook \n\n== DESCRIPTION:\n\nRightScale PHP application server management cookbook\n\nInstalls and configures a PHP application server.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-    "recommendations": {
-    },
-    "name": "app_php",
-    "maintainer": "RightScale, Inc.",
-    "suggestions": {
-    },
-    "platforms": {
-    },
-    "description": "Installs the php application server."
-  }
+    "php/db_schema_name": {
+      "display_name": "Database Schema Name",
+      "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema will be backed up.  Ex: mydbschema",
+      "required": "recommended",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "recipes": [
+
+      ]
+    }
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "app_php::default": "Installs the php application server."
+  },
+  "version": "0.0.1"
+}
