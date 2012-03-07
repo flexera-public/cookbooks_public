@@ -180,7 +180,7 @@ action :install_client do
   gem_package 'mysql' do
     gem_binary '/opt/rightscale/sandbox/bin/gem'
     version '2.7'
-    options '--build-flags --with-mysql-config'
+    options '-- --build-flags --with-mysql-config'
   end
 
   Gem.clear_paths
