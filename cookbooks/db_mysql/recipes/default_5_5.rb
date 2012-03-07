@@ -7,7 +7,7 @@
 
 rs_utils_marker :begin
 version="5.5"
-set[:db][:provider] = "db_mysql"
+node[:db][:provider] = "db_mysql"
 
 log "Setting DB MySQL version to #{version}"
 node[:db_mysql][:version] = version
