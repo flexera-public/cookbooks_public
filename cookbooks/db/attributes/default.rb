@@ -7,7 +7,6 @@
 
 set_unless[:db][:dns][:master][:fqdn] = "localhost"
 set_unless[:db][:data_dir] = "/mnt/storage"
-set_unless[:db][:provider] = "db_mysql"
 set_unless[:db][:admin][:user] = "root"
 set_unless[:db][:admin][:password] = ""
 

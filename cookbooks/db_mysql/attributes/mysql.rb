@@ -36,12 +36,10 @@ set_unless[:db_mysql][:kill_bug_mysqld_safe] = true
 
 case platform
 when "redhat","centos","fedora","suse"
-  set[:db_mysql][:service_name] = "mysqld"
 	set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
   set_unless[:db_mysql][:log] = ""
   set_unless[:db_mysql][:log_error] = "" 
 when "debian","ubuntu"
-  set[:db_mysql][:service_name] = "mysql"
   set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
   set_unless[:db_mysql][:log] = "log = /var/log/mysql.log"
   set_unless[:db_mysql][:log_error] = "log_error = /var/log/mysql.err" 
