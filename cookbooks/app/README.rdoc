@@ -7,20 +7,49 @@ RightScale application server management cookbook
 This cookbook contains recipes that generally applicable to all application
 servers.
 
-== DETAILS:
+Initialized App resource and its actions cover default set of operations, required for typical application server setup.
+
+More detailed info you can find in app::* recipes description.
 
 == REQUIREMENTS:
 
-Requires a VM launched from a RightScale managed RightImage 
+Requires a VM launched from a RightScale managed RightImage
+ Corresponding app providers
 
 == SETUP:
-       
+
+In order to use App resource, you must create corresponding providers in your app server cookbook.
+See for example app_passenger, app_php or app_tomcat cookbooks.
+
+You must define app attributes which will be used in initialized app[default] resource
+Required attributes:
+  node[:app][:provider] = "app_passenger"
+Recommended:
+  node[:app][:destination]
+  node[:app][:app_port]
+  node[:app][:app_root]
+  node[:app][:database_name]
+  node[:app][:database_user]
+  node[:app][:database_password]
+  node[:app][:database_sever_fqdn]
+More detailed description of these attribute variables is located in resource file description. 
+
 == USAGE:
 
-Add the default recipe to tag your server as an appserver. This is used by 
-servers (like databases) to identify their clients.
+1. Add the default recipe to tag your server as an appserver. This is used by 
+   servers (like databases) to identify their clients.
+2. Add desired app::do_* recipes to your application server ServerTemplate
+3. Develop corresponding providers in your application server cookbook.
+4. Define required and recommended attributes in your application server cookbook attributes file.
 
-== KNOWN LIMITIATIONS:
+ == DETAILS:
+
+Note: app[default] resource uses "persist true" flag, which allow to save created resource and its attributes in memory for future use.
+
+== KNOWN LIMITATIONS:
+
+1. node[:app][:provider] must be defined
+2. app::default recipe must be present in ServerTemplate boot section.
 
 = LICENSE
 

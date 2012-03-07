@@ -17,7 +17,7 @@ define :db_mysql_connect_app, :template => "db_connection_example.erb", :cookboo
     variables(
       :user => node[:db][:application][:user],
       :password => node[:db][:application][:password],
-      :fqdn => node[:db][:fqdn],
+      :fqdn => node[:db][:dns][:master][:fqdn],
       :socket => node[:db_mysql][:socket],
       :database => params[:database]
     )

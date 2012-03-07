@@ -20,7 +20,7 @@ wiki at:
 == REQUIREMENTS:
 
 *  One of "repo" provider: "repo_git", "repo_svn" or "repo_ros" cookbooks must be present in your cookbook repository
-*  Ros implementation depends on 'rs_tools:default' recipe
+*  Ros implementation depends on either the 'rs_utils::install_tools' or 'rs_tools:default' recipe
 
 
 == SETUP:

@@ -8,18 +8,21 @@
 include RightScale::Database::MySQL::Helper
 
 action :stop do
-  @db = init(new_resource)
-  @db.stop
+  service node[:db_mysql][:service_name] do
+    action :stop
+  end
 end
 
 action :start do
-  @db = init(new_resource)
-  @db.start
+  service node[:db_mysql][:service_name] do
+    action :start
+  end
 end
 
 action :restart do
-  @db = init(new_resource)
-  @db.restart
+  service node[:db_mysql][:service_name] do
+    action :restart
+  end
 end
 
 action :status do
@@ -427,10 +430,10 @@ action :promote do
     only_if do
       log_bin = RightScale::Database::MySQL::Helper.do_query(node, "show variables like 'log_bin'", 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
       if log_bin['Value'] == 'OFF'
-	Chef::Log.info "Detected binlogs were disabled, restarting service to enable them for Master takeover."
-	true
+      	Chef::Log.info "Detected binlogs were disabled, restarting service to enable them for Master takeover."
+	      true
       else
-	false
+      	false
       end
     end
   end
