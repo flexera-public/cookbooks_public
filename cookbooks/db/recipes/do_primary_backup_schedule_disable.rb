@@ -7,7 +7,11 @@
 
 rs_utils_marker :begin
 
-NICKNAME = node[:block_device][:nickname]
+class Chef::Recipe
+  include RightScale::BlockDeviceHelper
+end
+
+NICKNAME = get_device_or_default(node, :device1, :nickname)
 
 block_device NICKNAME do
   cron_backup_recipe "#{self.cookbook_name}::do_primary_backup"

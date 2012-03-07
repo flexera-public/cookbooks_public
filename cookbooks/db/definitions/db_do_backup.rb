@@ -23,7 +23,15 @@
 
 define :db_do_backup, :force => false, :backup_type => "primary" do
 
-  NICKNAME = node[:block_device][:nickname]
+  class Chef::Recipe
+    include RightScale::BlockDeviceHelper
+  end
+
+  class Chef::Resource::Bash
+    include RightScale::BlockDeviceHelper
+  end
+
+  NICKNAME = get_device_or_default(node, :device1, :nickname)
   DATA_DIR = node[:db][:data_dir]
 
   do_force        = params[:force] == true ? true : false
@@ -84,43 +92,50 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
 
   # If doing a secondary backup, set variables needed for this.
   if do_backup_type == "secondary"
-    secondary_storage_cloud = node[:block_device][:backup][:secondary][:cloud]
-    if node[:block_device][:backup][:secondary][:cloud] =~ /aws/i
+    secondary_storage_cloud = get_device_or_default(node, :device1, :backup, :secondary, :cloud)
+    if secondary_storage_cloud =~ /aws/i
       secondary_storage_cloud = "s3"
-    elsif node[:block_device][:backup][:secondary][:cloud] =~ /rackspace/i
+    elsif secondary_storage_cloud =~ /rackspace/i
       secondary_storage_cloud = "cloudfiles"
     end
-    secondary_storage_container = node[:block_device][:backup][:secondary][:container]
+    secondary_storage_container = get_device_or_default(node, :device1, :backup, :secondary, :container)
   end
 
   # backup.rb removes the file lock created from :backup_lock_take
   log "  Forking background process to complete backup... (see /var/log/messages for results)"
-  background_exe = ["/opt/rightscale/sandbox/bin/backup",
-                    "--backuponly",
-                    "--lineage #{node[:db][:backup][:lineage]}",
-                    "--nickname #{NICKNAME}",
-                    "--mount-point #{DATA_DIR}",
-                    "--cloud #{cloud}",
-                    "--backup-type #{do_backup_type}",
-                    secondary_storage_cloud && do_backup_type == "secondary" ? "--secondary-storage-cloud #{secondary_storage_cloud}":"",
-                    secondary_storage_container && do_backup_type == "secondary" ? "--secondary-storage-container #{secondary_storage_container}":"",
-                    (node[:block_device][:rackspace_snet] == false)  ? "--no-snet" : "",
-                    node[:block_device][:backup][:primary][:keep][:max_snapshots] ? "--max-snapshots #{node[:block_device][:backup][:primary][:keep][:max_snapshots]}" : "",
-                    node[:block_device][:backup][:primary][:keep][:keep_daily]    ? "--keep-daily #{node[:block_device][:backup][:primary][:keep][:keep_daily]}"       : "",
-                    node[:block_device][:backup][:primary][:keep][:keep_weekly]   ? "--keep-weekly #{node[:block_device][:backup][:primary][:keep][:keep_weekly]}"     : "",
-                    node[:block_device][:backup][:primary][:keep][:keep_monthly]  ? "--keep-monthly #{node[:block_device][:backup][:primary][:keep][:keep_monthly]}"   : "",
-                    node[:block_device][:backup][:primary][:keep][:keep_yearly]   ? "--keep-yearly #{node[:block_device][:backup][:primary][:keep][:keep_yearly]}"     : "",
-                    "2>&1 | logger -t rs_db_backup &"].join(" ")
+  max_snapshots = get_device_or_default(node, :device1, :backup, :primary, :keep, :max_snapshots)
+  keep_daily    = get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_daily)
+  keep_weekly   = get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_weekly)
+  keep_monthly  = get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_monthly)
+  keep_yearly   = get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_yearly)
+  background_exe = [
+    "/opt/rightscale/sandbox/bin/backup",
+    "--backuponly",
+    "--lineage #{node[:db][:backup][:lineage]}",
+    "--nickname #{NICKNAME}",
+    "--mount-point #{DATA_DIR}",
+    "--cloud #{cloud}",
+    "--backup-type #{do_backup_type}",
+    secondary_storage_cloud && do_backup_type == "secondary" ? "--secondary-storage-cloud #{secondary_storage_cloud}":"",
+    secondary_storage_container && do_backup_type == "secondary" ? "--secondary-storage-container #{secondary_storage_container}":"",
+    (get_device_or_default(node, :device1, :rackspace_snet) == false) ? '--no-snet' : '',
+    max_snapshots ? "--max-snapshots #{max_snapshots}" : '',
+    keep_daily    ? "--keep-daily #{keep_daily}"       : '',
+    keep_weekly   ? "--keep-weekly #{keep_weekly}"     : '',
+    keep_monthly  ? "--keep-monthly #{keep_monthly}"   : '',
+    keep_yearly   ? "--keep-yearly #{keep_yearly}"     : '',
+    "2>&1 | logger -t rs_db_backup &"
+  ].join(" ")
 
   log "  background process = '#{background_exe}'"
   bash "backup.rb" do
     flags "-ex"
-    environment ({
-                   "PRIMARY_STORAGE_KEY"      => node[:block_device][:backup][:primary][:cred][:user],
-                   "PRIMARY_STORAGE_SECRET"   => node[:block_device][:backup][:primary][:cred][:secret],
-                   "SECONDARY_STORAGE_KEY"    => node[:block_device][:backup][:secondary][:cred][:user],
-                   "SECONDARY_STORAGE_SECRET" => node[:block_device][:backup][:secondary][:cred][:secret]
-                })
+    environment ({ 
+      'PRIMARY_STORAGE_KEY'      => get_device_or_default(node, :device1, :backup, :primary, :cred, :user),
+      'PRIMARY_STORAGE_SECRET'   => get_device_or_default(node, :device1, :backup, :primary, :cred, :secret),
+      'SECONDARY_STORAGE_KEY'    => get_device_or_default(node, :device1, :backup, :secondary, :cred, :user),
+      'SECONDARY_STORAGE_SECRET' => get_device_or_default(node, :device1, :backup, :secondary, :cred, :secret)
+    })
     code background_exe
   end
 end

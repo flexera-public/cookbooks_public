@@ -10,9 +10,8 @@ depends "block_device"
 depends "sys_dns"
 depends "rs_utils"
 
-recipe  "db_mysql::default", "Runs the client 'db::install_server' recipes."
-recipe  "db_mysql::default_5_1", "Set MySQL chef node version to 5.1"
-recipe  "db_mysql::default_5_5", "Set MySQL chef node version to 5.5"
+recipe  "db_mysql::default_5_1", "Set DB MySQL provider, set version 5.1 and node variables specific to MySQL 5.1"
+recipe  "db_mysql::default_5_5", "Set DB MySQL provider, set version 5.5 and node variables specific to MySQL 5.5"
 
 attribute "db_mysql",
   :display_name => "General Database Options",
@@ -23,14 +22,16 @@ attribute "db_mysql",
 attribute "db_mysql/server_usage",
   :display_name => "Server Usage",
   :description => "Use 'dedicated' if the mysql config file allocates all existing resources of the machine.  Use 'shared' if the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example.",
-  :recipes => [ "db_mysql::default" ],
+  :recipes => [ "db_mysql::default_5_5", "db_mysql::default_5_1" ],
   :choice => ["shared", "dedicated"],
+  :required => "optional",
   :default => "dedicated"
 
 attribute "db_mysql/log_bin",
   :display_name => "MySQL Binlog Destination",
   :description => "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory. Ex: /mnt/mysql-binlogs/mysql-bin",
-  :recipes => [ "db_mysql::default" ],
+  :recipes => [ "db_mysql::default_5_5", "db_mysql::default_5_1" ],
+  :required => "optional",
   :default => "/mnt/mysql-binlogs/mysql-bin"
 
 

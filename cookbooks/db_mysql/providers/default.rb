@@ -430,10 +430,10 @@ action :promote do
     only_if do
       log_bin = RightScale::Database::MySQL::Helper.do_query(node, "show variables like 'log_bin'", 'localhost', RightScale::Database::MySQL::Helper::DEFAULT_CRITICAL_TIMEOUT)
       if log_bin['Value'] == 'OFF'
-	Chef::Log.info "Detected binlogs were disabled, restarting service to enable them for Master takeover."
-	true
+      	Chef::Log.info "Detected binlogs were disabled, restarting service to enable them for Master takeover."
+	      true
       else
-	false
+      	false
       end
     end
   end

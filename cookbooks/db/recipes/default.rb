@@ -15,4 +15,6 @@ db node[:db][:data_dir] do
   action :nothing
 end
 
+include_recipe "db::install_client"
+
 rs_utils_marker :end
