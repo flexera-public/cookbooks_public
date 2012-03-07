@@ -177,14 +177,11 @@ action :install_client do
   #
   # Also installs in compile phase
   #
-  r = execute "install mysql gem" do
-    gem_package 'mysql' do
-      gem_binary '/opt/rightscale/sandbox/bin/gem'
-      version '2.7'
-      options '--build-flags --with-mysql-config'
-    end
+  gem_package 'mysql' do
+    gem_binary '/opt/rightscale/sandbox/bin/gem'
+    version '2.7'
+    options '--build-flags --with-mysql-config'
   end
-  r.run_action(:run)
 
   Gem.clear_paths
   log "Gem reload forced with Gem.clear_paths"
