@@ -99,6 +99,8 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
       secondary_storage_cloud = "cloudfiles"
     end
     secondary_storage_container = get_device_or_default(node, :device1, :backup, :secondary, :container)
+  elsif do_backup_type == 'primary'
+    primary_storage_cloud = get_device_or_default(node, :device1, :backup, :primary, :cloud)
   end
 
   # backup.rb removes the file lock created from :backup_lock_take
@@ -116,8 +118,9 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     "--mount-point #{DATA_DIR}",
     "--cloud #{cloud}",
     "--backup-type #{do_backup_type}",
-    secondary_storage_cloud && do_backup_type == "secondary" ? "--secondary-storage-cloud #{secondary_storage_cloud}":"",
-    secondary_storage_container && do_backup_type == "secondary" ? "--secondary-storage-container #{secondary_storage_container}":"",
+    primary_storage_cloud && do_backup_type == 'primary' ? "--primary-storage-cloud #{primary_storage_cloud}" : '',
+    secondary_storage_cloud && do_backup_type == 'secondary' ? "--secondary-storage-cloud #{secondary_storage_cloud}" : '',
+    secondary_storage_container && do_backup_type == 'secondary' ? "--secondary-storage-container #{secondary_storage_container}" : '',
     (get_device_or_default(node, :device1, :rackspace_snet) == false) ? '--no-snet' : '',
     max_snapshots ? "--max-snapshots #{max_snapshots}" : '',
     keep_daily    ? "--keep-daily #{keep_daily}"       : '',
