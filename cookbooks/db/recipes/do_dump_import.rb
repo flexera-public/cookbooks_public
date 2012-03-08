@@ -17,7 +17,7 @@ skip, reason = true, "Container not provided"                if node[:db][:dump]
 skip, reason = true, "Prefix specified in incorrect format.  It must be in the format 'prefix-<date>' without a .gz extenstion (=~/#{dump_file_regex}/ for the exact regex). ex: myapp_prod_dump-201203080035" unless node[:db][:dump][:prefix] =~ /#{dump_file_regex}/ 
 
 if skip
-  log "Skipping import: #{reason}"
+  raise "Skipping import: #{reason}"
 else
 
   db_name      = node[:db][:dump][:database_name]
