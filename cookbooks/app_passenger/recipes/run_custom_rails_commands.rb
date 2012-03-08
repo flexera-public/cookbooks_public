@@ -16,10 +16,10 @@ rs_utils_marker :begin
 #   command1, command2
 #
 
-log "Running user defined commands"
+log "  Running user defined commands"
 bash "run commands" do
   flags "-ex"
-  cwd "#{node[:app_passenger][:deploy_dir]}/current/"
+  cwd "#{node[:app_passenger][:deploy_dir]}/"
   code <<-EOH
     IFS=,  read -a ARRAY1 <<< "#{node[:app_passenger][:project][:custom_cmd]}"
     for i in "${ARRAY1[@]}"

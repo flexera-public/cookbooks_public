@@ -1,29 +1,46 @@
+= RightScale App Passenger Cookbook
+
 == DESCRIPTION:
 
+* Cookbook provides apache+passenger implementation of the app LWRP.
 * Installs and configures, apache+passenger application server.
 
 == REQUIREMENTS:
 
 * Requires a VM launched from a RightScale managed RightImage
-
 * Tested on CentOS 5.6 RightImage
-* Tested on Ubuntu RightImage
+* Tested on Ubuntu 10.04 RightImage
 
 == SETUP:
 
-* Place app_passenger::default recipe into your runlist to setup the application server.  When
-  using a RightScale ServerTemplate, this will also automatically add the
+* Place app_passenger::default recipe into your runlist to setup the application 
+  server. Since this sets up the app provider, it must be run before the 
+  app::default recipe (which expects a provider to already be set)
+* When using a RightScale ServerTemplate, this will also automatically add the
   common attributes to your ServerTemplate inputs.
 
 == USAGE:
 
-* Template con be combined in two modes:
+* Template can be combined in two modes:
+
   1 For apps with bundler support
     You have to add "install_required app gems" recipe, and "run_custom_rails_commands" for migration commands
   2 For apps without bundler support
-    Y have to add "install_custom_gems"  recipe, and "run_custom_rails_commands" for migration commands
-  Anyway you can mix these recipes to fit needs of your project
+    You have to add "install_custom_gems"  recipe, and "run_custom_rails_commands" for migration commands
+  Anyway you can mix these recipes to fit needs of your project.
 
 == KNOWN LIMITATIONS
 
 * none
+
+== DETAILS
+
+RubyEE packages coming from official RubyEE project page
+http://code.google.com/p/rubyenterpriseedition/downloads/detail?name=ruby-enterprise-1.8.7-2011.03.tar.gz&can=2&q=
+configured and packed for Ubuntu CentOS and RHEL.
+
+= LICENSE
+
+Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+if applicable, other agreements such as a RightScale Master Subscription Agreement.

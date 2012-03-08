@@ -1,13 +1,27 @@
 {
   "dependencies": {
+    "repo": ">= 0.0.0",
     "db_mysql": ">= 0.0.0",
     "app": ">= 0.0.0",
-    "repo_git": ">= 0.0.0",
     "rs_utils": ">= 0.0.0"
   },
   "name": "app_tomcat",
   "maintainer_email": "support@rightscale.com",
   "attributes": {
+    "tomcat/java/MaxNewSize": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "256m",
+      "type": "string",
+      "recipes": [
+
+      ],
+      "display_name": "Tomcat Java MaxNewSize",
+      "description": "The java MaxNewSize argument (i.e. 256m)"
+    },
     "tomcat/db_name": {
       "required": "required",
       "calculated": false,
@@ -16,51 +30,10 @@
       ],
       "type": "string",
       "recipes": [
-        "app_tomcat::setup_db_connection"
+
       ],
       "display_name": "Database Name",
       "description": "Enter the name of the MySQL database to use. Ex: mydatabase"
-    },
-    "tomcat/code": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "hash",
-      "recipes": [
-
-      ],
-      "display_name": "Tomcat Application Code"
-    },
-    "tomcat/code/branch": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "default": "master",
-      "type": "string",
-      "recipes": [
-        "app_tomcat::do_update_code",
-        "app_tomcat::default"
-      ],
-      "display_name": "Repository Branch",
-      "description": "The name of the branch within the git repository where the application code should be pulled from. Ex: mybranch"
-    },
-    "tomcat/code/svn_username": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "default": "",
-      "type": "string",
-      "recipes": [
-        "app_tomcat::do_update_code"
-      ],
-      "display_name": "SVN username",
-      "description": "The SVN username that is used to checkout the application code from SVN repository..If you use git just change value to $ignore"
     },
     "tomcat/code/root_war": {
       "required": "optional",
@@ -68,38 +41,13 @@
       "choice": [
 
       ],
+      "default": "",
       "type": "string",
       "recipes": [
-        "app_tomcat::do_update_code"
+
       ],
       "display_name": "War file for ROOT",
       "description": "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war"
-    },
-    "tomcat/code/url": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "app_tomcat::do_update_code",
-        "app_tomcat::default"
-      ],
-      "display_name": "Repository URL",
-      "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git"
-    },
-    "tomcat/java": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "hash",
-      "recipes": [
-
-      ],
-      "display_name": "Tomcat java settings"
     },
     "tomcat/java/xmx": {
       "required": "optional",
@@ -107,55 +55,55 @@
       "choice": [
 
       ],
+      "default": "512m",
       "type": "string",
       "recipes": [
-        "app_tomcat::setup_tomcat_configs"
+
       ],
       "display_name": "Tomcat Java XMX",
       "description": "The java Xmx argument (i.e. 512m)"
     },
-    "tomcat/code/svn_password": {
+    "tomcat/java/NewSize": {
       "required": "optional",
       "calculated": false,
       "choice": [
 
       ],
-      "default": "",
+      "default": "256m",
       "type": "string",
       "recipes": [
-        "app_tomcat::do_update_code"
+
       ],
-      "display_name": "SVN password",
-      "description": "The SVN password that is used to checkout the application code from SVN repository..If you use git just change value to $ignore"
+      "display_name": "Tomcat Java NewSize",
+      "description": "The java NewSize argument (i.e. 256m)"
     },
-    "tomcat/code/credentials": {
+    "tomcat/java/MaxPermSize": {
       "required": "optional",
       "calculated": false,
       "choice": [
 
       ],
+      "default": "256m",
       "type": "string",
       "recipes": [
-        "app_tomcat::do_update_code",
-        "app_tomcat::default"
+
       ],
-      "display_name": "Repository Credentials",
-      "description": "The private SSH key of the git repository."
+      "display_name": "Tomcat Java MaxPermSize",
+      "description": "The java MaxPermSize argument (i.e. 256m)"
     },
-    "tomcat/code/repo_type": {
+    "tomcat/java/PermSize": {
       "required": "optional",
       "calculated": false,
       "choice": [
-        "git",
-        "svn"
+
       ],
-      "default": "git",
+      "default": "256m",
       "type": "string",
       "recipes": [
-        "app_tomcat::do_update_code"
+
       ],
-      "display_name": "Repository Type",
-      "description": "Choose type of Repository: SVN or GIT"
+      "display_name": "Tomcat Java PermSize",
+      "description": "The java PermSize argument (i.e. 256m)"
     },
     "tomcat/java/xms": {
       "required": "optional",
@@ -163,41 +111,26 @@
       "choice": [
 
       ],
+      "default": "512m",
       "type": "string",
       "recipes": [
-        "app_tomcat::setup_tomcat_configs"
+
       ],
       "display_name": "Tomcat Java XMS",
       "description": "The java Xms argument (i.e. 512m)"
-    },
-    "tomcat": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "hash",
-      "recipes": [
-
-      ],
-      "display_name": "Tomcat Application Settings"
     }
   },
-  "license": "Apache v2.0",
+  "license": "Copyright RightScale, Inc. All rights reserved.",
   "suggestions": {
   },
   "platforms": {
   },
   "maintainer": "RightScale, Inc.",
-  "long_description": "= RightScale App Tomcat Cookbook \n\n== DESCRIPTION:\n\n== DETAILS:\n\n== REQUIREMENTS:\n\n== SETUP: \n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n",
-  "version": "0.1.1",
+  "long_description": "= RightScale App Tomcat Cookbook\r\n\r\n== DESCRIPTION:\r\n\r\n* Cookbook provides tomcat implementation of app LWRP.\r\n* Installs and configures, tomcat application server.\r\n\r\n== REQUIREMENTS:\r\n\r\n* Requires a VM launched from a RightScale managed RightImage\r\n* Tested on CentOS 5.6 RightImage\r\n* Tested on Ubuntu RightImage\r\n\r\n== SETUP:\r\n\r\n* Place tomcat::default recipe into your runlist to setup the application server.\r\n* When using a RightScale ServerTemplate, this will also automatically add the\r\n  common attributes to your ServerTemplate inputs.\r\n\r\n== USAGE:\r\n\r\n * Choose image and cloud.\r\n * Fill required input fields.\r\n\r\n== KNOWN LIMITATIONS\r\n\r\n* none\r\n\r\n= LICENSE\r\n\r\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\r\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\r\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\r\n",
+  "version": "0.2.1",
   "recommendations": {
   },
   "recipes": {
-    "app_tomcat::setup_monitoring": "Install collectd monitoring for tomcat.",
-    "app_tomcat::setup_tomcat_configs": "Configure tomcat.",
-    "app_tomcat::setup_db_connection": "Set up the MySQL database db.tomcat connection file.",
-    "app_tomcat::do_update_code": "Update application source files from the remote repository.",
     "app_tomcat::default": "Installs the tomcat application server."
   },
   "groupings": {

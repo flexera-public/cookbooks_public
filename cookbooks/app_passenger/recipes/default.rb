@@ -7,14 +7,21 @@
 
 rs_utils_marker :begin
 
-#Installing some apache development headers required for rubyEE
-node[:app_passenger][:ruby_packages_install].each do |p|
-  package p
-end
+log "  Setting provider specific settings for rails-passenger."
+node[:app][:provider] = "app_passenger"
+node[:app][:app_port] = "8000"
+node[:app][:destination]="/home/rails/#{node[:web_apache][:application_name]}"
+node[:app][:app_root] = "#{node[:app][:destination]}/public"
+node[:app][:database_name] = node[:app_passenger][:project][:db][:schema_name]
 
-#Installing some apache development headers required for passenger compilation
-node[:app_passenger][:packages_install].each do |p|
-  package p
+
+case node[:platform]
+  when "ubuntu","debian"
+    node[:app][:packages] = ["libopenssl-ruby", "libcurl4-openssl-dev", "apache2-mpm-prefork", "apache2-prefork-dev", "libapr1-dev", "libcurl4-openssl-dev"]
+  when "centos","redhat","redhatenterpriseserver","fedora","suse"
+    node[:app][:packages] = ["zlib-devel", "openssl-devel", "readline-devel", "curl-devel", "openssl-devel", "httpd-devel", "apr-devel", "apr-util-devel", "readline-devel"]
+  else
+    raise "Unrecognized distro #{node[:platform]}, exiting "
 end
 
 rs_utils_marker :end

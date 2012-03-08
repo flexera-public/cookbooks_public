@@ -1,6 +1,5 @@
 #
 # Cookbook Name:: repo_ros
-# Provider:: repo_ros
 #
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
@@ -145,4 +144,3 @@ action :capistrano_pull do
 
   Log "  Capistrano ROS deployment action - finished successfully!"
 end
-

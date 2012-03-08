@@ -1,4 +1,11 @@
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
+
 /var/log/<%= @tomcat_name %>/*log /var/log/<%= @tomcat_name %>/*.out {
+    size 10M
+    rotate 4
     missingok
     notifempty
     nocompress

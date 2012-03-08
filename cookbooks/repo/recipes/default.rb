@@ -1,6 +1,5 @@
 #
 # Cookbook Name:: repo
-# Recipe:: default
 #
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the

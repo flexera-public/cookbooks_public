@@ -1,13 +1,12 @@
 #
-#
 # Apache HTTP-only virtual host Config file, version 1.
 #
 # Managed by RightScale
 # DO NOT EDIT BY HAND
 #
-<% if !File.exists?("#{node[:app_passenger][:apache][:install_dir]}/ports.conf") %>
-Listen <%=@params[:vhost_port]%>
-<%end%>
+
+
+
 <VirtualHost *:<%=@params[:vhost_port]%>>
 
  ServerName <%=@params[:server_name] %>
@@ -27,20 +26,20 @@ Listen <%=@params[:vhost_port]%>
 
 RewriteEngine On
 # Uncomment for rewrite debugging
-#RewriteLog <%= node[:app_passenger][:apache][:log_dir]%>/<%=@params[:server_name]%>-http_rewrite_log
+#RewriteLog <%= @params[:apache_log_dir]%>/<%=@params[:server_name]%>-http_rewrite_log
 #RewriteLogLevel 9
 
-<% node[:app_passenger][:ruby_gem_base_dir]=%x[/opt/ruby-enterprise/bin/gem environment gemdir] %>
-<% node[:app_passenger][:passenger_dir]=%x[/bin/bash -c "ls -d #{node[:app_passenger][:ruby_gem_base_dir].chomp}/gems/passenger*"] %>
+<% @params[:ruby_base_dir]=%x[/opt/ruby-enterprise/bin/gem environment gemdir] %>
+<% passenger_dir=%x[/bin/bash -c "ls -d #{@params[:ruby_base_dir].chomp}/gems/passenger*"] %>
 
 #LoadModule deflate_module /usr/lib/apache2/modules/mod_deflate.so
-LoadModule passenger_module <%="#{node[:app_passenger][:passenger_dir].chomp}/ext/apache2/mod_passenger.so"%>
-PassengerRoot <%=node[:app_passenger][:passenger_dir]%>
-PassengerRuby <%=node[:app_passenger][:ruby_bin]%>
-RailsSpawnMethod  <%=node[:app_passenger][:rails_spawn_method]%>
+LoadModule passenger_module <%="#{passenger_dir.chomp}/ext/apache2/mod_passenger.so"%>
+PassengerRoot <%=passenger_dir%>
+PassengerRuby <%=@params[:ruby_bin]%>
+RailsSpawnMethod  <%=@params[:rails_spawn_method]%>
 RailsEnv <%= @params[:rails_env] %>
 
-PassengerAppRoot <%="#{node[:app_passenger][:deploy_dir].chomp}/current"%>
+PassengerAppRoot <%="#{@params[:destination].chomp}"%>
 
 
 # Enable status page for monitoring purposes
@@ -48,23 +47,23 @@ RewriteCond %{REMOTE_ADDR} ^(127.0.0.1)
 RewriteRule ^(/server-status) $1 [H=server-status,L]
 
 
-<%  if (node[:app_passenger][:apache][:maintenance_page].empty?) %>
-<%    node[:app_passenger][:apache][:maintenance_page]="/system/maintenance.html" %>
+<%  if (@params[:apache_maintenance_page].empty?) %>
+<%    @params[:apache_maintenance_page]="/system/maintenance.html" %>
 <%  else %>
-<%   node[:app_passenger][:apache][:maintenance_page]=node[:app_passenger][:apache][:maintenance_page].strip %>
+<%    @params[:apache_maintenance_page]=@params[:apache_maintenance_page].strip %>
 <%  end %>
 
 # Redirects to a maintenance page if the specified file below exists
 # ...but it still allows images to be served
-RewriteCond %{DOCUMENT_ROOT}<%=node[:app_passenger][:apache][:maintenance_page]%> -f
-RewriteCond %{SCRIPT_FILENAME} !<%=node[:app_passenger][:apache][:maintenance_page]%>
+RewriteCond %{DOCUMENT_ROOT}<%=@params[:apache_maintenance_page]%> -f
+RewriteCond %{SCRIPT_FILENAME} !<%=@params[:apache_maintenance_page]%>
 RewriteCond %{SCRIPT_FILENAME} !^(.+).(gif|png|jpg|css|js|swf)$
-RewriteRule ^.*$ <%=node[:app_passenger][:apache][:maintenance_page]%> [L]
+RewriteRule ^.*$ <%=@params[:apache_maintenance_page]%> [L]
 
 
 
 
-<% if (node[:app_passenger][:apache][:serve_local_files]=="true") %>
+<% if (@params[:apache_serve_local_files]=="true") %>
 # Serve any existing local files directly (except actionable ones)
 RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} -f
 RewriteCond %{REQUEST_FILENAME} !\.php|\.jsp|\.do|\.action$ [NC]
@@ -79,15 +78,9 @@ RewriteRule ^/(.*)$ /$1 [QSA,L]
 <% end %>
 
 
-<% if (!node[:app_passenger][:apache][:target_bind_address].empty?)&&(!node[:app_passenger][:apache][:target_bind_port].empty?) %>
-# Proxy the rest to the load balancer
-RewriteRule ^/(.*)$ http://<%=node[:app_passenger][:apache][:target_bind_address]%>:<%node[:app_passenger][:apache][:target_bind_port]%>%{REQUEST_URI} [P,QSA,L]
-<% end %>
-
-
 # Setup the logs in the appropriate directory
-CustomLog <%= node[:app_passenger][:apache][:log_dir]%>/<%=@params[:server_name]%>-access.log combined
-ErrorLog  <%= node[:app_passenger][:apache][:log_dir]%>/<%=@params[:server_name]%>-error.log
+CustomLog <%= @params[:apache_log_dir]%>/<%=@params[:server_name]%>-access.log combined
+ErrorLog  <%= @params[:apache_log_dir]%>/<%=@params[:server_name]%>-error.log
 LogLevel warn
 
 

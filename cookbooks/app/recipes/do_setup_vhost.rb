@@ -1,6 +1,5 @@
 #
-# Cookbook Name:: repo_ros
-#
+# Cookbook Name::app
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -8,6 +7,11 @@
 
 rs_utils_marker :begin
 
-raise "  ROS gem missing, please add rs_utils::install_tools or rs_tools::default recipes to runlist." unless File.exists?("/opt/rightscale/sandbox/bin/ros_util")
+log "  Configuring vhost file for App server"
+app "default" do
+  app_root node[:app][:app_root]
+  app_port node[:app][:app_port]
+  action :setup_vhost
+end
 
 rs_utils_marker :end

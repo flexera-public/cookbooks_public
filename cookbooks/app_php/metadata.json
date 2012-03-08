@@ -1,39 +1,26 @@
 {
   "dependencies": {
+    "repo": ">= 0.0.0",
     "db_mysql": ">= 0.0.0",
     "app": ">= 0.0.0",
     "web_apache": ">= 0.0.0",
-    "repo_git": ">= 0.0.0",
     "rs_utils": ">= 0.0.0"
   },
   "name": "app_php",
   "maintainer_email": "support@rightscale.com",
   "attributes": {
     "php/db_schema_name": {
-      "required": "required",
+      "required": "recommended",
       "calculated": false,
       "choice": [
 
       ],
       "type": "string",
       "recipes": [
-        "app_php::setup_db_connection"
+
       ],
       "display_name": "Database Schema Name",
       "description": "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema will be backed up.  Ex: mydbschema"
-    },
-    "php/code/branch": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "app_php::do_update_code"
-      ],
-      "display_name": "Repository Branch",
-      "description": "The name of the branch/tag/SHA within the git repository where the application code should be pulled from. Ex: mybranch"
     },
     "php": {
       "required": "optional",
@@ -55,49 +42,10 @@
       ],
       "type": "array",
       "recipes": [
-        "app_php::default"
+
       ],
       "display_name": "PHP module packages",
       "description": "An optional list of php module packages to install.  Accepts an array of package names (IE: php53u-mysql,php53u-pecl-memcache).  When using CentOS, package names are prefixed with php53u instead of php.  To see a list of available php modules on CentOS, run 'yum search php53u' on the server."
-    },
-    "php/code/credentials": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "default": "",
-      "type": "string",
-      "recipes": [
-        "app_php::do_update_code"
-      ],
-      "display_name": "Repository Credentials",
-      "description": "The private SSH key of the git repository."
-    },
-    "php/code": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "hash",
-      "recipes": [
-
-      ],
-      "display_name": "PHP Application Code"
-    },
-    "php/code/url": {
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "type": "string",
-      "recipes": [
-        "app_php::do_update_code"
-      ],
-      "display_name": "Repository URL",
-      "description": "Specify the URL location of the repository that contains the application code. Ex: git://github.com/mysite/myapp.git"
     }
   },
   "license": "Copyright RightScale, Inc. All rights reserved.",
@@ -106,14 +54,11 @@
   "platforms": {
   },
   "maintainer": "RightScale, Inc.",
-  "long_description": "= RightScale App PHP Cookbook \n\n== DESCRIPTION:\n\nRightScale PHP application server management cookbook\n\nInstalls and configures a PHP application server.\n\n== DETAILS:\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage \n\n== SETUP:\n\n== USAGE:\n\n== KNOWN LIMITATIONS:\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "long_description": "= RightScale App PHP Cookbook \r\n\r\n== DESCRIPTION:\r\n\r\n* Cookbook provides PHP  implementation of the app LWRP.\r\n* Installs and configures, PHP application server.\r\n\r\n== REQUIREMENTS:\r\n\r\n* Requires a VM launched from a RightScale managed RightImage\r\n* Tested on CentOS 5.6 RightImage\r\n* Tested on Ubuntu 10.04 RightImage\r\n\r\n== SETUP:\r\n\r\n* Place app_php::default recipe into your runlist to setup the application\r\n  server. Since this sets up the app provider, it must be run before the\r\n  app::default recipe (which expects a provider to already be set)\r\n* When using a RightScale ServerTemplate, this will also automatically add the\r\n  common attributes to your ServerTemplate inputs.\r\n\r\n== USAGE:\r\n\r\n* Choose image and cloud.\r\n* Fill required input fields.\r\n\r\n== KNOWN LIMITATIONS:\r\n\r\n* none\r\n\r\n= LICENSE\r\n\r\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\r\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\r\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\r\n",
   "version": "0.0.1",
   "recommendations": {
   },
   "recipes": {
-    "app_php::do_update_code": "Updates application source files from the remote repository.",
-    "app_php::setup_php_application_vhost": "Set up the application vhost on port 8000.",
-    "app_php::setup_db_connection": "Set up the MySQL database db.php connection file.",
     "app_php::default": "Installs the php application server."
   },
   "groupings": {

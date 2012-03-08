@@ -34,8 +34,7 @@
         "web_apache::install_apache",
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend_http_vhost",
-        "web_apache::setup_frontend",
-        "web_apache::setup_mod_jk_vhost"
+        "web_apache::setup_frontend"
       ],
       "display_name": "Multi-Processing Module",
       "description": "Defines the multi-processing module setting in httpd.conf.  Use 'worker' for Rails/Tomcat/Standalone frontends and 'prefork' for PHP."
@@ -96,8 +95,7 @@
         "web_apache::install_apache",
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend_http_vhost",
-        "web_apache::setup_frontend",
-        "web_apache::setup_mod_jk_vhost"
+        "web_apache::setup_frontend"
       ],
       "display_name": "Application Name",
       "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name."
@@ -115,8 +113,7 @@
         "web_apache::install_apache",
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend_http_vhost",
-        "web_apache::setup_frontend",
-        "web_apache::setup_mod_jk_vhost"
+        "web_apache::setup_frontend"
       ],
       "display_name": "Server Name",
       "description": "The fully qualified domain name of the application server used to define your virtual host."
@@ -166,7 +163,6 @@
     "web_apache::setup_frontend": "Frontend apache vhost.  Select ssl_enabled for SSL.",
     "web_apache::install_apache": "Installs and configures the Apache2 webserver.",
     "web_apache::setup_monitoring": "Install collectd-apache for monitoring support",
-    "web_apache::setup_mod_jk_vhost": "Installs, configures mod_jk and creates vhost.",
     "web_apache::setup_frontend_ssl_vhost": "Frontend apache vhost with SSL enabled.",
     "web_apache::setup_frontend_http_vhost": "Frontend apache vhost with SSL enabled.",
     "web_apache::do_stop": "Runs service apache stop",

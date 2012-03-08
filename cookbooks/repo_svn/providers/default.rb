@@ -1,6 +1,5 @@
 #
 # Cookbook Name:: repo_svn
-# Provider:: repo_svn
 #
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
@@ -8,7 +7,7 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 action :pull do
- 
+
   # setup parameters 
   password = new_resource.svn_password
   branch = new_resource.revision

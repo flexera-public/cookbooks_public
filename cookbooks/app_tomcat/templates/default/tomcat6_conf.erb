@@ -1,3 +1,7 @@
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
 # System-wide configuration file for tomcat6 services
 # This will be sourced by tomcat6 and any secondary service
 # Values will be overridden by service-specific configuration
@@ -24,7 +28,7 @@ CATALINA_TMPDIR="/var/tmp/tomcat6"
 #JAVA_OPTS="-Djava.library.path=/usr/lib"
 
 # What user should run tomcat
-TOMCAT_USER="tomcat"
+TOMCAT_USER="<%=@app_user%>"
 
 # You can change your tomcat locale here
 #LANG="en_US"
@@ -47,4 +51,18 @@ CATALINA_PID="/var/run/tomcat6.pid"
 # If you wish to further customize your tomcat environment,
 # put your own definitions here
 # (i.e. LD_LIBRARY_PATH for some jdbc drivers)
+
+#JVM tuning options
+# see http://www.tomcatexpert.com/blog/2011/11/22/performance-tuning-jvm-running-tomcat
+
+# XMX and XMS
+CATALINA_OPTS=" -Xms<%=@java_xms%> -Xmx<%=@java_xmx%>"
+
+#PermSize and MaxPermSize
+CATALINA_OPTS=" -XX:PermSize=<%=@java_permsize%> -XX:MaxPermSize=<%=@java_maxpermsize%>"
+
+#NewSize and MaxNewSize
+CATALINA_OPTS=" -XX:NewSize=<%=@java_newsize%> -XX:MaxNewSize=<%=@java_maxnewsize%>"
+
+#Collectd
 
