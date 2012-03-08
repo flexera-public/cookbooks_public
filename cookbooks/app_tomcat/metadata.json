@@ -1,145 +1,145 @@
 {
-  "name": "app_tomcat",
-  "description": "Installs the tomcat application server.",
-  "long_description": "= RightScale App Tomcat Cookbook\n\n== DESCRIPTION:\n\n* Cookbook provides tomcat implementation of app LWRP.\n* Installs and configures, tomcat application server.\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage\n\n* Tested on CentOS 5.6 RightImage\n* Tested on Ubuntu RightImage\n\n== SETUP:\n\n* Place tomcat::default recipe into your runlist to setup the application server.\n* When  using a RightScale ServerTemplate, this will also automatically add the\n  common attributes to your ServerTemplate inputs.\n\n== USAGE:\n * Choose image and cloud.\n * Fill required input fields.\n\n== KNOWN LIMITATIONS\n\n* none\n",
-  "maintainer": "RightScale, Inc.",
-  "maintainer_email": "support@rightscale.com",
-  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "platforms": {
-  },
   "dependencies": {
-    "app": ">= 0.0.0",
-    "db_mysql": ">= 0.0.0",
     "repo": ">= 0.0.0",
+    "db_mysql": ">= 0.0.0",
+    "app": ">= 0.0.0",
     "rs_utils": ">= 0.0.0"
   },
-  "recommendations": {
-  },
-  "suggestions": {
-  },
-  "conflicting": {
-  },
-  "providing": {
-  },
-  "replacing": {
-  },
+  "name": "app_tomcat",
+  "maintainer_email": "support@rightscale.com",
   "attributes": {
-    "tomcat/db_name": {
-      "display_name": "Database Name",
-      "description": "Enter the name of the MySQL database to use. Ex: mydatabase",
-      "required": "required",
+    "tomcat/java/MaxNewSize": {
+      "required": "optional",
+      "calculated": false,
       "choice": [
 
       ],
-      "calculated": false,
+      "default": "256m",
       "type": "string",
       "recipes": [
 
-      ]
+      ],
+      "display_name": "Tomcat Java MaxNewSize",
+      "description": "The java MaxNewSize argument (i.e. 256m)"
+    },
+    "tomcat/db_name": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+
+      ],
+      "display_name": "Database Name",
+      "description": "Enter the name of the MySQL database to use. Ex: mydatabase"
     },
     "tomcat/code/root_war": {
-      "display_name": "War file for ROOT",
-      "description": "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
       "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
       "default": "",
-      "choice": [
-
-      ],
-      "calculated": false,
       "type": "string",
       "recipes": [
 
-      ]
-    },
-    "tomcat/java/xms": {
-      "display_name": "Tomcat Java XMS",
-      "description": "The java Xms argument (i.e. 512m)",
-      "required": "optional",
-      "default": "512m",
-      "choice": [
-
       ],
-      "calculated": false,
-      "type": "string",
-      "recipes": [
-
-      ]
+      "display_name": "War file for ROOT",
+      "description": "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war"
     },
     "tomcat/java/xmx": {
-      "display_name": "Tomcat Java XMX",
-      "description": "The java Xmx argument (i.e. 512m)",
       "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
       "default": "512m",
-      "choice": [
-
-      ],
-      "calculated": false,
       "type": "string",
       "recipes": [
 
-      ]
-    },
-    "tomcat/java/PermSize": {
-      "display_name": "Tomcat Java PermSize",
-      "description": "The java PermSize argument (i.e. 256m)",
-      "required": "optional",
-      "default": "256m",
-      "choice": [
-
       ],
-      "calculated": false,
-      "type": "string",
-      "recipes": [
-
-      ]
-    },
-    "tomcat/java/MaxPermSize": {
-      "display_name": "Tomcat Java MaxPermSize",
-      "description": "The java MaxPermSize argument (i.e. 256m)",
-      "required": "optional",
-      "default": "256m",
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string",
-      "recipes": [
-
-      ]
+      "display_name": "Tomcat Java XMX",
+      "description": "The java Xmx argument (i.e. 512m)"
     },
     "tomcat/java/NewSize": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "256m",
+      "type": "string",
+      "recipes": [
+
+      ],
       "display_name": "Tomcat Java NewSize",
-      "description": "The java NewSize argument (i.e. 256m)",
-      "required": "optional",
-      "default": "256m",
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string",
-      "recipes": [
-
-      ]
+      "description": "The java NewSize argument (i.e. 256m)"
     },
-    "tomcat/java/MaxNewSize": {
-      "display_name": "Tomcat Java MaxNewSize",
-      "description": "The java MaxNewSize argument (i.e. 256m)",
+    "tomcat/java/MaxPermSize": {
       "required": "optional",
-      "default": "256m",
+      "calculated": false,
       "choice": [
 
       ],
-      "calculated": false,
+      "default": "256m",
       "type": "string",
       "recipes": [
 
-      ]
+      ],
+      "display_name": "Tomcat Java MaxPermSize",
+      "description": "The java MaxPermSize argument (i.e. 256m)"
+    },
+    "tomcat/java/PermSize": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "256m",
+      "type": "string",
+      "recipes": [
+
+      ],
+      "display_name": "Tomcat Java PermSize",
+      "description": "The java PermSize argument (i.e. 256m)"
+    },
+    "tomcat/java/xms": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "512m",
+      "type": "string",
+      "recipes": [
+
+      ],
+      "display_name": "Tomcat Java XMS",
+      "description": "The java Xms argument (i.e. 512m)"
     }
   },
-  "groupings": {
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "suggestions": {
+  },
+  "platforms": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "long_description": "= RightScale App Tomcat Cookbook\r\n\r\n== DESCRIPTION:\r\n\r\n* Cookbook provides tomcat implementation of app LWRP.\r\n* Installs and configures, tomcat application server.\r\n\r\n== REQUIREMENTS:\r\n\r\n* Requires a VM launched from a RightScale managed RightImage\r\n* Tested on CentOS 5.6 RightImage\r\n* Tested on Ubuntu RightImage\r\n\r\n== SETUP:\r\n\r\n* Place tomcat::default recipe into your runlist to setup the application server.\r\n* When using a RightScale ServerTemplate, this will also automatically add the\r\n  common attributes to your ServerTemplate inputs.\r\n\r\n== USAGE:\r\n\r\n * Choose image and cloud.\r\n * Fill required input fields.\r\n\r\n== KNOWN LIMITATIONS\r\n\r\n* none\r\n\r\n= LICENSE\r\n\r\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\r\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\r\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\r\n",
+  "version": "0.2.1",
+  "recommendations": {
   },
   "recipes": {
     "app_tomcat::default": "Installs the tomcat application server."
   },
-  "version": "0.2.1"
+  "groupings": {
+  },
+  "conflicting": {
+  },
+  "replacing": {
+  },
+  "description": "Installs the tomcat application server.",
+  "providing": {
+  }
 }

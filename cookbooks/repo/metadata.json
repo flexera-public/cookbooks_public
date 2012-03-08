@@ -1,212 +1,212 @@
 {
-  "name": "repo",
-  "description": "Abstract cookbook for managing source code repositories.",
-  "long_description": "= RightScale Repo Resource\n\n== DESCRIPTION:\n\nThis cookbook provides abstract \"repo\" resource for managing code download from GIT, SVN or ROS code repositoritories\n\n\n== DETAILS:\n\n=== General\nThis cookbook is intended to be used in conjunction with cookbooks that contain\nLightweight Providers which implement the 'repo' interface. See the RightScale\nrepo_git cookbook for an example.\n\nFor more about Lightweight Resources and Providers (LWRPs), please see the Chef\nwiki at:\n  \n  http://wiki.opscode.com/display/chef/Lightweight+Resources+and+Providers+%28LWRP%29\n  \n== REQUIREMENTS:\n\n*  One of \"repo\" provider: \"repo_git\", \"repo_svn\" or \"repo_ros\" cookbooks must be present in your cookbook repository\n*  Ros implementation depends on 'rs_tools:default' recipe\n\n\n== SETUP:\n\n* Place repo::default recipe into your runlist to setup the repo resource.  When\n  using a RightScale ServerTemplate, this will also automatically add the\n  required attributes to your ServerTemplate inputs.\n\n\n== USAGE:\n\n===General\n* Add \"repo\" resource call in your recipe and provide all required parameters.\n* Add \"destination\" and \"action\" attributes to your \"repo\" resource.\n\n* Set desired action for your \"repo\" resource\n  It can be :pull or :capistrano_pull\n  :pull - perform basic \"pull\" action, just pulling your code from remote repo.\n  :capistrano_pull - performs pulling and backup of yuor code, see: http://wiki.opscode.com/display/chef/Deploy+Resource#DeployResource-TheDeployStrategies\n\n=== Examples\n\n:pull Example:\n\nrepo \"default\" do\n  destination \"/tmp/repo\"\n  action :pull\nend\n\n:capistrano_pull Example:\n\nrepo \"default\" do\n  destination \"/tmp/repo\"\n  action :capistrano_pull\n  app_user                    \"rightscale\" #owner of created repo directories\n  purge_before_symlink        %w{tmp} #An array of paths, relative to app root, to be removed from a checkout before symlinking\n  create_dirs_before_symlink  %w{log dir2}  #A hash that maps files in the shared directory to their paths in the current release\n  symlinks                    ({}) #A hash that maps files in the shared directory to their paths in the current release\n  environment                 ({}) #A hash of the form {\"ENV_VARIABLE\"=>\"VALUE\"}\nend\n\n=== SVN options:\n  svn_username                Svn username\n  svn_password                Svn password\n\n=== ROS options:\n  storage_account_provider    S3 or Cloudfiles currently supported\n  storage_account_id          \"Amazon account id\" #For Amazon S3, use your Amazon access key ID (e.g., cred:AWS_ACCESS_KEY_ID). For Rackspace Cloud Files, use your Rackspace login username (e.g., cred:RACKSPACE_USERNAME).\n  storage_account_secret      \"Amazon account password\" # For Amazon S3, use your AWS secret access key (e.g., cred:AWS_SECRET_ACCESS_KEY). For Rackspace Cloud Files, use your Rackspace account API key (e.g., cred:RACKSPACE_AUTH_KEY).\n  container                   \"Your_bucket\" #For Amazon S3, use the bucket name. For Rackspace Cloud Files, use the container name.\n  prefix                      \"source.tar.gz\" #Defines the prefix of the source repo file name that will be used to name the downloaded repo file.\n\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "maintainer": "RightScale, Inc.",
-  "maintainer_email": "support@rightscale.com",
-  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "platforms": {
-  },
   "dependencies": {
-    "repo_svn": ">= 0.0.0",
+    "repo_ros": ">= 0.0.0",
     "repo_git": ">= 0.0.0",
-    "repo_ros": ">= 0.0.0"
+    "repo_svn": ">= 0.0.0"
   },
-  "recommendations": {
-  },
-  "suggestions": {
-  },
-  "conflicting": {
-  },
-  "providing": {
-  },
-  "replacing": {
-  },
+  "name": "repo",
+  "maintainer_email": "support@rightscale.com",
   "attributes": {
-    "repo/default/provider": {
-      "display_name": "Repository Provider",
-      "description": "",
+    "repo/default/storage_account_provider": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+        "S3",
+        "CloudFiles"
+      ],
+      "type": "string",
+      "recipes": [
+        "repo::default"
+      ],
+      "display_name": "ROS Storage Account Provider",
+      "description": "Location where source file is saved. Used by recipes to upload to Amazon S3 or Rackspace Cloud Files."
+    },
+    "repo/default/repository": {
       "required": "recommended",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "repo::default"
+      ],
+      "display_name": "Repository Url",
+      "description": ""
+    },
+    "repo/default/perform_action": {
+      "required": "recommended",
+      "calculated": false,
+      "choice": [
+        "pull",
+        "capistrano_pull"
+      ],
+      "type": "string",
+      "recipes": [
+        "repo::do_pull"
+      ],
+      "display_name": "Action",
+      "description": "Choose the pull action which will be performed, 'pull'- standard repo pull, 'capistrano_pull' standard pull and then capistrano deployment style will be applied."
+    },
+    "repo/default/container": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "repo::default"
+      ],
+      "display_name": "ROS Container",
+      "description": "The cloud storage location where the dump file will be saved to or restored from. For Amazon S3, use the bucket name. For Rackspace Cloud Files, use the container name."
+    },
+    "repo/default/svn_password": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "repo::default"
+      ],
+      "display_name": "SVN password",
+      "description": "Password for SVN repo"
+    },
+    "repo/default/destination": {
+      "required": "recommended",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "repo::do_pull"
+      ],
+      "display_name": "Project App root",
+      "description": "Path to where project repo will be pulled"
+    },
+    "repo/default/prefix": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "repo::default"
+      ],
+      "display_name": "ROS Prefix",
+      "description": "The prefix that will be used to name/locate the backup of a particular source repo. Defines the prefix of the source repo file name that will be used to name the downloaded repo file."
+    },
+    "repo/default/ssh_key": {
+      "required": "recommended",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "repo::default"
+      ],
+      "display_name": "SSH Key",
+      "description": ""
+    },
+    "repo/default/storage_account_secret": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "repo::default"
+      ],
+      "display_name": "ROS Storage Account Secret",
+      "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use your AWS secret access key (e.g., cred:AWS_SECRET_ACCESS_KEY). For Rackspace Cloud Files, use your Rackspace account API key (e.g., cred:RACKSPACE_AUTH_KEY)."
+    },
+    "repo/default/storage_account_id": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "repo::default"
+      ],
+      "display_name": "ROS Storage Account ID",
+      "description": "In order to write the repo  to the specified cloud storage location, you need to provide cloud authentication credentials. For Amazon S3, use your Amazon access key ID (e.g., cred:AWS_ACCESS_KEY_ID). For Rackspace Cloud Files, use your Rackspace login username (e.g., cred:RACKSPACE_USERNAME)."
+    },
+    "repo/default/revision": {
+      "required": "recommended",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "HEAD",
+      "type": "string",
+      "recipes": [
+        "repo::default"
+      ],
+      "display_name": "Branch/Tag",
+      "description": ""
+    },
+    "repo/default/provider": {
+      "required": "recommended",
+      "calculated": false,
       "choice": [
         "repo_git",
         "repo_svn",
         "repo_ros"
       ],
       "default": "repo_git",
+      "type": "string",
       "recipes": [
         "repo::default"
       ],
-      "calculated": false,
-      "type": "string"
-    },
-    "repo/default/repository": {
-      "display_name": "Repository Url",
-      "description": "",
-      "required": "recommended",
-      "recipes": [
-        "repo::default"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "repo/default/revision": {
-      "display_name": "Branch/Tag",
-      "description": "",
-      "required": "recommended",
-      "default": "HEAD",
-      "recipes": [
-        "repo::default"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
+      "display_name": "Repository Provider",
+      "description": ""
     },
     "repo/default/svn_username": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+        "repo::default"
+      ],
       "display_name": "SVN username",
-      "description": "Username for SVN repo",
-      "required": "optional",
-      "default": "",
-      "recipes": [
-        "repo::default"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "repo/default/svn_password": {
-      "display_name": "SVN password",
-      "description": "Password for SVN repo",
-      "required": "optional",
-      "default": "",
-      "recipes": [
-        "repo::default"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "repo/default/ssh_key": {
-      "display_name": "SSH Key",
-      "description": "",
-      "default": "",
-      "required": "recommended",
-      "recipes": [
-        "repo::default"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "repo/default/storage_account_provider": {
-      "display_name": "ROS Storage Account Provider",
-      "description": "Location where source file is saved. Used by recipes to upload to Amazon S3 or Rackspace Cloud Files.",
-      "required": "optional",
-      "choice": [
-        "S3",
-        "CloudFiles"
-      ],
-      "recipes": [
-        "repo::default"
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "repo/default/storage_account_id": {
-      "display_name": "ROS Storage Account ID",
-      "description": "In order to write the repo  to the specified cloud storage location, you need to provide cloud authentication credentials. For Amazon S3, use your Amazon access key ID (e.g., cred:AWS_ACCESS_KEY_ID). For Rackspace Cloud Files, use your Rackspace login username (e.g., cred:RACKSPACE_USERNAME).",
-      "required": "optional",
-      "recipes": [
-        "repo::default"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "repo/default/storage_account_secret": {
-      "display_name": "ROS Storage Account Secret",
-      "description": "In order to write the dump file to the specified cloud storage location, you will need to provide cloud authentication credentials. For Amazon S3, use your AWS secret access key (e.g., cred:AWS_SECRET_ACCESS_KEY). For Rackspace Cloud Files, use your Rackspace account API key (e.g., cred:RACKSPACE_AUTH_KEY).",
-      "required": "optional",
-      "recipes": [
-        "repo::default"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "repo/default/container": {
-      "display_name": "ROS Container",
-      "description": "The cloud storage location where the dump file will be saved to or restored from. For Amazon S3, use the bucket name. For Rackspace Cloud Files, use the container name.",
-      "required": "optional",
-      "recipes": [
-        "repo::default"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "repo/default/prefix": {
-      "display_name": "ROS Prefix",
-      "description": "The prefix that will be used to name/locate the backup of a particular source repo. Defines the prefix of the source repo file name that will be used to name the downloaded repo file.",
-      "required": "optional",
-      "recipes": [
-        "repo::default"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "repo/default/perform_action": {
-      "display_name": "Action",
-      "description": "Choose the pull action which will be performed, 'pull'- standard repo pull, 'capistrano_pull' standard pull and then capistrano deployment style will be applied.",
-      "choice": [
-        "pull",
-        "capistrano_pull"
-      ],
-      "required": "recommended",
-      "recipes": [
-        "repo::do_pull"
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "repo/default/destination": {
-      "display_name": "Project App root",
-      "description": "Path to where project repo will be pulled",
-      "required": "recommended",
-      "recipes": [
-        "repo::do_pull"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
+      "description": "Username for SVN repo"
     }
+  },
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "suggestions": {
+  },
+  "platforms": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "long_description": "= RightScale Repo Resource\n\n== DESCRIPTION:\n\nThis cookbook provides abstract \"repo\" resource for managing code download from GIT, SVN or ROS code repositoritories\n\n\n== DETAILS:\n\n=== General\nThis cookbook is intended to be used in conjunction with cookbooks that contain\nLightweight Providers which implement the 'repo' interface. See the RightScale\nrepo_git cookbook for an example.\n\nFor more about Lightweight Resources and Providers (LWRPs), please see the Chef\nwiki at:\n  \n  http://wiki.opscode.com/display/chef/Lightweight+Resources+and+Providers+%28LWRP%29\n  \n== REQUIREMENTS:\n\n*  One of \"repo\" provider: \"repo_git\", \"repo_svn\" or \"repo_ros\" cookbooks must be present in your cookbook repository\n*  Ros implementation depends on either the 'rs_utils::install_tools' or 'rs_tools:default' recipe\n\n\n== SETUP:\n\n* Place repo::default recipe into your runlist to setup the repo resource.  When\n  using a RightScale ServerTemplate, this will also automatically add the\n  required attributes to your ServerTemplate inputs.\n\n\n== USAGE:\n\n===General\n* Add \"repo\" resource call in your recipe and provide all required parameters.\n* Add \"destination\" and \"action\" attributes to your \"repo\" resource.\n\n* Set desired action for your \"repo\" resource\n  It can be :pull or :capistrano_pull\n  :pull - perform basic \"pull\" action, just pulling your code from remote repo.\n  :capistrano_pull - performs pulling and backup of yuor code, see: http://wiki.opscode.com/display/chef/Deploy+Resource#DeployResource-TheDeployStrategies\n\n=== Examples\n\n:pull Example:\n\nrepo \"default\" do\n  destination \"/tmp/repo\"\n  action :pull\nend\n\n:capistrano_pull Example:\n\nrepo \"default\" do\n  destination \"/tmp/repo\"\n  action :capistrano_pull\n  app_user                    \"rightscale\" #owner of created repo directories\n  purge_before_symlink        %w{tmp} #An array of paths, relative to app root, to be removed from a checkout before symlinking\n  create_dirs_before_symlink  %w{log dir2}  #A hash that maps files in the shared directory to their paths in the current release\n  symlinks                    ({}) #A hash that maps files in the shared directory to their paths in the current release\n  environment                 ({}) #A hash of the form {\"ENV_VARIABLE\"=>\"VALUE\"}\nend\n\n=== SVN options:\n  svn_username                Svn username\n  svn_password                Svn password\n\n=== ROS options:\n  storage_account_provider    S3 or Cloudfiles currently supported\n  storage_account_id          \"Amazon account id\" #For Amazon S3, use your Amazon access key ID (e.g., cred:AWS_ACCESS_KEY_ID). For Rackspace Cloud Files, use your Rackspace login username (e.g., cred:RACKSPACE_USERNAME).\n  storage_account_secret      \"Amazon account password\" # For Amazon S3, use your AWS secret access key (e.g., cred:AWS_SECRET_ACCESS_KEY). For Rackspace Cloud Files, use your Rackspace account API key (e.g., cred:RACKSPACE_AUTH_KEY).\n  container                   \"Your_bucket\" #For Amazon S3, use the bucket name. For Rackspace Cloud Files, use the container name.\n  prefix                      \"source.tar.gz\" #Defines the prefix of the source repo file name that will be used to name the downloaded repo file.\n\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "version": "0.0.1",
+  "recommendations": {
+  },
+  "recipes": {
+    "repo::do_pull": "Recipe for pulling project repos from svn, git or ros.",
+    "repo::default": "Default recipe for setup resources provided"
   },
   "groupings": {
   },
-  "recipes": {
-    "repo::default": "Default recipe for setup resources provided",
-    "repo::do_pull": "Recipe for pulling project repos from svn, git or ros."
+  "conflicting": {
   },
-  "version": "0.0.1"
+  "replacing": {
+  },
+  "description": "Abstract cookbook for managing source code repositories.",
+  "providing": {
+  }
 }
