@@ -652,6 +652,11 @@ action :restore_from_dump_file do
       fi 
       mysqladmin -u root create #{db_name} 
       gunzip < #{dumpfile} | mysql -u root -b #{db_name}
+      if [ $? -ne 0 ] 
+      then
+        echo "Invalid MySQL Dump file"
+        exit 1
+      fi
     EOH
   end
 
