@@ -644,7 +644,6 @@ action :restore_from_dump_file do
     user "root"
     flags "-ex"
     code <<-EOH
-      set -e
       if [ ! -f #{dumpfile} ] 
       then 
         echo "ERROR: MySQL dumpfile not found! File: '#{dumpfile}'" 
@@ -654,7 +653,7 @@ action :restore_from_dump_file do
       gunzip < #{dumpfile} | mysql -u root -b #{db_name}
       if [ $? -ne 0 ] 
       then
-        echo "Invalid MySQL Dump file"
+        echo "Invalid MySQL Dump file: #{dumpfile}"
         exit 1
       fi
     EOH

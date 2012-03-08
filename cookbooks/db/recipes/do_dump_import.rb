@@ -7,14 +7,14 @@
 
 rs_utils_marker :begin
 
-dump_file_regex = '\w-\d{12}$'
+dump_file_regex = '\w-\d{12}$|\w$'
 
 # Check variables and log/skip if not set
 skip, reason = true, "DB/Schema name not provided"           if node[:db][:dump][:database_name] == ""
 skip, reason = true, "Prefix not provided"                   if node[:db][:dump][:prefix] == ""
 skip, reason = true, "Storage account provider not provided" if node[:db][:dump][:storage_account_provider] == ""
 skip, reason = true, "Container not provided"                if node[:db][:dump][:container] == ""
-skip, reason = true, "Prefix specified in incorrect format.  It must be in the format 'prefix-<date>' without a .gz extenstion (=~/#{dump_file_regex}/ for the exact regex). ex: myapp_prod_dump-201203080035" unless node[:db][:dump][:prefix] =~ /#{dump_file_regex}/ 
+skip, reason = true, "Prefix: #{node[:db][:dump][:prefix]} specified in incorrect format.  It must be in the format 'prefix-<date>' without a .gz extenstion (=~/#{dump_file_regex}/ for the exact regex). ex: myapp_prod_dump-201203080035" unless node[:db][:dump][:prefix] =~ /#{dump_file_regex}/ 
 
 if skip
   raise "Skipping import: #{reason}"
@@ -28,7 +28,7 @@ else
 
   # Obtain the dumpfile from ROS 
   execute "Download dumpfile from Remote Object Store" do
-    command "/opt/rightscale/sandbox/bin/ros_util get --cloud #{cloud} --container #{container} --dest #{dumpfilepath} --source #{prefix} --latest --match #{dump_file_regex}"
+    command "/opt/rightscale/sandbox/bin/ros_util get --cloud #{cloud} --container #{container} --dest #{dumpfilepath} --source #{prefix} --latest"
     creates dumpfilepath
     environment ({
       'STORAGE_ACCOUNT_ID' => node[:db][:dump][:storage_account_id],
