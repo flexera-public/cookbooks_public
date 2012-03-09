@@ -644,7 +644,6 @@ action :restore_from_dump_file do
     user "root"
     flags "-ex"
     code <<-EOH
-      set -e
       if [ ! -f #{dumpfile} ] 
       then 
         echo "ERROR: MySQL dumpfile not found! File: '#{dumpfile}'" 
