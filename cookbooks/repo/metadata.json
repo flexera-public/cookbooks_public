@@ -147,7 +147,7 @@
       "choice": [
 
       ],
-      "default": "HEAD",
+      "default": "master",
       "type": "string",
       "recipes": [
         "repo::default"
