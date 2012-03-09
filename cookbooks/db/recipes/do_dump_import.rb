@@ -7,14 +7,15 @@
 
 rs_utils_marker :begin
 
+# Check for valid prefix / dump filename
+dump_file_regex = '(^\w+)(-\d{1,12})*$'
+raise "Prefix: #{node[:db][:dump][:prefix]} invalid.  It is restricted to word characters (letter, number, underscore) and an optional partial timestamp -YYYYMMDDHHMM.  (=~/#{dump_file_regex}/ is the ruby regex used). ex: myapp_prod_dump, myapp_prod_dump-201203080035 or myapp_prod_dump-201203" unless node[:db][:dump][:prefix] =~ /#{dump_file_regex}/ || node[:db][:dump][:prefix] == ""
 
 # Check variables and log/skip if not set
 skip, reason = true, "DB/Schema name not provided"           if node[:db][:dump][:database_name] == ""
 skip, reason = true, "Prefix not provided"                   if node[:db][:dump][:prefix] == ""
 skip, reason = true, "Storage account provider not provided" if node[:db][:dump][:storage_account_provider] == ""
 skip, reason = true, "Container not provided"                if node[:db][:dump][:container] == ""
-dump_file_regex = '(^\w+)(-\d{1,12})*$'
-raise "Prefix: #{node[:db][:dump][:prefix]} invalid.  It is restricted to word characters (letter, number, underscore) and an optional partial timestamp -YYYYMMDDHHMM.  (=~/#{dump_file_regex}/ is the ruby regex used). ex: myapp_prod_dump, myapp_prod_dump-201203080035 or myapp_prod_dump-201203" unless node[:db][:dump][:prefix] =~ /#{dump_file_regex}/ 
 
 if skip
   log "Skipping import: #{reason}"
@@ -49,8 +50,6 @@ else
     action :delete
   end
 
-
 end
-
 
 rs_utils_marker :end
