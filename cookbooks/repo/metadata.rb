@@ -31,7 +31,7 @@ attribute "repo/default/revision",
   :display_name => "Branch/Tag",
   :description => "",
   :required => "recommended",
-  :default => "HEAD",
+  :default => "master",
   :recipes => ["repo::default"]
 
 #SVN
