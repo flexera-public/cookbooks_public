@@ -8,3 +8,5 @@
 # Most attributes are set in the default recipe since LAMP needs to over ride the default
 # application and database setttings.
 # This is for LAMP specific attributes, which at this time do not exist.
+  set[:db_mysql][:bind_address] = "localhost"
+  set[:app][:port] = 80
