@@ -38,3 +38,4 @@ set_unless[:web_apache][:ssl_passphrase] = nil
 
 # Used to be called php/code/destination
 set[:web_apache][:docroot] = "/home/webapp/#{web_apache[:application_name]}"
+set[:web_apache][:server_name] = "localhost"

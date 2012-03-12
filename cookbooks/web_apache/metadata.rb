@@ -74,12 +74,6 @@ attribute "web_apache/ssl_passphrase",
   :description => "SSL passphrase",
   :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
-attribute "web_apache/server_name",
-  :display_name => "Server Name",
-  :description => "The fully qualified domain name of the application server used to define your virtual host.",
-  :default => "localhost",
-  :recipes => all_recipes
-
 attribute "web_apache/application_name",
   :display_name => "Application Name",
   :description => "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name.",
