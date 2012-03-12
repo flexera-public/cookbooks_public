@@ -19,13 +19,13 @@ recipe "app::request_loadbalancer_allow", "Sends a request to all application se
 
 recipe "app::request_loadbalancer_deny", "Sends a request to all application servers tagged with loadbalancer:app=<applistener_name> to deny connections from the server's private IP address.  This script should be run on a load balancer after disconnecting application servers or upon decommissioning."
 
-recipe "app::do_setup_vhost", "Set up the application vhost on port 8000. This recipe will call corresponding provider from app server cookbook, which will create apache vhost file."
+recipe "app::setup_vhost", "Set up the application vhost on port 8000. This recipe will call corresponding provider from app server cookbook, which will create apache vhost file."
 
-recipe "app::do_setup_db_connection", "Set up the database connection file. This recipe will call corresponding provider from app server cookbook, which will create application database configuration file."
+recipe "app::setup_db_connection", "Set up the database connection file. This recipe will call corresponding provider from app server cookbook, which will create application database configuration file."
 
 recipe "app::do_update_code", "Updates application source files from the remote repository. This recipe will call corresponding provider from app server cookbook, which will download/update application source code."
 
-recipe "app::do_setup_monitoring", "Install collectd monitoring.  This recipe will call corresponding provider from app server cookbook, which will install and configure required monitoring software"
+recipe "app::setup_monitoring", "Install collectd monitoring.  This recipe will call corresponding provider from app server cookbook, which will install and configure required monitoring software"
 
 recipe "app::do_server_start", "Runs application server start sequence"
 
