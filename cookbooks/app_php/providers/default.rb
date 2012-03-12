@@ -66,7 +66,7 @@ end
 action :setup_vhost do
 
   project_root = new_resource.destination
-  php_port = new_resource.app_port
+  php_port = new_resource.port
 
   # Disable default vhost
   apache_site "000-default" do
