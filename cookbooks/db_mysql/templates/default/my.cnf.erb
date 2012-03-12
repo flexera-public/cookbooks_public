@@ -106,11 +106,11 @@ innodb_buffer_pool_size = <%= node[:db_mysql][:tunable][:innodb_buffer_pool_size
 innodb_additional_mem_pool_size = <%= node[:db_mysql][:tunable][:innodb_additional_mem_pool_size] %>
 innodb_log_file_size = <%= node[:db_mysql][:tunable][:innodb_log_file_size] %>
 innodb_log_buffer_size = <%= node[:db_mysql][:tunable][:innodb_log_buffer_size] %>
-#innodb_flush_log_at_trx_commit = 2
-#innodb_lock_wait_timeout = 50
-#innodb_support_xa = 1
-#innodb_flush_method=O_DIRECT
-#innodb_fast_shutdown = 1
+innodb_flush_log_at_trx_commit = 2
+innodb_lock_wait_timeout = 50
+innodb_support_xa = 1
+innodb_flush_method=O_DIRECT
+innodb_fast_shutdown = 1
 
 log-bin=<%=node[:db_mysql][:log_bin] %>
 
