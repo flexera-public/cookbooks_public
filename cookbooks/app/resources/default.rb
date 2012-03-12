@@ -12,13 +12,13 @@ actions :install
   # Set of installed packages
   attribute :packages, :kind_of => Array
 
-# Set up the application vhost on port 8000
+# Set up the application vhost on specified port
 # Action designed to setup APP LWRP with common parameters required for apache vhost file
 actions :setup_vhost
   # Application root
-  attribute :app_root, :kind_of => String
+  attribute :root, :kind_of => String
   # Application port
-  attribute :app_port, :kind_of => String
+  attribute :port, :kind_of => String
 
 
 # Runs application server start sequence

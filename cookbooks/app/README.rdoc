@@ -26,8 +26,8 @@ Required attributes:
   node[:app][:provider] = "app_passenger"
 Recommended:
   node[:app][:destination]
-  node[:app][:app_port]
-  node[:app][:app_root]
+  node[:app][:port]
+  node[:app][:root]
   node[:app][:database_name]
   node[:app][:database_user]
   node[:app][:database_password]

@@ -9,9 +9,9 @@ rs_utils_marker :begin
 
 log "  Setting provider specific settings for rails-passenger."
 node[:app][:provider] = "app_passenger"
-node[:app][:app_port] = "8000"
+node[:app][:port] = "8000"
+node[:app][:root] = "#{node[:app][:destination]}/public"
 node[:app][:destination]="/home/rails/#{node[:web_apache][:application_name]}"
-node[:app][:app_root] = "#{node[:app][:destination]}/public"
 node[:app][:database_name] = node[:app_passenger][:project][:db][:schema_name]
 
 
