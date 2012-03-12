@@ -150,11 +150,3 @@ action :code_update do
   action_restart
 
 end
-
-
-
-
-
-
-
-
