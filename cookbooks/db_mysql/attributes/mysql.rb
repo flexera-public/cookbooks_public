@@ -8,7 +8,6 @@
 # Recommended attributes
 #
 set_unless[:db_mysql][:collectd_master_slave_mode] = ""
-set_unless[:db_mysql][:server_usage] = "dedicated"  # or "shared"
 set_unless[:db_mysql][:previous_master] = nil
 
 
