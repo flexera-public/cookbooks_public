@@ -14,6 +14,7 @@ app "default" do
   database_password    node[:app][:database_password]
   database_sever_fqdn  node[:app][:database_sever_fqdn]
   action :setup_db_connection
+  persist true
 end
 
 rs_utils_marker :end

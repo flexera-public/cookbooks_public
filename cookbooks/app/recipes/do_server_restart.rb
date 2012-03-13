@@ -10,6 +10,7 @@ rs_utils_marker :begin
 log "  Restarting application server now..."
 app "default" do
     action :restart
+    persist true
 end
 
 rs_utils_marker :end

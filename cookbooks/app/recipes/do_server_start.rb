@@ -10,6 +10,7 @@ rs_utils_marker :begin
 log "  Starting application server now..."
 app "default" do
     action :start
+    persist true
 end
 
 rs_utils_marker :end

@@ -12,6 +12,7 @@ app "default" do
   root node[:app][:root]
   port node[:app][:port]
   action :setup_vhost
+  persist true
 end
 
 rs_utils_marker :end
