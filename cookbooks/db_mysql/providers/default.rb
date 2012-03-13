@@ -257,6 +257,16 @@ action :install_server do
     owner "mysql"
     group "mysql"
   end
+
+  # == Ensure that config directories exist
+  #
+  directory "/etc/mysql/conf.d" do
+    owner "mysql"
+    group "mysql"
+    mode 0644
+    recursive true
+  end
+
   # Setup my.cnf
   template_source = "my.cnf.erb"
   template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
