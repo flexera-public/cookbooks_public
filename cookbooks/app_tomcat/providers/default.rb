@@ -405,6 +405,7 @@ action :code_update do
       chown -R #{node[:tomcat][:app_user]}:#{node[:tomcat][:app_user]} #{node[:tomcat][:docroot]}
       sleep 5
     EOH
+    only_if do node[:tomcat][:code][:root_war] != "ROOT.war" end
   end
 
   action_restart
