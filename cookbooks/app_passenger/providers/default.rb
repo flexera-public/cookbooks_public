@@ -113,7 +113,7 @@ action :setup_vhost do
 
   # Generation of new apache ports.conf
   log "  Generating new apache ports.conf"
-  node[:apache][:listen_ports] = port
+  node[:apache][:listen_ports] = port.to_s
 
   template "#{node[:apache][:dir]}/ports.conf" do
     cookbook "apache2"
