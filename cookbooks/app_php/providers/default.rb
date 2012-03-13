@@ -73,16 +73,9 @@ action :setup_vhost do
     enable false
   end
 
-  node[:apache][:listen_ports] << php_port unless node[:apache][:listen_ports].include?(php_port)
-
-  template "#{node[:apache][:dir]}/ports.conf" do
-    cookbook "apache2"
-    source "ports.conf.erb"
-    variables :apache_listen_ports => node[:apache][:listen_ports]
-  end
-
-
-
+  # Adds php port to list of ports for webserver to listen on
+  app_add_listen_port php_port
+  
   # Configure apache vhost for PHP
   web_app node[:web_apache][:application_name] do
     template "app_server.erb"
