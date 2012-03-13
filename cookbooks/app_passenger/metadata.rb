@@ -30,8 +30,9 @@ attribute "app_passenger/spawn_method",
 attribute "app_passenger/project/environment",
   :display_name => "Rails Environment",
   :description => "Creates a Rails RAILS ENV environment variable. ",
+  :choice => ["development", "production"],
   :required => "optional",
-  :default => ""
+  :default => "development"
 
 
 attribute "app_passenger/apache/maintenance_page",

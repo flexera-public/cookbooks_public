@@ -132,7 +132,7 @@ action :setup_vhost do
     template                   "basic_vhost.erb"
     cookbook                   'app_passenger'
     docroot                    project_root
-    vhost_port                 port
+    vhost_port                 port.to_s
     server_name                node[:web_apache][:server_name]
     rails_env                  node[:app_passenger][:project][:environment]
     apache_install_dir         node[:app_passenger][:apache][:install_dir]

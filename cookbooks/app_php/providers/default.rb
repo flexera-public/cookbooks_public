@@ -87,7 +87,7 @@ action :setup_vhost do
   web_app node[:web_apache][:application_name] do
     template "app_server.erb"
     docroot project_root
-    vhost_port php_port
+    vhost_port php_port.to_s
     server_name node[:web_apache][:server_name]
     cookbook "web_apache"
   end

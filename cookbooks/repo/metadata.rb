@@ -15,7 +15,7 @@ recipe  "repo::do_pull", "Recipe for pulling project repos from svn, git or ros.
 
 attribute "repo/default/provider",
   :display_name => "Repository Provider",
-  :description => "",
+  :description => "Select repo provider: repo_git, repo_svn or repo_ros. Default: repo_git",
   :required => "recommended",
   :choice => ["repo_git", "repo_svn", "repo_ros"],
   :default => "repo_git",
@@ -23,13 +23,13 @@ attribute "repo/default/provider",
 
 attribute "repo/default/repository",
   :display_name => "Repository Url",
-  :description => "",
+  :description => "The URL of your svn or git repository where your application code will be checked out from.  Ex: http://mysvn.net/app/ or git@github.com/whoami/project",
   :required => "recommended",
   :recipes => ["repo::default"]
 
 attribute "repo/default/revision",
   :display_name => "Branch/Tag",
-  :description => "",
+  :description => "Enter branch of your repo you want ot fetch  Default: master",
   :required => "recommended",
   :default => "master",
   :recipes => ["repo::default"]
@@ -52,7 +52,7 @@ attribute "repo/default/svn_password",
 #GIT
 attribute "repo/default/ssh_key",
   :display_name => "SSH Key",
-  :description => "",
+  :description => "The private SSH key of the git repository.",
   :default => "",
   :required => "recommended",
   :recipes => ["repo::default"]
