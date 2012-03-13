@@ -18,7 +18,7 @@ actions :setup_vhost
   # Application root
   attribute :root, :kind_of => String
   # Application port
-  attribute :port, :kind_of => String
+  attribute :port, :kind_of => Integer
 
 
 # Runs application server start sequence
