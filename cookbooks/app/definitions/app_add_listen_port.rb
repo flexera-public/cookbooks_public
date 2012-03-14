@@ -13,10 +13,10 @@
 #
 # This is coded specifically for the apache2 cookbook at this time.
 
-define :app_add_listen_port, :port => nil do
+define :app_add_listen_port do
   
   # listens_ports is an array of strings, make sure to compare string to string, not string to integer.
-  port_str = params[:port].to_s
+  port_str = params[:name].to_s
   node[:apache][:listen_ports] << port_str unless node[:apache][:listen_ports].include?(port_str)
   
   template "#{node[:apache][:dir]}/ports.conf" do
