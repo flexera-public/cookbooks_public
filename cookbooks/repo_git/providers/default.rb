@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: repo
+# Cookbook Name:: repo_git
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -8,11 +8,12 @@
 
 action :pull do
 
+  capistrano_dir="/home/capistrano_repo"
   ruby_block "Before pull" do
     block do
       Chef::Log.info("check previous repo in case of action change")
-      if (::File.exists?("#{new_resource.destination}") == true && ::File.symlink?("#{new_resource.destination}") == true && ::File.exists?("/tmp/capistrano_repo") == true)
-        ::File.rename("#{new_resource.destination}", "/tmp/capistrano_repo/releases/capistrano_old_"+::Time.now.strftime("%Y%m%d%H%M"))
+      if (::File.exists?("#{new_resource.destination}") == true && ::File.symlink?("#{new_resource.destination}") == true && ::File.exists?("#{capistrano_dir}") == true)
+        ::File.rename("#{new_resource.destination}", "#{capistrano_dir}/releases/capistrano_old_"+::Time.now.strftime("%Y%m%d%H%M"))
       end
       # add ssh key and exec script
       RightScale::Repo::Ssh_key.new.create(new_resource.ssh_key)

@@ -54,6 +54,8 @@ end
 
 action :capistrano_pull do
 
+  repo_dir="/home"
+
   log("  Recreating project directory for :pull action")
   #in case if it is capistrano symlink
   directory "#{new_resource.destination}" do
@@ -62,6 +64,7 @@ action :capistrano_pull do
     only_if do (::File.symlink?("#{new_resource.destination}") == true) end
   end
 
+  capistrano_dir="/home/capistrano_repo"
   ruby_block "Backup old repo" do
     block do
      t=Time.now.gmtime
@@ -69,8 +72,8 @@ action :capistrano_pull do
      Chef::Log.info("  Check previous repo in case of action change")
      if (::File.exists?("#{new_resource.destination}") == true && ::File.symlink?("#{new_resource.destination}") == false)
        ::File.rename("#{new_resource.destination}", "#{new_resource.destination}_old_#{now}")
-     elsif (::File.exists?("#{new_resource.destination}") == true && ::File.symlink?("#{new_resource.destination}") == false && ::File.exists?("/tmp/capistrano_repo") == true)
-       ::File.rename("#{new_resource.destination}", "/tmp/capistrano_repo/releases/_initial_#{now}")
+     elsif (::File.exists?("#{new_resource.destination}") == true && ::File.symlink?("#{new_resource.destination}") == false && ::File.exists?("#{capistrano_dir}") == true)
+       ::File.rename("#{new_resource.destination}", "#{capistrano_dir}/releases/_initial_#{now}")
      end
     end
    end
@@ -84,10 +87,10 @@ action :capistrano_pull do
 
    #moving dir with downloaded and unpacked ROS source to temp folder
    #to prepare source for capistrano actions
-   bash "Moving #{new_resource.destination} to /tmp/ros_repo/" do
-    cwd "/tmp"
+   bash "Moving #{new_resource.destination} to #{repo_dir}/ros_repo/" do
+    cwd "#{repo_dir}"
     code <<-EOH
-       mv #{new_resource.destination} /tmp/ros_repo/
+       mv #{new_resource.destination} #{repo_dir}/ros_repo/
     EOH
   end
 
@@ -101,14 +104,14 @@ action :capistrano_pull do
   scm_provider = new_resource.provider
 
   log("  Preparing git transformation")
-  directory "/tmp/ros_repo/.git" do
+  directory "#{repo_dir}/ros_repo/.git" do
     recursive true
     action :delete
   end
 
   #initialisation of new git repo with initial commit
   bash "Git init in project folder" do
-      cwd "/tmp/ros_repo"
+      cwd "#{repo_dir}/ros_repo"
       code <<-EOH
         git init
         git add .
@@ -116,10 +119,10 @@ action :capistrano_pull do
       EOH
   end
 
-  log("  Deploying new local git project repo from /tmp/ros_repo/  to #{destination}. New owner #{app_user}")
+  log("  Deploying new local git project repo from #{repo_dir}/ros_repo/  to #{destination}. New owner #{app_user}")
   log "  Deploy provider #{scm_provider}"
   capistranize_repo "Source repo" do
-    repository "/tmp/ros_repo/"
+    repository "#{repo_dir}/ros_repo/"
     destination destination
     app_user app_user
     purge_before_symlink purge_before_symlink
@@ -131,13 +134,13 @@ action :capistrano_pull do
 
 
   log("  Cleaning transformation temp files")
-  directory "/tmp/ros_repo/" do
+  directory "#{repo_dir}/ros_repo/" do
     recursive true
     action :delete
   end
 
   #cleaning tmp files
-  directory "/tmp/capistrano_repo/current/.git/" do
+  directory "#{repo_dir}/capistrano_repo/current/.git/" do
     recursive true
     action :delete
    end
