@@ -41,6 +41,10 @@ end
 # == Ensure everything in /var/log is owned by root, not syslog.
 #
 Dir.glob("/var/log/*").each do |f|
+  
+  # ignore `ntpstats' directory because ntp user needs to write there
+  next if f == "/var/log/ntpstats"
+  
   if ::File.directory?(f)
     
     directory f do 
