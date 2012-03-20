@@ -39,7 +39,7 @@ action :install do
     package p
 
     # eclipse-ecj and symlink must be installed FIRST
-    if p=="eclipse-ecj" || "ecj-gcj"
+    if p=="eclipse-ecj" || p=="ecj-gcj"
       file "/usr/share/java/ecj.jar" do
         action :delete
       end
