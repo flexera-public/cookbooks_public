@@ -26,7 +26,7 @@ attribute "db_mysql/version",
   :description => "Use the MySQL version that matches that of the Database Manager for MySQL version used.",
   :recipes => ["db_mysql::default"],
   :choice => ['5.1', '5.5'],
-  :required => 'required',
+  :required => 'recommended',
   :default => '5.5'
 
 # == Default server attributes
