@@ -110,6 +110,16 @@ action :setup_vhost do
     only_if do ::File.exists?("/etc/httpd/conf.d/ssl.conf")  end
   end
 
+    # Enabling required apache modules
+    node[:app_passenger][:module_dependencies].each do |mod|
+      apache_module mod
+    end
+
+    # Apache fix on RHEL
+    file "/etc/httpd/conf.d/README" do
+      action :delete
+      only_if do node[:platform] == "redhat" end
+    end
 
   # Generation of new apache ports.conf
   log "  Generating new apache ports.conf"
