@@ -48,6 +48,21 @@
       ],
       "display_name": "Server Usage",
       "description": "Use 'dedicated' if the mysql config file allocates all existing resources of the machine.  Use 'shared' if the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example."
+    },
+    "db_mysql/version": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+        "5.1",
+        "5.5"
+      ],
+      "default": "5.5",
+      "disply_name": "MySQL Version",
+      "type": "string",
+      "recipes": [
+        "db_mysql::default"
+      ],
+      "description": "Use the MySQL version that matches that of the Database Manager for MySQL version used."
     }
   },
   "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
@@ -62,6 +77,7 @@
   },
   "recipes": {
     "db_mysql::default_5_1": "Set DB MySQL provider, set version 5.1 and node variables specific to MySQL 5.1",
+    "db_mysql::default": "Set DB MySQL provider, set version and node variables specific to the chosen MySQL version",
     "db_mysql::default_5_5": "Set DB MySQL provider, set version 5.5 and node variables specific to MySQL 5.5",
     "db_mysql::default_server": "Set DB MySQL server specfic input variables"
   },
