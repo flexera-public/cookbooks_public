@@ -41,7 +41,20 @@ end
 # == Ensure everything in /var/log is owned by root, not syslog.
 #
 Dir.glob("/var/log/*").each do |f|
-  
+
+  #At first we will check if this entry is a symlink and then is it broken or not
+  bash "Checking symlinks" do
+    flags "-ex"
+    code <<-EOH
+    if [[ ! -e #{f} &&  -L #{f} ]]; then
+      echo "#{f} symlink is broken! Removing..."
+    rm -f #{f}
+    fi
+    EOH
+    #only_if "test -L #{f}"
+    only_if do File.symlink?(f) end
+  end
+
   # ignore `ntpstats' directory because ntp user needs to write there
   next if f == "/var/log/ntpstats"
   
@@ -55,8 +68,9 @@ Dir.glob("/var/log/*").each do |f|
   else
     
     file f do 
-      owner "root" 
+      owner "root"
       notifies :restart, resources(:service => "syslog-ng")
+      only_if do File.exists?(f) end
     end
   
   end
