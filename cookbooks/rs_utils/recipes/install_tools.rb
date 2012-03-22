@@ -11,6 +11,14 @@ SANDBOX_BIN_DIR = "/opt/rightscale/sandbox/bin"
 RS_TOOL_VERSION = "1.0.31"
 RESOURCE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "rightscale_tools_public-#{RS_TOOL_VERSION}.gem")
 RACKSPACE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "right_rackspace-0.0.0.20111110.gem")
+RIGHT_AWS_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", 'right_aws-2.1.1.gem')
+
+r = gem_package RIGHT_AWS_GEM do
+  gem_binary "#{SANDBOX_BIN_DIR}/gem"
+  version '2.1.1'
+  action :nothing
+end
+r.run_action(:install)
 
 r = gem_package RACKSPACE_GEM do
   gem_binary "#{SANDBOX_BIN_DIR}/gem"
