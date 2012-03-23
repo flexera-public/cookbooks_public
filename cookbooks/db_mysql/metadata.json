@@ -56,11 +56,11 @@
         "5.1",
         "5.5"
       ],
-      "disply_name": "MySQL Version",
       "type": "string",
       "recipes": [
         "db_mysql::default"
       ],
+      "display_name": "MySQL Version",
       "description": "Use the MySQL version that matches that of the Database Manager for MySQL version used. Note: MySQL 5.5 is not supported on Ubuntu 10.04."
     }
   },
