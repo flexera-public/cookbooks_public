@@ -15,7 +15,7 @@ recipe  "repo::do_pull", "Recipe for pulling project repos from svn, git or ros.
 
 attribute "repo/default/provider",
   :display_name => "Repository Provider",
-  :description => "Select repo provider: repo_git, repo_svn or repo_ros. Default: repo_git",
+  :description => "Select a repository provider: repo_git for Git, repo_svn for SVN or repo_ros for Remote Ojbect Store. Default: repo_git",
   :required => "recommended",
   :choice => ["repo_git", "repo_svn", "repo_ros"],
   :default => "repo_git",
@@ -23,13 +23,13 @@ attribute "repo/default/provider",
 
 attribute "repo/default/repository",
   :display_name => "Repository Url",
-  :description => "The URL of your svn or git repository where your application code will be checked out from.  Ex: http://mysvn.net/app/ or git@github.com/whoami/project",
+  :description => "The URL of your svn or git repository where your application code will be checked out. Ex: http://mysvn.net/app/ or git@github.com/whoami/project",
   :required => "recommended",
   :recipes => ["repo::default"]
 
 attribute "repo/default/revision",
   :display_name => "Branch/Tag",
-  :description => "Enter branch of your repo you want ot fetch  Default: master",
+  :description => "Enter the branch of your repository you want to fetch. Default: master",
   :required => "recommended",
   :default => "master",
   :recipes => ["repo::default"]
@@ -37,14 +37,14 @@ attribute "repo/default/revision",
 #SVN
 attribute "repo/default/svn_username",
   :display_name => "SVN username",
-  :description => "Username for SVN repo",
+  :description => "Username for SVN repository.",
   :required => "optional",
   :default => "",
   :recipes => ["repo::default"]
 
 attribute "repo/default/svn_password",
   :display_name => "SVN password",
-  :description => "Password for SVN repo",
+  :description => "Password for SVN repository.",
   :required => "optional",
   :default => "",
   :recipes => ["repo::default"]
