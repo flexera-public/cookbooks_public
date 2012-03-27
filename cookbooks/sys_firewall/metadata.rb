@@ -15,7 +15,7 @@ recipe "sys_firewall::do_list_rules", "List the firewall rules."
 
 attribute "sys_firewall/enabled",
   :display_name => "Firewall",  
-  :description => "Enables iptables firewall for this server which allows port 22, 80 and 443 open by default.  Use sys_firewall::setup_rule recipe to enable/disable extra ports.",
+  :description => "Enables an iptables firewall for this server which allows port 22, 80 and 443 open by default.  Use the sys_firewall::setup_rule recipe to enable/disable extra ports.",
   :required => "optional",
   :choice => ["enabled", "disabled"],
   :default => "enabled",
@@ -36,7 +36,7 @@ attribute "sys_firewall/rule/enable",
 
 attribute "sys_firewall/rule/protocol",
   :display_name => "Firewall Rule Protocol",
-  :description => "Firewall protocol use. Defaults to 'tcp'",
+  :description => "Firewall protocol use. Defaults to 'tcp'.",
   :choice => ["tcp", "udp", "all"],
   :default => "tcp",
   :recipes => [ "sys_firewall::setup_rule" ]
