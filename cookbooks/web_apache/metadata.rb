@@ -58,28 +58,28 @@ attribute "web_apache/ssl_enable",
 
 attribute "web_apache/ssl_certificate",
   :display_name => "SSL Certificate",
-  :description => "SSL Certificate",
+  :description => "The name of your SSL Certificate.",
   :required => "optional",
   :default =>  "",
   :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/ssl_certificate_chain",
   :display_name => "SSL Certificate Chain",
-  :description => "SSL Certificate Chain",
+  :description => "Your SSL Certificate Chain.",
   :required => "optional",
   :default =>  "",
   :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/ssl_key",
   :display_name => "SSL Certificate Key",
-  :description => "SSL Certificate Key",
+  :description => "Your SSL Certificate Key.",
   :required => "optional",
   :default =>  "",
   :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
 
 attribute "web_apache/ssl_passphrase",
   :display_name => "SSL passphrase",
-  :description => "SSL passphrase",
+  :description => "Your SSL passphrase.",
   :required => "optional",
   :default =>  "",
   :recipes => [ "web_apache::setup_frontend_ssl_vhost","web_apache::setup_frontend" ]
