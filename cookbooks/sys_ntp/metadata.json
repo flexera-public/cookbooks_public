@@ -17,7 +17,7 @@
 
       ],
       "display_name": "NTP Servers",
-      "description": "Array of servers we should talk to"
+      "description": "A comma-separated list of fully qualified domain names for the array of servers we should talk to."
     }
   },
   "license": "Apache 2.0",
