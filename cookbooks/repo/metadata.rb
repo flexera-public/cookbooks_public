@@ -60,14 +60,14 @@ attribute "repo/default/ssh_key",
 #ROS
 attribute "repo/default/storage_account_provider",
   :display_name => "ROS Storage Account Provider",
-  :description => "Location where source file is saved. Used by recipes to upload to Amazon S3 or Rackspace Cloud Files.",
+  :description => "Location where the source file is saved. Used by recipes to upload to Amazon S3 or Rackspace Cloud Files.",
   :required => "optional",
   :choice => [ "S3", "CloudFiles" ],
   :recipes => ["repo::default"]
 
 attribute "repo/default/storage_account_id",
   :display_name => "ROS Storage Account ID",
-  :description => "In order to write the repo  to the specified cloud storage location, you need to provide cloud authentication credentials. For Amazon S3, use your Amazon access key ID (e.g., cred:AWS_ACCESS_KEY_ID). For Rackspace Cloud Files, use your Rackspace login username (e.g., cred:RACKSPACE_USERNAME).",
+  :description => "In order to write the repository to the specified cloud storage location, you need to provide cloud authentication credentials. For Amazon S3, use your Amazon access key ID (e.g., cred:AWS_ACCESS_KEY_ID). For Rackspace Cloud Files, use your Rackspace login username (e.g., cred:RACKSPACE_USERNAME).",
   :required => "optional",
   :recipes => ["repo::default"]
 
@@ -85,7 +85,7 @@ attribute "repo/default/container",
 
 attribute "repo/default/prefix",
   :display_name => "ROS Prefix",
-  :description => "The prefix that will be used to name/locate the backup of a particular source repo. Defines the prefix of the source repo file name that will be used to name the downloaded repo file.",
+  :description => "The prefix that will be used to name/locate the backup of a particular source repository. Defines the prefix of the source repo file name that will be used to name the downloaded repository file.",
   :required => "optional",
   :recipes => ["repo::default"]
 
