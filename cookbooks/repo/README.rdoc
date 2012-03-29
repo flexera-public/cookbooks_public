@@ -2,7 +2,7 @@
 
 == DESCRIPTION:
 
-This cookbook provides abstract 'repo' resource for managing code download from GIT, SVN or ROS code repositoritories
+This cookbook provides abstract 'repo' resource for managing code download from GIT, SVN or ROS code repositories.
 
 
 == DETAILS:

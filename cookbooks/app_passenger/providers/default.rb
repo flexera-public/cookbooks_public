@@ -195,11 +195,6 @@ end
 action :code_update do
   deploy_dir = new_resource.destination
 
-  log "  Creating directory for project deployment - <#{deploy_dir}>"
-  directory deploy_dir do
-    recursive true
-    not_if do ::File.exists?(deploy_dir.chomp)  end
-  end
 
   # Reading app name from tmp file (for recipe execution in "operational" phase))
   # Waiting for "run_lists"
@@ -208,12 +203,9 @@ action :code_update do
     deploy_dir = "/home/rails/#{app_name.to_s.chomp}"
   end
 
-  # Preparing dirs, required for apache+passenger
-  directory "#{deploy_dir.chomp}/shared/log" do
-    recursive true
-  end
-
-  directory "#{deploy_dir.chomp}/shared/system" do
+  # Preparing project dir, required for apache+passenger
+  log "  Creating directory for project deployment - <#{deploy_dir}>"
+  directory "/home/rails/" do
     recursive true
   end
   
@@ -223,7 +215,6 @@ action :code_update do
     action :capistrano_pull
     app_user node[:app_passenger][:apache][:user]
     environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
-    create_dirs_before_symlink
     persist false
   end
 
