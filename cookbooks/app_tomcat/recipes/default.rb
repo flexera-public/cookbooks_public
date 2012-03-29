@@ -14,24 +14,46 @@ node[:app][:database_name] = node[:tomcat][:db_name]
 node[:app][:port] = 8000
 
 case node[:platform]
-   when "ubuntu", "debian"
-     node[:app][:packages] = ["ecj-gcj",\
-                                        # "java-gcj-compat-dev",\
-                                         "tomcat6",\
-                                         "tomcat6-admin",\
-                                         "tomcat6-common",\
-                                         "tomcat6-user",\
-                                         "libmysql-java",\
-                                         "libtcnative-1"
-    ]
-
+  when "ubuntu", "debian"
+    if(app[:db_adapter] == "mysql")
+       node[:app][:packages] = ["ecj-gcj",\
+                                          # "java-gcj-compat-dev",\
+                                           "tomcat6",\
+                                           "tomcat6-admin",\
+                                           "tomcat6-common",\
+                                           "tomcat6-user",\
+                                           "libmysql-java",\
+                                           "libtcnative-1"
+      ]
+    elsif(app[:db_adapter] == "postgresql")
+       node[:app][:packages] = ["ecj-gcj",\
+                                          # "java-gcj-compat-dev",\
+                                           "tomcat6",\
+                                           "tomcat6-admin",\
+                                           "tomcat6-common",\
+                                           "tomcat6-user",\
+                                           "libtcnative-1"
+      ]
+    else
+      raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
+    end
   when "centos", "fedora", "suse", "redhat", "redhatenterpriseserver"
-    node[:app][:packages] = ["eclipse-ecj",\
-                                             "tomcat6",\
-                                             "tomcat6-admin-webapps",\
-                                             "tomcat6-webapps",\
-                                             "tomcat-native",\
-                                             "mysql-connector-java"]
+    if(app[:db_adapter] == "mysql")
+      node[:app][:packages] = ["eclipse-ecj",\
+                                               "tomcat6",\
+                                               "tomcat6-admin-webapps",\
+                                               "tomcat6-webapps",\
+                                               "tomcat-native",\
+                                               "mysql-connector-java"]
+    elsif(app[:db_adapter] == "postgresql")
+      node[:app][:packages] = ["eclipse-ecj",\
+                                               "tomcat6",\
+                                               "tomcat6-admin-webapps",\
+                                               "tomcat6-webapps",\
+                                               "tomcat-native"]
+    else
+      raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
+    end
   else
     raise "Unrecognized distro #{node[:platform]}, exiting "
 end

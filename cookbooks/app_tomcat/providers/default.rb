@@ -29,6 +29,7 @@ action :restart do
   action_start
 end
 
+
 #Installing required packages and prepare system for tomcat
 action :install do
 
@@ -56,13 +57,32 @@ action :install do
     action :run
   end
 
-  # Link mysql-connector plugin to Tomcat6 lib
-  file "/usr/share/tomcat6/lib/mysql-connector-java.jar" do
-    action :delete
-  end
+  db_adapter = node[:app][:db_adapter]
+  if db_adapter == "mysql"
+    # Link mysql-connector plugin to Tomcat6 lib
+    file "/usr/share/tomcat6/lib/mysql-connector-java.jar" do
+      action :delete
+    end
 
-  link "/usr/share/tomcat6/lib/mysql-connector-java.jar" do
-    to "/usr/share/java/mysql-connector-java.jar"
+    link "/usr/share/tomcat6/lib/mysql-connector-java.jar" do
+      to "/usr/share/java/mysql-connector-java.jar"
+    end
+  elsif db_adapter == "postgresql"
+    # Copy to /usr/share/java/postgresql-9.1-901.jdbc4.jar
+    remote_file "/usr/share/java/postgresql-9.1-901.jdbc4.jar" do
+      source "postgresql-9.1-901.jdbc4.jar"
+      owner "root"
+      group "root"
+      cookbook 'app_tomcat'
+    end
+    ## Link postgresql-connector plugin to Tomcat6 lib
+    # ln -sf /usr/share/java/postgresql-9.1-901.jdbc4.jar /usr/share/tomcat6/lib/postgresql-9.1-901.jdbc4.jar
+    # todo: if /usr/share/tomcat6/lib/postgresql-9.1-901.jdbc4.jar exists delete it first
+    link "/usr/share/tomcat6/lib/postgresql-9.1-901.jdbc4.jar" do
+      to "/usr/share/java/postgresql-9.1-901.jdbc4.jar"
+    end
+  else
+    raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
   end
 
   # "Linking RightImage JAVA_HOME to what Tomcat6 expects to be..."
@@ -114,7 +134,6 @@ action :install do
   end
 
 end
-
 
 # Setup apache virtual host and corresponding tomcat configs
 action :setup_vhost do
@@ -297,15 +316,29 @@ end
 action :setup_db_connection do
 
   db_name = new_resource.database_name
-
+  db_adapter = node[:app][:db_adapter]
+  
   log "  Creating context.xml"
-  db_mysql_connect_app "/etc/tomcat6/context.xml"  do
-    template      "context_xml.erb"
-    owner         "#{node[:tomcat][:app_user]}"
-    group         "root"
-    mode          "0644"
-    database      db_name
-    cookbook      'app_tomcat'
+  if db_adapter == "mysql"  
+    db_mysql_connect_app "/etc/tomcat6/context.xml"  do
+      template      "context_xml.erb"
+      owner         "#{node[:tomcat][:app_user]}"
+      group         "root"
+      mode          "0644"
+      database      db_name
+      cookbook      'app_tomcat'
+    end
+  elsif db_adapter == "postgresql"  
+    db_postgres_connect_app "/etc/tomcat6/context.xml"  do
+      template      "context_xml.erb"
+      owner         "#{node[:tomcat][:app_user]}"
+      group         "root"
+      mode          "0644"
+      database      db_name
+      cookbook      'app_tomcat'
+    end
+  else
+    raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
   end
 
   log "  Creating context.xml"

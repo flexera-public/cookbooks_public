@@ -24,14 +24,24 @@ case node[:platform]
 
   when "ubuntu", "debian"
     set[:tomcat][:app_user] = "tomcat6"
-    set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
     set[:tomcat][:alternatives_cmd] = "update-alternatives  --auto java"
-
+    if(app[:db_adapter] == "mysql")
+      set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
+    elsif(app[:db_adapter] == "postgresql")
+      set[:db_postgres][:socket] = "/var/run/postgresql"
+    else
+      raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
+    end
   when "centos", "fedora", "suse", "redhat", "redhatenterpriseserver"
     set[:tomcat][:app_user] = "tomcat"
-    set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
     set[:tomcat][:alternatives_cmd] = "alternatives --auto java"
+    if(app[:db_adapter] == "mysql")
+      set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
+    elsif(app[:db_adapter] == "postgresql")
+      set[:db_postgres][:socket] = "/var/run/postgresql"
+    else
+      raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
+    end
   else
     raise "Unrecognized distro #{node[:platform]}, exiting "
 end
-

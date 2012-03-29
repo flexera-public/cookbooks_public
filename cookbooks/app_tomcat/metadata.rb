@@ -7,6 +7,7 @@ version          "0.2.1"
 
 depends "app"
 depends "db_mysql"
+depends "db_postgres"
 depends "repo"
 depends "rs_utils"
 
