@@ -98,17 +98,30 @@ action :setup_db_connection do
     group node[:php][:app_user]
   end
 
-  # Tell MySQL to fill in our connection template
-  db_mysql_connect_app ::File.join(project_root, "config", "db.php") do
-    template "db.php.erb"
-    cookbook "app_php"
-    database node[:php][:db_schema_name]
-    owner node[:php][:app_user]
-    group node[:php][:app_user]
+  db_adapter = node[:app][:db_adapter]
+  # runs only on db_adapter selection
+  if db_adapter == "mysql"
+    # Tell MySQL to fill in our connection template
+    db_mysql_connect_app ::File.join(project_root, "config", "db.php") do
+      template "db.php.erb"
+      cookbook "app_php"
+      database node[:php][:db_schema_name]
+      owner node[:php][:app_user]
+      group node[:php][:app_user]
+    end
+  elsif db_adapter == "postgresql"
+    # Tell PostgreSQL to fill in our connection template
+    db_postgres_connect_app ::File.join(project_root, "config", "db.php") do
+      template "db.php.erb"
+      cookbook "app_php"
+      database node[:php][:db_schema_name]
+      owner node[:php][:app_user]
+      group node[:php][:app_user]
+    end
+  else
+    raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
   end
-
 end
-
 
 # Download/Update application repository
 action :code_update do

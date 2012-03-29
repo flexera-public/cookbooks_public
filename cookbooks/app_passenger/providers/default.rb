@@ -159,21 +159,36 @@ action :setup_vhost do
 
 end
 
+
 # Setup project db connection
 action :setup_db_connection do
 
   deploy_dir = new_resource.destination
   db_name = new_resource.database_name
-
+  db_adapter = node[:app_passenger][:project][:db][:adapter]
+  
+  log "  Generating database.yml"  
   # Tell MySQL to fill in our connection template
-  log "  Generating database.yml"
-  db_mysql_connect_app "#{deploy_dir.chomp}/config/database.yml"  do
-    template      "database.yml.erb"
-    cookbook      "app_passenger"
-    owner         node[:app_passenger][:apache][:user]
-    group         node[:app_passenger][:apache][:user]
-    database      db_name
-  end
+  if db_adapter == "mysql"  
+    db_mysql_connect_app "#{deploy_dir.chomp}/config/database.yml"  do
+      template      "database.yml.erb"
+      cookbook      "app_passenger"
+      owner         node[:app_passenger][:apache][:user]
+      group         node[:app_passenger][:apache][:user]
+      database      db_name
+    end
+  # Tell PostgreSQL to fill in our connection template    
+  elsif db_adapter == "postgresql"  
+    db_postgres_connect_app "#{deploy_dir.chomp}/config/database.yml"  do
+      template      "database.yml.erb"
+      cookbook      "app_passenger"
+      owner         node[:app_passenger][:apache][:user]
+      group         node[:app_passenger][:apache][:user]
+      database      db_name
+    end
+  else
+    raise "Unrecognized database adapter #{node[:app_passenger][:project][:db][:adapter]}, exiting "
+  end 
 
   # Defining $RAILS_ENV
   ENV['RAILS_ENV'] = node[:app_passenger][:project][:environment]
