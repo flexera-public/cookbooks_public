@@ -32,7 +32,7 @@ ruby_block "Master DNS TTL Check" do
     OPT_DNS_TTL_LIMIT = "#{node[:db][:dns][:ttl]}"
 
     dnsttl=`dig #{MASTER_DB_DNSNAME} | grep ^#{MASTER_DB_DNSNAME} | awk '{ print $2}'`
-    if dnsttl.to_i > OPT_DNS_TTL_LIMIT
+    if dnsttl.to_i > OPT_DNS_TTL_LIMIT.to_i
        raise "Master DB DNS TTL set to high.  Must be set <= #{OPT_DNS_TTL_LIMIT}"
     end
     Chef::Log.info("Pass: Master DB DNS TTL: #{dnsttl}")
