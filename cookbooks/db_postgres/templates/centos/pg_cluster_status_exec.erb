@@ -1,0 +1,4 @@
+<Plugin exec>
+  #    userid    plugin executable                   plugin args
+  Exec "postgres" "<%= node[:rs_utils][:collectd_lib] %>/plugins/pg_cluster_status" "-m" "<%= node[:db][:current_master_ip] %>" "-s" "<%= node[:cloud][:private_ips][0] %>" "-h" "<%= node[:rightscale][:instance_uuid] %>"
+</Plugin>
