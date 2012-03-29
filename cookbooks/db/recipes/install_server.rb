@@ -29,7 +29,7 @@ ruby_block "Master DNS TTL Check" do
   not_if { node[:db][:fqdn] == "localhost" }
   block do
     MASTER_DB_DNSNAME = "#{node[:db][:fqdn]}"
-    OPT_DNS_TTL_LIMIT = 120
+    OPT_DNS_TTL_LIMIT = "#{node[:db][:dns][:ttl]}"
 
     dnsttl=`dig #{MASTER_DB_DNSNAME} | grep ^#{MASTER_DB_DNSNAME} | awk '{ print $2}'`
     if dnsttl.to_i > OPT_DNS_TTL_LIMIT

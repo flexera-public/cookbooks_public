@@ -447,6 +447,19 @@
       ],
       "display_name": "Database Master DNS Record ID",
       "description": "The unique identifier that is associated with the DNS A record of the master server.  The unique identifier is assigned by the DNS provider when you create a dynamic DNS A record. This ID is used to update the associated A record with the private IP address of the master server when this recipe is run.  If you are using DNS Made Easy as your DNS provider, a 7-digit number is used (e.g., 4403234)."
+    },
+    "db/dns/ttl": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "string",
+      "recipes": [
+        "db::install_server"
+      ],
+      "display_name": "Database DNS TTL Limit",
+      "description": "The upper limit of the TTL for the master DB DNS record in seconds. This value should be kept low in the event of Master DB failure so that the DNS record updates in a timely manner. When installing the DB server, this value is checked in the DNS records."
     }
   },
   "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
