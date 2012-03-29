@@ -18,17 +18,17 @@ rs_utils_marker :begin
 # use a low TTL for your database that's less than or equal to 120 seconds. 
 #
 log "Checking master database TTL settings..." do
-  not_if { node[:db][:fqdn] == "localhost" }
+  not_if { node[:db][:dns][:master][:fqdn] == "localhost" }
 end
 
 log "Skipping master database TTL check for FQDN 'localhost'." do
-  only_if { node[:db][:fqdn] == "localhost" }
+  only_if { node[:db][:dns][:master][:fqdn] == "localhost" }
 end
 
 ruby_block "Master DNS TTL Check" do
-  not_if { node[:db][:fqdn] == "localhost" }
+  not_if { node[:db][:dns][:master][:fqdn] == "localhost" }
   block do
-    MASTER_DB_DNSNAME = "#{node[:db][:fqdn]}"
+    MASTER_DB_DNSNAME = "#{node[:db][:dns][:master][:fqdn]}"
     OPT_DNS_TTL_LIMIT = "#{node[:db][:dns][:ttl]}"
 
     dnsttl=`dig #{MASTER_DB_DNSNAME} | grep ^#{MASTER_DB_DNSNAME} | awk '{ print $2}'`
