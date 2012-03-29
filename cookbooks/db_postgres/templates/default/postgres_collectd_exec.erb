@@ -1,0 +1,15 @@
+# 
+# Cookbook Name:: db_postgres
+#
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
+# 
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
+
+<Plugin exec>
+  #    userid    plugin executable                   plugin args
+  Exec "postgres" "<%= node[:rs_utils][:collectd_lib] %>/plugins/postgres_ps" "-h" "<%= node[:rightscale][:instance_uuid] %>"
+</Plugin>
