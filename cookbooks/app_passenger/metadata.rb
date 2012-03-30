@@ -75,3 +75,8 @@ attribute "app_passenger/project/db/adapter",
   :choice => [ "mysql", "postgresql" ],
   :default => "mysql"
 
+attribute "app_passenger/project/db/adapter",
+  :display_name => "Database adapter for database.yml ",
+  :description => "Enter database adpter wich will be used to connect to the database Default: mysql",
+  :choice => [ "mysql", "postgresql" ],
+  :default => "mysql"
