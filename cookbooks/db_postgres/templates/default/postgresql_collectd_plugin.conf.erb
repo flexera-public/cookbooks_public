@@ -1,0 +1,11 @@
+LoadPlugin postgresql
+<Plugin postgresql>
+<Query dummy>
+Statement ""
+</Query>
+<Database "<%= node[:db_postgres][:database_name] %>">
+Host "/var/run/postgresql"
+User "postgres"
+Password ""
+</Database>
+</Plugin>
