@@ -69,6 +69,21 @@
       "display_name": "Tomcat Java XMX",
       "description": "The java Xmx argument (i.e. 512m)"
     },
+    "tomcat/db_adapter": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+        "mysql",
+        "postgresql"
+      ],
+      "default": "postgresql",
+      "type": "string",
+      "recipes": [
+        "app_tomcat::default"
+      ],
+      "display_name": "Database adapter for application ",
+      "description": "Enter database adpter wich will be used to connect to the database Default: postgresql"
+    },
     "tomcat/java/NewSize": {
       "required": "optional",
       "calculated": false,

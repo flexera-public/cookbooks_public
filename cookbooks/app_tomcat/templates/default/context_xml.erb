@@ -34,10 +34,10 @@
 
     <Resource name="jdbc/ConnDB" auth="Container" type="javax.sql.DataSource"
              maxActive="100" maxIdle="30" maxWait="10000"
-             <% if node[:app][:db_adapter] == "mysql" -%>
+             <% if node[:tomcat][:db_adapter] == "mysql" -%>
              username="<%= @user %>" password="<%= @password %>" driverClassName="com.mysql.jdbc.Driver"
              url="jdbc:mysql://<%= @fqdn %>:3306/<%= @database %>"/>
-             <% elsif node[:app][:db_adapter] == "postgresql"-%>
+             <% elsif node[:tomcat][:db_adapter] == "postgresql"-%>
              username="<%= @user %>" password="<%= @password %>" driverClassName="org.postgresql.Driver"
              url="jdbc:postgresql://<%= @fqdn %>:5432/<%= @database %>"/>
              <% end -%>

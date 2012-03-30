@@ -15,7 +15,7 @@ node[:app][:port] = 8000
 
 case node[:platform]
   when "ubuntu", "debian"
-    if(app[:db_adapter] == "mysql")
+    if node[:tomcat][:db_adapter] == "mysql"
        node[:app][:packages] = ["ecj-gcj",\
                                           # "java-gcj-compat-dev",\
                                            "tomcat6",\
@@ -25,7 +25,7 @@ case node[:platform]
                                            "libmysql-java",\
                                            "libtcnative-1"
       ]
-    elsif(app[:db_adapter] == "postgresql")
+    elsif node[:tomcat][:db_adapter] == "postgresql"
        node[:app][:packages] = ["ecj-gcj",\
                                           # "java-gcj-compat-dev",\
                                            "tomcat6",\
@@ -35,28 +35,27 @@ case node[:platform]
                                            "libtcnative-1"
       ]
     else
-      raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
+      raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
     end
   when "centos", "fedora", "suse", "redhat", "redhatenterpriseserver"
-    if(app[:db_adapter] == "mysql")
+    if node[:tomcat][:db_adapter] == "mysql"
       node[:app][:packages] = ["eclipse-ecj",\
                                                "tomcat6",\
                                                "tomcat6-admin-webapps",\
                                                "tomcat6-webapps",\
                                                "tomcat-native",\
                                                "mysql-connector-java"]
-    elsif(app[:db_adapter] == "postgresql")
+    elsif node[:tomcat][:db_adapter] == "postgresql"
       node[:app][:packages] = ["eclipse-ecj",\
                                                "tomcat6",\
                                                "tomcat6-admin-webapps",\
                                                "tomcat6-webapps",\
                                                "tomcat-native"]
     else
-      raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
+      raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
     end
   else
     raise "Unrecognized distro #{node[:platform]}, exiting "
 end
-
 
 rs_utils_marker :end

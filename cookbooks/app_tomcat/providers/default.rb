@@ -57,7 +57,7 @@ action :install do
     action :run
   end
 
-  db_adapter = node[:app][:db_adapter]
+  db_adapter = node[:tomcat][:db_adapter]
   if db_adapter == "mysql"
     # Link mysql-connector plugin to Tomcat6 lib
     file "/usr/share/tomcat6/lib/mysql-connector-java.jar" do
@@ -82,7 +82,7 @@ action :install do
       to "/usr/share/java/postgresql-9.1-901.jdbc4.jar"
     end
   else
-    raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
+    raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
   end
 
   # "Linking RightImage JAVA_HOME to what Tomcat6 expects to be..."
@@ -316,7 +316,7 @@ end
 action :setup_db_connection do
 
   db_name = new_resource.database_name
-  db_adapter = node[:app][:db_adapter]
+  db_adapter = node[:tomcat][:db_adapter]
   
   log "  Creating context.xml"
   if db_adapter == "mysql"  
@@ -338,7 +338,7 @@ action :setup_db_connection do
       cookbook      'app_tomcat'
     end
   else
-    raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
+    raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
   end
 
   log "  Creating context.xml"
