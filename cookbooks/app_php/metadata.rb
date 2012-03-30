@@ -29,3 +29,11 @@ attribute "php/db_schema_name",
   :display_name => "Database Schema Name",
   :description => "Enter the name of the MySQL database schema to which applications will connect.  The database schema was created when the initial database was first set up.  This input will be used to set the application server's database config file so that applications can connect to the correct schema within the database.  This input is also used for MySQL dump backups in order to determine which schema will be backed up.  Ex: mydbschema",
   :required => "recommended"
+
+
+attribute "php/db_adapter",
+  :display_name => "Database adapter for application ",
+  :description => "Enter database adpter wich will be used to connect to the database Default: postgresql",
+  :default => "postgresql",
+  :choice => [ "mysql", "postgresql" ],
+  :recipes => ["app_php::default"]

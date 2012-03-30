@@ -98,7 +98,7 @@ action :setup_db_connection do
     group node[:php][:app_user]
   end
 
-  db_adapter = node[:app][:db_adapter]
+  db_adapter = node[:php][:db_adapter]
   # runs only on db_adapter selection
   if db_adapter == "mysql"
     # Tell MySQL to fill in our connection template
@@ -119,7 +119,7 @@ action :setup_db_connection do
       group node[:php][:app_user]
     end
   else
-    raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
+    raise "Unrecognized database adapter #{node[:php][:db_adapter]}, exiting "
   end
 end
 
