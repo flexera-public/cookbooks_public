@@ -56,12 +56,12 @@
         "5.1",
         "5.5"
       ],
-      "disply_name": "MySQL Version",
       "type": "string",
       "recipes": [
         "db_mysql::default"
       ],
-      "description": "Use the MySQL version that matches that of the Database Manager for MySQL version used."
+      "display_name": "MySQL Version",
+      "description": "Specify the MySQL version that matches that of the Database Manager for MySQL ServerTemplate version in use. Note: MySQL 5.5 is not supported on Ubuntu 10.04."
     }
   },
   "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",

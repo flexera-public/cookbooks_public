@@ -197,7 +197,7 @@ attribute "db/backup/timestamp_override",
   
 attribute "db/backup/restore_version_check",
   :display_name => "Backup restore version check", 
-  :description => "A variable to allow restore from a backup performed on a different version of the DB software.  Make sure you fully understand the implications of cross version restoration.  Set to false to skip version checking.",
+  :description => "A variable to allow to restore from a backup performed on a different version of the DB software. Make sure you fully understand the implications of cross-version restoration.  Set to false to skip version checking.",
   :required => false,
   :choice => [ "true", "false" ],
   :default => "true",
@@ -244,7 +244,7 @@ attribute "db/dump",
 
 attribute "db/dump/storage_account_provider",
   :display_name => "Dump Storage Account Provider",
-  :description => "Location where dump file will be saved. Used by dump recipes to back up to Amazon S3 or Rackspace Cloud Files.",
+  :description => "Location where the dump file will be saved. Used by dump recipes to back up to Amazon S3 or Rackspace Cloud Files.",
   :required => "required",
   :choice => [ "S3", "CloudFiles" ],
   :recipes => [ "db::do_dump_import", "db::do_dump_export", "db::do_dump_schedule_enable" ]

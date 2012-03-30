@@ -22,8 +22,8 @@ attribute "db_mysql",
 # == Default attributes
 #
 attribute "db_mysql/version",
-  :disply_name => "MySQL Version",
-  :description => "Use the MySQL version that matches that of the Database Manager for MySQL version used.",
+  :display_name => "MySQL Version",
+  :description => "Specify the MySQL version that matches that of the Database Manager for MySQL ServerTemplate version in use. Note: MySQL 5.5 is not supported on Ubuntu 10.04.",
   :recipes => ["db_mysql::default"],
   :choice => ['5.1', '5.5'],
   :required => 'required'
