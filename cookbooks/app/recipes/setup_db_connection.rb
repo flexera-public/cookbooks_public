@@ -7,10 +7,14 @@
 
 rs_utils_marker :begin
 
-log "  Restarting application server now..."
+log "  Creating database config for application"
 app "default" do
-    action :restart
-    persist true
+  database_name        node[:app][:database_name]
+  database_user        node[:app][:database_user]
+  database_password    node[:app][:database_password]
+  database_sever_fqdn  node[:app][:database_sever_fqdn]
+  action :setup_db_connection
+  persist true
 end
 
 rs_utils_marker :end

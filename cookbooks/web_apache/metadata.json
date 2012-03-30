@@ -12,13 +12,14 @@
       "choice": [
 
       ],
+      "default": "",
       "type": "string",
       "recipes": [
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend"
       ],
       "display_name": "SSL Certificate Key",
-      "description": "SSL Certificate Key"
+      "description": "Your SSL Certificate Key."
     },
     "web_apache/mpm": {
       "required": "optional",
@@ -61,13 +62,14 @@
       "choice": [
 
       ],
+      "default": "",
       "type": "string",
       "recipes": [
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend"
       ],
       "display_name": "SSL Certificate",
-      "description": "SSL Certificate"
+      "description": "The name of your SSL Certificate."
     },
     "web_apache": {
       "required": "optional",
@@ -100,37 +102,20 @@
       "display_name": "Application Name",
       "description": "Sets the directory for your application's web files (/home/webapps/Application Name/current/).  If you have multiple applications, you can run the code checkout script multiple times, each with a different value for APPLICATION, so each application will be stored in a unique directory.  This must be a valid directory name.  Do not use symbols in the name."
     },
-    "web_apache/server_name": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "default": "localhost",
-      "type": "string",
-      "recipes": [
-        "web_apache::default",
-        "web_apache::install_apache",
-        "web_apache::setup_frontend_ssl_vhost",
-        "web_apache::setup_frontend_http_vhost",
-        "web_apache::setup_frontend"
-      ],
-      "display_name": "Server Name",
-      "description": "The fully qualified domain name of the application server used to define your virtual host."
-    },
     "web_apache/ssl_certificate_chain": {
       "required": "optional",
       "calculated": false,
       "choice": [
 
       ],
+      "default": "",
       "type": "string",
       "recipes": [
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend"
       ],
       "display_name": "SSL Certificate Chain",
-      "description": "SSL Certificate Chain"
+      "description": "Your SSL Certificate Chain."
     },
     "web_apache/ssl_passphrase": {
       "required": "optional",
@@ -138,13 +123,14 @@
       "choice": [
 
       ],
+      "default": "",
       "type": "string",
       "recipes": [
         "web_apache::setup_frontend_ssl_vhost",
         "web_apache::setup_frontend"
       ],
       "display_name": "SSL passphrase",
-      "description": "SSL passphrase"
+      "description": "Your SSL passphrase."
     }
   },
   "license": "Copyright RightScale, Inc. All rights reserved.",

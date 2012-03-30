@@ -22,8 +22,8 @@ attribute "tomcat/db_name",
 #Code repo attributes
 attribute "tomcat/code/root_war",
   :display_name => "War file for ROOT",
-  :description => "The name of the war file to be renamed to ROOT.war. Ex: myapplication.war",
-  :required => "optional",
+  :description => "The path to the war file relative to project repo root directory. Will be renamed to ROOT.war. Ex: /dist/app_test.war",
+  :required => "recommended",
   :default => ""
 
 #Java tuning parameters

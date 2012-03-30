@@ -113,9 +113,10 @@
       "required": "optional",
       "calculated": false,
       "choice": [
-
+        "development",
+        "production"
       ],
-      "default": "",
+      "default": "development",
       "type": "string",
       "recipes": [
 

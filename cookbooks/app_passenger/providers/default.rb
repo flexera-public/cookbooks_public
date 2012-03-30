@@ -99,8 +99,8 @@ end
 
 # Setup apache/passenger virtual host
 action :setup_vhost do
-  port = new_resource.app_port
-  project_root = new_resource.app_root
+  port = new_resource.port
+  project_root = new_resource.root
 
   # Removing preinstalled apache ssl.conf as it conflicts with ports.conf of web:apache
   log "  Removing ssl.conf"
@@ -110,10 +110,20 @@ action :setup_vhost do
     only_if do ::File.exists?("/etc/httpd/conf.d/ssl.conf")  end
   end
 
+    # Enabling required apache modules
+    node[:app_passenger][:module_dependencies].each do |mod|
+      apache_module mod
+    end
+
+    # Apache fix on RHEL
+    file "/etc/httpd/conf.d/README" do
+      action :delete
+      only_if do node[:platform] == "redhat" end
+    end
 
   # Generation of new apache ports.conf
   log "  Generating new apache ports.conf"
-  node[:apache][:listen_ports] = port
+  node[:apache][:listen_ports] = port.to_s
 
   template "#{node[:apache][:dir]}/ports.conf" do
     cookbook "apache2"
@@ -132,7 +142,7 @@ action :setup_vhost do
     template                   "basic_vhost.erb"
     cookbook                   'app_passenger'
     docroot                    project_root
-    vhost_port                 port
+    vhost_port                 port.to_s
     server_name                node[:web_apache][:server_name]
     rails_env                  node[:app_passenger][:project][:environment]
     apache_install_dir         node[:app_passenger][:apache][:install_dir]
@@ -185,11 +195,6 @@ end
 action :code_update do
   deploy_dir = new_resource.destination
 
-  log "  Creating directory for project deployment - <#{deploy_dir}>"
-  directory deploy_dir do
-    recursive true
-    not_if do ::File.exists?(deploy_dir.chomp)  end
-  end
 
   # Reading app name from tmp file (for recipe execution in "operational" phase))
   # Waiting for "run_lists"
@@ -198,12 +203,9 @@ action :code_update do
     deploy_dir = "/home/rails/#{app_name.to_s.chomp}"
   end
 
-  # Preparing dirs, required for apache+passenger
-  directory "#{deploy_dir.chomp}/shared/log" do
-    recursive true
-  end
-
-  directory "#{deploy_dir.chomp}/shared/system" do
+  # Preparing project dir, required for apache+passenger
+  log "  Creating directory for project deployment - <#{deploy_dir}>"
+  directory "/home/rails/" do
     recursive true
   end
   
@@ -213,7 +215,6 @@ action :code_update do
     action :capistrano_pull
     app_user node[:app_passenger][:apache][:user]
     environment "RAILS_ENV" => "#{node[:app_passenger][:project][:environment]}"
-    create_dirs_before_symlink
     persist false
   end
 

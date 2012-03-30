@@ -1,8 +1,7 @@
 maintainer       "RightScale, Inc."
 maintainer_email "support@rightscale.com"
-license          "All rights reserved"
-description      "Installs/Configures Apache Passenger Rails application server"
 license          "Copyright RightScale, Inc. All rights reserved."
+description      "Installs/Configures Apache Passenger Rails application server"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1.1"
 
@@ -30,8 +29,9 @@ attribute "app_passenger/spawn_method",
 attribute "app_passenger/project/environment",
   :display_name => "Rails Environment",
   :description => "Creates a Rails RAILS ENV environment variable. ",
+  :choice => ["development", "production"],
   :required => "optional",
-  :default => ""
+  :default => "development"
 
 
 attribute "app_passenger/apache/maintenance_page",
@@ -72,3 +72,4 @@ attribute "app_passenger/project/db/adapter",
   :display_name => "Database adapter for database.yml ",
   :description => "Enter database adpter wich will be used to connect to the database Default: mysql",
   :default => "mysql"
+

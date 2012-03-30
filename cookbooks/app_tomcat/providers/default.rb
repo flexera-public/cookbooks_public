@@ -39,7 +39,7 @@ action :install do
     package p
 
     # eclipse-ecj and symlink must be installed FIRST
-    if p=="eclipse-ecj" || "ecj-gcj"
+    if p=="eclipse-ecj" || p=="ecj-gcj"
       file "/usr/share/java/ecj.jar" do
         action :delete
       end
@@ -266,13 +266,16 @@ action :setup_vhost do
       docroot4apache = "#{node[:tomcat][:docroot]}/ROOT"
     end
 
+    port = new_resource.port
+
+
     log "  Configuring apache vhost for tomcat"
     template "#{etc_apache}/sites-enabled/#{node[:web_apache][:application_name]}.conf" do
       action :create_if_missing
       source "apache_mod_jk_vhost.erb"
       variables(
         :docroot     => docroot4apache,
-        :vhost_port  => node[:app][:port],
+        :vhost_port  => port.to_s,
         :server_name => node[:web_apache][:server_name],
         :apache_log_dir => node[:apache][:log_dir]
       )
@@ -402,6 +405,7 @@ action :code_update do
       chown -R #{node[:tomcat][:app_user]}:#{node[:tomcat][:app_user]} #{node[:tomcat][:docroot]}
       sleep 5
     EOH
+    only_if do node[:tomcat][:code][:root_war] != "ROOT.war" end
   end
 
   action_restart
@@ -409,11 +413,3 @@ action :code_update do
   node[:delete_docroot_executed] = true
 
 end
-
-
-
-
-
-
-
-

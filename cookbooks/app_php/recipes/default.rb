@@ -10,7 +10,7 @@ rs_utils_marker :begin
 log "  Setting provider specific settings for php application server."
 
 node[:app][:provider] = "app_php"
-node[:app][:app_port] = "8000"
+node[:app][:port] = 8000
 node[:app][:destination]="#{node[:web_apache][:docroot]}"
 
 case node[:platform]

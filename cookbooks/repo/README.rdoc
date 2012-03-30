@@ -2,7 +2,7 @@
 
 == DESCRIPTION:
 
-This cookbook provides abstract "repo" resource for managing code download from GIT, SVN or ROS code repositoritories
+This cookbook provides abstract 'repo' resource for managing code download from GIT, SVN or ROS code repositories.
 
 
 == DETAILS:
@@ -13,13 +13,11 @@ Lightweight Providers which implement the 'repo' interface. See the RightScale
 repo_git cookbook for an example.
 
 For more about Lightweight Resources and Providers (LWRPs), please see the Chef
-wiki at:
-  
-  http://wiki.opscode.com/display/chef/Lightweight+Resources+and+Providers+%28LWRP%29
+wiki at: http://wiki.opscode.com/display/chef/Lightweight+Resources+and+Providers+%28LWRP%29
   
 == REQUIREMENTS:
 
-*  One of "repo" provider: "repo_git", "repo_svn" or "repo_ros" cookbooks must be present in your cookbook repository
+*  One of 'repo' provider: 'repo_git', 'repo_svn' or 'repo_ros' cookbooks must be present in your cookbook repository
 *  Ros implementation depends on either the 'rs_utils::install_tools' or 'rs_tools:default' recipe
 
 
@@ -32,34 +30,34 @@ wiki at:
 
 == USAGE:
 
-===General
-* Add "repo" resource call in your recipe and provide all required parameters.
-* Add "destination" and "action" attributes to your "repo" resource.
+=== General
+* Add 'repo' resource call in your recipe and provide all required parameters.
+* Add 'destination' and 'action' attributes to your 'repo' resource.
 
-* Set desired action for your "repo" resource
+* Set desired action for your 'repo' resource
   It can be :pull or :capistrano_pull
-  :pull - perform basic "pull" action, just pulling your code from remote repo.
+  :pull - perform basic 'repo' action, just pulling your code from remote repo.
   :capistrano_pull - performs pulling and backup of yuor code, see: http://wiki.opscode.com/display/chef/Deploy+Resource#DeployResource-TheDeployStrategies
 
 === Examples
 
 :pull Example:
 
-repo "default" do
-  destination "/tmp/repo"
+repo 'default' do
+  destination '/tmp/repo'
   action :pull
 end
 
 :capistrano_pull Example:
 
-repo "default" do
-  destination "/tmp/repo"
+repo 'default' do
+  destination '/tmp/repo'
   action :capistrano_pull
-  app_user                    "rightscale" #owner of created repo directories
+  app_user                    'rightscale' #owner of created repo directories
   purge_before_symlink        %w{tmp} #An array of paths, relative to app root, to be removed from a checkout before symlinking
   create_dirs_before_symlink  %w{log dir2}  #A hash that maps files in the shared directory to their paths in the current release
   symlinks                    ({}) #A hash that maps files in the shared directory to their paths in the current release
-  environment                 ({}) #A hash of the form {"ENV_VARIABLE"=>"VALUE"}
+  environment                 ({}) #A hash of the form {'ENV_VARIABLE'=>'VALUE'}
 end
 
 === SVN options:
@@ -68,10 +66,10 @@ end
 
 === ROS options:
   storage_account_provider    S3 or Cloudfiles currently supported
-  storage_account_id          "Amazon account id" #For Amazon S3, use your Amazon access key ID (e.g., cred:AWS_ACCESS_KEY_ID). For Rackspace Cloud Files, use your Rackspace login username (e.g., cred:RACKSPACE_USERNAME).
-  storage_account_secret      "Amazon account password" # For Amazon S3, use your AWS secret access key (e.g., cred:AWS_SECRET_ACCESS_KEY). For Rackspace Cloud Files, use your Rackspace account API key (e.g., cred:RACKSPACE_AUTH_KEY).
-  container                   "Your_bucket" #For Amazon S3, use the bucket name. For Rackspace Cloud Files, use the container name.
-  prefix                      "source.tar.gz" #Defines the prefix of the source repo file name that will be used to name the downloaded repo file.
+  storage_account_id          'Amazon account id' #For Amazon S3, use your Amazon access key ID (e.g., cred:AWS_ACCESS_KEY_ID). For Rackspace Cloud Files, use your Rackspace login username (e.g., cred:RACKSPACE_USERNAME).
+  storage_account_secret      'Amazon account password' # For Amazon S3, use your AWS secret access key (e.g., cred:AWS_SECRET_ACCESS_KEY). For Rackspace Cloud Files, use your Rackspace account API key (e.g., cred:RACKSPACE_AUTH_KEY).
+  container                   'Your_bucket' #For Amazon S3, use the bucket name. For Rackspace Cloud Files, use the container name.
+  prefix                      'source.tar.gz' #Defines the prefix of the source repo file name that will be used to name the downloaded repo file.
 
 
 = LICENSE

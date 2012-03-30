@@ -106,11 +106,11 @@ innodb_buffer_pool_size = <%= node[:db_mysql][:tunable][:innodb_buffer_pool_size
 innodb_additional_mem_pool_size = <%= node[:db_mysql][:tunable][:innodb_additional_mem_pool_size] %>
 innodb_log_file_size = <%= node[:db_mysql][:tunable][:innodb_log_file_size] %>
 innodb_log_buffer_size = <%= node[:db_mysql][:tunable][:innodb_log_buffer_size] %>
-#innodb_flush_log_at_trx_commit = 2
-#innodb_lock_wait_timeout = 50
-#innodb_support_xa = 1
-#innodb_flush_method=O_DIRECT
-#innodb_fast_shutdown = 1
+innodb_flush_log_at_trx_commit = 2
+innodb_lock_wait_timeout = 50
+innodb_support_xa = 1
+innodb_flush_method=O_DIRECT
+innodb_fast_shutdown = 1
 
 log-bin=<%=node[:db_mysql][:log_bin] %>
 
@@ -138,4 +138,4 @@ sort_buffer_size        = <%= node[:db_mysql][:tunable][:myisamchk][:sort_buffer
 # * IMPORTANT: Additional settings that can override those from this file!
 #   The files must end with '.cnf', otherwise they'll be ignored.
 #
-<%= "!includedir /etc/mysql/conf.d/" unless ["centos", "redhat","suse"].include?(node[:platform]) %>
+!includedir /etc/mysql/conf.d/

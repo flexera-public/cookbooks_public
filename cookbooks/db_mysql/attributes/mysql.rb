@@ -5,10 +5,14 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+# Required attributes
+#
+set_unless[:db_mysql][:version] = '5.5'
+
+
 # Recommended attributes
 #
 set_unless[:db_mysql][:collectd_master_slave_mode] = ""
-set_unless[:db_mysql][:server_usage] = "dedicated"  # or "shared"
 set_unless[:db_mysql][:previous_master] = nil
 
 

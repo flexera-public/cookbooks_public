@@ -23,7 +23,7 @@ end
 # Shared servers get %50 of the resources allocated to a dedicated server.
 set_unless[:db_mysql][:server_usage] = "dedicated"  # or "shared"
 usage = 1 # Dedicated server
-usage = 0.5 if db_mysql[:server_usage] == :shared
+usage = 0.5 if db_mysql[:server_usage] == "shared"
 
 # Ohai returns total in KB.  Set GB so X*GB can be used in conditional
 GB=1024*1024
@@ -42,12 +42,12 @@ eighty_percent_str=value_with_units(eighty_percent_mem,"M",usage)
 #
 # These parameters may be to large for verry small instance sizes with < 1gb memory.
 #
-set_unless[:db_mysql][:tunable][:thread_cache_size]                 = 50 * usage
-set_unless[:db_mysql][:tunable][:max_connections]                   = 800 * usage
-set_unless[:db_mysql][:tunable][:wait_timeout]                      = 28800 * usage
-set_unless[:db_mysql][:tunable][:net_read_timeout]                  = 30 * usage
-set_unless[:db_mysql][:tunable][:net_write_timeout]                 = 30 * usage
-set_unless[:db_mysql][:tunable][:back_log]                          = 128 * usage
+set_unless[:db_mysql][:tunable][:thread_cache_size]                 = (50 * usage).to_i
+set_unless[:db_mysql][:tunable][:max_connections]                   = (800 * usage).to_i
+set_unless[:db_mysql][:tunable][:wait_timeout]                      = (28800 * usage).to_i
+set_unless[:db_mysql][:tunable][:net_read_timeout]                  = (30 * usage).to_i
+set_unless[:db_mysql][:tunable][:net_write_timeout]                 = (30 * usage).to_i
+set_unless[:db_mysql][:tunable][:back_log]                          = (128 * usage).to_i
 set_unless[:db_mysql][:tunable][:max_heap_table_size]               = value_with_units(32,"M",usage)
 set_unless[:db_mysql][:tunable][:net_buffer_length]                 = value_with_units(16,"K",usage)
 set_unless[:db_mysql][:tunable][:read_buffer_size]                  = value_with_units(1,"M",usage)
@@ -82,36 +82,36 @@ else
 end
 
 if mem < 3*GB
-  set_unless[:db_mysql][:tunable][:table_cache]                     = 256 * usage
+  set_unless[:db_mysql][:tunable][:table_cache]                     = (257 * usage).to_i
   set_unless[:db_mysql][:tunable][:sort_buffer_size]                = value_with_units(2,"M",usage)
   set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(64,"M",usage)
   set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = value_with_units(50,"M",usage)
   set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(96,"M",usage)
-  set_unless[:db_mysql][:init_timeout]                              = 600 * usage
+  set_unless[:db_mysql][:init_timeout]                              = (600 * usage).to_i
 elsif mem < 10*GB
-  set_unless[:db_mysql][:tunable][:table_cache]                     = 512 * usage
+  set_unless[:db_mysql][:tunable][:table_cache]                     = (512 * usage).to_i
   set_unless[:db_mysql][:tunable][:sort_buffer_size]                = value_with_units(4,"M",usage)
   set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = value_with_units(200,"M",usage)
   set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(96,"M",usage)
-  set_unless[:db_mysql][:init_timeout]                              = 1200 * usage
+  set_unless[:db_mysql][:init_timeout]                              = (1200 * usage).to_i
 elsif mem < 25*GB
-  set_unless[:db_mysql][:tunable][:table_cache]                     = 1024 * usage
+  set_unless[:db_mysql][:tunable][:table_cache]                     = (1024 * usage).to_i
   set_unless[:db_mysql][:tunable][:sort_buffer_size]                = value_with_units(8,"M",usage)
   set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = value_with_units(300,"M",usage)
   set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(128,"M",usage)
-  set_unless[:db_mysql][:init_timeout]                              = 1800 * usage
+  set_unless[:db_mysql][:init_timeout]                              = (1800 * usage).to_i
 elsif mem < 50*GB
-  set_unless[:db_mysql][:tunable][:table_cache]                     = 2048 * usage
+  set_unless[:db_mysql][:tunable][:table_cache]                     = (2048 * usage).to_i
   set_unless[:db_mysql][:tunable][:sort_buffer_size]                = value_with_units(16,"M",usage)
   set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = value_with_units(400,"M",usage)
   set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(256,"M",usage)
-  set_unless[:db_mysql][:init_timeout]                              = 2400 * usage
+  set_unless[:db_mysql][:init_timeout]                              = (2400 * usage).to_i
 else 
-  set_unless[:db_mysql][:tunable][:table_cache]                     = 4096 * usage
+  set_unless[:db_mysql][:tunable][:table_cache]                     = (4096 * usage).to_i
   set_unless[:db_mysql][:tunable][:sort_buffer_size]                = value_with_units(32,"M",usage)
   set_unless[:db_mysql][:tunable][:innodb_additional_mem_pool_size] = value_with_units(500,"M",usage)
   set_unless[:db_mysql][:tunable][:myisam_sort_buffer_size]         = value_with_units(512,"M",usage)
-  set_unless[:db_mysql][:init_timeout]                              = 3000 * usage
+  set_unless[:db_mysql][:init_timeout]                              = (3000 * usage).to_i
 end
 
 #

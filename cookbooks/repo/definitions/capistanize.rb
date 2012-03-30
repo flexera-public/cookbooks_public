@@ -5,6 +5,7 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+capistrano_dir="/home/capistrano_repo"
 define :capistranize_repo,
        :destination => "",
        :repository => "",
@@ -25,18 +26,18 @@ define :capistranize_repo,
      Chef::Log.info("check previous repo in case of action change")
       if (::File.exists?("#{params[:destination]}") == true && ::File.symlink?("#{params[:destination]}") == false)
         ::File.rename("#{params[:destination]}", "#{params[:destination]}_old")
-      elsif (::File.exists?("#{params[:destination]}") == true && ::File.symlink?("#{params[:destination]}") == true && ::File.exists?("/tmp/capistrano_repo") == false)
+      elsif (::File.exists?("#{params[:destination]}") == true && ::File.symlink?("#{params[:destination]}") == true && ::File.exists?("#{capistrano_dir}") == false)
         ::File.rename("#{params[:destination]}", "#{params[:destination]}_old")
       end
     end
   end
 
 
-  directory "/tmp/capistrano_repo/shared/" do
+  directory "#{capistrano_dir}/shared/" do
     recursive true
   end
 
-  directory "/tmp/capistrano_repo/shared/cached-copy" do
+  directory "#{capistrano_dir}/shared/cached-copy" do
     recursive true
     action :delete
   end
@@ -57,7 +58,7 @@ define :capistranize_repo,
   end
   Log "  Capistrano deployment will use #{scm_prov} for initialization"
 
-  deploy "/tmp/capistrano_repo" do
+  deploy "#{capistrano_dir}" do
     scm_provider               scm_prov
     repo                       "#{params[:repository].chomp}"
     revision                   params[:revision]
@@ -85,8 +86,8 @@ define :capistranize_repo,
 
   ruby_block "After deploy" do
     block do
-      Chef::Log.info("  Perform backup of old deployment directory to /tmp/capistrano_repo/releases/ ")
-      system("data=`/bin/date +%Y%m%d%H%M%S` && mv #{params[:destination]}_old /tmp/capistrano_repo/releases/${data}_initial")
+      Chef::Log.info("  Perform backup of old deployment directory to #{capistrano_dir}/releases/ ")
+      system("data=`/bin/date +%Y%m%d%H%M%S` && mv #{params[:destination]}_old #{capistrano_dir}/releases/${data}_initial")
 
       repo_dest = params[:destination]
       #checking last symbol of "destination" for correct work of "cp -d"
@@ -95,11 +96,10 @@ define :capistranize_repo,
       end
 
 
-      Chef::Log.info("  linking /tmp/capistrano_repo/current/ directory to project root -  #{repo_dest}")
-     system("cp -d /tmp/capistrano_repo/current #{repo_dest}")
+      Chef::Log.info("  linking #{capistrano_dir}/current/ directory to project root -  #{repo_dest}")
+     system("cp -d #{capistrano_dir}/current #{repo_dest}")
     end
 
   end
 
 end
-

@@ -29,8 +29,7 @@
       "default": "/mnt/mysql-binlogs/mysql-bin",
       "type": "string",
       "recipes": [
-        "db_mysql::default_5_5",
-        "db_mysql::default_5_1"
+        "db_mysql::default_server"
       ],
       "display_name": "MySQL Binlog Destination",
       "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory. Ex: /mnt/mysql-binlogs/mysql-bin"
@@ -45,11 +44,24 @@
       "default": "dedicated",
       "type": "string",
       "recipes": [
-        "db_mysql::default_5_5",
-        "db_mysql::default_5_1"
+        "db_mysql::default_server"
       ],
       "display_name": "Server Usage",
       "description": "Use 'dedicated' if the mysql config file allocates all existing resources of the machine.  Use 'shared' if the MySQL config file is configured to use less resources so that it can be run concurrently with other apps like Apache and Rails for example."
+    },
+    "db_mysql/version": {
+      "required": "required",
+      "calculated": false,
+      "choice": [
+        "5.1",
+        "5.5"
+      ],
+      "type": "string",
+      "recipes": [
+        "db_mysql::default"
+      ],
+      "display_name": "MySQL Version",
+      "description": "Specify the MySQL version that matches that of the Database Manager for MySQL ServerTemplate version in use. Note: MySQL 5.5 is not supported on Ubuntu 10.04."
     }
   },
   "license": "Copyright RightScale, Inc. All rights reserved.",
@@ -59,12 +71,14 @@
   },
   "maintainer": "RightScale, Inc.",
   "long_description": "= RightScale Database Manager for MySQL  \n\n== DESCRIPTION:\n\nProvides the MySQL implementation of the 'db' resource to install and \nmanage MySQL database stand-alone servers and clients.\n\n\n== DETAILS\n\nThe 'db' implementation is defined by a Lightweight Provider, which can be \nfound in the providers/default.rb file.\n\nThe majority of the functionality of the MySQL provider is encapsulated \nin the premium rightscale_tools gem, however, there are currently a handful\nof recipes that can be used without it. See 'Public Recipes' in the USAGE\nsection below.\n\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage \n\n* Tested on CentOS 5.6 RightImage\n\n* Supports MySQL 5.1 \n\n* Needs RightScale Premium ServerTemplate tools gem installed on system.\n  This gem is only available for paid RightScale customers.\n  Please contact sales@rightscale.com to upgrade you account.\n\n\n== SETUP:\n\n* Place db::default recipe into your runlist to setup the db resource.  When\n  using a RightScale ServerTemplate, this will also automatically add the \n  common database attributes to your ServerTemplate inputs.\n   \n* Also, place the db_mysql::default recipe into your runlist to load the\n  MySQL provider, tuning parameters, as well as other MySQL specific \n  attributes in as inputs.\n\n== USAGE:\n\n=== Basic usage\nOnce setup, use the recipes in the 'db' cookbook to install and manage your\nMySQL database servers and clients.  See the db/README.rdoc for usage \ndetails.\n\n\n=== MySQL Tuning and my.cnf\n\nCustom tuning parameters can be applied by overriding the mysql_tuning.rb\nattributes file.  For more information and an example override repository\nplease see:\n\n  https://github.com/ekargard/cookbooks_override/tree/master/cookbooks/db_mysql\n  \n\n=== Public Recipes\nHere is the list of db recipes that can be used without the preimum \nrightscale_tools gem:\n\n* db::default\n* db::install_client\n* db::install_server\n* db::setup_monitoring\n* db::setup_privileges_admin\n* db::setup_privileges_application\n* db::do_appserver_allow\n* db::do_appserver_deny\n* db::request_appserver_allow\n* db::request_appserver_deny\n\nThese recipes are used by the RightScale LAMP ServerTemplate.\n\n\n== KNOWN LIMITATIONS\n\n* none\n\n\n   \n\n",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "recommendations": {
   },
   "recipes": {
     "db_mysql::default_5_1": "Set DB MySQL provider, set version 5.1 and node variables specific to MySQL 5.1",
-    "db_mysql::default_5_5": "Set DB MySQL provider, set version 5.5 and node variables specific to MySQL 5.5"
+    "db_mysql::default": "Set DB MySQL provider, set version and node variables specific to the chosen MySQL version",
+    "db_mysql::default_5_5": "Set DB MySQL provider, set version 5.5 and node variables specific to MySQL 5.5",
+    "db_mysql::default_server": "Set DB MySQL server specfic input variables"
   },
   "groupings": {
   },

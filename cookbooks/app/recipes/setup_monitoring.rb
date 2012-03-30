@@ -10,6 +10,7 @@ rs_utils_marker :begin
 log "  Configuring monitoring for app server"
 app "default" do
   action :setup_monitoring
+  persist true
 end
 
 rs_utils_marker :end

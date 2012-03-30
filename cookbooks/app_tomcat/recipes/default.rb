@@ -11,7 +11,7 @@ log "  Setting provider specific settings for tomcat"
 
 node[:app][:provider] = "app_tomcat"
 node[:app][:database_name] = node[:tomcat][:db_name]
-node[:app][:app_port] = "8000"
+node[:app][:port] = 8000
 
 case node[:platform]
    when "ubuntu", "debian"

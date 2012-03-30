@@ -5,7 +5,6 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-# LAMP should always listen on localhost
-set[:db_mysql][:bind_address] = "localhost"
-set[:app][:port] = 80
-
+# Most attributes are set in the default recipe since LAMP needs to over ride the default
+# application and database setttings.
+# This is for LAMP specific attributes, which at this time do not exist.
