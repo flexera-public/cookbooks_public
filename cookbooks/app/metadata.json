@@ -1,10 +1,25 @@
 {
-  "platforms": {
+  "dependencies": {
+    "repo": ">= 0.0.0",
+    "app_php": ">= 0.0.0",
+    "app_tomcat": ">= 0.0.0",
+    "app_passenger": ">= 0.0.0",
+    "sys_firewall": ">= 0.0.0",
+    "rs_utils": ">= 0.0.0"
   },
-  "description": "Common utilities for RightScale managed application servers",
+  "name": "app",
+  "maintainer_email": "support@rightscale.com",
+  "attributes": {
+  },
+  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
   "suggestions": {
   },
-  "conflicting": {
+  "platforms": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "long_description": "= RightScale App Cookbook \r\n\r\n== DESCRIPTION:\r\n\r\nRightScale application server management cookbook  \r\n\r\nThis cookbook contains recipes that generally applicable to all application\r\nservers.\r\n\r\nInitialized App resource and its actions cover default set of operations, required for typical application server setup.\r\n\r\nMore detailed info you can find in app::* recipes description.\r\n\r\n== REQUIREMENTS:\r\n\r\nRequires a VM launched from a RightScale managed RightImage\r\n Corresponding app providers\r\n\r\n== SETUP:\r\n\r\nIn order to use App resource, you must create corresponding providers in your app server cookbook.\r\nSee for example app_passenger, app_php or app_tomcat cookbooks.\r\n\r\nYou must define app attributes which will be used in initialized app[default] resource\r\nRequired attributes:\r\n  node[:app][:provider] = \"app_passenger\"\r\nRecommended:\r\n  node[:app][:destination]\r\n  node[:app][:port]\r\n  node[:app][:root]\r\n  node[:app][:database_name]\r\n  node[:app][:database_user]\r\n  node[:app][:database_password]\r\n  node[:app][:database_sever_fqdn]\r\nMore detailed description of these attribute variables is located in resource file description. \r\n\r\n== USAGE:\r\n\r\n1. Add the default recipe to tag your server as an appserver. This is used by \r\n   servers (like databases) to identify their clients.\r\n2. Add desired app::do_* recipes to your application server ServerTemplate\r\n3. Develop corresponding providers in your application server cookbook.\r\n4. Define required and recommended attributes in your application server cookbook attributes file.\r\n\r\n == DETAILS:\r\n\r\nNote: app[default] resource uses \"persist true\" flag, which allow to save created resource and its attributes in memory for future use.\r\n\r\n== KNOWN LIMITATIONS:\r\n\r\n1. node[:app][:provider] must be defined\r\n2. app::default recipe must be present in ServerTemplate boot section.\r\n\r\n= LICENSE\r\n\r\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\r\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\r\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\r\n",
+  "version": "0.1.0",
+  "recommendations": {
   },
   "recipes": {
     "app::setup_monitoring": "Install collectd monitoring.  This recipe will call corresponding provider from app server cookbook, which will install and configure required monitoring software",
@@ -20,55 +35,13 @@
     "app::do_server_restart": "Runs application server restart sequence",
     "app::do_loadbalancers_deny": "Denies connections from all load balancers which are tagged with loadbalancer:lb=<applistener_name>.  For example, you can run this script on an application server to deny connections from all load balancers within a given listener pool."
   },
-  "long_description": "= RightScale App Cookbook \r\n\r\n== DESCRIPTION:\r\n\r\nRightScale application server management cookbook  \r\n\r\nThis cookbook contains recipes that generally applicable to all application\r\nservers.\r\n\r\nInitialized App resource and its actions cover default set of operations, required for typical application server setup.\r\n\r\nMore detailed info you can find in app::* recipes description.\r\n\r\n== REQUIREMENTS:\r\n\r\nRequires a VM launched from a RightScale managed RightImage\r\n Corresponding app providers\r\n\r\n== SETUP:\r\n\r\nIn order to use App resource, you must create corresponding providers in your app server cookbook.\r\nSee for example app_passenger, app_php or app_tomcat cookbooks.\r\n\r\nYou must define app attributes which will be used in initialized app[default] resource\r\nRequired attributes:\r\n  node[:app][:provider] = \"app_passenger\"\r\nRecommended:\r\n  node[:app][:destination]\r\n  node[:app][:port]\r\n  node[:app][:root]\r\n  node[:app][:database_name]\r\n  node[:app][:database_user]\r\n  node[:app][:database_password]\r\n  node[:app][:database_sever_fqdn]\r\nMore detailed description of these attribute variables is located in resource file description. \r\n\r\n== USAGE:\r\n\r\n1. Add the default recipe to tag your server as an appserver. This is used by \r\n   servers (like databases) to identify their clients.\r\n2. Add desired app::do_* recipes to your application server ServerTemplate\r\n3. Develop corresponding providers in your application server cookbook.\r\n4. Define required and recommended attributes in your application server cookbook attributes file.\r\n\r\n == DETAILS:\r\n\r\nNote: app[default] resource uses \"persist true\" flag, which allow to save created resource and its attributes in memory for future use.\r\n\r\n== KNOWN LIMITATIONS:\r\n\r\n1. node[:app][:provider] must be defined\r\n2. app::default recipe must be present in ServerTemplate boot section.\r\n\r\n= LICENSE\r\n\r\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\r\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\r\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\r\n",
-  "providing": {
-  },
-  "version": "0.1.0",
-  "attributes": {
-    "app/db_adapter": {
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-        "mysql",
-        "postgresql"
-      ],
-      "default": "mysql",
-      "type": "string",
-      "recipes": [
-        "app::setup_db_connection"
-      ],
-      "display_name": "Database adapter for application ",
-      "description": "Enter database adpter wich will be used to connect to the database Default: mysql"
-    }
-  },
-  "maintainer": "RightScale, Inc.",
-  "replacing": {
-  },
-  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "maintainer_email": "support@rightscale.com",
-  "name": "app",
   "groupings": {
   },
-  "dependencies": {
-    "repo": [
-
-    ],
-    "app_php": [
-
-    ],
-    "app_tomcat": [
-
-    ],
-    "app_passenger": [
-
-    ],
-    "sys_firewall": [
-
-    ],
-    "rs_utils": [
-
-    ]
+  "conflicting": {
   },
-  "recommendations": {
+  "replacing": {
+  },
+  "description": "Common utilities for RightScale managed application servers",
+  "providing": {
   }
 }

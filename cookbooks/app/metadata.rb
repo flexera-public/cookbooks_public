@@ -36,10 +36,3 @@ recipe "app::do_server_start", "Runs application server start sequence"
 recipe "app::do_server_restart", "Runs application server restart sequence"
 
 recipe "app::do_server_stop", "Runs application server stop sequence"
-
-attribute "app/db_adapter",
-  :display_name => "Database adapter for application ",
-  :description => "Enter database adpter wich will be used to connect to the database Default: mysql",
-  :default => "mysql",
-  :choice => [ "mysql", "postgresql" ],
-  :recipes => ["app::setup_db_connection"]
