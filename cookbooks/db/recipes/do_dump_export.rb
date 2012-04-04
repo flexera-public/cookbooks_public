@@ -13,7 +13,7 @@ dumpfilepath = "/tmp/#{dumpfilename}"
 databasename = node[:db][:dump][:database_name]
 
 container   = node[:db][:dump][:container]
-cloud       = ( node[:db][:dump][:storage_account_provider] == "CloudFiles" ) ? "rackspace" : "ec2"
+cloud       = node[:db][:dump][:storage_account_provider]
 
 # Execute the command to create the dumpfile
 db node[:db][:data_dir] do
