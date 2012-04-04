@@ -107,16 +107,16 @@ action :set_privileges do
   priv_password = new_resource.privilege_password
   priv_database = new_resource.privilege_database
   # This is a check to verify node is master server
-  master_state = RightScale::Database::PostgreSQL::Helper.detect_if_master(node)
-  if ( master_state == "true")
+  slave_state = RightScale::Database::PostgreSQL::Helper.detect_if_slave(node)
+  if ( slave_state == "true")
+    Chef::Log.info "No need to re-run the recipe on slave"
+  else  
     db_postgres_set_privileges "setup db privileges" do
       preset priv
       username priv_username
       password priv_password
       database priv_database
     end
-  else
-    Chef::Log.info "No need to re-run the recipe on slave"
   end
 end
 
