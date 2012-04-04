@@ -103,6 +103,13 @@ module RightScale
           return $? == 0
         end
 
+        # This is a check to verify node is master server
+        def self.detect_if_master(node)
+          read_only = `/usr/pgsql-9.1/bin/pg_controldata /var/lib/pgsql/9.1/data | grep "Database cluster state" | awk '{print $NF}'`
+          return true if read_only =~ /production/
+        end
+
+
         def self.rsync_db(newmaster_host = nil, rep_user = nil)
           puts `su - postgres -c "env PGCONNECT_TIMEOUT=30 /usr/pgsql-9.1/bin/pg_basebackup -D /var/lib/pgsql/9.1/backups -U #{rep_user} -h #{newmaster_host}"`
           puts `su - postgres -c "rsync -av /var/lib/pgsql/9.1/backups/ /var/lib/pgsql/9.1/data --exclude postgresql.conf --exclude pg_hba.conf"`
