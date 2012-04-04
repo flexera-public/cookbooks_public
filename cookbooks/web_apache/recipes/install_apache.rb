@@ -21,7 +21,7 @@ if node[:web_apache][:ssl_enable]
 end
 
 ## Move Apache
-content_dir = '/mnt/www'
+content_dir = '/mnt/ephemeral/www'
 ruby 'move_apache' do
   not_if do File.directory?(content_dir) end
   code <<-EOH
@@ -40,8 +40,8 @@ ruby 'move_apache_logs' do
   not_if do File.symlink?(node[:apache][:log_dir]) end
   code <<-EOH
     `rm -rf #{node[:apache][:log_dir]}`
-    `mkdir -p /mnt/log/#{apache_name}`
-    `ln -s /mnt/log/#{apache_name} #{node[:apache][:log_dir]}`
+    `mkdir -p /mnt/ephemeral/log/#{apache_name}`
+    `ln -s /mnt/ephemeral/log/#{apache_name} #{node[:apache][:log_dir]}`
   EOH
 end
 
