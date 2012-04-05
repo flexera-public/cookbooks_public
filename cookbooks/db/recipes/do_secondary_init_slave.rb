@@ -22,7 +22,7 @@ r = rs_utils_server_collection "master_servers" do
 end
 r.run_action(:load)
 
-# Finds the current master and sets the node attribs for
+# Finds the master matching lineage and sets the node attribs for
 #   node[:db][:current_master_uuid]
 #   node[:db][:current_master_ip]
 #   node[:db][:this_is_master]
@@ -32,6 +32,11 @@ r = ruby_block "find current master" do
     collect = {}
     node[:server_collection]["master_servers"].each do |id, tags|
       active = tags.select { |s| s =~ /rs_dbrepl:master_active/ }
+
+      # If this master does not have the right lineage, check the next master
+      lineage = active[0].split('-',2)[1]
+      next unless lineage && lineage == node[:db][:backup][:lineage]
+
       my_uuid = tags.detect { |u| u =~ /rs_dbrepl:master_instance_uuid/ }
       my_ip_0 = tags.detect { |i| i =~ /server:private_ip_0/ }
       # following used for detecting 11H1 DB servers
@@ -39,6 +44,7 @@ r = ruby_block "find current master" do
       most_recent = active.sort.last
       collect[most_recent] = my_uuid, my_ip_0, ec2_instance_id
     end
+
     most_recent_timestamp = collect.keys.sort.last
     current_master_uuid, current_master_ip, current_master_ec2_id = collect[most_recent_timestamp]
     if current_master_uuid =~ /#{node[:rightscale][:instance_uuid]}/
@@ -80,11 +86,11 @@ include_recipe "db::request_master_allow"
 include_recipe "db::do_secondary_restore"
 
 db DATA_DIR do
-  action :setup_monitoring
+  action :enable_replication
 end
 
 db DATA_DIR do
-  action :enable_replication
+  action :setup_monitoring
 end
 
 # Force a new backup
