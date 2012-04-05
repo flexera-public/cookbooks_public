@@ -72,8 +72,8 @@ action :install do
 
 
   # Moving tomcat logs to mnt
-  if ! ::File.directory?("/mnt/log/tomcat6")
-    directory "/mnt/log/tomcat6" do
+  if ! ::File.directory?("/mnt/ephemeral/log/tomcat6")
+    directory "/mnt/ephemeral/log/tomcat6" do
       owner node[:tomcat][:app_user]
       group node[:tomcat][:app_user]
       mode "0755"
@@ -87,7 +87,7 @@ action :install do
     end
 
     link "/var/log/tomcat6" do
-      to "/mnt/log/tomcat6"
+      to "/mnt/ephemeral/log/tomcat6"
     end
   end
 

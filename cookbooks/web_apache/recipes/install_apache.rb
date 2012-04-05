@@ -7,9 +7,12 @@
 
 rs_utils_marker :begin
 
+log " Apache logs stored at #{node[:apache][:log_dir]}"
+node[:apache][:log_dir] = '/var/log/httpd'
 # Recreating apache log dir (symlink is broken after start/stop and removed by rs_utils::setup_logging)
 directory node[:apache][:log_dir] do
   mode 0755
+  action :create
 end
 
 
@@ -46,7 +49,9 @@ bash "Move apache #{default_web_dir} to #{content_dir}" do
   not_if do File.directory?(content_dir) end
   code <<-EOH
     mkdir -p #{content_dir}
-    cp -rf #{default_web_dir}/. #{content_dir}
+    if [-d #{default_web_dir}]; then
+      cp -rf #{default_web_dir}/. #{content_dir}
+    fi
     rm -rf #{default_web_dir}
     ln -nsf #{content_dir} #{default_web_dir}
   EOH
@@ -56,6 +61,7 @@ end
 apache_name = node[:apache][:dir].split("/").last
 log "  Apache_name was #{apache_name}"
 log "  Apache log dir was #{node[:apache][:log_dir]}"
+
 bash "move_apache_logs" do
   flags "-ex"
   not_if do File.symlink?(node[:apache][:log_dir]) end
