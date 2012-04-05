@@ -57,23 +57,19 @@ Dir.glob("/var/log/*").each do |f|
   # ignore `ntpstats' directory because ntp user needs to write there
   next if f == "/var/log/ntpstats"
   
-  #if ::File.directory?(f)
-    
+
     directory f do 
       owner "root" 
       notifies :restart, resources(:service => "syslog-ng")
       only_if do File.directory?(f) end
     end
     
-  #else
-    
-    file f do 
+    file f do
       owner "root"
       notifies :restart, resources(:service => "syslog-ng")
       only_if do File.file?(f) end
     end
   
-  #end
 end
 
 # == Set up log file rotation

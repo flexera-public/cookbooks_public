@@ -7,6 +7,12 @@
 
 rs_utils_marker :begin
 
+# Recreating apache log dir (symlink is broken after start/stop and removed by rs_utils::setup_logging)
+directory node[:apache][:log_dir] do
+  mode 0755
+end
+
+
 # include the public recipe for basic installation
 include_recipe "apache2"
 
@@ -20,23 +26,36 @@ if node[:web_apache][:ssl_enable]
   include_recipe "apache2::mod_ssl"
 end
 
-## Move Apache
+# Checking /var/www symlink (broken after start/stop)
+default_web_dir = '/var/www'
+bash "Checking #{default_web_dir} symlink" do
+   flags "-ex"
+   code <<-EOH
+   if [[ ! -e #{default_web_dir} &&  -L #{default_web_dir} ]]; then
+     echo "#{default_web_dir} symlink is broken! Removing..."
+     rm -f #{default_web_dir}
+   fi
+   EOH
+   only_if do File.symlink?(default_web_dir) end
+ end
+
+# Move Apache /var/www to /mnt/ephemeral/www
 content_dir = '/mnt/ephemeral/www'
-bash "move_apache" do
+bash "Move apache #{default_web_dir} to #{content_dir}" do
   flags "-ex"
   not_if do File.directory?(content_dir) end
   code <<-EOH
     mkdir -p #{content_dir}
-    cp -rf /var/www/. #{content_dir}
-    rm -rf /var/www
-    ln -nsf #{content_dir} /var/www
+    cp -rf #{default_web_dir}/. #{content_dir}
+    rm -rf #{default_web_dir}
+    ln -nsf #{content_dir} #{default_web_dir}
   EOH
 end
 
 ## Move Apache Logs
 apache_name = node[:apache][:dir].split("/").last
-log "apache_name was #{apache_name}"
-log "apache log dir was #{node[:apache][:log_dir]}"
+log "  Apache_name was #{apache_name}"
+log "  Apache log dir was #{node[:apache][:log_dir]}"
 bash "move_apache_logs" do
   flags "-ex"
   not_if do File.symlink?(node[:apache][:log_dir]) end
