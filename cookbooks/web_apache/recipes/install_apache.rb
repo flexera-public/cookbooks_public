@@ -22,13 +22,14 @@ end
 
 ## Move Apache
 content_dir = '/mnt/ephemeral/www'
-ruby 'move_apache' do
+bash "move_apache" do
+  flags "-ex"
   not_if do File.directory?(content_dir) end
   code <<-EOH
-    `mkdir -p #{content_dir}`
-    `cp -rf /var/www/. #{content_dir}`
-    `rm -rf /var/www`
-    `ln -nsf #{content_dir} /var/www`
+    mkdir -p #{content_dir}
+    cp -rf /var/www/. #{content_dir}
+    rm -rf /var/www
+    ln -nsf #{content_dir} /var/www
   EOH
 end
 
@@ -36,12 +37,13 @@ end
 apache_name = node[:apache][:dir].split("/").last
 log "apache_name was #{apache_name}"
 log "apache log dir was #{node[:apache][:log_dir]}"
-ruby 'move_apache_logs' do
+bash "move_apache_logs" do
+  flags "-ex"
   not_if do File.symlink?(node[:apache][:log_dir]) end
   code <<-EOH
-    `rm -rf #{node[:apache][:log_dir]}`
-    `mkdir -p /mnt/ephemeral/log/#{apache_name}`
-    `ln -s /mnt/ephemeral/log/#{apache_name} #{node[:apache][:log_dir]}`
+    rm -rf #{node[:apache][:log_dir]}
+    mkdir -p /mnt/ephemeral/log/#{apache_name}
+    ln -s /mnt/ephemeral/log/#{apache_name} #{node[:apache][:log_dir]}
   EOH
 end
 

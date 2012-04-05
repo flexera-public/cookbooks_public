@@ -48,32 +48,32 @@ Dir.glob("/var/log/*").each do |f|
     code <<-EOH
     if [[ ! -e #{f} &&  -L #{f} ]]; then
       echo "#{f} symlink is broken! Removing..."
-    rm -f #{f}
+      rm -f #{f}
     fi
     EOH
-    #only_if "test -L #{f}"
     only_if do File.symlink?(f) end
   end
 
   # ignore `ntpstats' directory because ntp user needs to write there
   next if f == "/var/log/ntpstats"
   
-  if ::File.directory?(f)
+  #if ::File.directory?(f)
     
     directory f do 
       owner "root" 
       notifies :restart, resources(:service => "syslog-ng")
+      only_if do File.directory?(f) end
     end
     
-  else
+  #else
     
     file f do 
       owner "root"
       notifies :restart, resources(:service => "syslog-ng")
-      only_if do File.exists?(f) end
+      only_if do File.file?(f) end
     end
   
-  end
+  #end
 end
 
 # == Set up log file rotation
