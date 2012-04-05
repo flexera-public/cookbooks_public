@@ -9,11 +9,20 @@ rs_utils_marker :begin
 
 log " Apache logs stored at #{node[:apache][:log_dir]}"
 node[:apache][:log_dir] = '/var/log/httpd'
-# Recreating apache log dir (symlink is broken after start/stop and removed by rs_utils::setup_logging)
-directory node[:apache][:log_dir] do
-  mode 0755
-  action :create
+
+bash "Temp Create apache log dir for debug" do
+  flags "-ex"
+  code <<-EOH
+    ls /var/log/
+    mkdir -pv #{node[:apache][:log_dir]}
+  EOH
 end
+
+# Recreating apache log dir (symlink is broken after start/stop and removed by rs_utils::setup_logging)
+#directory node[:apache][:log_dir] do
+#  mode 0755
+#  action :create
+#end
 
 
 # include the public recipe for basic installation
@@ -49,7 +58,7 @@ bash "Move apache #{default_web_dir} to #{content_dir}" do
   not_if do File.directory?(content_dir) end
   code <<-EOH
     mkdir -p #{content_dir}
-    if [-d #{default_web_dir}]; then
+    if [ -d #{default_web_dir}]; then
       cp -rf #{default_web_dir}/. #{content_dir}
     fi
     rm -rf #{default_web_dir}
