@@ -374,8 +374,12 @@
       "required": "required",
       "calculated": false,
       "choice": [
-        "S3",
-        "CloudFiles"
+        "s3",
+        "cloudfiles",
+        "cloudfilesuk",
+        "SoftLayer_Dallas",
+        "SoftLayer_Singapore",
+        "SoftLayer_Amsterdam"
       ],
       "type": "string",
       "recipes": [
