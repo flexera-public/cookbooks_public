@@ -31,10 +31,10 @@ r = ruby_block "find current master" do
   block do
     collect = {}
     node[:server_collection]["master_servers"].each do |id, tags|
-      active = tags.select { |s| s =~ /rs_dbrepl:master_active/ }
+      master_active_tag = tags.select { |s| s =~ /rs_dbrepl:master_active/ }
 
       # If this master does not have the right lineage, check the next master
-      lineage = active[0].split('-',2)[1]
+      active,lineage = active[0].split('-',2)
       next unless lineage && lineage == node[:db][:backup][:lineage]
 
       my_uuid = tags.detect { |u| u =~ /rs_dbrepl:master_instance_uuid/ }
