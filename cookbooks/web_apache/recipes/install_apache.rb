@@ -7,21 +7,11 @@
 
 rs_utils_marker :begin
 
-log " Apache logs stored at #{node[:apache][:log_dir]}"
-node[:apache][:log_dir] = '/var/log/httpd'
-
-bash "Temp Create apache log dir for debug" do
-  flags "-ex"
-  code <<-EOH
-    ls /var/log/
-    mkdir -pv #{node[:apache][:log_dir]}
-  EOH
-end
-
 # Recreating apache log dir (symlink is broken after start/stop and removed by rs_utils::setup_logging)
 #directory node[:apache][:log_dir] do
 #  mode 0755
 #  action :create
+#  only_if do !File.directory?("#{node[:apache][:log_dir]}") end
 #end
 
 
