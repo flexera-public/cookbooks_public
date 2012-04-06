@@ -9,9 +9,16 @@ rs_utils_marker :begin
 
 # == Clear master tags
 #
+
 unique_tag = "rs_dbrepl:master_instance_uuid=#{node[:rightscale][:instance_uuid]}"
 log "  Clear tag #{unique_tag}"
 right_link_tag unique_tag do
+  action :remove
+end
+
+master_active_tag = `rs_tag --list | grep rs_dbrepl:master_active`.strip.chomp.chomp(',').gsub(/^\"|\"$/, '')
+log "  Clear tag #{master_active_tag}"
+right_link_tag master_active_tag do
   action :remove
 end
 

@@ -34,8 +34,13 @@ r = ruby_block "find current master" do
       master_active_tag = tags.select { |s| s =~ /rs_dbrepl:master_active/ }
 
       # If this master does not have the right lineage, check the next master
-      active,lineage = active[0].split('-',2)
-      next unless lineage && lineage == node[:db][:backup][:lineage]
+      active,lineage = master_active_tag[0].split('-',2)
+      if ( lineage && lineage == node[:db][:backup][:lineage] )
+        Chef::Log.info "${lineage} : Lineage match found"
+      else
+        Chef::Log.info "${lineage} : Lineage mismatch - checking next"
+        next
+      end
 
       my_uuid = tags.detect { |u| u =~ /rs_dbrepl:master_instance_uuid/ }
       my_ip_0 = tags.detect { |i| i =~ /server:private_ip_0/ }
