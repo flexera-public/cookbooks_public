@@ -12,7 +12,7 @@ RIGHT_AWS_VERSION = '2.1.1'
 RIGHT_AWS_GEM = 'right_aws'
 RACKSPACE_VERSION = '0.0.0.20111110'
 RACKSPACE_GEM = 'right_rackspace'
-RS_TOOLS_VERSION = '1.0.32'
+RS_TOOLS_VERSION = '1.0.33'
 RS_TOOLS_GEM = 'rightscale_tools_public'
 COOKBOOK_DEFAULT_GEMS = ::File.join(::File.dirname(__FILE__), '..', 'files', 'default')
 
