@@ -30,10 +30,10 @@ r.run_action(:load)
 r = ruby_block "find current master" do
   block do
     collect = {}
+    # Using reverse order to end with first found master if none tagged with lineage.
     node[:server_collection]["master_servers"].reverse_each do |id, tags|
       master_active_tag = tags.select { |s| s =~ /rs_dbrepl:master_active/ }
 
-      # If this master does not have the right lineage, check the next master
       active,lineage = master_active_tag[0].split('-',2)
 
       my_uuid = tags.detect { |u| u =~ /rs_dbrepl:master_instance_uuid/ }
@@ -43,6 +43,7 @@ r = ruby_block "find current master" do
       most_recent = active.sort.last
       collect[most_recent] = my_uuid, my_ip_0, ec2_instance_id
 
+      # If this master has the rigth lineage, break, else continue checking.
       if ( defined?(lineage) && lineage == node[:db][:backup][:lineage] )
         Chef::Log.info "${lineage} : Lineage match found"
         break
@@ -52,6 +53,8 @@ r = ruby_block "find current master" do
 
     end
 
+    # If lineage was not part of the master_active_tag tag
+    # use old method of using first (or only)  found master
     unless ( defined?(lineage) && lineage == node[:db][:backup][:lineage] )
       Chef::Log.info "Lineage not found in tags, defaulting to first found master"
     end
