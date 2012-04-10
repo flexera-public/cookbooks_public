@@ -9,5 +9,6 @@ version          "0.0.1"
 depends "rs_utils"
 
 recipe  "memcached::default", "Default recipe for memcached setup"
+recipe  "memcached::install_server", "Installation recipe for memcached"
 
 

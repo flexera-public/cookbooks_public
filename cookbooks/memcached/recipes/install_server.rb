@@ -7,6 +7,10 @@
 
 rs_utils_marker :begin
 
-log "It's working #{node[:memcached][:test_attribute]}"
+log "  Installing memcached package..."
+package "memcached" do
+  action :install
+end
+log "  memcached package successfully installed!"
 
 rs_utils_marker :end

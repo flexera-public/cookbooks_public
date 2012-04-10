@@ -7,7 +7,16 @@
 
 # Required attributes
 #
-
+#set_unless[:memcached][:memtotal_percent] = 90
+#set_unless[:memcached][:port] = 11211
+#set_unless[:memcached][:ip] =
+#set_unless[:memcached][:user] = "nobody"
+#set_unless[:memcached][:user] = "nobody"
+#set_unless[:memcached][:connection_limit] = 1024
+#set_unless[:memcached][:threads] = "nobody"
+#set_unless[:memcached][:log_level] = "" # off, -v (verbose) -vv (debug)
+                                        # Calculated options
+#set_unless[:memcached][:threads] = node[:cpu].count
 
 
 # Recommended attributes
