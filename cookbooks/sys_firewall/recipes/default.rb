@@ -12,6 +12,16 @@ if node[:sys_firewall][:enabled] == "enabled"
   sys_firewall "22" # SSH
   sys_firewall "80" # HTTP
   sys_firewall "443" # HTTPS
+  
+  if node[:cloud][:provider] == "softlayer"
+    # Open ports for SoftLayer montoring agent
+    (48000..48020).each do |port|
+      sys_firewall port do
+        ip_addr "10.0.0.0" # Net mask to open to all addresses on the interal 10.*.*.* 
+      end
+    end
+  end
+  
 else
   service "iptables" do
     supports :status => true
