@@ -50,5 +50,5 @@ attribute "db_mysql/tmpdir",
   :description => "Defines the location of your MySQL temp directory.  This sets the tmpdir variable in the MySQL config file. Ex: /tmp",
   :recipes => ["db_mysql::install_server"],
   :required => "optional",
-  :default => "/mnt/ephemeral/tmp"
+  :default => "/mnt/ephemeral/mysqltmp"
 
