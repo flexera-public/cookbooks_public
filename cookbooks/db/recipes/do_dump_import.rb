@@ -25,7 +25,7 @@ else
   prefix       = node[:db][:dump][:prefix]
   dumpfilepath = "/tmp/" + prefix + ".gz"
   container    = node[:db][:dump][:container]
-  cloud        = ( node[:db][:dump][:storage_account_provider] == "CloudFiles" ) ? "rackspace" : "ec2"
+  cloud        = node[:db][:dump][:storage_account_provider]
 
   # Obtain the dumpfile from ROS 
   execute "Download dumpfile from Remote Object Store" do
