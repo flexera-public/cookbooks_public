@@ -26,13 +26,13 @@
       "choice": [
 
       ],
-      "default": "/mnt/mysql-binlogs/mysql-bin",
+      "default": "/mnt/ephemeral/mysql-binlogs/mysql-bin",
       "type": "string",
       "recipes": [
         "db_mysql::default_server"
       ],
       "display_name": "MySQL Binlog Destination",
-      "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory. Ex: /mnt/mysql-binlogs/mysql-bin"
+      "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file. Ex: /mnt/mysql-binlogs/mysql-bin"
     },
     "db_mysql/server_usage": {
       "required": "optional",

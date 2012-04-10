@@ -40,8 +40,8 @@ attribute "db_mysql/server_usage",
 
 attribute "db_mysql/log_bin",
   :display_name => "MySQL Binlog Destination",
-  :description => "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory. Ex: /mnt/mysql-binlogs/mysql-bin",
+  :description => "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file. Ex: /mnt/mysql-binlogs/mysql-bin",
   :recipes => ["db_mysql::default_server"],
   :required => "optional",
-  :default => "/mnt/mysql-binlogs/mysql-bin"
+  :default => "/mnt/ephemeral/mysql-binlogs/mysql-bin"
 
