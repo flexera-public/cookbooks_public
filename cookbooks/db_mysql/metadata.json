@@ -55,7 +55,7 @@
         "shared",
         "dedicated"
       ],
-      "default": "dedicated",
+      "default": "shared",
       "type": "string",
       "recipes": [
         "db_mysql::install_server"

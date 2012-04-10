@@ -36,7 +36,7 @@ attribute "db_mysql/server_usage",
   :recipes => ["db_mysql::install_server"],
   :choice => ["shared", "dedicated"],
   :required => "optional",
-  :default => "dedicated"
+  :default => "shared"
 
 attribute "db_mysql/log_bin",
   :display_name => "MySQL Binlog Destination",
