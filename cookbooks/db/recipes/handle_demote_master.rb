@@ -7,7 +7,7 @@
 
 rs_utils_marker :begin
 
-# == Clear master tags
+# == Clear master tag
 #
 unique_tag = "rs_dbrepl:master_instance_uuid=#{node[:rightscale][:instance_uuid]}"
 log "  Clear tag #{unique_tag}"

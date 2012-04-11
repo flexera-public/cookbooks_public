@@ -29,10 +29,10 @@ define :db_register_master do
   # Tag the server with the master tags rs_dbrepl:master_active 
   # and rs_dbrepl:master_instance_uuid
   #
-  active_tag = "rs_dbrepl:master_active=#{Time.now.strftime("%Y%m%d%H%M%S")}"
+  active_tag = "rs_dbrepl:master_active=#{Time.now.strftime("%Y%m%d%H%M%S")}-#{node[:db][:backup][:lineage]}"
   log "Tagging server with #{active_tag}"
   right_link_tag active_tag
-  
+
   unique_tag = "rs_dbrepl:master_instance_uuid=#{node[:rightscale][:instance_uuid]}"
   log "Tagging server with #{unique_tag}"
   right_link_tag unique_tag
