@@ -17,25 +17,29 @@ rs_utils_marker :begin
 # attempt to promote a Slave-DB to Master-DB. As a best practice you should 
 # use a low TTL for your database that's less than or equal to 120 seconds. 
 #
+
+
+MASTER_DB_DNSNAME = "#{node[:db][:dns][:master][:fqdn]}"
+IS_FQDN_LOCALHOST = (MASTER_DB_DNSNAME == "localhost" )
+
 log "Checking master database TTL settings..." do
-  not_if { node[:db][:fqdn] == "localhost" }
+  not_if { IS_FQDN_LOCALHOST }
 end
 
 log "Skipping master database TTL check for FQDN 'localhost'." do
-  only_if { node[:db][:fqdn] == "localhost" }
+  only_if { IS_FQDN_LOCALHOST }
 end
 
 ruby_block "Master DNS TTL Check" do
-  not_if { node[:db][:fqdn] == "localhost" }
+  not_if { IS_FQDN_LOCALHOST } 
   block do
-    MASTER_DB_DNSNAME = "#{node[:db][:fqdn]}"
-    OPT_DNS_TTL_LIMIT = 120
+    OPT_DNS_TTL_LIMIT = "#{node[:db][:dns][:ttl]}"
 
     dnsttl=`dig #{MASTER_DB_DNSNAME} | grep ^#{MASTER_DB_DNSNAME} | awk '{ print $2}'`
-    if dnsttl.to_i > OPT_DNS_TTL_LIMIT
-       raise "Master DB DNS TTL set to high.  Must be set <= #{OPT_DNS_TTL_LIMIT}"
+    if dnsttl.to_i > OPT_DNS_TTL_LIMIT.to_i
+       raise "Master DB DNS TTL set to high.  Must be set <= #{OPT_DNS_TTL_LIMIT}. Found #{dnsttl} for #{MASTER_DB_DNSNAME}"
     end
-    Chef::Log.info("Pass: Master DB DNS TTL: #{dnsttl}")
+    Chef::Log.info("Pass: Master DB DNS TTL: #{dnsttl} < TTL Limit (#{OPT_DNS_TTL_LIMIT}) for #{MASTER_DB_DNSNAME}")
   end
 end
 
