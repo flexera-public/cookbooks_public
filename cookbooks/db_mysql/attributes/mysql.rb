@@ -20,8 +20,8 @@ set_unless[:db_mysql][:previous_master] = nil
 #
 set_unless[:db_mysql][:port] = "3306"
 set_unless[:db_mysql][:log_bin_enabled] = true
-set_unless[:db_mysql][:log_bin] = "/mnt/mysql-binlogs/mysql-bin"
-set_unless[:db_mysql][:tmpdir] = "/tmp"
+set_unless[:db_mysql][:log_bin] = "/mnt/ephemeral/mysql-binlogs/mysql-bin"
+set_unless[:db_mysql][:tmpdir] = "/mnt/ephemeral/tmp"
 set_unless[:db_mysql][:datadir] = "/var/lib/mysql"
 set_unless[:db_mysql][:datadir_relocate] = "/mnt/storage"
 # Always set to support stop/start
