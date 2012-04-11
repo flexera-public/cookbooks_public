@@ -22,6 +22,9 @@ action :load do
       delay = 1
       while true
         collection_resource.run_action(:load)
+        Chef::Log.info '======================= SERVER COLLECTIONS ======================='
+        Chef::Log.info node[:server_collection]
+        Chef::Log.info '======================= SERVER COLLECTIONS ======================='
         collection = node[:server_collection][new_resource.name]
 
         break if new_resource.empty_ok && collection.empty?
