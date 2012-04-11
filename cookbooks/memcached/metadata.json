@@ -8,7 +8,8 @@
   "platforms": {
   },
   "dependencies": {
-    "rs_utils": ">= 0.0.0"
+    "rs_utils": ">= 0.0.0",
+    "sys_firewall": ">= 0.0.0"
   },
   "recommendations": {
   },
@@ -48,6 +49,34 @@
       "recipes": [
 
       ]
+    },
+    "memcached/user": {
+      "display_name": "Memcached user",
+      "description": "",
+      "required": "recommended",
+      "default": "nobody",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "recipes": [
+
+      ]
+    },
+    "memcached/connection_limit": {
+      "display_name": "Memcached connection limit",
+      "description": "",
+      "required": "recommended",
+      "default": "1024",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "recipes": [
+
+      ]
     }
   },
   "groupings": {
@@ -56,5 +85,5 @@
     "memcached::default": "Default recipe for memcached setup",
     "memcached::install_server": "Installation and configuration recipe for memcached"
   },
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
