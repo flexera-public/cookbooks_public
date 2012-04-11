@@ -24,7 +24,7 @@
     "memcached/port": {
       "display_name": "Memcached Port",
       "description": "",
-      "required": "required",
+      "required": "recommended",
       "default": "11211",
       "choice": [
 
@@ -38,7 +38,7 @@
     "memcached/memtotal_percent": {
       "display_name": "Memcached Cache size %",
       "description": "",
-      "required": "required",
+      "required": "recommended",
       "default": "90",
       "choice": [
 

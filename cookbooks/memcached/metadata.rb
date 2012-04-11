@@ -17,14 +17,14 @@ recipe  "memcached::install_server", "Installation and configuration recipe for 
 attribute "memcached/port",
   :display_name => "Memcached Port",
   :description => "",
-  :required => "required",
+  :required => "recommended",
   :default => "11211"
 
 #set_unless[:memcached][:memtotal_percent] = 90
 attribute "memcached/memtotal_percent",
   :display_name => "Memcached Cache size %",
   :description => "",
-  :required => "required",
+  :required => "recommended",
   :default => "90"
 
 #set_unless[:memcached][:ip] =
