@@ -8,12 +8,15 @@
 require 'timeout'
 
 action :load do
+  Chef::Log.info 'RS_UTILS_SERVER_COLLECTION'
   
   collection_resource = server_collection new_resource.name do
     tags new_resource.tags
     agent_ids new_resource.agent_ids
     action :nothing
   end
+
+  Chef::Log.info 'HERE HERE HERE HERE HERE'
 
   begin
     Timeout::timeout(new_resource.timeout) do
