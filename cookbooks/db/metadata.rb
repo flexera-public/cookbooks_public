@@ -148,6 +148,11 @@ attribute "db/init_slave_at_boot",
   :choice => [ "true", "false" ],
   :recipes => [ "db::do_init_slave_at_boot" ]
 
+attribute "db/dns/ttl",
+  :display_name => "Database DNS TTL Limit",
+  :description => "The upper limit for the TTL of the master DB DNS record in seconds. This value should be kept low in the event of Master DB failure so that the DNS record updates in a timely manner. When installing the DB server, this value is checked in the DNS records.",
+  :required => "optional",
+  :recipes => [ "db::install_server" ]
 
 # == Backup/Restore
 #
@@ -246,7 +251,7 @@ attribute "db/dump/storage_account_provider",
   :display_name => "Dump Storage Account Provider",
   :description => "Location where the dump file will be saved. Used by dump recipes to back up to Amazon S3 or Rackspace Cloud Files.",
   :required => "required",
-  :choice => [ "S3", "CloudFiles" ],
+  :choice => [ "s3", "cloudfiles", "cloudfilesuk", "SoftLayer_Dallas", "SoftLayer_Singapore", "SoftLayer_Amsterdam" ],
   :recipes => [ "db::do_dump_import", "db::do_dump_export", "db::do_dump_schedule_enable" ]
 
 attribute "db/dump/storage_account_id",

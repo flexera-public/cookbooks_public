@@ -20,19 +20,33 @@
       ],
       "display_name": "General Database Options"
     },
+    "db_mysql/tmpdir": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "/mnt/ephemeral/mysqltmp",
+      "type": "string",
+      "recipes": [
+        "db_mysql::default_server"
+      ],
+      "display_name": "MySQL Temp Directory Destination",
+      "description": "Defines the location of your MySQL temp directory.  This sets the tmpdir variable in the MySQL config file. Ex: /tmp"
+    },
     "db_mysql/log_bin": {
       "required": "optional",
       "calculated": false,
       "choice": [
 
       ],
-      "default": "/mnt/mysql-binlogs/mysql-bin",
+      "default": "/mnt/ephemeral/mysql-binlogs/mysql-bin",
       "type": "string",
       "recipes": [
         "db_mysql::default_server"
       ],
       "display_name": "MySQL Binlog Destination",
-      "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file.  If you do not specify an absolute path, it will be relative to the data directory. Ex: /mnt/mysql-binlogs/mysql-bin"
+      "description": "Defines the filename and location of your MySQL stored binlog files.  This sets the log-bin variable in the MySQL config file. Ex: /mnt/mysql-binlogs/mysql-bin"
     },
     "db_mysql/server_usage": {
       "required": "optional",
@@ -41,7 +55,7 @@
         "shared",
         "dedicated"
       ],
-      "default": "dedicated",
+      "default": "shared",
       "type": "string",
       "recipes": [
         "db_mysql::default_server"
@@ -86,7 +100,7 @@
   },
   "replacing": {
   },
-  "description": "Installs/configures a MySQL database server with automated backups.",
+  "description": "Installs/configures a MySQL database client and server.",
   "providing": {
   }
 }

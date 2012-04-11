@@ -245,7 +245,7 @@ action :install_server do
   end
 
   # Create the tmp directory
-  directory "/mnt/mysqltmp" do
+  directory node[:db_mysql][:tmpdir] do
     owner "mysql"
     group "mysql"
     mode 0770
