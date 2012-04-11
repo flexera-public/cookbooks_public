@@ -26,7 +26,7 @@ action :load do
       while true
         collection_resource.run_action(:load)
         log '======================= SERVER COLLECTIONS ======================='
-        log node[:server_collection]
+        raise node[:server_collection].inspect
         log '======================= SERVER COLLECTIONS ======================='
         collection = node[:server_collection][new_resource.name]
 
