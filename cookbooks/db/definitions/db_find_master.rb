@@ -18,8 +18,8 @@
 define :db_find_master do
 
   r = rs_utils_server_collection "master_servers" do
-    tags ['rs_dbrepl:master_active', 'rs_dbrepl:master_instance_uuid']
-    secondary_tags 'server:private_ip_0'
+    tags 'rs_dbrepl:master_instance_uuid'
+    secondary_tags ['rs_dbrepl:master_active', 'server:private_ip_0']
     action :nothing
   end
   r.run_action(:load)
