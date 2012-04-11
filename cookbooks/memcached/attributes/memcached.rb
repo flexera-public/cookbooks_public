@@ -17,8 +17,8 @@ set_unless[:memcached][:threads] = node[:cpu].count
 
 
 # Calculated attributes
-node[:memcached][:memtotal] = node[:memroy??|:memroy??] \* (node[:memcached][:memtotal_percent]/100)
-log "Memcache total memory: #{}"
+node[:memcached][:memtotal] = node[:memory][:total] * ( node[:memcached][:memtotal_percent] / 100 )
+log "Memcache total memory: #{node[:memcached][:memtotal]}"
 
 case node[:platform]
 
