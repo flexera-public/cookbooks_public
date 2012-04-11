@@ -8,7 +8,7 @@
 require 'timeout'
 
 action :load do
-  p 'RS_UTILS_SERVER_COLLECTION'
+  log 'RS_UTILS_SERVER_COLLECTION'
   
   collection_resource = server_collection new_resource.name do
     tags new_resource.tags
@@ -16,7 +16,7 @@ action :load do
     action :nothing
   end
 
-  p 'HERE HERE HERE HERE HERE'
+  log 'HERE HERE HERE HERE HERE'
 
   begin
     Timeout::timeout(new_resource.timeout) do
@@ -25,9 +25,9 @@ action :load do
       delay = 1
       while true
         collection_resource.run_action(:load)
-        p '======================= SERVER COLLECTIONS ======================='
-        p node[:server_collection]
-        p '======================= SERVER COLLECTIONS ======================='
+        log '======================= SERVER COLLECTIONS ======================='
+        log node[:server_collection]
+        log '======================= SERVER COLLECTIONS ======================='
         collection = node[:server_collection][new_resource.name]
 
         break if new_resource.empty_ok && collection.empty?

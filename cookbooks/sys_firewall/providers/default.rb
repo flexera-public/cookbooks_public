@@ -42,7 +42,7 @@ action :update do
       action :nothing
     end
   
-    r = rs_utils_server_collection collection_name do
+    rs_utils_server_collection collection_name do
       tags tag
       secondary_tags ip_tag
       only_if do
