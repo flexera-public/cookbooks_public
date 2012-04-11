@@ -7,6 +7,4 @@
 
 rs_utils_marker :begin
 
-log "It's working #{node[:memcached][:test_attribute]}"
-
 rs_utils_marker :end
