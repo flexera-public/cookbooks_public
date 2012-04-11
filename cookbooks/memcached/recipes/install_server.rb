@@ -7,6 +7,11 @@
 
 rs_utils_marker :begin
 
+log "[:memory][:total]: #{[:memory][:total]} #{[:memory][:total].class}"
+log "node[:memcached][:memtotal_percent]: #{node[:memcached][:memtotal_percent]} #{node[:memcached][:memtotal_percent].class}"
+node[:memcached][:memtotal] = node[:memory][:total].to_i * ( node[:memcached][:memtotal_percent] / 100.0 )
+log "[:memcached][:memtotal]: #{node[:memcached][:memtotal]}"
+
 #memcached install
 log "  Installing memcached package for #{node[:platform]}"
 package "memcached" do
