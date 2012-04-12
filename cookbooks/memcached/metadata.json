@@ -97,7 +97,10 @@
   },
   "recipes": {
     "memcached::default": "Default recipe for memcached setup",
-    "memcached::install_server": "Installation and configuration recipe for memcached"
+    "memcached::install_server": "Installation and configuration recipe for memcached",
+    "memcached::do_start": "Start memcached",
+    "memcached::do_restart": "Restart memcached",
+    "memcached::do_stop": "Stop memcached"
   },
   "version": "0.0.4"
 }

@@ -11,6 +11,9 @@ depends "sys_firewall"
 
 recipe  "memcached::default", "Default recipe for memcached setup"
 recipe  "memcached::install_server", "Installation and configuration recipe for memcached"
+recipe  "memcached::do_start", "Start memcached"
+recipe  "memcached::do_restart", "Restart memcached"
+recipe  "memcached::do_stop", "Stop memcached"
 
 attribute "memcached/port",
           :display_name => "Memcached Port",
