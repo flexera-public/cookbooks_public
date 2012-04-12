@@ -45,19 +45,21 @@ action :update do
     Chef::Log.info '======================= TAG ======================='
     Chef::Log.info machine_tag.inspect
     Chef::Log.info '======================= TAG ======================='
-    rs_utils_server_collection collection_name do
-      Chef::Log.info 'RS_UTILS_SERVER_COLLECTION'
-      Chef::Log.info '======================= TAG ======================='
-      Chef::Log.info machine_tag.inspect
-      Chef::Log.info '======================= TAG ======================='
-      tags machine_tag
-      secondary_tags ip_tag
-      only_if do
-        Chef::Log.info 'ONLY_IF'
+    if machine_tag
+      rs_utils_server_collection collection_name do
+        Chef::Log.info 'RS_UTILS_SERVER_COLLECTION'
         Chef::Log.info '======================= TAG ======================='
         Chef::Log.info machine_tag.inspect
         Chef::Log.info '======================= TAG ======================='
-        machine_tag != nil
+        tags machine_tag
+        secondary_tags ip_tag
+        #only_if do
+        #  Chef::Log.info 'ONLY_IF'
+        #  Chef::Log.info '======================= TAG ======================='
+        #  Chef::Log.info machine_tag.inspect
+        #  Chef::Log.info '======================= TAG ======================='
+        #  machine_tag != nil
+        #end
       end
     end
     
