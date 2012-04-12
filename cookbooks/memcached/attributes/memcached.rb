@@ -18,7 +18,6 @@ set_unless[:memcached][:threads] = node[:cpu].count
 
 # Calculated attributes
 node[:memcached][:memtotal] = ((node[:memcached][:memtotal_percent].to_i/100.0)*node[:memory][:total].to_i).to_i
-log "Cache size will be set to #{node[:memcached][:memtotal_percent]}% of total system memory #{node[:memory][:total]} : #{node[:memcached][:memtotal]}kB"
 
 case node[:platform]
 

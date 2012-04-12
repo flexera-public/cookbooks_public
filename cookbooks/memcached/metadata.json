@@ -50,6 +50,20 @@
 
       ]
     },
+    "memcached/extra_options": {
+      "display_name": "Memcached extra options",
+      "description": "",
+      "required": "recommended",
+      "default": "",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "recipes": [
+
+      ]
+    },
     "memcached/user": {
       "display_name": "Memcached user",
       "description": "",
@@ -85,5 +99,5 @@
     "memcached::default": "Default recipe for memcached setup",
     "memcached::install_server": "Installation and configuration recipe for memcached"
   },
-  "version": "0.0.3"
+  "version": "0.0.4"
 }

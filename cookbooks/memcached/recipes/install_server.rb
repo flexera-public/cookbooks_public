@@ -12,10 +12,12 @@ log "  Installing memcached package for #{node[:platform]}"
 package "memcached" do
   not_if {File.exists?("#{node[:memcached][:config_file]}")}
 end
-log "  Installation complete!"
+log "  Installation complete."
 
 
 #memcached config
+log "  Cache size will be set to #{node[:memcached][:memtotal_percent]}% of total system memory #{node[:memory][:total]} : #{node[:memcached][:memtotal]}kB"
+
 template "#{node[:memcached][:config_file]}" do
   source "memcached.conf.erb"
   variables(
@@ -26,7 +28,9 @@ template "#{node[:memcached][:config_file]}" do
       :extra_options    => node[:memcached][:extra_options]
   )
   cookbook 'memcached'
+  notifies :restart, resources(:service => "memcached"), :immediately
 end
-log "  Configuration done!"
+log "  Configuration done."
+log "  Memcached server started."
 
 rs_utils_marker :end
