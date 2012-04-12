@@ -8,7 +8,7 @@
 require 'timeout'
 
 action :load do
-  log 'RS_UTILS_SERVER_COLLECTION'
+  Chef::Log.info'RS_UTILS_SERVER_COLLECTION'
   
   collection_resource = server_collection new_resource.name do
     tags new_resource.tags
@@ -16,7 +16,7 @@ action :load do
     action :nothing
   end
 
-  log 'HERE HERE HERE HERE HERE'
+  Chef::Log.info'HERE HERE HERE HERE HERE'
 
   begin
     Timeout::timeout(new_resource.timeout) do
@@ -25,6 +25,9 @@ action :load do
       delay = 1
       while true
         collection_resource.run_action(:load)
+        Chef::Log.info'======================= SERVER COLLECTIONS ======================='
+        Chef::Log.info node[:server_collection].inspect
+        Chef::Log.info'======================= SERVER COLLECTIONS ======================='
         collection = node[:server_collection][new_resource.name]
 
         break if new_resource.empty_ok && collection.empty?

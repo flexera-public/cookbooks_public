@@ -41,7 +41,10 @@ action :update do
       command "/usr/sbin/rebuild-iptables"
       action :nothing
     end
-  
+
+    Chef::Log.info '======================= TAG ======================='
+    Chef::Log.info tag.inspect
+    Chef::Log.info '======================= TAG ======================='
     rs_utils_server_collection collection_name do
       tags tag
       secondary_tags ip_tag
@@ -57,6 +60,9 @@ action :update do
         # Add specific ip address 
         ip_list << ip_addr if ip_addr
 
+        Chef::Log.info '======================= TAG ======================='
+        Chef::Log.info tag.inspect
+        Chef::Log.info '======================= TAG ======================='
         # Add tagged servers
         if tag
           valid_ip_regex = '(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])'
