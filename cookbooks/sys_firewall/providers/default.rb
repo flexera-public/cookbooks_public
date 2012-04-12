@@ -49,6 +49,10 @@ action :update do
       tags tag
       secondary_tags ip_tag
       only_if do
+        Chef::Log.info 'ONLY_IF'
+        Chef::Log.info '======================= TAG ======================='
+        Chef::Log.info tag.inspect
+        Chef::Log.info '======================= TAG ======================='
         tag != nil
       end
     end
