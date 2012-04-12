@@ -8,15 +8,11 @@
 require 'timeout'
 
 action :load do
-  Chef::Log.info'RS_UTILS_SERVER_COLLECTION'
-  
   collection_resource = server_collection new_resource.name do
     tags new_resource.tags
     agent_ids new_resource.agent_ids
     action :nothing
   end
-
-  Chef::Log.info'HERE HERE HERE HERE HERE'
 
   begin
     Timeout::timeout(new_resource.timeout) do
@@ -25,9 +21,6 @@ action :load do
       delay = 1
       while true
         collection_resource.run_action(:load)
-        Chef::Log.info'======================= SERVER COLLECTIONS ======================='
-        Chef::Log.info node[:server_collection].inspect
-        Chef::Log.info'======================= SERVER COLLECTIONS ======================='
         collection = node[:server_collection][new_resource.name]
 
         break if new_resource.empty_ok && collection.empty?
@@ -45,6 +38,6 @@ action :load do
   rescue Timeout::Error => e
     raise "ERROR: timed out trying to find servers tagged with #{new_resource.tags.inspect}"
   end
-  
+
 end
 
