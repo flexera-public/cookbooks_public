@@ -15,19 +15,19 @@ action :update do
   protocol = new_resource.protocol
   to_enable = new_resource.enable
   ip_addr = new_resource.ip_addr
-  tag = new_resource.machine_tag
+  machine_tag = new_resource.machine_tag
   ip_tag = "server:private_ip_0"
   collection_name = new_resource.collection
   
   # We only support ip_addr or tags, however, ip_addr defaults to 'any' so reconcile here
   ip_addr.downcase!
-  ip_addr = nil if (ip_addr == "any") && tag  # tags win, so clear 'any'
-  raise "ERROR: ip_addr param cannot be used with machine_tag param." if tag && ip_addr
+  ip_addr = nil if (ip_addr == "any") && machine_tag  # tags win, so clear 'any'
+  raise "ERROR: ip_addr param cannot be used with machine_tag param." if machine_tag && ip_addr
 
   # Tell user what is going on
   msg = "#{to_enable ? "Enabling" : "Disabling"} firewall rule for port #{port}"
   msg << " only for address #{ip_addr}" if ip_addr
-  msg << " on servers with tag #{tag}" if tag
+  msg << " on servers with tag #{machine_tag}" if machine_tag
   msg << " using protocol #{protocol}." if protocol
   log msg
 
@@ -43,17 +43,17 @@ action :update do
     end
 
     Chef::Log.info '======================= TAG ======================='
-    Chef::Log.info tag.inspect
+    Chef::Log.info machine_tag.inspect
     Chef::Log.info '======================= TAG ======================='
     rs_utils_server_collection collection_name do
-      tags tag
+      tags machine_tag
       secondary_tags ip_tag
       only_if do
         Chef::Log.info 'ONLY_IF'
         Chef::Log.info '======================= TAG ======================='
-        Chef::Log.info tag.inspect
+        Chef::Log.info machine_tag.inspect
         Chef::Log.info '======================= TAG ======================='
-        tag != nil
+        machine_tag != nil
       end
     end
     
@@ -68,7 +68,7 @@ action :update do
         Chef::Log.info tag.inspect
         Chef::Log.info '======================= TAG ======================='
         # Add tagged servers
-        if tag
+        if machine_tag
           valid_ip_regex = '(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])'
           Chef::Log.info '======================= SERVER COLLECTIONS ======================='
           Chef::Log.info node[:server_collection]
@@ -118,13 +118,13 @@ action :update_request do
   to_enable = new_resource.enable
   ip_addr = new_resource.ip_addr
   raise "ERROR: client_ip must be specified." unless ip_addr
-  tag = new_resource.machine_tag
-  raise "ERROR: machine_tag must be specified." unless tag
+  machine_tag = new_resource.machine_tag
+  raise "ERROR: machine_tag must be specified." unless machine_tag
 
   # Tell user what is going on
   msg = "Requesting port #{port} be #{to_enable ? "opened" : "closed"}"
   msg << " only for #{ip_addr}." if ip_addr
-  msg << " on servers with tag: #{tag}."
+  msg << " on servers with tag: #{machine_tag}."
   log msg
   
   # Setup attributes
@@ -136,7 +136,7 @@ action :update_request do
   # Use RightNet to update firewall rules on all tagged servers
   remote_recipe "Request firewall update" do
     recipe "sys_firewall::setup_rule"
-    recipients_tags tag
+    recipients_tags machine_tag
     attributes attrs
   end 
 
