@@ -25,9 +25,6 @@ action :load do
       delay = 1
       while true
         collection_resource.run_action(:load)
-        log '======================= SERVER COLLECTIONS ======================='
-        raise node[:server_collection].inspect
-        log '======================= SERVER COLLECTIONS ======================='
         collection = node[:server_collection][new_resource.name]
 
         break if new_resource.empty_ok && collection.empty?
