@@ -3,7 +3,7 @@ maintainer_email "support@rightscale.com"
 license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'LICENSE')))
 description      "Cookbook for a memcached server setup."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
-version          "0.0.2"
+version          "0.0.3"
 
 depends "rs_utils"
 depends "sys_firewall"
@@ -22,7 +22,7 @@ attribute "memcached/memtotal_percent",
           :display_name => "Memcached Cache size %",
           :description => "",
           :required => "recommended",
-          :default => "90"
+          :default => "90"    #using str for further conversion to int
 
 # TO DO set_unless[:memcached][:ip] = ""
 # TO DO set_unless[:memcached][:extra_options] = ""

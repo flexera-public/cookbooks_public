@@ -6,19 +6,19 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 # Recommended attributes
-set_unless[:memcached][:port] = 11211
-set_unless[:memcached][:memtotal_percent] = 90
+set_unless[:memcached][:port] = "11211"
+set_unless[:memcached][:memtotal_percent] = "90"  #using str for further conversion to int
 set_unless[:memcached][:ip] = ""
 set_unless[:memcached][:extra_options] = ""
 set_unless[:memcached][:user] = "nobody"
-set_unless[:memcached][:connection_limit] = 1024
+set_unless[:memcached][:connection_limit] = "1024"
 set_unless[:memcached][:log_level] = "" # off, -v (verbose) -vv (debug) -vvv (extremely verbose)
 set_unless[:memcached][:threads] = node[:cpu].count
 
 
 # Calculated attributes
-#node[:memcached][:memtotal] = node[:memory][:total].to_i * ( node[:memcached][:memtotal_percent] / 100.0 )
-#log "Memcache total memory: #{node[:memcached][:memtotal]}"
+node[:memcached][:memtotal] = ((node[:memcached][:memtotal_percent].to_i/100.0)*node[:memory][:total].to_i).to_i
+log "Cache size will be set to #{node[:memcached][:memtotal_percent]}% of total system memory #{node[:memory][:total]} : #{node[:memcached][:memtotal]}kB"
 
 case node[:platform]
 
