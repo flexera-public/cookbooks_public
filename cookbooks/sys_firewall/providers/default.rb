@@ -65,7 +65,7 @@ action :update do
         ip_list << ip_addr if ip_addr
 
         Chef::Log.info '======================= TAG ======================='
-        Chef::Log.info tag.inspect
+        Chef::Log.info machine_tag.inspect
         Chef::Log.info '======================= TAG ======================='
         # Add tagged servers
         if machine_tag
