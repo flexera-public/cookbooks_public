@@ -23,7 +23,7 @@ attribute "memcached/port",
           :description  => "",
           :required     => "recommended",
           :default      => "11211",
-          :recipes      => ["memcached::install_server"]
+          :recipes      => ["memcached::install_server", "memcached::default"]
 
 attribute "memcached/memtotal_percent",
           :display_name => "Memcached Cache size %",
@@ -65,3 +65,17 @@ attribute "memcached/log_level",
           :recipes      => ["memcached::install_server"]
 
 # TO DO set_unless[:memcached][:threads] = node[:cpu].count
+
+attribute "memcached/threads",
+          :display_name => "Memcached cpu threads",
+          :description  => "",
+          :required     => "recommended",
+          :default      => "1",
+          :recipes      => ["memcached::install_server"]
+
+attribute "memcached/cluster_id",
+          :display_name => "Memcached cluster_id",
+          :description  => "",
+          :required     => "recommended",
+          :default      => "my_cluster",
+          :recipes      => ["memcached::install_server", "memcached::default"]

@@ -28,7 +28,8 @@
       "required": "recommended",
       "default": "11211",
       "recipes": [
-        "memcached::install_server"
+        "memcached::install_server",
+        "memcached::default"
       ],
       "choice": [
 
@@ -113,6 +114,35 @@
       "default": "",
       "recipes": [
         "memcached::install_server"
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "memcached/threads": {
+      "display_name": "Memcached cpu threads",
+      "description": "",
+      "required": "recommended",
+      "default": "1",
+      "recipes": [
+        "memcached::install_server"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "memcached/cluster_id": {
+      "display_name": "Memcached cluster_id",
+      "description": "",
+      "required": "recommended",
+      "default": "my_cluster",
+      "recipes": [
+        "memcached::install_server",
+        "memcached::default"
+      ],
+      "choice": [
+
       ],
       "calculated": false,
       "type": "string"

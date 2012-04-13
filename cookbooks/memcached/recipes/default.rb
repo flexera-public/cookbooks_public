@@ -15,8 +15,4 @@ right_link_tag "memcached_cluster:#{node[:memcached][:cluster_id]}"            #
 right_link_tag "memcached_server:uuid=#{node[:rightscale][:instance_uuid]}"    #The server name so that sorts can be done to get the correct order across app servers.
 
 
-#run setup
-include_recipe "memcached::install_server"
-
-
 rs_utils_marker :end
