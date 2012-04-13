@@ -66,7 +66,7 @@ attribute "memcached/log_level",
 
 attribute "memcached/threads",
           :display_name => "Memcached used threads",
-          :description  => "Use a number from 1 to #{node[:cpu][:total]}",
+          :description  => "Use a number from 1 to <maximum number of threads for the instance>}",
           :required     => "recommended",
           :default      => "1",
           :recipes      => ["memcached::install_server"]

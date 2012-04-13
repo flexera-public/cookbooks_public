@@ -17,7 +17,6 @@ end
 
 log "  Installation complete."
 
-
 service "memcached" do
     action :nothing
     persist true
