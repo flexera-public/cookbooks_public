@@ -77,5 +77,5 @@ attribute "memcached/cluster_id",
           :display_name => "Memcached cluster_id",
           :description  => "",
           :required     => "recommended",
-          :default      => "my_cluster",
+          :default      => "cache_cluster",
           :recipes      => ["memcached::install_server", "memcached::default"]
