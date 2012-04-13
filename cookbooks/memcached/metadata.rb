@@ -64,7 +64,12 @@ attribute "memcached/log_level",
           :default      => "",
           :recipes      => ["memcached::install_server"]
 
-# TO DO set_unless[:memcached][:threads] = node[:cpu].count
+attribute "memcached/threads",
+          :display_name => "Memcached used threads",
+          :description  => "Use a number from 1 to #{node[:cpu][:total]}",
+          :required     => "recommended",
+          :default      => "1",
+          :recipes      => ["memcached::install_server"]
 
 attribute "memcached/threads",
           :display_name => "Memcached cpu threads",

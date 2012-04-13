@@ -13,7 +13,7 @@ set_unless[:memcached][:extra_options]    = ""
 set_unless[:memcached][:user]             = "nobody"
 set_unless[:memcached][:connection_limit] = "1024"
 set_unless[:memcached][:log_level]        = "" # off, -v (verbose) -vv (debug) -vvv (extremely verbose)
-set_unless[:memcached][:threads]          = node[:cpu].count
+set_unless[:memcached][:threads]          = "1"
 set_unless[:memcached][:cluster_id]       = ""
 
 
