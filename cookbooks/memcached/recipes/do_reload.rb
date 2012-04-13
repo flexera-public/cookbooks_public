@@ -7,10 +7,10 @@
 
 rs_utils_marker :begin
 
-log "memcached: stopping"
+log "memcached: reloading"
 
 service "memcached" do
-    action :stop
+    action :reload
 end
  
 rs_utils_marker :end

@@ -7,9 +7,10 @@
 
 rs_utils_marker :begin
 
-log "Starting memcached"
+log "memcached: starting"
+
 service "memcached" do
-  action :start
+    action :start
 end
  
 rs_utils_marker :end
