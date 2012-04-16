@@ -5,6 +5,17 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+define :db_request_backup, :force => false, :backup_type => 'primary' do
+  do_force        = params[:force] == true ? true : false
+  do_backup_type  = params[:backup_type] == "primary" ? "primary" : "secondary"
+
+  remote_recipe "Request #{do_backup_type} backup" do
+    recipe "db::do_#{do_backup_type}_backup"
+    attributes :db => {:backup => {:force => "#{do_force}"}}
+    recipients_tags "server:uuid=#{node[:rightscale][:instance_uuid]}"
+  end
+end
+
 # == Does a snapshot backup of the filesystem containing the database
 # Note that the upload becomes a background job in order to allow other recipes to
 # not wait if the upload takes a long time.
@@ -19,8 +30,6 @@
 # == Exceptions
 # If force is false and a backup is currently running, will raise an exception.
 # If database is not 'initialized', will raise.
-
-
 define :db_do_backup, :force => false, :backup_type => "primary" do
 
   class Chef::Recipe
@@ -92,7 +101,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     keep_monthly  get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_monthly)
     keep_yearly   get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_yearly)
 
-    action db_backup_type == 'primary' ? :primary_backup : :secondary_backup
+    action do_backup_type == 'primary' ? :primary_backup : :secondary_backup
   end
 
 end

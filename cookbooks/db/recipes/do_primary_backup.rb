@@ -12,7 +12,7 @@ db_init_status :check
 
 log "  Run a normal primary backup..."
 db_do_backup "do backup" do
-  force false
+  force node[:db][:backup][:force] == 'true'
   backup_type "primary"
 end
 
