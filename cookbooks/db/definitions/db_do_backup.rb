@@ -36,7 +36,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     include RightScale::BlockDeviceHelper
   end
 
-  class Chef::Resource::Bash
+  class Chef::Resource::BlockDevice
     include RightScale::BlockDeviceHelper
   end
 
