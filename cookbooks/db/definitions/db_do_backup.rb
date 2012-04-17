@@ -96,10 +96,16 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     # Backup/Restore arguments
     lineage node[:db][:backup][:lineage]
     max_snapshots get_device_or_default(node, :device1, :backup, :primary, :keep, :max_snapshots)
-    keep_daily    get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_daily)
-    keep_weekly   get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_weekly)
-    keep_monthly  get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_monthly)
-    keep_yearly   get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_yearly)
+    keep_daily get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_daily)
+    keep_weekly get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_weekly)
+    keep_monthly get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_monthly)
+    keep_yearly get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_yearly)
+
+    # Secondary arguments
+    secondary_cloud get_device_or_default(node, device, :backup, :secondary, :cloud)
+    secondary_container get_device_or_default(node, device, :backup, :secondary, :container)
+    secondary_user get_device_or_default(node, device, :backup, :secondary, :cred, :user)
+    secondary_secret get_device_or_default(node, device, :backup, :secondary, :cred, :secret)
 
     action do_backup_type == 'primary' ? :primary_backup : :secondary_backup
   end
