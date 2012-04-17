@@ -104,4 +104,12 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     action do_backup_type == 'primary' ? :primary_backup : :secondary_backup
   end
 
+  log "  Performing post backup cleanup..."
+  db DATA_DIR do
+    action :post_backup_cleanup
+  end
+
+  block_device NICKNAME do
+    action :backup_lock_give
+  end
 end
