@@ -6,7 +6,7 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 define :db_request_backup, :force => false, :backup_type => 'primary' do
-  do_force        = params[:force] == true ? true : false
+  do_force        = params[:force]
   do_backup_type  = params[:backup_type] == "primary" ? "primary" : "secondary"
 
   remote_recipe "Request #{do_backup_type} backup" do
@@ -43,7 +43,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   NICKNAME = get_device_or_default(node, :device1, :nickname)
   DATA_DIR = node[:db][:data_dir]
 
-  do_force        = params[:force] == true ? true : false
+  do_force        = params[:force]
   do_backup_type  = params[:backup_type] == "primary" ? "primary" : "secondary"
 
   # == Check if database is able to be backed up (initialized)
