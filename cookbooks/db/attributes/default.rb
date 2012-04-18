@@ -43,3 +43,4 @@ set_unless[:db][:backup][:primary][:master][:cron][:minute] = cron_min
 set_unless[:db][:backup][:primary][:slave][:cron][:hour] = "*" # every hour
 set_unless[:db][:backup][:primary][:slave][:cron][:minute] = cron_min + 30
 
+set_unless[:db][:backup][:force] = 'false'
