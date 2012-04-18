@@ -467,7 +467,10 @@
     "db::handle_demote_master": "Remote recipe executed by do_promote_to_master. DO NOT RUN.",
     "db::do_dump_schedule_disable": "Disables the daily run of do_dump_export.",
     "db::do_primary_backup_schedule_disable": "Disables db::do_primary_backup from being run periodically.",
-    "db::do_primary_backup": "Creates a primary backup of the database using persistent storage in the current cloud. On Rackspace, LVM backups are uploaded to the specified Cloud Files container. For all other clouds, volume snapshots (e.g., Amazon EBS or CloudStack volumes) are used.",
+    "db::do_primary_backup": {
+      "thread": "db_backup",
+      "description": "Creates a primary backup of the database using persistent storage in the current cloud. On Rackspace, LVM backups are uploaded to the specified Cloud Files container. For all other clouds, volume snapshots (e.g., Amazon EBS or CloudStack volumes) are used."
+    },
     "db::setup_monitoring": "Installs the collectd plugin for database monitoring support, which is required to enable monitoring and alerting functionality for your servers.",
     "db::request_appserver_allow": "Sends a request to allow connections from the caller's private IP address to all database servers in the deployment that are tagged with the database:active=true tag. This should be run on an application server before attempting a database connection.",
     "db::do_dump_schedule_enable": "Schedules the daily run of do_dump_export.",
@@ -475,7 +478,10 @@
     "db::request_master_deny": "Sends a request to the master database server tagged with rs_dbrepl:master_instance_uuid=<master_instance_uuid> to deny connections from the server's private IP address. This script should be run on a slave when it stops replicating.",
     "db::setup_replication_privileges": "Sets up privileges for replication slave servers.",
     "db::do_primary_restore_and_become_master": "Restores the database and tags it as the master. Sets DNS. Starts a fresh backup from this master.",
-    "db::do_secondary_backup": "Creates a backup of the database and uploads it to a secondary cloud storage location, which can be used to migrate your database to a different cloud. For example, you can save a secondary backup to an Amazon S3 bucket or a Rackspace Cloud Files container.",
+    "db::do_secondary_backup": {
+      "thread": "db_backup",
+      "description": "Creates a backup of the database and uploads it to a secondary cloud storage location, which can be used to migrate your database to a different cloud. For example, you can save a secondary backup to an Amazon S3 bucket or a Rackspace Cloud Files container."
+    },
     "db::default": "Adds the database:active=true tag to your server, identifying it as an database server. The tag is used by application servers to identify active databases. It also loads the required 'db' resources.",
     "db::do_delete_volumes_and_terminate_server": "Deletes any currently attached volumes from the instance and then terminates the machine.",
     "db::do_secondary_restore_and_become_master": "Restores the database from a secondary backup location and tags it as the master. Sets DNS. Starts a fresh backup from this master.",
