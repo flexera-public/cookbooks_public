@@ -93,6 +93,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   # If doing a secondary backup, set variables needed for this.
   if do_backup_type == "secondary"
     secondary_storage_cloud = get_device_or_default(node, :device1, :backup, :secondary, :cloud)
+    secondary_endpoint = get_device_or_default(node, :device1, :backup, :secondary, :endpoint)
     if secondary_storage_cloud =~ /aws/i
       secondary_storage_cloud = "s3"
     elsif secondary_storage_cloud =~ /rackspace/i
@@ -101,6 +102,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     secondary_storage_container = get_device_or_default(node, :device1, :backup, :secondary, :container)
   elsif do_backup_type == 'primary'
     primary_storage_cloud = get_device_or_default(node, :device1, :backup, :primary, :cloud)
+    primary_endpoint get_device_or_default(node, :device1, :backup, :primary, :endpoint)
   end
 
   # backup.rb removes the file lock created from :backup_lock_take
@@ -119,7 +121,9 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     "--cloud #{cloud}",
     "--backup-type #{do_backup_type}",
     primary_storage_cloud && do_backup_type == 'primary' ? "--primary-storage-cloud #{primary_storage_cloud}" : '',
+    primary_endpoint && do_backup_type == 'primary' ? "--primary-endpoint #{primary_endpoint}" : '',
     secondary_storage_cloud && do_backup_type == 'secondary' ? "--secondary-storage-cloud #{secondary_storage_cloud}" : '',
+    secondary_endpoint && do_backup_type == 'secondary' ? "--secondary-endpoint #{secondary_endpoint}" : '',
     secondary_storage_container && do_backup_type == 'secondary' ? "--secondary-storage-container #{secondary_storage_container}" : '',
     (get_device_or_default(node, :device1, :rackspace_snet) == false) ? '--no-snet' : '',
     max_snapshots ? "--max-snapshots #{max_snapshots}" : '',
