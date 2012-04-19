@@ -62,6 +62,7 @@ block_device NICKNAME do
   volume_size get_device_or_default(node, :device1, :volume_size)
 
   secondary_cloud secondary_storage_cloud
+  secondary_endpoint get_device_or_default(node, :device1, :backup, :secondary, :endpoint)
   secondary_container get_device_or_default(node, :device1, :backup, :secondary, :container)
   secondary_user get_device_or_default(node, :device1, :backup, :secondary, :cred, :user)
   secondary_secret get_device_or_default(node, :device1, :backup, :secondary, :cred, :secret)
