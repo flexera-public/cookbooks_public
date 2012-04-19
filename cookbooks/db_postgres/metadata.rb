@@ -11,8 +11,10 @@ depends "rs_utils"
 depends "block_device"
 
 recipe  "db_postgres::default", "Runs the client 'db::install_client' recipes."
-recipe  "db_postgres::do_set_slave_sync_mode", "Set master to do sync based replication with slave"
-recipe  "db_postgres::do_set_slave_async_mode", "Set master to do async based replication with slave"
+recipe  "db_postgres::do_set_slave_sync_mode", "Set master to do sync based replication with slave. PostgreSQL streaming replication is asynchronous by default. If the primary server crashes then some transactions that were committed may not have been replicated to the standby server, causing data loss. The amount of data loss is proportional to the replication delay at the time of failover.
+Synchronous replication offers the ability to confirm that all changes made by a transaction have been transferred to one synchronous standby server. This extends the standard level of durability offered by a transaction commit. This level of protection is referred to as 2-safe replication in computer science theory.
+Ref: http://www.postgresql.org/docs/9.1/static/warm-standby.html#SYNCHRONOUS-REPLICATION"
+recipe  "db_postgres::do_set_slave_async_mode", "Set master to do async based replication with slave. For more info refer http://www.postgresql.org/docs/9.1/static/warm-standby.html#SYNCHRONOUS-REPLICATION"
 recipe  "db_postgres::do_show_slave_sync_mode", "Show the sync mode for the replication"
 
 attribute "db_postgres",

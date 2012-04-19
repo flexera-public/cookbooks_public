@@ -1,9 +1,11 @@
 #!/usr/bin/ruby
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
+# 
 # Arguments: monitoring machine hostname to use to report the stats.
 # Arguments: IPAddress of Master/Slave database server.
-# @Author: Ravi Bhure
-# @Email: ravi.bhure@symphonysv.com
-# @Date: 01/04/2012
+#
 
 require 'getoptlong'
 require 'rubygems'

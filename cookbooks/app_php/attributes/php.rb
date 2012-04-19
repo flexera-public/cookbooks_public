@@ -8,7 +8,7 @@
 # Optional attributes
 set_unless[:php][:db_schema_name] = ""
 set_unless[:php][:modules_list] = []
-set_unless[:php][:db_adapter] = "postgresql"
+set_unless[:php][:db_adapter] = "mysql"
 
 # Calculated attributes
 case platform

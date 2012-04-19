@@ -125,8 +125,7 @@ action :install_client do
   # Install PostgreSQL 9.1.1 package(s)
   if node[:platform] == "centos"
     arch = node[:kernel][:machine]
-    # arch = "x86_64" if arch == "i386"
-    arch = "i386" unless arch == "x86_64"
+    raise "Unsupported platform detected!" unless arch == "x86_64"
     
     package "libxslt" do
       action :install
@@ -160,7 +159,7 @@ action :install_server do
   action_install_client
 
   arch = node[:kernel][:machine]
-  arch = "i386" unless arch == "x86_64"
+  raise "Unsupported platform detected!" unless arch == "x86_64"
  
   package "uuid" do
     action :install

@@ -59,7 +59,7 @@
         "mysql",
         "postgresql"
       ],
-      "default": "postgresql",
+      "default": "mysql",
       "type": "string",
       "recipes": [
         "app_php::default"

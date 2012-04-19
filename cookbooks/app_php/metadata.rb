@@ -34,6 +34,6 @@ attribute "php/db_schema_name",
 attribute "php/db_adapter",
   :display_name => "Database adapter for application ",
   :description => "Enter database adpter wich will be used to connect to the database Default: postgresql",
-  :default => "postgresql",
+  :default => "mysql",
   :choice => [ "mysql", "postgresql" ],
   :recipes => ["app_php::default"]

@@ -13,8 +13,6 @@ define :db_postgres_set_privileges, :preset => "administrator", :username => nil
   password = params[:password]
   db_name = "*.*"
   db_name = "#{params[:db_name]}.*" if params[:db_name]
-#  admin_role = params[:preset]
-#  user_role = "users"
 
   ruby_block "set admin credentials" do
     block do
@@ -33,7 +31,6 @@ define :db_postgres_set_privileges, :preset => "administrator", :username => nil
       # Create group roles, don't error out if already created.  Users don't inherit "special" attribs
       # from group role, see: http://www.postgresql.org/docs/9.1/static/role-membership.html 
       # cmd ==> createuser -h /var/run/postgresql -U postgres #{admin_role} -sdril 
-      # conn.exec("CREATE ROLE #{admin_role} SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN")
       
       # Enable admin/replication user
         result = conn.exec("SELECT COUNT(*) FROM pg_user WHERE usename='#{username}'")
@@ -46,15 +43,10 @@ define :db_postgres_set_privileges, :preset => "administrator", :username => nil
           conn.exec("CREATE USER #{username} SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN ENCRYPTED PASSWORD '#{password}'")
         end
 
-      # Grant role previleges to admin/replication user
-      # conn.exec("GRANT #{admin_role} TO #{username}")
-
       when 'user'
       # Create group roles, don't error out if already created.  Users don't inherit "special" attribs
       # from group role, see: http://www.postgresql.org/docs/9.1/static/role-membership.html
       # cmd ==> createuser -h /var/run/postgresql -U postgres #{user_role} -SdRil 
-      #  conn.exec("CREATE ROLE #{user_role} NOSUPERUSER CREATEDB NOCREATEROLE INHERIT LOGIN")
-      
       
       # Enable application user  
         result = conn.exec("SELECT COUNT(*) FROM pg_user WHERE usename='#{username}'")
@@ -66,7 +58,6 @@ define :db_postgres_set_privileges, :preset => "administrator", :username => nil
           Chef::Log.info "creating aplication user #{username}"
           conn.exec("CREATE USER #{username} NOSUPERUSER CREATEDB NOCREATEROLE INHERIT LOGIN ENCRYPTED PASSWORD '#{password}'")
         end
-      #  conn.exec("GRANT #{user_role} TO #{username}")
 
       # Set default privileges for any future tables, sequences, or functions created.
         conn.exec("ALTER DEFAULT PRIVILEGES FOR USER #{username} GRANT ALL ON TABLES to #{username}")

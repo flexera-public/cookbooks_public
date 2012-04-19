@@ -13,7 +13,7 @@ set_unless[:tomcat][:java][:permsize] = "256m"
 set_unless[:tomcat][:java][:maxpermsize] = "256m"
 set_unless[:tomcat][:java][:newsize] = "256m"
 set_unless[:tomcat][:java][:maxnewsize] = "256m"
-set_unless[:tomcat][:db_adapter] = "postgresql"
+set_unless[:tomcat][:db_adapter] = "mysql"
 
 set[:tomcat][:module_dependencies] = [ "proxy", "proxy_http", "deflate", "rewrite"]
 
@@ -24,7 +24,7 @@ set[:tomcat][:docroot] = "/srv/tomcat6/webapps/#{node[:tomcat][:application_name
 case node[:platform]
 
   when "ubuntu", "debian"
-    set[:tomcat][:app_user] = "tomcat7"
+    set[:tomcat][:app_user] = "tomcat6"
     set[:tomcat][:alternatives_cmd] = "update-alternatives  --auto java"
     if(tomcat[:db_adapter] == "mysql")
       set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"

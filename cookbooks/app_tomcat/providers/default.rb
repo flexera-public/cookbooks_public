@@ -76,8 +76,6 @@ action :install do
       cookbook 'app_tomcat'
     end
     ## Link postgresql-connector plugin to Tomcat6 lib
-    # ln -sf /usr/share/java/postgresql-9.1-901.jdbc4.jar /usr/share/tomcat6/lib/postgresql-9.1-901.jdbc4.jar
-    # todo: if /usr/share/tomcat6/lib/postgresql-9.1-901.jdbc4.jar exists delete it first
     link "/usr/share/tomcat6/lib/postgresql-9.1-901.jdbc4.jar" do
       to "/usr/share/java/postgresql-9.1-901.jdbc4.jar"
     end
