@@ -1,0 +1,4 @@
+<Plugin exec>
+  #    userid    plugin executable                   plugin args
+  Exec "postgres" "<%= node[:rs_utils][:collectd_lib] %>/plugins/postgres_ps" "-h" "<%= node[:rightscale][:instance_uuid] %>" 
+</Plugin>

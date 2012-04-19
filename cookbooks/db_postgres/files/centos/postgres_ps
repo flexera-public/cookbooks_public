@@ -1,0 +1,70 @@
+#! /usr/bin/ruby
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
+# 
+# Arguments: hostname to use to report the stats (Instance ID or UUID)
+#
+
+require 'getoptlong'
+
+def usage
+  puts("#{$0} -h <hostname> [-i <sample_interval>]")
+  puts("    -h: The hostname of the machine. Instance ID or UUID")
+  puts("    -i: The sample interval of the file check (in seconds).  Default: 20 seconds")
+  exit
+end
+
+opts = GetoptLong.new(
+    [ '--hostname', '-h', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--sample-interval', '-i',  GetoptLong::OPTIONAL_ARGUMENT ]
+)
+
+# default values
+hostname = nil
+sample_interval = 20
+
+opts.each do |opt, arg|
+  case opt
+    when '--hostname'
+      hostname = arg
+    when '--sample-interval'
+      sample_interval = arg.to_i
+  end
+  arg.inspect
+end
+
+
+# ensure we have all the needed params to run, show usage if we don't
+usage if !hostname
+
+#check the linux disto
+distro=`lsb_release -si`
+
+#Chomp off the newline
+distro = distro.chomp
+
+# default fallback
+ps_name = "postmaster"
+
+if distro == "Ubuntu"
+  ps_name = "postgres"
+end
+
+loop do
+  processes = 0
+  threads = 0
+
+  now = Time.new
+
+  ps_out = `ps -C #{ps_name} -o nlwp --no-header`
+  ps_out.each_line do |line|
+    processes = processes + 1
+    threads += line.to_i
+  end
+
+  print "PUTVAL #{hostname}/processes-postgresql/ps_count interval=#{sample_interval} #{now.to_i}:#{processes}:#{threads}\n"
+
+  STDOUT.flush
+  sleep sample_interval
+end

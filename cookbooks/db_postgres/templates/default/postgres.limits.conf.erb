@@ -1,0 +1,6 @@
+postgres soft nofile <%= @ulimit %>
+postgres hard nofile <%= @ulimit %>
+root soft nofile <%= @ulimit %>
+root hard nofile <%= @ulimit %>
+postgres soft nproc unlimited
+postgres hard nproc unlimited

@@ -16,6 +16,7 @@
 * Place tomcat::default recipe into your runlist to setup the application server.
 * When using a RightScale ServerTemplate, this will also automatically add the
   common attributes to your ServerTemplate inputs.
+* Set 'jdbc/ConnDB' as your datasource name to setup database connection with the application server.
 
 == USAGE:
 
