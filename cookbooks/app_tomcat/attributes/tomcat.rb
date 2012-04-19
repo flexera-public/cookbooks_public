@@ -13,6 +13,7 @@ set_unless[:tomcat][:java][:permsize] = "256m"
 set_unless[:tomcat][:java][:maxpermsize] = "256m"
 set_unless[:tomcat][:java][:newsize] = "256m"
 set_unless[:tomcat][:java][:maxnewsize] = "256m"
+set_unless[:tomcat][:db_adapter] = "mysql"
 
 set[:tomcat][:module_dependencies] = [ "proxy", "proxy_http", "deflate", "rewrite"]
 
@@ -24,14 +25,24 @@ case node[:platform]
 
   when "ubuntu", "debian"
     set[:tomcat][:app_user] = "tomcat6"
-    set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
     set[:tomcat][:alternatives_cmd] = "update-alternatives  --auto java"
-
+    if(tomcat[:db_adapter] == "mysql")
+      set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
+    elsif(tomcat[:db_adapter] == "postgresql")
+      set[:db_postgres][:socket] = "/var/run/postgresql"
+    else
+      raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
+    end
   when "centos", "fedora", "suse", "redhat", "redhatenterpriseserver"
     set[:tomcat][:app_user] = "tomcat"
-    set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
     set[:tomcat][:alternatives_cmd] = "alternatives --auto java"
+    if(tomcat[:db_adapter] == "mysql")
+      set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
+    elsif(tomcat[:db_adapter] == "postgresql")
+      set[:db_postgres][:socket] = "/var/run/postgresql"
+    else
+      raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
+    end
   else
     raise "Unrecognized distro #{node[:platform]}, exiting "
 end
-

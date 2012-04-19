@@ -1,0 +1,128 @@
+#!/usr/bin/ruby
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
+# 
+# Arguments: hostname to use to report the stats (Instance ID or UUID)
+# Arguments: IPAddress of Master/Slave database server.
+#
+
+require 'getoptlong'
+require 'rubygems'
+
+PLUGIN_TYPE = 'pg_data'
+PLUGIN_NAME = 'check_hot_standby_delay'
+
+LAG_ALERT = 32 # Alert after 2 WAL segments worth of lag. (MB)
+
+def usage
+  puts("#{$0} -m <masterip> -s <slaveip> -h <host_id> [-i <sampling_interval>]")
+  puts("    -m: The IPAddress of the master db server. 1.2.3.4")
+  puts("    -s: The IPAddress of the slave db server. 1.2.3.4")
+  puts("    -h: The hostname of the machine. Instance ID or UUID")
+  puts("    -i: The sample interval of the file check (in seconds).  Default: 20 seconds")
+  exit
+
+end
+
+# Main
+begin
+  # Sync stdout so that it will flush to collectd properly.
+  $stdout.sync = true
+
+  # Parse command line options
+  hostname = nil
+  masterip = nil
+  slaveip = nil
+  sampling_interval = 20  # sec, Default value
+  opts = GetoptLong.new(
+    [ '--masterip', '-m', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--slaveip', '-s', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--hostid', '-h', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--sampling-interval', '-i',  GetoptLong::OPTIONAL_ARGUMENT ]
+  )
+  opts.each do |opt, arg|
+    case opt
+      when '--masterip'
+        masterip = arg
+      when '--slaveip'
+        slaveip = arg
+      when '--hostid'
+        hostname = arg
+      when '--sampling-interval'
+        sampling_interval = arg.to_i
+    end
+  end
+  usage if !hostname
+  usage if !masterip
+  usage if !slaveip
+
+  # check server status/role - if this is master server, skip to run this script.
+  # This script should run only on slave server
+  def detect_if_master
+    read_only = `/usr/pgsql-9.1/bin/pg_controldata /var/lib/pgsql/9.1/data | grep "Database cluster state" | awk '{print $NF}'`
+    return true if read_only =~ /production/
+  end
+
+  whoiam = detect_if_master
+  if ( whoiam == true )
+    # This is master db; skipping to run this script on master server
+    exit 1
+  end
+
+  def pg_status
+    status = `/usr/pgsql-9.1/bin/pg_controldata /var/lib/pgsql/9.1/data | grep "Database cluster state" |cut -d: -f2 | xargs`
+    return true if status =~ /shut down/
+  end
+
+  while true do
+  ### Given an +xlog+ position from a slave server, return
+  ### the number of bytes the slave needs to replay before it
+  ### is caught up to the master.
+  ###
+  def find_lag( slave_xlog )
+    s_segment, s_offset = slave_xlog.split( /\// )
+    # hex result converting to bytes
+    return (( $segment.hex - s_segment.hex ) * $segbytes) + ( $offset.hex - s_offset.hex )
+  end
+
+  # Get master xlog data
+  begin
+    $segbytes = `psql -h #{masterip} -U postgres -c "SHOW wal_segment_size"`.sub( /\D+/, '' ).to_i << 20
+    current   = `psql -h #{masterip} -U postgres -c "SELECT pg_current_xlog_location() AS location" |xargs|awk '{print $3}'`
+    $segment, $offset = current.split( /\// )
+  rescue => err
+    # Unable to retrieve required info from the master.
+    exit 1
+  end
+
+  # Get slave xlog data
+  begin
+    mystatus = pg_status
+    if ( mystatus == true )
+      # pg status is down, exiting script to avoid un-wanted errors on PUTVAL
+      exit 1
+    else
+      slave_xlog = `psql -h #{slaveip} -U postgres -c "SELECT pg_last_xlog_receive_location() AS receive" | xargs|awk '{print $3}'`
+    end
+    # hex result converting to bytes
+    lag_in_megs = ( find_lag( slave_xlog ).to_f / 1024 / 1024 ).abs
+  rescue => err
+    # Unable to retrieve required info from the slave.
+    exit 1
+  end
+
+
+  # Collection loop
+    start_run = Time.now.to_i
+    next_run = start_run + sampling_interval
+
+    # collectd data and print the values ==> set your code here for monitoring
+    print "PUTVAL #{hostname}/#{PLUGIN_NAME}/#{PLUGIN_TYPE} interval=#{sampling_interval} #{start_run}:#{lag_in_megs}"
+
+    # sleep to make the interval
+    while((time_left = (next_run - Time.now.to_i)) > 0) do
+      sleep(time_left)
+    end
+  end
+end

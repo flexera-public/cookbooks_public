@@ -1,0 +1,80 @@
+= RightScale Database Manager for PostgreSQL (Beta)
+
+== DESCRIPTION:
+
+Provides the PostgreSQL implementation of the 'db' resource to install and
+manage PostgreSQL database stand-alone servers and clients.
+
+
+== DETAILS
+
+The 'db' implementation is defined by a Lightweight Provider, which can be
+found in the providers/default.rb file.
+
+The majority of the functionality of the PostgreSQL provider is encapsulated
+in the premium rightscale_tools gem, however, there are currently a handful
+of recipes that can be used without it. See 'Public Recipes' in the USAGE
+section below.
+
+
+== REQUIREMENTS:
+
+* Requires a VM launched from a RightScale managed RightImage
+
+* Tested on CentOS 5.6 RightImage
+
+* Supports PostgreSQL 9.1
+
+* Needs RightScale Premium ServerTemplate tools gem installed on system.
+  This gem is only available for paid RightScale customers.
+  Please contact sales@rightscale.com to upgrade you account.
+
+== SETUP:
+
+* Place db::default recipe into your runlist to setup the db resource.  When
+  using a RightScale ServerTemplate, this will also automatically add the
+  common database attributes to your ServerTemplate inputs.
+
+* Also, place the db_postgres::default recipe into your runlist to load the
+  PostgreSQL provider, tuning parameters, as well as other PostgreSQL specific
+  attributes in as inputs.
+
+== USAGE:
+
+=== Basic usage
+Once setup, use the recipes in the 'db' cookbook to install and manage your
+PostgreSQL database servers and clients.  See the db/README.rdoc for usage
+details.
+
+
+=== PostgreSQL Tuning and postgresql.conf and pg_hba.conf
+
+Custom tuning parameters can be applied by overriding the postgres_tuning.rb
+attributes file.  For more information and an example override repository
+please see:
+
+  https://github.com/ravibhure/cookbooks_public/tree/master/cookbooks/db_postgres
+
+
+=== Public Recipes
+Here is the list of db recipes that can be used without the preimum
+rightscale_tools gem:
+
+* db::default
+* db::install_client
+* db::install_server
+* db::setup_monitoring
+* db::setup_privileges_admin
+* db::setup_privileges_application
+* db::do_appserver_allow
+* db::do_appserver_deny
+* db::request_appserver_allow
+* db::request_appserver_deny
+
+These recipes are used by the RightScale LAPP ServerTemplate.
+
+
+== KNOWN LIMITATIONS
+
+* none
+  

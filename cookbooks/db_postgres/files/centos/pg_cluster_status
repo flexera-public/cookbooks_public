@@ -1,0 +1,130 @@
+#!/usr/bin/ruby
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
+# 
+# Arguments: monitoring machine hostname to use to report the stats.
+# Arguments: IPAddress of Master/Slave database server.
+#
+
+require 'getoptlong'
+require 'rubygems'
+
+PLUGIN_TYPE = 'pg_state'
+PLUGIN_NAME = 'pg_cluster_status'
+
+def usage
+  puts("#{$0} -m <masterip> -s <slaveip> -h <host_id> [-i <sampling_interval>]")
+  puts("    -m: The IPAddress of the master db server. 1.2.3.4")
+  puts("    -s: The IPAddress of the slave db server. 1.2.3.4")
+  puts("    -h: The hostname of the monitoring machine.")
+  puts("    -i: The sample interval of the file check (in seconds).  Default: 20 seconds")
+  exit
+
+end
+
+# Main
+begin
+  # Sync stdout so that it will flush to collectd properly.
+  $stdout.sync = true
+
+  # Parse command line options
+  hostname = nil
+  masterip = nil
+  slaveip = nil
+  sampling_interval = 20  # sec, Default value
+  opts = GetoptLong.new(
+    [ '--masterip', '-m', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--slaveip', '-s', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--hostid', '-h', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--sampling-interval', '-i',  GetoptLong::OPTIONAL_ARGUMENT ]
+  )
+  opts.each do |opt, arg|
+    case opt
+      when '--masterip'
+        masterip = arg
+      when '--slaveip'
+        slaveip = arg
+      when '--hostid'
+        hostname = arg
+      when '--sampling-interval'
+        sampling_interval = arg.to_i
+    end
+  end
+  usage if !masterip
+  usage if !slaveip
+  usage if !hostname
+
+  # check server status/role - if this is master server, skip to run this script.
+  # This script should run only on slave server
+  def detect_if_master
+    read_only = `/usr/pgsql-9.1/bin/pg_controldata /var/lib/pgsql/9.1/data | grep "Database cluster state" | awk '{print $NF}'`
+    return true if read_only =~ /production/
+  end
+
+  whoiam = detect_if_master
+  if ( whoiam == true )
+    #This is master db; skipping to run this script on master server.
+    exit 1
+  end
+
+  def pg_status
+    status = `/usr/pgsql-9.1/bin/pg_controldata /var/lib/pgsql/9.1/data | grep "Database cluster state" |cut -d: -f2 | xargs`
+    return true if status =~ /shut down/
+  end
+
+  while true do
+  ### Given an +slave status state+ from a master server, return
+  ### the true
+  ###
+  def slave_status(master, slave)
+    return true if $client_addr =~ /#{slave}/
+  end
+
+  def slave_state(master, slave)
+    return true if $state =~ /streaming/
+  end
+
+  # Get data from master
+  begin
+    mystatus = pg_status
+    if ( mystatus == true )
+      # pg status is down, exiting script to avoid un-wanted errors on PUTVAL
+      exit 1
+    else
+      mquery = `psql -h #{masterip} -U postgres -c "select client_addr, state from pg_stat_replication" |grep "#{slaveip}"`
+      $client_addr, $state = mquery.split( /\|/ )
+    end
+  rescue => err
+    # Unable to retrieve required info from the master
+    exit 1
+  end
+
+  # Assigned to validate
+  slavestatus = slave_status("#{masterip}", "#{slaveip}")
+  slavestate = slave_state("#{masterip}", "#{slaveip}")
+
+  # Collection loop
+    start_run = Time.now.to_i
+    next_run = start_run + sampling_interval
+
+    # collectd data and print the values ==> set your code here for monitoring
+    if ( slavestatus == true )
+          if ( slavestate == true )
+            megs = "1"
+          else
+            megs = "0"
+          end
+    else
+      megs = "0"
+    end
+
+ # collectd data and print the values ==> set your code here for monitoring
+    print "PUTVAL #{hostname}/#{PLUGIN_NAME}/#{PLUGIN_TYPE}  interval=#{sampling_interval} #{start_run}:#{megs}"
+
+    # sleep to make the interval
+    while((time_left = (next_run - Time.now.to_i)) > 0) do
+      sleep(time_left)
+    end
+  end
+end

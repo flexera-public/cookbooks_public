@@ -112,6 +112,7 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
   keep_yearly   = get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_yearly)
   background_exe = [
     "/opt/rightscale/sandbox/bin/backup",
+    "--db-provider #{node[:db][:provider]}",
     "--backuponly",
     "--lineage #{node[:db][:backup][:lineage]}",
     "--nickname #{NICKNAME}",

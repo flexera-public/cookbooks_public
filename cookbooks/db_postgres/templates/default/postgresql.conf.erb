@@ -1,0 +1,93 @@
+# Managed by RightScale 
+# DO NOT EDIT BY HAND
+#
+# Local modifications will be overwritten.
+# 
+# The PostgreSQL database server configuration file.
+# 
+# One can use all long options that the program supports.
+# Run program with --help to get a list of available options and with
+# --print-defaults to see which it would actually understand and use.
+#
+# For explanations see
+# http://www.postgresql.org/docs/9.0/interactive/runtime-config.html
+
+data_directory = '<%= @node[:db_postgres][:datadir] %>'           # use data in another directory
+                                        # (change requires restart)
+hba_file = '<%= @node[:db_postgres][:confdir] %>/pg_hba.conf'     # host-based authentication file
+                                        # (change requires restart)
+ident_file = '<%= @node[:db_postgres][:ident_file] %>' # ident configuration file
+                                        # (change requires restart)
+external_pid_file = '<%= @node[:db_postgres][:pid_file] %>'           # write an extra PID file
+                                        # (change requires restart)
+listen_addresses = '*'          # what IP address(es) to listen on;
+                                        # comma-separated list of addresses;
+                                        # defaults to 'localhost', '*' = all
+                                        # (change requires restart)
+max_connections = <%= @node[:db_postgres][:tunable][:max_connections] %>                   # (change requires restart)
+unix_socket_directory = '<%= @node[:db_postgres][:socket] %>'             # (change requires restart)
+shared_buffers = <%= @node[:db_postgres][:tunable][:shared_buffers] %>                   # min 128kB
+                                        # (change requires restart)
+wal_level = hot_standby                 # minimal, archive, or hot_standby
+                                        # (change requires restart)
+archive_mode = on               # allows archiving to be done
+                                # (change requires restart)
+archive_command = '/bin/true'
+max_wal_senders = 5             # max number of walsender processes
+                                # (change requires restart)
+wal_keep_segments = 32          # in logfile segments, 16MB each; 0 disables
+hot_standby = on                        # "on" allows queries during recovery
+                                        # (change requires restart)
+log_destination = 'stderr'              # Valid values are combinations of
+                                        # stderr, csvlog, syslog, and eventlog,
+                                        # depending on platform.  csvlog
+                                        # requires logging_collector to be on.
+logging_collector = on                  # Enable capturing of stderr and csvlog
+                                        # into log files. Required to be on for
+                                        # csvlogs.
+                                        # (change requires restart)
+log_directory = 'pg_log'                # directory where log files are written,
+                                        # can be absolute or relative to PGDATA
+log_filename = 'postgresql-%a.log'      # log file name pattern,
+                                        # can include strftime() escapes
+log_truncate_on_rotation = on           # If on, an existing log file of the
+                                        # same name as the new log file will be
+                                        # truncated rather than appended to.
+                                        # But such truncation only occurs on
+                                        # time-driven rotation, not on restarts
+                                        # or size-driven rotation.  Default is
+                                        # off, meaning append to existing files
+                                        # in all cases.
+log_rotation_age = 1d                   # Automatic rotation of logfiles will
+                                        # happen after that time.  0 disables.
+log_rotation_size = 0                   # Automatic rotation of logfiles will
+                                        # happen after that much log output.
+                                        # 0 disables.
+log_checkpoints = on
+log_line_prefix = '%m '                 # special values:
+                                        #   %a = application name
+                                        #   %u = user name
+                                        #   %d = database name
+                                        #   %r = remote host and port
+                                        #   %h = remote host
+                                        #   %p = process ID
+                                        #   %t = timestamp without milliseconds
+                                        #   %m = timestamp with milliseconds
+                                        #   %i = command tag
+                                        #   %e = SQL state
+                                        #   %c = session ID
+                                        #   %l = session line number
+                                        #   %s = session start timestamp
+                                        #   %v = virtual transaction ID
+                                        #   %x = transaction ID (0 if none)
+                                        #   %q = stop here in non-session
+                                        #        processes
+                                        #   %% = '%'
+                                        # e.g. '<%u%%%d> '
+datestyle = 'iso, mdy'
+lc_messages = 'C'                       # locale for system error message
+                                        # strings
+lc_monetary = 'C'                       # locale for monetary formatting
+lc_numeric = 'C'                        # locale for number formatting
+lc_time = 'C'                           # locale for time formatting
+default_text_search_config = 'pg_catalog.english'
