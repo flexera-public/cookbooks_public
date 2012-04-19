@@ -1,0 +1,43 @@
+#!/bin/bash
+#collectd plugin to monitor passenger
+
+INTERVAL="${COLLECTD_INTERVAL:-10}"
+PLUGIN_NAME="passenger"
+HTTPD="/usr/sbin/httpd"
+MEMORY="sudo -u root HTTPD="$2" /opt/ruby-enterprise/bin/passenger-memory-stats"
+STATUS="sudo -u root /opt/ruby-enterprise/bin/passenger-status"
+SERVER=$1
+
+while sleep "$INTERVAL"
+do
+  status_out=$($STATUS)
+  memory_out=$($MEMORY)
+
+  max_workers=$(echo "$status_out" | grep max | awk '{ print $3 }')
+  current_workers=$(echo "$status_out" | grep count | awk '{ print $3 }')
+  active_workers=$(echo "$status_out" | egrep "^active" | awk '{ print $3 }')
+  inactive_workers=$(echo "$status_out" | grep inactive | awk '{ print $3 }')
+  waiting=$(echo "$status_out" | grep Waiting | awk '{ print $5 }')
+  sessions=$(echo "$status_out" | grep "Sessions:" | awk '{ sum += $5 }; END { print sum }')
+  server_list=$(echo "$memory_out" | grep "/$SERVER")
+  big_server_list=$(echo "$memory_out" | sed -n '/^-* Apache processes -*$/,/^$/p')
+
+  server_vm_size=$(echo "$server_list" | awk '{ sum += $3 }; END { print sum }')
+  server_rss=$(echo "$big_server_list" | grep Total | awk '{ print $6 }')
+  passenger_vm_size=$(echo "$memory_out" | sed -n '/^-* Passenger processes -*$/,/^$/p'\
+    | sed -n '/^[0-9]/p' | grep -v sed | awk '{ sum += $2 }; END { print sum }')
+  passenger_rss=$(echo "$memory_out" | sed -n '/^-* Passenger processes -*$/,/^$/p'\
+    | tail -1 | awk '{ print $6 }')
+
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/max_workers interval=$INTERVAL N:$max_workers"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/current_workers interval=$INTERVAL N:$current_workers"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/active_workers interval=$INTERVAL N:$active_workers"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/inactive_workers interval=$INTERVAL N:$inactive_workers"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/waiting_queue interval=$INTERVAL N:$waiting"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/total_sessions interval=$INTERVAL N:$sessions"
+
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/server_vm_size interval=$INTERVAL N:$server_vm_size"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/server_rss interval=$INTERVAL N:$server_rss"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/passenger_vm_size interval=$INTERVAL N:$passenger_vm_size"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/passenger_rss interval=$INTERVAL N:$passenger_rss"
+done

@@ -1,0 +1,10 @@
+# Collectd config file for passenger montioring, version 1.
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
+
+<Plugin exec>
+  #    userid    plugin executable                   plugin                 args
+  Exec "<%=@apache_user%>" "<%=@plugin_path%>" "<%=@apache_executable%>" "/usr/sbin/<%=@apache_executable%>"
+</Plugin>

@@ -229,3 +229,46 @@ action :code_update do
   end
 
 end
+
+# Setup monitoring tools for passenger
+action :setup_monitoring do
+   plugin_path = "#{node[:rs_utils][:collectd_lib]}/plugins/passenger"
+
+   log "  Stopping collectd service"
+   service "collectd" do
+     action :stop
+   end
+
+  #installing collectd plugin for passenger monitoring
+  cookbook_file "#{plugin_path}" do
+    source "collectd_passenger"
+    mode "0755"
+    cookbook 'app_passenger'
+  end
+
+  #installing collectd config for passenger plugin
+  template "#{node[:rs_utils][:collectd_plugin_dir]}/passenger.conf" do
+    cookbook "app_passenger"
+    source "collectd_passenger.conf.erb"
+    variables :apache_executable => node[:apache][:config_subdir]
+
+    variables :apache_user => node[:app_passenger][:apache][:user]
+    variables :plugin_path => plugin_path
+  end
+
+   #collectd exec cannotrun scripts under root user, so we need to give ability to use sudo to to "apache" user
+   #  passenger monitoring resources have strict restrictions, only for root can gather full stat info
+   #  we gave permissions to apache user to access passenger monitoring resources
+   ruby_block "sudo setup" do
+     block do
+       File.open('/etc/sudoers', 'a'){ |file|
+         node[:app_passenger][:sudo_str].each do |string|
+           file.puts
+           file.write string
+         end
+       }
+     end
+     notifies :start, resources(:service => "collectd")
+   end
+
+end
