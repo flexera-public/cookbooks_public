@@ -29,17 +29,17 @@ do
   passenger_rss=$(echo "$memory_out" | sed -n '/^-* Passenger processes -*$/,/^$/p'\
     | tail -1 | awk '{ print $6 }')
 
-  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/max_workers interval=$INTERVAL N:$max_workers"
-  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/current_workers interval=$INTERVAL N:$current_workers"
-  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/active_workers interval=$INTERVAL N:$active_workers"
-  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/inactive_workers interval=$INTERVAL N:$inactive_workers"
-  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/waiting_queue interval=$INTERVAL N:$waiting"
-  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/total_sessions interval=$INTERVAL N:$sessions"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/gauge-max_workers interval=$INTERVAL N:$max_workers"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/gauge-current_workers interval=$INTERVAL N:$current_workers"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/gauge-active_workers interval=$INTERVAL N:$active_workers"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/gauge-inactive_workers interval=$INTERVAL N:$inactive_workers"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/gauge-waiting_queue interval=$INTERVAL N:$waiting"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-status/gauge-total_sessions interval=$INTERVAL N:$sessions"
 
-  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/server_vm_size interval=$INTERVAL N:$server_vm_size"
-  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/server_rss interval=$INTERVAL N:$server_rss"
-  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/passenger_vm_size interval=$INTERVAL N:$passenger_vm_size"
-  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/passenger_rss interval=$INTERVAL N:$passenger_rss"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/gauge-server_vm_size interval=$INTERVAL N:$server_vm_size"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/gauge-server_rss interval=$INTERVAL N:$server_rss"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/gauge-passenger_vm_size interval=$INTERVAL N:$passenger_vm_size"
+  echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/gauge-passenger_rss interval=$INTERVAL N:$passenger_rss"
   
-    echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/passenger_rss interval=$INTERVAL N:$passenger_rss" > /tmp/str
+    echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/gauge-passenger_rss interval=$INTERVAL N:$passenger_rss" > /tmp/str
 done
