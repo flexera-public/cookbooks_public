@@ -147,4 +147,3 @@ action :capistrano_pull do
 
   Log "  Capistrano ROS deployment action - finished successfully!"
 end
-

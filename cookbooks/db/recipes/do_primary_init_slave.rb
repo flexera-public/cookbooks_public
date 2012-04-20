@@ -30,7 +30,7 @@ db DATA_DIR do
 end
 
 # Force a new backup
-db_do_backup "do force backup" do
+db_request_backup "do force backup" do
   force true
 end
 

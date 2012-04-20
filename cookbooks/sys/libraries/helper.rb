@@ -48,11 +48,7 @@ module RightScale
         resrc.backup false
         #resrc.notifies notify_action, notify_resources
         
-        if (Chef::VERSION =~ /0\.9/) # provider signature changed in Chef 0.9
-          provider = Chef::Provider::Template.new(resrc, run_context)
-        else 
-          provider = Chef::Provider::Template.new(node, resrc)
-        end
+        provider = Chef::Provider::Template.new(resrc, run_context)
         provider.load_current_resource
                
         if enable

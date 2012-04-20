@@ -1,18 +1,14 @@
 {
-  "platforms": {
+  "dependencies": {
+    "repo": ">= 0.0.0",
+    "db_mysql": ">= 0.0.0",
+    "app": ">= 0.0.0",
+    "db_postgres": ">= 0.0.0",
+    "web_apache": ">= 0.0.0",
+    "rs_utils": ">= 0.0.0"
   },
-  "description": "Installs the php application server.",
-  "suggestions": {
-  },
-  "conflicting": {
-  },
-  "recipes": {
-    "app_php::default": "Installs the php application server."
-  },
-  "long_description": "= RightScale App PHP Cookbook \r\n\r\n== DESCRIPTION:\r\n\r\n* Cookbook provides PHP  implementation of the app LWRP.\r\n* Installs and configures, PHP application server.\r\n\r\n== REQUIREMENTS:\r\n\r\n* Requires a VM launched from a RightScale managed RightImage\r\n* Tested on CentOS 5.6 RightImage\r\n* Tested on Ubuntu 10.04 RightImage\r\n\r\n== SETUP:\r\n\r\n* Place app_php::default recipe into your runlist to setup the application\r\n  server. Since this sets up the app provider, it must be run before the\r\n  app::default recipe (which expects a provider to already be set)\r\n* When using a RightScale ServerTemplate, this will also automatically add the\r\n  common attributes to your ServerTemplate inputs.\r\n\r\n== USAGE:\r\n\r\n* Choose image and cloud.\r\n* Fill required input fields.\r\n\r\n== KNOWN LIMITATIONS:\r\n\r\n* none\r\n\r\n= LICENSE\r\n\r\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\r\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\r\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\r\n",
-  "providing": {
-  },
-  "version": "0.0.1",
+  "name": "app_php",
+  "maintainer_email": "support@rightscale.com",
   "attributes": {
     "php/db_schema_name": {
       "required": "recommended",
@@ -68,34 +64,26 @@
       "description": "Enter database adpter wich will be used to connect to the database Default: postgresql"
     }
   },
-  "maintainer": "RightScale, Inc.",
-  "replacing": {
+  "license": "Copyright RightScale, Inc. All rights reserved.",
+  "suggestions": {
   },
-  "license": "Copyright RightScale, Inc. All rights reserved.  All access and use subject to the RightScale Terms of Service available at http://www.rightscale.com/terms.php and, if applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "maintainer_email": "support@rightscale.com",
-  "name": "app_php",
+  "platforms": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "long_description": "= RightScale App PHP Cookbook \n\n== DESCRIPTION:\n\n* Cookbook provides PHP  implementation of the app LWRP.\n* Installs and configures, PHP application server.\n\n== REQUIREMENTS:\n\n* Requires a VM launched from a RightScale managed RightImage\n* Tested on CentOS 5.6 RightImage\n* Tested on Ubuntu 10.04 RightImage\n\n== SETUP:\n\n* Place app_php::default recipe into your runlist to setup the application\n  server. Since this sets up the app provider, it must be run before the\n  app::default recipe (which expects a provider to already be set)\n* When using a RightScale ServerTemplate, this will also automatically add the\n  common attributes to your ServerTemplate inputs.\n\n== USAGE:\n\n* Choose image and cloud.\n* Fill required input fields.\n\n== KNOWN LIMITATIONS:\n\n* none\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "version": "0.0.1",
+  "recommendations": {
+  },
+  "recipes": {
+    "app_php::default": "Installs the php application server."
+  },
   "groupings": {
   },
-  "dependencies": {
-    "repo": [
-
-    ],
-    "db_mysql": [
-
-    ],
-    "app": [
-
-    ],
-    "db_postgres": [
-
-    ],
-    "web_apache": [
-
-    ],
-    "rs_utils": [
-
-    ]
+  "conflicting": {
   },
-  "recommendations": {
+  "replacing": {
+  },
+  "description": "Installs the php application server.",
+  "providing": {
   }
 }

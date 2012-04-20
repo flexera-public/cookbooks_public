@@ -1,8 +1,8 @@
-= RightScale App Cookbook 
+= RightScale App Cookbook
 
 == DESCRIPTION:
 
-RightScale application server management cookbook  
+RightScale application server management cookbook
 
 This cookbook contains recipes that generally applicable to all application
 servers.
@@ -32,11 +32,11 @@ Recommended:
   node[:app][:database_user]
   node[:app][:database_password]
   node[:app][:database_sever_fqdn]
-More detailed description of these attribute variables is located in resource file description. 
+More detailed description of these attribute variables is located in resource file description.
 
 == USAGE:
 
-1. Add the default recipe to tag your server as an appserver. This is used by 
+1. Add the default recipe to tag your server as an appserver. This is used by
    servers (like databases) to identify their clients.
 2. Add desired app::do_* recipes to your application server ServerTemplate
 3. Develop corresponding providers in your application server cookbook.

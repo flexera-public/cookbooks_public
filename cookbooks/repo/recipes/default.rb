@@ -47,4 +47,3 @@ node[:repo].each do |resource_name, entry|
 end
 
 rs_utils_marker :end
-

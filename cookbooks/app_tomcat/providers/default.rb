@@ -444,11 +444,3 @@ action :code_update do
   node[:delete_docroot_executed] = true
 
 end
-
-
-
-
-
-
-
-

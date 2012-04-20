@@ -103,4 +103,3 @@ define :capistranize_repo,
   end
 
 end
-

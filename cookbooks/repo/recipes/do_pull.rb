@@ -19,5 +19,3 @@ repo "default" do
 end
 
 rs_utils_marker :end
-
-

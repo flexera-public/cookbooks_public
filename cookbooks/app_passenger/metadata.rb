@@ -1,8 +1,7 @@
 maintainer       "RightScale, Inc."
 maintainer_email "support@rightscale.com"
-license          "All rights reserved"
+license          "Copyright RightScale, Inc. All rights reserved."
 description      "Installs/Configures Apache Passenger Rails application server"
-license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'LICENSE')))
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1.1"
 
@@ -75,8 +74,3 @@ attribute "app_passenger/project/db/adapter",
   :choice => [ "mysql", "postgresql" ],
   :default => "mysql"
 
-attribute "app_passenger/project/db/adapter",
-  :display_name => "Database adapter for database.yml ",
-  :description => "Enter database adpter wich will be used to connect to the database Default: mysql",
-  :choice => [ "mysql", "postgresql" ],
-  :default => "mysql"

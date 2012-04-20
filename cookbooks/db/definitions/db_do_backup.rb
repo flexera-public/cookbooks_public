@@ -5,6 +5,17 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+define :db_request_backup, :force => false, :backup_type => 'primary' do
+  do_force        = params[:force]
+  do_backup_type  = params[:backup_type] == "primary" ? "primary" : "secondary"
+
+  remote_recipe "Request #{do_backup_type} backup" do
+    recipe "db::do_#{do_backup_type}_backup"
+    attributes :db => {:backup => {:force => "#{do_force}"}}
+    recipients_tags "server:uuid=#{node[:rightscale][:instance_uuid]}"
+  end
+end
+
 # == Does a snapshot backup of the filesystem containing the database
 # Note that the upload becomes a background job in order to allow other recipes to
 # not wait if the upload takes a long time.
@@ -19,22 +30,20 @@
 # == Exceptions
 # If force is false and a backup is currently running, will raise an exception.
 # If database is not 'initialized', will raise.
-
-
 define :db_do_backup, :force => false, :backup_type => "primary" do
 
   class Chef::Recipe
     include RightScale::BlockDeviceHelper
   end
 
-  class Chef::Resource::Bash
+  class Chef::Resource::BlockDevice
     include RightScale::BlockDeviceHelper
   end
 
   NICKNAME = get_device_or_default(node, :device1, :nickname)
   DATA_DIR = node[:db][:data_dir]
 
-  do_force        = params[:force] == true ? true : false
+  do_force        = params[:force]
   do_backup_type  = params[:backup_type] == "primary" ? "primary" : "secondary"
 
   # == Check if database is able to be backed up (initialized)
@@ -70,11 +79,10 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     action [ :lock, :write_backup_info ]
   end
 
-  log "  Performing (#{do_backup_type} backup)Snapshot with lineage #{node[:db][:backup][:lineage]}.."
+  log "  Performing (#{do_backup_type} backup) Snapshot with lineage #{node[:db][:backup][:lineage]}.."
   # Requires block_device node[:db][:block_device] to be instantiated
   # previously. Make sure block_device::default recipe has been run.
   block_device NICKNAME do
-    lineage node[:db][:backup][:lineage]
     action :snapshot
   end
 
@@ -83,67 +91,32 @@ define :db_do_backup, :force => false, :backup_type => "primary" do
     action :unlock
   end
 
-  log "  Performing (#{do_backup_type})Backup of lineage #{node[:db][:backup][:lineage]} and post-backup cleanup..."
-  cloud = node[:cloud][:provider]
-  # Log that storage rotation is not supported on ROS storage types
-  if ( cloud == "Rackspace" )
-    log "  ROS storage type (Eg: Rackspace) does not support rotation.  Use of rotation inputs will be ignored."
+  log "  Performing (#{do_backup_type}) Backup of lineage #{node[:db][:backup][:lineage]} and post-backup cleanup..."
+  block_device NICKNAME do
+    # Backup/Restore arguments
+    lineage node[:db][:backup][:lineage]
+    max_snapshots get_device_or_default(node, :device1, :backup, :primary, :keep, :max_snapshots)
+    keep_daily get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_daily)
+    keep_weekly get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_weekly)
+    keep_monthly get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_monthly)
+    keep_yearly get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_yearly)
+
+    # Secondary arguments
+    secondary_cloud get_device_or_default(node, :device1, :backup, :secondary, :cloud)
+    secondary_endpoint get_device_or_default(node, :device1, :backup, :secondary, :endpoint)
+    secondary_container get_device_or_default(node, :device1, :backup, :secondary, :container)
+    secondary_user get_device_or_default(node, :device1, :backup, :secondary, :cred, :user)
+    secondary_secret get_device_or_default(node, :device1, :backup, :secondary, :cred, :secret)
+
+    action do_backup_type == 'primary' ? :primary_backup : :secondary_backup
   end
 
-  # If doing a secondary backup, set variables needed for this.
-  if do_backup_type == "secondary"
-    secondary_storage_cloud = get_device_or_default(node, :device1, :backup, :secondary, :cloud)
-    secondary_endpoint = get_device_or_default(node, :device1, :backup, :secondary, :endpoint)
-    if secondary_storage_cloud =~ /aws/i
-      secondary_storage_cloud = "s3"
-    elsif secondary_storage_cloud =~ /rackspace/i
-      secondary_storage_cloud = "cloudfiles"
-    end
-    secondary_storage_container = get_device_or_default(node, :device1, :backup, :secondary, :container)
-  elsif do_backup_type == 'primary'
-    primary_storage_cloud = get_device_or_default(node, :device1, :backup, :primary, :cloud)
-    primary_endpoint get_device_or_default(node, :device1, :backup, :primary, :endpoint)
+  log "  Performing post backup cleanup..."
+  db DATA_DIR do
+    action :post_backup_cleanup
   end
 
-  # backup.rb removes the file lock created from :backup_lock_take
-  log "  Forking background process to complete backup... (see /var/log/messages for results)"
-  max_snapshots = get_device_or_default(node, :device1, :backup, :primary, :keep, :max_snapshots)
-  keep_daily    = get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_daily)
-  keep_weekly   = get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_weekly)
-  keep_monthly  = get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_monthly)
-  keep_yearly   = get_device_or_default(node, :device1, :backup, :primary, :keep, :keep_yearly)
-  background_exe = [
-    "/opt/rightscale/sandbox/bin/backup",
-    "--db-provider #{node[:db][:provider]}",
-    "--backuponly",
-    "--lineage #{node[:db][:backup][:lineage]}",
-    "--nickname #{NICKNAME}",
-    "--mount-point #{DATA_DIR}",
-    "--cloud #{cloud}",
-    "--backup-type #{do_backup_type}",
-    primary_storage_cloud && do_backup_type == 'primary' ? "--primary-storage-cloud #{primary_storage_cloud}" : '',
-    primary_endpoint && do_backup_type == 'primary' ? "--primary-endpoint #{primary_endpoint}" : '',
-    secondary_storage_cloud && do_backup_type == 'secondary' ? "--secondary-storage-cloud #{secondary_storage_cloud}" : '',
-    secondary_endpoint && do_backup_type == 'secondary' ? "--secondary-endpoint #{secondary_endpoint}" : '',
-    secondary_storage_container && do_backup_type == 'secondary' ? "--secondary-storage-container #{secondary_storage_container}" : '',
-    (get_device_or_default(node, :device1, :rackspace_snet) == false) ? '--no-snet' : '',
-    max_snapshots ? "--max-snapshots #{max_snapshots}" : '',
-    keep_daily    ? "--keep-daily #{keep_daily}"       : '',
-    keep_weekly   ? "--keep-weekly #{keep_weekly}"     : '',
-    keep_monthly  ? "--keep-monthly #{keep_monthly}"   : '',
-    keep_yearly   ? "--keep-yearly #{keep_yearly}"     : '',
-    "2>&1 | logger -t rs_db_backup &"
-  ].join(" ")
-
-  log "  background process = '#{background_exe}'"
-  bash "backup.rb" do
-    flags "-ex"
-    environment ({ 
-      'PRIMARY_STORAGE_KEY'      => get_device_or_default(node, :device1, :backup, :primary, :cred, :user),
-      'PRIMARY_STORAGE_SECRET'   => get_device_or_default(node, :device1, :backup, :primary, :cred, :secret),
-      'SECONDARY_STORAGE_KEY'    => get_device_or_default(node, :device1, :backup, :secondary, :cred, :user),
-      'SECONDARY_STORAGE_SECRET' => get_device_or_default(node, :device1, :backup, :secondary, :cred, :secret)
-    })
-    code background_exe
+  block_device NICKNAME do
+    action :backup_lock_give
   end
 end

@@ -51,4 +51,3 @@ actions :setup_db_connection
 
 # Action designed to setup APP LWRP with common parameters required for install and configuration of required monitoring software
 actions :setup_monitoring
-

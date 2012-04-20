@@ -37,4 +37,3 @@ set_unless[:app_passenger][:project][:custom_cmd]=""
 
 set_unless[:app_passenger][:project][:db][:schema_name]=""
 set_unless[:app_passenger][:project][:db][:adapter]="mysql"
-

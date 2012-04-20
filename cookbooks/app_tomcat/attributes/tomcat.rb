@@ -22,27 +22,26 @@ set[:tomcat][:docroot] = "/srv/tomcat6/webapps/#{node[:tomcat][:application_name
 
 # Calculated attributes
 case node[:platform]
-
-  when "ubuntu", "debian"
-    set[:tomcat][:app_user] = "tomcat6"
-    set[:tomcat][:alternatives_cmd] = "update-alternatives  --auto java"
-    if(tomcat[:db_adapter] == "mysql")
-      set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
-    elsif(tomcat[:db_adapter] == "postgresql")
-      set[:db_postgres][:socket] = "/var/run/postgresql"
-    else
-      raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
-    end
-  when "centos", "fedora", "suse", "redhat", "redhatenterpriseserver"
-    set[:tomcat][:app_user] = "tomcat"
-    set[:tomcat][:alternatives_cmd] = "alternatives --auto java"
-    if(tomcat[:db_adapter] == "mysql")
-      set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
-    elsif(tomcat[:db_adapter] == "postgresql")
-      set[:db_postgres][:socket] = "/var/run/postgresql"
-    else
-      raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
-    end
+when "ubuntu", "debian"
+  set[:tomcat][:app_user] = "tomcat6"
+  set[:tomcat][:alternatives_cmd] = "update-alternatives  --auto java"
+  if(tomcat[:db_adapter] == "mysql")
+    set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
+  elsif(tomcat[:db_adapter] == "postgresql")
+    set[:db_postgres][:socket] = "/var/run/postgresql"
   else
-    raise "Unrecognized distro #{node[:platform]}, exiting "
+    raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
+  end
+when "centos", "fedora", "suse", "redhat", "redhatenterpriseserver"
+  set[:tomcat][:app_user] = "tomcat"
+  set[:tomcat][:alternatives_cmd] = "alternatives --auto java"
+  if(tomcat[:db_adapter] == "mysql")
+    set[:db_mysql][:socket] = "/var/lib/mysql/mysql.sock"
+  elsif(tomcat[:db_adapter] == "postgresql")
+    set[:db_postgres][:socket] = "/var/run/postgresql"
+  else
+    raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
+  end
+else
+  raise "Unrecognized distro #{node[:platform]}, exiting "
 end

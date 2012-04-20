@@ -64,7 +64,7 @@ end
 
 # == force a backup
 #
-db_do_backup "do force backup" do
+db_request_backup "do force backup" do
   force true
 end
 

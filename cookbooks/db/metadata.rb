@@ -1,9 +1,9 @@
-maintainer "RightScale, Inc."
+maintainer       "RightScale, Inc."
 maintainer_email "support@rightscale.com"
-license IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'LICENSE')))
-description "RightScale Database Manager"
+license          "Copyright RightScale, Inc. All rights reserved."
+description      "RightScale Database Manager"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
-version "0.2"
+version          "0.2"
 
 depends "rs_utils"
 depends "block_device"
@@ -22,7 +22,7 @@ recipe "db::setup_monitoring", "Installs the collectd plugin for database monito
 
 # == Common Database Recipes
 #
-recipe "db::do_primary_backup", "Creates a primary backup of the database using persistent storage in the current cloud. On Rackspace, LVM backups are uploaded to the specified Cloud Files container. For all other clouds, volume snapshots (e.g., Amazon EBS or CloudStack volumes) are used."
+recipe "db::do_primary_backup", :description => "Creates a primary backup of the database using persistent storage in the current cloud. On Rackspace, LVM backups are uploaded to the specified Cloud Files container. For all other clouds, volume snapshots (e.g., Amazon EBS or CloudStack volumes) are used.", :thread => 'db_backup'
 recipe "db::do_primary_restore", "Restores the database from the most recently completed primary backup available in persistent storage of the current cloud."
 
 recipe "db::do_primary_backup_schedule_enable", "Enables db::do_primary_backup to be run periodically."
@@ -31,7 +31,7 @@ recipe "db::do_primary_backup_schedule_disable", "Disables db::do_primary_backup
 recipe "db::setup_privileges_admin", "Adds the username and password for 'superuser' privileges."
 recipe "db::setup_privileges_application", "Adds the username and password for application privileges."
 
-recipe "db::do_secondary_backup", "Creates a backup of the database and uploads it to a secondary cloud storage location, which can be used to migrate your database to a different cloud. For example, you can save a secondary backup to an Amazon S3 bucket or a Rackspace Cloud Files container."
+recipe "db::do_secondary_backup", :description => "Creates a backup of the database and uploads it to a secondary cloud storage location, which can be used to migrate your database to a different cloud. For example, you can save a secondary backup to an Amazon S3 bucket or a Rackspace Cloud Files container.", :thread => 'db_backup'
 recipe "db::do_secondary_restore", "Restores the database from the most recently completed backup available in a secondary location."
 
 recipe "db::do_force_reset", "Resets the database back to a pristine state. WARNING: Execution of this script will delete any data in your database!"

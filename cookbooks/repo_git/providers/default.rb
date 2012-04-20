@@ -98,4 +98,3 @@ action :capistrano_pull do
 
   Log "  Capistrano GIT deployment action - finished successfully!"
 end
-
