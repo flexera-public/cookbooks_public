@@ -8,7 +8,7 @@
 rs_utils_marker :begin
 
 SANDBOX_BIN_DIR = "/opt/rightscale/sandbox/bin"
-RS_TOOL_VERSION = "1.1.0"
+RS_TOOL_VERSION = "1.1.999"
 RESOURCE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "rightscale_tools_public-#{RS_TOOL_VERSION}.gem")
 RACKSPACE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "right_rackspace-0.0.0.20111110.gem")
 RIGHT_AWS_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", 'right_aws-2.1.1.gem')
