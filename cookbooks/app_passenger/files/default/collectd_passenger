@@ -40,4 +40,6 @@ do
   echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/server_rss interval=$INTERVAL N:$server_rss"
   echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/passenger_vm_size interval=$INTERVAL N:$passenger_vm_size"
   echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/passenger_rss interval=$INTERVAL N:$passenger_rss"
+  
+    echo "PUTVAL $COLLECTD_HOSTNAME/$PLUGIN_NAME-memory/passenger_rss interval=$INTERVAL N:$passenger_rss" > /tmp/str
 done
