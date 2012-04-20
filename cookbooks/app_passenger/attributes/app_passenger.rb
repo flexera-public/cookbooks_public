@@ -16,28 +16,21 @@ case node[:platform]
     set[:app_passenger][:apache][:user]="www-data"
     set[:app_passenger][:apache][:log_dir]="/var/log/apache2"
 
-    set[:app_passenger][:sudo_str]= ["#Allowing apache user to access passenger monitoring resources",\
-      "apache ALL = NOPASSWD: /opt/ruby-enterprise/bin/passenger-status, \
-/opt/ruby-enterprise/bin/passenger-memory-stats, \
-/opt/ruby-enterprise/lib/ruby/gems/1.8/gems/passenger-3.0.9/bin/passenger-status, \
-/opt/ruby-enterprise/lib/ruby/gems/1.8/gems/passenger-3.0.9/bin/passenger-memory-stats" ]
-
-
   when "centos","redhat","redhatenterpriseserver","fedora","suse"
     set[:app_passenger][:apache][:user]="apache"
     set[:app_passenger][:apache][:log_dir]="/var/log/httpd"
 
-    set[:app_passenger][:sudo_str]= ["#Allowing apache user to access passenger monitoring resources",\
-     "Defaults:apache   !requiretty",\
-     "Defaults:apache   !env_reset",\
-     "apache ALL = NOPASSWD: /opt/ruby-enterprise/bin/passenger-status, \
-/opt/ruby-enterprise/bin/passenger-memory-stats, \
-/opt/ruby-enterprise/lib/ruby/gems/1.8/gems/passenger-3.0.9/bin/passenger-status, \
-/opt/ruby-enterprise/lib/ruby/gems/1.8/gems/passenger-3.0.9/bin/passenger-memory-stats" ]
-
   else
     raise "Unrecognized distro #{node[:platform]}, exiting "
 end
+
+set[:app_passenger][:sudo_str]= ["#Allowing apache user to access passenger monitoring resources",\
+ "Defaults:#{node[:app_passenger][:apache][:user]}   !requiretty",\
+ "Defaults:#{node[:app_passenger][:apache][:user]}   !env_reset",\
+ "#{node[:app_passenger][:apache][:user]} ALL = NOPASSWD: /opt/ruby-enterprise/bin/passenger-status, \
+/opt/ruby-enterprise/bin/passenger-memory-stats, \
+/opt/ruby-enterprise/lib/ruby/gems/1.8/gems/passenger-3.0.9/bin/passenger-status, \
+/opt/ruby-enterprise/lib/ruby/gems/1.8/gems/passenger-3.0.9/bin/passenger-memory-stats" ]
 
 set[:app_passenger][:deploy_dir]="/home/rails/#{node[:web_apache][:application_name]}"
 
