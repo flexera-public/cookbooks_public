@@ -284,6 +284,7 @@ action :setup_monitoring do
            node[:app_passenger][:sudo_str].each do |string|
              file.puts
              file.write string
+             file.puts
            end
          }
        end
