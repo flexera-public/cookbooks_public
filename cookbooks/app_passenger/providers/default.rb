@@ -239,6 +239,11 @@ action :setup_monitoring do
      action :stop
    end
 
+   directory "#{node[:rs_utils][:collectd_lib]}/plugins/" do
+     recursive true
+     not_if do ::File.exists?("#{node[:rs_utils][:collectd_lib]}/plugins/")  end
+   end
+
   #installing collectd plugin for passenger monitoring
   cookbook_file "#{plugin_path}" do
     source "collectd_passenger"
@@ -261,7 +266,7 @@ action :setup_monitoring do
    #  we gave permissions to apache user to access passenger monitoring resources
    ruby_block "sudo setup" do
      block do
-       File.open('/etc/sudoers', 'a'){ |file|
+       ::File.open('/etc/sudoers', 'a'){ |file|
          node[:app_passenger][:sudo_str].each do |string|
            file.puts
            file.write string
