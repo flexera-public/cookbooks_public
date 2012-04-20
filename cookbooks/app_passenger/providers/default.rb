@@ -248,17 +248,28 @@ action :setup_monitoring do
   cookbook_file "#{plugin_path}" do
     source "collectd_passenger"
     mode "0755"
+    backup false
     cookbook 'app_passenger'
   end
+
+   log "  Subdir: #{node[:apache][:config_subdir]}"
+   log "  User: #{node[:app_passenger][:apache][:user]}"
+   log "  Sudo str: #{node[:app_passenger][:sudo_str][0]}"
+
+   #removing previous passenger.conf in case of stop-start
+   file "#{node[:rs_utils][:collectd_plugin_dir]}/passenger.conf" do
+     backup false
+     action :delete
+   end
 
   #installing collectd config for passenger plugin
   template "#{node[:rs_utils][:collectd_plugin_dir]}/passenger.conf" do
     cookbook "app_passenger"
     source "collectd_passenger.conf.erb"
-    variables :apache_executable => node[:apache][:config_subdir]
-
-    variables :apache_user => node[:app_passenger][:apache][:user]
-    variables :plugin_path => plugin_path
+    variables(
+      :apache_executable => node[:apache][:config_subdir],
+      :apache_user => node[:app_passenger][:apache][:user],
+      :plugin_path => plugin_path)
   end
 
    #collectd exec cannotrun scripts under root user, so we need to give ability to use sudo to to "apache" user
@@ -266,12 +277,17 @@ action :setup_monitoring do
    #  we gave permissions to apache user to access passenger monitoring resources
    ruby_block "sudo setup" do
      block do
-       ::File.open('/etc/sudoers', 'a'){ |file|
-         node[:app_passenger][:sudo_str].each do |string|
-           file.puts
-           file.write string
-         end
-       }
+       if ::File.open('/etc/sudoers', 'r') { |f| f.read }.include? "#{node[:app_passenger][:sudo_str][0]}"
+         Chef::Log.info "  Sudo entry already exists. Skipping"
+       else
+         ::File.open('/etc/sudoers', 'a'){ |file|
+           node[:app_passenger][:sudo_str].each do |string|
+             file.puts
+             file.write string
+           end
+         }
+       end
+
      end
      notifies :start, resources(:service => "collectd")
    end
