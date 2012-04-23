@@ -6,14 +6,8 @@
 # System-wide configuration file for memcached service
 #
 
-#  -d            run as a daemon
-OPTIONS="-d"
-
 #  -p <num>      TCP port number to listen on
 PORT="<%=@tcp_port%>"
-
-#  -U <num>      UDP port number to listen on (0 is off)
-OPTIONS="-U <%=@udp_port%>"
 
 #  -u <username> assume identity of <username>
 USER="<%=@user%>"
@@ -24,43 +18,20 @@ MAXCONN="<%=@connection_limit%>"
 #  -m <num>      max memory to use for items in megabytes
 CACHESIZE="<%=@memtotal%>"
 
-#  -L            Try to use large memory pages (if available).
-OPTIONS="-L"
 
-#  -f <factor>   chunk size growth factor
-OPTIONS="-f 1.25"
-
-#  -n <bytes>    minimum space allocated for key+value+flags
-OPTIONS="-n 48"
-
-#  -t <num>      number of threads to use
-THREADS="<%=@threads%>"
-
-#  -l <ip_addr>  interface to listen on
-IP="<%=@ip%>"
-
-#  Logging output level
-#  -v            verbose (print errors/warnings while in event loop)
-#  -vv           very verbose (also print client commands/reponses)
-#  -vvv          extremely verbose (also print internal state transitions)
-OPTIONS="<%=@log_level%>"
-
-# Log memcached's output to /var/log/memcached
-OPTIONS="logfile /var/log/memcached.log"
-
-#  -P <file>     save PID in <file>
-OPTIONS="-P /var/run/memcached.pid"
-
-#  -D <char>     Use <char> as the delimiter between key prefixes and IDs.
-#  This is used for per-prefix stats reporting. The default is
-#  ":" (colon). If this option is specified, stats collection
-#  is turned on automatically; if not, then it may be turned on
-#  by sending the "stats detail on" command to the server.
-OPTIONS="-D :"
-
-#  -R            Maximum number of requests per event, limits the number of
-#  requests process for a given connection to prevent starvation
-OPTIONS="-R 20"
-
-#  -b            Set the backlog queue limit
-OPTIONS="-b 1024"
+### EXTRA OPTIONS
+##  -L            Try to use large memory pages (if available).
+##  -U <num>      UDP port number to listen on (0 is off)
+##  -f <factor>   chunk size growth factor
+##  -n <bytes>    minimum space allocated for key+value+flags
+##  -t <num>      number of threads to use
+##  -l <ip_addr>  interface to listen on
+##  -b            Set the backlog queue limit
+##  -R            Maximum number of requests per event, limits the number of requests process for a given connection to prevent starvation
+##  Logging output level
+#     -v            verbose (print errors/warnings while in event loop)
+#     -vv           very verbose (also print client commands/reponses)
+#     -vvv          extremely verbose (also print internal state transitions)
+#     Log memcached's output to /var/log/memcached
+###
+OPTIONS="-L -U <%=@udp_port%> -f 1.25 -n 48 -t <%=@threads%> -l <%=@ip%> -b 1024 -R 20 <%=@log_level%> 2>>/var/log/memcached.log"

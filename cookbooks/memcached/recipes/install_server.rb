@@ -39,16 +39,14 @@ end
 #listening ip configuration
 case node[:memcached][:ip]
     when "localhost"
-        node[:memcached][:ip] = "127.0.0.1"
+        node[:memcached][:ip] = "localhost"
     when "private"
         node[:memcached][:ip] = node[:cloud][:private_ips][0]
     when "public"
         node[:memcached][:ip] = node[:cloud][:public_ips][0]
     when "any"
-        node[:memcached][:ip] = "INADDR_ANY"
+        node[:memcached][:ip] = "0"
 end
-
-log "  Listening interface will be set to #{node[:memcached][:ip]}"
 
 #writing settings
 template "#{node[:memcached][:config_file]}" do
