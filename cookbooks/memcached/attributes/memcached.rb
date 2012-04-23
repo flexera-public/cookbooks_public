@@ -6,14 +6,14 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 # Recommended attributes
-set_unless[:memcached][:port]             = "11211"
-set_unless[:memcached][:memtotal_percent] = "90"  #using str for further conversion to int
-set_unless[:memcached][:ip]               = ""
-set_unless[:memcached][:extra_options]    = ""
+set_unless[:memcached][:tcp_port]         = "11211"
+set_unless[:memcached][:udp_port]         = "11211"
 set_unless[:memcached][:user]             = "nobody"
 set_unless[:memcached][:connection_limit] = "1024"
-set_unless[:memcached][:log_level]        = "" # off, -v (verbose) -vv (debug) -vvv (extremely verbose)
+set_unless[:memcached][:memtotal_percent] = "90"
 set_unless[:memcached][:threads]          = "1"
+set_unless[:memcached][:ip]               = "any"
+set_unless[:memcached][:log_level]        = ""
 set_unless[:memcached][:cluster_id]       = ""
 
 

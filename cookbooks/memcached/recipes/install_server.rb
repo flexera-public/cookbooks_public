@@ -8,7 +8,7 @@
 rs_utils_marker :begin
 
 
-#memcached install
+###memcached install
 log "  Installing memcached package for #{node[:platform]}"
 
 package "memcached" do
@@ -24,7 +24,7 @@ service "memcached" do
 end
 
 
-#memcached config
+###memcached config
 log "  Cache size will be set to #{node[:memcached][:memtotal_percent]}% of total system memory #{node[:memory][:total]} : #{node[:memcached][:memtotal]}kB"
 
 #thread number check
@@ -36,16 +36,32 @@ elsif node[:memcached][:threads].to_i  > node[:cpu][:total].to_i
     node[:memcached][:threads] = node[:cpu][:total]
 end
 
+#listening ip configuration
+case node[:memcached][:ip]
+    when "localhost"
+        node[:memcached][:ip] = "127.0.0.1"
+    when "private"
+        node[:memcached][:ip] = node[:cloud][:private_ips][0]
+    when "public"
+        node[:memcached][:ip] = node[:cloud][:public_ips][0]
+    when "any"
+        node[:memcached][:ip] = "INADDR_ANY"
+end
+
+log "  Listening interface will be set to #{node[:memcached][:ip]}"
+
 #writing settings
 template "#{node[:memcached][:config_file]}" do
     source "memcached.conf.erb"
     variables(
-            :port             => node[:memcached][:port],
+            :tcp_port         => node[:memcached][:tcp_port],
+            :udp_port         => node[:memcached][:udp_port],
             :user             => node[:memcached][:user],
             :connection_limit => node[:memcached][:connection_limit],
             :memtotal         => node[:memcached][:memtotal],
-            :extra_options    => node[:memcached][:extra_options],
-            :threads          => node[:memcached][:threads]
+            :threads          => node[:memcached][:threads],
+            :ip               => node[:memcached][:ip],
+            :log_level        => node[:memcached][:log_level]
     )
     cookbook 'memcached'
     notifies :restart, resources(:service => "memcached"), :immediately

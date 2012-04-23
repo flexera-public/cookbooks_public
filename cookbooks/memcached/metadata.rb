@@ -18,27 +18,19 @@ recipe  "memcached::do_reload",      "Reload memcached"
 recipe  "memcached::do_stop",        "Stop memcached"
 
 
-attribute "memcached/port",
-          :display_name => "Memcached Port",
-          :description  => "",
+attribute "memcached/tcp_port",
+          :display_name => "Memcached TCP Port",
+          :description  => "TCP port number to listen on.",
           :required     => "recommended",
           :default      => "11211",
           :recipes      => ["memcached::install_server", "memcached::default"]
 
-attribute "memcached/memtotal_percent",
-          :display_name => "Memcached Cache size %",
-          :description  => "",
+attribute "memcached/udp_port",
+          :display_name => "Memcached UDP Port",
+          :description  => "UDP port number to listen on.",
           :required     => "recommended",
-          :choice       => ["10", "20", "30", "40", "50", "60", "70", "80", "90"],
-          :default      => "90",    #using str for further conversion to int
-          :recipes      => ["memcached::install_server"]
-
-attribute "memcached/extra_options",
-          :display_name => "Memcached extra options",
-          :description  => "",
-          :required     => "optional",
-          :default      => "",
-          :recipes      => ["memcached::install_server"]
+          :default      => "11211",
+          :recipes      => ["memcached::install_server", "memcached::default"]
 
 attribute "memcached/user",
           :display_name => "Memcached user",
@@ -49,12 +41,33 @@ attribute "memcached/user",
 
 attribute "memcached/connection_limit",
           :display_name => "Memcached connection limit",
-          :description  => "",
+          :description  => "Number of simultaneous connections.",
           :required     => "recommended",
           :default      => "1024",
           :recipes      => ["memcached::install_server"]
 
-# TO DO set_unless[:memcached][:ip] = ""
+attribute "memcached/memtotal_percent",
+          :display_name => "Memcached Cache size %",
+          :description  => "Max memory to use for items.",
+          :required     => "recommended",
+          :choice       => ["10", "20", "30", "40", "50", "60", "70", "80", "90"],
+          :default      => "90",    #using str for further conversion to int
+          :recipes      => ["memcached::install_server"]
+
+attribute "memcached/threads",
+          :display_name => "Memcached used threads",
+          :description  => "Use a number from 1 to <maximum number of threads for the instance>.",
+          :required     => "recommended",
+          :default      => "1",
+          :recipes      => ["memcached::install_server"]
+
+attribute "memcached/ip",
+          :display_name => "Memcached listening ip",
+          :description  => "Interface to listen on. This parameter is one of the only security measures that memcached has, so make sure it's listening on a firewalled interface.",
+          :required     => "recommended",
+          :choice       => ["localhost", "private", "public", "any"],
+          :default      => "any",
+          :recipes      => ["memcached::install_server"]
 
 attribute "memcached/log_level",
           :display_name => "Memcached logging output level",
@@ -62,20 +75,6 @@ attribute "memcached/log_level",
           :required     => "recommended",
           :choice       => ["", "-v", "-vv", "-vvv"],
           :default      => "",
-          :recipes      => ["memcached::install_server"]
-
-attribute "memcached/threads",
-          :display_name => "Memcached used threads",
-          :description  => "Use a number from 1 to <maximum number of threads for the instance>}",
-          :required     => "recommended",
-          :default      => "1",
-          :recipes      => ["memcached::install_server"]
-
-attribute "memcached/threads",
-          :display_name => "Memcached cpu threads",
-          :description  => "",
-          :required     => "recommended",
-          :default      => "1",
           :recipes      => ["memcached::install_server"]
 
 attribute "memcached/cluster_id",
