@@ -11,5 +11,5 @@
 
 LoadPlugin apache
 <Plugin apache>
-  URL "http://localhost/server-status?auto"
+  URL "http://localhost:<%=@apache_listen_ports%>/server-status?auto"
 </Plugin>
