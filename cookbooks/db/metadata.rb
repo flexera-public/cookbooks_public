@@ -204,7 +204,7 @@ attribute "db/backup/timestamp_override",
 attribute "db/backup/restore_version_check",
   :display_name => "Backup restore version check", 
   :description => "A variable to allow to restore from a backup performed on a different version of the DB software. Make sure you fully understand the implications of cross-version restoration.  Set to false to skip version checking.",
-  :required => false,
+  :required => "optional",
   :choice => [ "true", "false" ],
   :default => "true",
   :recipes => [ 
