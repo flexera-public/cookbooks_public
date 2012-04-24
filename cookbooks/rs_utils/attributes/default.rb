@@ -51,12 +51,7 @@ when "debian","ubuntu"
   rs_utils[:collectd_plugin_dir] = "/etc/collectd/conf"
 end
 
-case node[:kernel][:machine]
-when "i386", "i686"
-  rs_utils[:collectd_lib] = "/usr/lib/collectd"
-when "x86_64"
-  rs_utils[:collectd_lib] = "/usr/lib64/collectd"
-end
+rs_utils[:collectd_lib] = "/usr/lib64/collectd"
 
 default[:rs_utils][:short_hostname]        = nil
 default[:rs_utils][:domain_name]           = ""
