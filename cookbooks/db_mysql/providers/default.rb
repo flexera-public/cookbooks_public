@@ -371,14 +371,12 @@ action :setup_monitoring do
     action :nothing
   end
 
-  arch = node[:kernel][:machine]
-  arch = "i386" if arch == "i686"
   platform = node[:platform]
   # Centos specific items
   TMP_FILE = "/tmp/collectd.rpm"
   remote_file TMP_FILE do
     only_if { platform =~ /redhat|centos/ }
-    source "collectd-mysql-4.10.0-4.el5.#{arch}.rpm"
+    source "collectd-mysql-4.10.0-4.el5.#{node[:kernel][:machine]}.rpm"
     cookbook 'db_mysql'
   end
   package TMP_FILE do
