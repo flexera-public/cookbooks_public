@@ -9,7 +9,7 @@ rs_utils_marker :begin
 
 if node[:db][:init_slave_at_boot] == "true"
   log "  Initializing slave at boot..."
-  include_recipe "db::do_init_slave"
+  include_recipe "db::do_primary_init_slave"
 else
   log "  Initialize slave at boot [skipped]"
 end
