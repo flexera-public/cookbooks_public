@@ -116,7 +116,7 @@ action :install do
         cd /usr/lib/jvm-exports
         java_dir=`ls -d java-* -1 2>/dev/null | tail -1`
 
-        if test "$jboss_archive" = "" ; then
+        if ! test "$java_dir" = "" ; then
           ln -s $java_dir java
         fi
       fi
