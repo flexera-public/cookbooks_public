@@ -201,7 +201,6 @@ action :setup_vhost do
             flags "-ex"
             code <<-EOH
               yum install apr-devel.x86_64 -y
-              yum remove apr-devel.i386 -y
             EOH
           end
         end
