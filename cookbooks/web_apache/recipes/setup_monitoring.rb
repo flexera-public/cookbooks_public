@@ -21,15 +21,12 @@ service "httpd" do
   action :nothing
 end
 
-arch = node[:kernel][:machine]
-arch = "i386" if arch == "i686"
-
 if node[:platform] =~ /redhat|centos/
 
   TMP_FILE = "/tmp/collectd-apache.rpm"
 
   remote_file TMP_FILE do
-    source "collectd-apache-4.10.0-4.el5.#{arch}.rpm"
+    source "collectd-apache-4.10.0-4.el5.#{node[:kernel][:machine]}.rpm"
   end
 
   package TMP_FILE do
