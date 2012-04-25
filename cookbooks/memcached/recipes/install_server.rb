@@ -40,7 +40,7 @@ end
 #listening ip configuration
 case node[:memcached][:ip]
     when "localhost"
-        node[:memcached][:ip] = "localhost"
+        node[:memcached][:ip] = "127.0.0.1"
     when "private"
         node[:memcached][:ip] = node[:cloud][:private_ips][0]
     when "public"
