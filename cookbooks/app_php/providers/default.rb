@@ -143,3 +143,9 @@ action :code_update do
   action_restart
 
 end
+
+action :setup_monitoring do
+
+  log "  Monitoring resource is not implemented in php framework yet. Use apache monitoring instead."
+
+end
