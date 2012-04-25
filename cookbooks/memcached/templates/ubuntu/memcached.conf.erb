@@ -1,0 +1,53 @@
+# Memcached settings
+#
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
+# System-wide configuration file for memcached service
+#
+
+##  -p <num>      TCP port number to listen on
+-p <%=@tcp_port%>
+
+##  -u <username> assume identity of <username>
+-u <%=@user%>
+
+##  -c <num>      max simultaneous connections
+-c <%=@connection_limit%>
+
+##  -m <num>      max memory to use for items in megabytes
+-m <%=@memtotal%>
+
+##  -L            Try to use large memory pages (if available).
+-L
+
+##  -U <num>      UDP port number to listen on (0 is off)
+-U <%=@udp_port%>
+
+##  -f <factor>   chunk size growth factor
+-f 1.25
+
+##  -n <bytes>    minimum space allocated for key+value+flags
+-n 48
+
+##  -t <num>      number of threads to use
+-t <%=@threads%>
+
+##  -l <ip_addr>  interface to listen on
+-l <%=@ip%>
+
+##  -b            Set the backlog queue limit
+-b 1024
+
+##  -R            Maximum number of requests per event, limits the number of requests process for a given connection to prevent starvation
+-R 20
+
+##  Logging output level
+#     -v            verbose (print errors/warnings while in event loop)
+#     -vv           very verbose (also print client commands/reponses)
+#     -vvv          extremely verbose (also print internal state transitions)
+<%=@log_level%>
+
+##  Log memcached's output to /var/log/memcached.log
+logfile /var/log/memcached.log
+

@@ -7,31 +7,32 @@
 #
 
 #  -p <num>      TCP port number to listen on
-PORT="<%=@tcp_port%>"
+  PORT="<%=@tcp_port%>"
 
-#  -u <username> assume identity of <username>
-USER="<%=@user%>"
+  #  -u <username> assume identity of <username>
+  USER="<%=@user%>"
 
-#  -c <num>      max simultaneous connections
-MAXCONN="<%=@connection_limit%>"
+  #  -c <num>      max simultaneous connections
+  MAXCONN="<%=@connection_limit%>"
 
-#  -m <num>      max memory to use for items in megabytes
-CACHESIZE="<%=@memtotal%>"
+  #  -m <num>      max memory to use for items in megabytes
+  CACHESIZE="<%=@memtotal%>"
 
 
-### EXTRA OPTIONS
-##  -L            Try to use large memory pages (if available).
-##  -U <num>      UDP port number to listen on (0 is off)
-##  -f <factor>   chunk size growth factor
-##  -n <bytes>    minimum space allocated for key+value+flags
-##  -t <num>      number of threads to use
-##  -l <ip_addr>  interface to listen on
-##  -b            Set the backlog queue limit
-##  -R            Maximum number of requests per event, limits the number of requests process for a given connection to prevent starvation
-##  Logging output level
-#     -v            verbose (print errors/warnings while in event loop)
-#     -vv           very verbose (also print client commands/reponses)
-#     -vvv          extremely verbose (also print internal state transitions)
-#     Log memcached's output to /var/log/memcached
-###
-OPTIONS="-L -U <%=@udp_port%> -f 1.25 -n 48 -t <%=@threads%> -l <%=@ip%> -b 1024 -R 20 <%=@log_level%> 2>>/var/log/memcached.log"
+  ### EXTRA OPTIONS
+  ##  -L            Try to use large memory pages (if available).
+  ##  -U <num>      UDP port number to listen on (0 is off)
+  ##  -f <factor>   chunk size growth factor
+  ##  -n <bytes>    minimum space allocated for key+value+flags
+  ##  -t <num>      number of threads to use
+  ##  -l <ip_addr>  interface to listen on
+  ##  -b            Set the backlog queue limit
+  ##  -R            Maximum number of requests per event, limits the number of requests process for a given connection to prevent starvation
+  ##  Logging output level
+  #     -v            verbose (print errors/warnings while in event loop)
+  #     -vv           very verbose (also print client commands/reponses)
+  #     -vvv          extremely verbose (also print internal state transitions)
+  #     Log memcached's output to /var/log/memcached.log
+  ###
+  OPTIONS="-L -U <%=@udp_port%> -f 1.25 -n 48 -t <%=@threads%> -l <%=@ip%> -b 1024 -R 20 <%=@log_level%> 2>>/var/log/memcached.log"
+
