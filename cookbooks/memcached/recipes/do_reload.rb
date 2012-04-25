@@ -10,7 +10,7 @@ rs_utils_marker :begin
 log "memcached: reloading"
 
 service "memcached" do
-    action :reload
+    action :force-reload
 end
  
 rs_utils_marker :end
