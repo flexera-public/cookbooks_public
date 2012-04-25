@@ -388,7 +388,7 @@ action :setup_monitoring do
   bash "Add collectd to tomcat.conf" do
     flags "-ex"
     code <<-EOH
-      cat <<EOF>>/etc/tomcat6/tomcat6.conf
+      cat <<'EOF'>>/etc/tomcat6/tomcat6.conf
       CATALINA_OPTS="\$CATALINA_OPTS -Djcd.host=#{node[:rightscale][:instance_uuid]} -Djcd.instance=tomcat6 -Djcd.dest=udp://#{node[:rightscale][:servers][:sketchy][:hostname]}:3011 -Djcd.tmpl=javalang,tomcat -javaagent:/usr/share/tomcat6/lib/collectd.jar"
     EOH
   end

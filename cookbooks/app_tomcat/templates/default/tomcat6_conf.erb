@@ -56,13 +56,13 @@ CATALINA_PID="/var/run/tomcat6.pid"
 # see http://www.tomcatexpert.com/blog/2011/11/22/performance-tuning-jvm-running-tomcat
 
 # XMX and XMS
-CATALINA_OPTS=" -Xms<%=@java_xms%> -Xmx<%=@java_xmx%>"
+CATALINA_OPTS="$CATALINA_OPTS -Xms<%=@java_xms%> -Xmx<%=@java_xmx%>"
 
 #PermSize and MaxPermSize
-CATALINA_OPTS=" -XX:PermSize=<%=@java_permsize%> -XX:MaxPermSize=<%=@java_maxpermsize%>"
+CATALINA_OPTS="$CATALINA_OPTS -XX:PermSize=<%=@java_permsize%> -XX:MaxPermSize=<%=@java_maxpermsize%>"
 
 #NewSize and MaxNewSize
-CATALINA_OPTS=" -XX:NewSize=<%=@java_newsize%> -XX:MaxNewSize=<%=@java_maxnewsize%>"
+CATALINA_OPTS="$CATALINA_OPTS -XX:NewSize=<%=@java_newsize%> -XX:MaxNewSize=<%=@java_maxnewsize%>"
 
 #Collectd
 
