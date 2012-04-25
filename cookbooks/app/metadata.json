@@ -19,7 +19,7 @@
       "default": "8000",
       "type": "string",
       "recipes": [
-        "app:default"
+        "app::default"
       ],
       "display_name": "Application Port",
       "description": "The port the application listens on"

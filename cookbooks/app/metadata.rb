@@ -42,7 +42,7 @@ recipe "app::do_server_stop", "Runs application server stop sequence"
 attribute "app/port",
   :display_name => "Application Port",
   :description => "The port the application listens on",
-  :recipes => [ "app:default" ],
+  :recipes => [ "app::default" ],
   :required => "optional",
   :default => "8000",
   :type => "string"
