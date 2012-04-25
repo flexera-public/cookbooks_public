@@ -221,7 +221,7 @@ action :code_update do
   log"  Generating new logrotatate config for rails application"
   rs_utils_logrotate_app "rails" do
     cookbook "rs_utils"
-    template "logrotate_rails.erb"
+    template "logrotate.erb"
     path ["#{deploy_dir}/log/*.log" ]
     frequency "size 10M"
     rotate 4
