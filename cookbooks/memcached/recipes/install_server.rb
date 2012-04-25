@@ -20,7 +20,8 @@ log "  Installation complete."
 service "memcached" do
     action :nothing
     persist true
-    supports :status => true, :start => true, :stop => true, :restart => true, :force-reload => true
+    reload_command "/etc/init.d/memcached force-reload"
+    supports :status => true, :start => true, :stop => true, :restart => true, :reload => true
 end
 
 
