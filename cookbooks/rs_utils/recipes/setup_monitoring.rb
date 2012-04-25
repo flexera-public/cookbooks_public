@@ -21,7 +21,6 @@ node[:rs_utils][:process_list_ary] = node[:rs_utils][:process_list].split | node
 #
 package "librrd4" if node[:platform] == 'ubuntu'
 
-arch = (node[:kernel][:machine] == "x86_64") ? "64" : "i386"
 type = (node[:platform] == 'ubuntu') ? "deb" : "rpm"
 installed_ver = (node[:platform] =~ /redhat|centos/) ? `rpm -q --queryformat %{VERSION} collectd`.strip : `dpkg-query --showformat='${Version}' -W collectd`.strip
 installed = (installed_ver == "") ? false : true
@@ -39,7 +38,7 @@ package "collectd" do
 end
 
 # Find and install local packages
-packages = ::File.join(::File.dirname(__FILE__), "..", "files", "packages", "*#{arch}.#{type}")
+packages = ::File.join(::File.dirname(__FILE__), "..", "files", "packages", "*64.#{type}")
 Dir.glob(packages).each do |p|
   package p do
     not_if { type == "deb" }
