@@ -14,7 +14,7 @@ end
 vhosts(node[:lb][:vhost_names]).each do | vhost_name |
   sys_firewall "Open this appserver's ports to all loadbalancers" do
     machine_tag "loadbalancer:#{vhost_name}=lb"
-    port node[:app][:port]
+    port node[:app][:port].to_i
     enable true
     action :update
   end

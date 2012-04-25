@@ -6,4 +6,4 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
 # By default listen on port 8000
-set_unless[:app][:port] = 8000
+set_unless[:app][:port] = "8000"
