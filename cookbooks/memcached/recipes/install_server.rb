@@ -66,13 +66,18 @@ template "#{node[:memcached][:config_file]}" do
     notifies :restart, resources(:service => "memcached"), :immediately
 end
 
-log "  Configuration done."
+log "  Memcached configuration done."
 log "  Memcached server started."
 
-##collectd plugin
+##collectd configuration
+log "  Configuring collectd memcached plugin."
+
+#memcached.conf plugin
 service "collectd" do
     action :stop
 end
+
+log "  Attention: when using a listening public ip make sure the port is open in the firewall (Security Group for EC2)!"
 
 template "#{node[:rs_utils][:collectd_plugin_dir]}/memcached.conf" do
     source "memcached_collectd.conf.erb"
@@ -85,4 +90,15 @@ template "#{node[:rs_utils][:collectd_plugin_dir]}/memcached.conf" do
 end
 rs_utils_marker :end
 
-log "  Collectd plugin configured"
+log "  Disabling collectd swap monitoring."
+
+#disable collectd swap
+collectd = File.readlines("#{node[:rs_utils][:collectd_config]}")
+File.open("#{node[:rs_utils][:collectd_config]}", "w") do |f|
+    collectd.each do |line|
+        next if line =~ /LoadPlugin swap/
+        f.puts(line)
+    end
+end
+
+log "  Collectd configuration done."
