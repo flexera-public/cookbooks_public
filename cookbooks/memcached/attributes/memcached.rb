@@ -35,6 +35,3 @@ case node[:platform]
 
 end
 
-
-
-

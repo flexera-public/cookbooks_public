@@ -14,5 +14,7 @@ right_link_tag "memcached_server:uuid=#{node[:rightscale][:instance_uuid]}"    #
 right_link_tag "memcached_server:cluster=#{node[:memcached][:cluster_id]}"     #The instance is associated with a cluster
 right_link_tag "memcached_server:port=#{node[:memcached][:port]}"              #The port
 
+log "  Server tags installed."
+
 
 rs_utils_marker :end

@@ -69,5 +69,20 @@ end
 log "  Configuration done."
 log "  Memcached server started."
 
+##collectd plugin
+service "collectd" do
+    action :stop
+end
 
+template "#{node[:rs_utils][:collectd_plugin_dir]}/memcached.conf" do
+    source "memcached_collectd.conf.erb"
+    variables(
+            :ip              => node[:memcached][:ip],
+            :tcp_port        => node[:memcached][:tcp_port]
+    )
+    cookbook 'memcached'
+   notifies :start, resources(:service => "collectd"), :immediately
+end
 rs_utils_marker :end
+
+log "  Collectd plugin configured"
