@@ -107,3 +107,15 @@ ruby_block "disable_collectd_swap" do
 end
 
 log "  Collectd configuration done."
+
+##log rotation
+log"  Generating new logrotatate config for memcached application"
+
+rs_utils_logrotate_app "memcached" do
+    cookbook "rs_utils"
+    template "logrotate.erb"
+    path ["/var/log/memcached.log"]
+    frequency "size 10M"
+    rotate 4
+    create "644 root root"
+end
