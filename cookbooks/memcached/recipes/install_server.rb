@@ -79,17 +79,6 @@ end
 
 log "  Attention: when using a listening public ip make sure the #{node[:memcached][:tcp_port]} port is open in the firewall (Security Group for EC2)!"
 
-template "#{node[:rs_utils][:collectd_plugin_dir]}/memcached.conf" do
-    source "memcached_collectd.conf.erb"
-    variables(
-            :ip              => node[:memcached][:ip],
-            :tcp_port        => node[:memcached][:tcp_port]
-    )
-    cookbook 'memcached'
-   notifies :start, resources(:service => "collectd"), :immediately
-end
-rs_utils_marker :end
-
 ruby_block "process_memcached" do
     block do
         processes = File.readlines("#{node[:rs_utils][:collectd_plugin_dir]}/processes.conf")
@@ -104,6 +93,17 @@ ruby_block "process_memcached" do
     end
     action :create
 end
+
+template "#{node[:rs_utils][:collectd_plugin_dir]}/memcached.conf" do
+    source "memcached_collectd.conf.erb"
+    variables(
+            :ip              => node[:memcached][:ip],
+            :tcp_port        => node[:memcached][:tcp_port]
+    )
+    cookbook 'memcached'
+   notifies :start, resources(:service => "collectd"), :immediately
+end
+rs_utils_marker :end
 
 log "  Disabling collectd swap monitoring."
 
