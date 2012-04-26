@@ -90,6 +90,21 @@ template "#{node[:rs_utils][:collectd_plugin_dir]}/memcached.conf" do
 end
 rs_utils_marker :end
 
+ruby_block "process_memcached" do
+    block do
+        processes = File.readlines("#{node[:rs_utils][:collectd_plugin_dir]}/processes.conf")
+        File.open("#{node[:rs_utils][:collectd_plugin_dir]}/processes.conf", "w") do |f|
+            processes.each do |line|
+                next if line =~ /<\/Plugin>/
+                f.puts(line)
+            end
+            puts("  process \"memcached\"")
+            puts("</Plugin>")
+        end
+    end
+    action :create
+end
+
 log "  Disabling collectd swap monitoring."
 
 #disable collectd swap

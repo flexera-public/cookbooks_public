@@ -177,5 +177,5 @@
     "memcached::do_reload": "Reload memcached",
     "memcached::do_stop": "Stop memcached"
   },
-  "version": "0.0.6"
+  "version": "0.0.7"
 }
