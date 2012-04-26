@@ -77,7 +77,7 @@ service "collectd" do
     action :stop
 end
 
-log "  Attention: when using a listening public ip make sure the port is open in the firewall (Security Group for EC2)!"
+log "  Attention: when using a listening public ip make sure the #{node[:memcached][:tcp_port]} port is open in the firewall (Security Group for EC2)!"
 
 template "#{node[:rs_utils][:collectd_plugin_dir]}/memcached.conf" do
     source "memcached_collectd.conf.erb"
@@ -93,12 +93,17 @@ rs_utils_marker :end
 log "  Disabling collectd swap monitoring."
 
 #disable collectd swap
-collectd = File.readlines("#{node[:rs_utils][:collectd_config]}")
-File.open("#{node[:rs_utils][:collectd_config]}", "w") do |f|
-    collectd.each do |line|
-        next if line =~ /LoadPlugin swap/
-        f.puts(line)
+ruby_block "disable_collectd_swap" do
+    block do
+        collectd = File.readlines("#{node[:rs_utils][:collectd_config]}")
+        File.open("#{node[:rs_utils][:collectd_config]}", "w") do |f|
+            collectd.each do |line|
+                next if line =~ /LoadPlugin swap/
+                f.puts(line)
+            end
+        end
     end
+    action :create
 end
 
 log "  Collectd configuration done."
