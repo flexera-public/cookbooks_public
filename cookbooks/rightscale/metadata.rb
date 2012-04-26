@@ -5,7 +5,7 @@ description      "RightScale Cookbooks"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.1"
  
-recipe "rightscale::default"
+recipe "rightscale::default", "Sets the RightScale specific attributes in the node"
  
 # == RightScale ENV attributes.
 #
@@ -25,6 +25,7 @@ attribute "rightscale/instance_uuid",
   :choice => [ "env:RS_INSTANCE_UUID" ],
   :default => "env:RS_INSTANCE_UUID",
   :recipes => [ "rightscale::default" ]
+
 attribute "rightscale/servers/sketchy/hostname",
   :display_name => "Sketchy Server",
   :description => "A value of 'env:RS_SKETCHY' is required to use RightScale monitoring servers.",
