@@ -5,12 +5,11 @@
   "maintainer_email": "support@rightscale.com",
   "attributes": {
     "rightscale/servers/sketchy/hostname": {
-      "required": "optional",
+      "required": "required",
       "calculated": false,
       "choice": [
-        "env:RS_SKETCHY"
+
       ],
-      "default": "env:RS_SKETCHY",
       "type": "string",
       "recipes": [
         "rightscale::default"
@@ -19,12 +18,11 @@
       "description": "A value of 'env:RS_SKETCHY' is required to use RightScale monitoring servers."
     },
     "rightscale/instance_uuid": {
-      "required": "optional",
+      "required": "required",
       "calculated": false,
       "choice": [
-        "env:RS_INSTANCE_UUID"
+
       ],
-      "default": "env:RS_INSTANCE_UUID",
       "type": "string",
       "recipes": [
         "rightscale::default"

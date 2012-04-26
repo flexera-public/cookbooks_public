@@ -21,16 +21,12 @@ attribute "rightscale",
 attribute "rightscale/instance_uuid",
   :display_name => "Instance UUID",
   :description => "A value of 'env:RS_INSTANCE_UUID' is required for proper RightScale monitoring and logging.",
-  :required => "optional",
-  :choice => [ "env:RS_INSTANCE_UUID" ],
-  :default => "env:RS_INSTANCE_UUID",
+  :required => "required",
   :recipes => [ "rightscale::default" ]
 
 attribute "rightscale/servers/sketchy/hostname",
   :display_name => "Sketchy Server",
   :description => "A value of 'env:RS_SKETCHY' is required to use RightScale monitoring servers.",
-  :required => "optional",
-  :choice => [ "env:RS_SKETCHY" ],
-  :default => "env:RS_SKETCHY",
+  :required => "required",
   :recipes => [ "rightscale::default" ]
 
