@@ -7,6 +7,19 @@
 
 rs_utils_marker :begin
 
+log "  Provider is #{node[:app][:provider]}"
+log "  Installing #{node[:app][:packages]}" if node[:app][:packages]
 log "  Application port is #{node[:app][:port]}"
+
+# Setup default values for database resource and install required packages
+app "default" do
+  persist true
+  provider node[:app][:provider]
+  packages node[:app][:packages]
+  action :install
+end
+
+# Let others know we are an appserver
+right_link_tag "appserver:active=true"
 
 rs_utils_marker :end
