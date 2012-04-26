@@ -87,8 +87,8 @@ ruby_block "process_memcached" do
                 next if line =~ /<\/Plugin>/
                 f.puts(line)
             end
-            puts("  process \"memcached\"")
-            puts("</Plugin>")
+            f.puts("  process \"memcached\"")
+            f.puts("</Plugin>")
         end
     end
     action :create
