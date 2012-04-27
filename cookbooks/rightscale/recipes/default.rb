@@ -13,6 +13,8 @@ rs_utils_marker :begin
 raise "rightscale/instance_uuid must be set" unless node[:rightscale][:instance_uuid]
 raise "rightscale/servers/sketchy/hostname must be set" unless node[:rightscale][:servers][:sketchy][:hostname]
  
-rs_utils_marker :end
+log "rightscale/instance_uuid is  #{node[:rightscale][:instance_uuid]}"
+log "rightscale/servers/sketchy/hostname is #{node[:rightscale][:servers][:sketchy][:hostname]}"
 
+rs_utils_marker :end
 
