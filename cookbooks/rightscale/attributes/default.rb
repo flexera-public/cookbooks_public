@@ -7,6 +7,3 @@
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
  
  
-set_unless node[:rightscale][:instance_uuid] = ""
-set_unless node[:rightscale][:servers][:sketchy][:hostname] = ""
-
