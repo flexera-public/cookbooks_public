@@ -16,17 +16,36 @@ attribute "rightscale",
   :display_name => "RightScale Attributes",
   :type => "hash"
   
-# Set them as optional so they are hidden, create a single choice and set the default value
-# 
-attribute "rightscale/instance_uuid",
-  :display_name => "Instance UUID",
-  :description => "A value of 'env:RS_INSTANCE_UUID' is required for proper RightScale monitoring and logging.",
-  :required => "required",
-  :recipes => [ "rightscale::default" ]
+# These inputs are set by the core site and can not be set via the metadata.  They are still valid and
+# can be used the same way other node variables are set.  They are included here for documentation
+# purposes.
+#
+# This list may change so care must be taken when adding or changing node[:rightscale] attributes.
+# Only RightScale can make changes to the attributes in this cookbook and name space.
 
-attribute "rightscale/servers/sketchy/hostname",
-  :display_name => "Sketchy Server",
-  :description => "A value of 'env:RS_SKETCHY' is required to use RightScale monitoring servers.",
-  :required => "required",
-  :recipes => [ "rightscale::default" ]
+#attribute "rightscale/instance_uuid",
+#  :display_name => "Instance UUID",
+#  :description => "This is a place holder",
+#  :required => "required",
+#  :type => "env",
+#  :choices => ["RS_INSTANCE_UUID"],
+#  :default => "RS_INSTANCE_UUID",
+#  :recipes => [ "rightscale::default" ]
+
+#attribute "rightscale/servers/sketchy/hostname",
+#  :display_name => "Sketchy Server",
+#  :description => "This is a place holder",
+#  :required => "required",
+#  :type => "env",
+#  :choices => ["RS_SKETCHY"],
+#  :default => "RS_SKETCHY",
+#  :recipes => [ "rightscale::default" ]
+
+#attribute "rightscale/servers/sketchy/identifier"
+#  :display_name => "Sketchy Identifier",
+#  :required => "required",
+#  :type => "env",
+#  :choices => ["RS_INSTANCE_UUID"],
+#  :default => "RS_INSTANCE_UUID",
+#  :recipes => [ "rightscale::default" ]
 
