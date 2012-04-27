@@ -16,7 +16,7 @@
 <% end %>
 
 <% node[:rs_utils][:process_match_list].split.each do |process| %>
-<% p_name, p_regex = split(process, "/") %>
+<% p_name, p_regex = process.split("/") %>
   processmatch "<%= p_name %>" "<%= p_regex %>"
 <% end %>
 
