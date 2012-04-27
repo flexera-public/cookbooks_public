@@ -1,0 +1,42 @@
+{
+  "dependencies": {
+  },
+  "name": "rightscale",
+  "maintainer_email": "support@rightscale.com",
+  "attributes": {
+    "rightscale": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "type": "hash",
+      "recipes": [
+
+      ],
+      "display_name": "RightScale Attributes"
+    }
+  },
+  "license": "Copyright RightScale, Inc. All rights reserved.",
+  "suggestions": {
+  },
+  "platforms": {
+  },
+  "maintainer": "RightScale, Inc.",
+  "long_description": "= RightScale Cookbook\n\n== DESCRIPTION:\n\n== REQUIREMENTS:\n\n== SETUP:\n\n== USAGE:\n\n== DETAILS:\n\n== KNOWN LIMITATIONS:\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
+  "version": "0.1.0",
+  "recommendations": {
+  },
+  "recipes": {
+    "rightscale::default": "Sets the RightScale specific attributes in the node"
+  },
+  "groupings": {
+  },
+  "conflicting": {
+  },
+  "replacing": {
+  },
+  "description": "RightScale Cookbooks",
+  "providing": {
+  }
+}
