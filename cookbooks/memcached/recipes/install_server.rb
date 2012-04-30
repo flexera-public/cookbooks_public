@@ -76,7 +76,7 @@ log "  Memcached configuration done."
 ruby_block "memcached_check" do
     block do
         begin
-            TCPSocket.new(node[:memcached][:ip], node[:memcached][:tcp_port]).close
+            TCPSocket.new("#{node[:memcached][:ip]}", "#{node[:memcached][:tcp_port]}").close
             Chef::Log.info("  Memcached server started.")
         rescue Errno::ECONNREFUSED
             raise "  Memcached service didn't start."
@@ -85,6 +85,13 @@ ruby_block "memcached_check" do
     action :create
 end
 
+if node[:memcached][:threads].to_i < 1
+    log "  Number of threads less than 1, using minimum possible"
+    node[:memcached][:threads] = "1"
+elsif node[:memcached][:threads].to_i  > node[:cpu][:total].to_i
+    log "  Number of threads more than #{node[:cpu][:total]}, using maximum available"
+    node[:memcached][:threads] = node[:cpu][:total]
+end
 
 ##collectd configuration
 log "  Configuring collectd memcached plugin."
