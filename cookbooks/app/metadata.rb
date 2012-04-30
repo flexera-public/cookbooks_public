@@ -3,7 +3,7 @@ maintainer_email "support@rightscale.com"
 license          "Copyright RightScale, Inc. All rights reserved."
 description      "Common utilities for RightScale managed application servers"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
-version          "0.1"
+version          "1.0.0"
 
 depends "sys_firewall"
 depends "rs_utils"
@@ -36,3 +36,11 @@ recipe "app::do_server_start", "Runs application server start sequence"
 recipe "app::do_server_restart", "Runs application server restart sequence"
 
 recipe "app::do_server_stop", "Runs application server stop sequence"
+
+attribute "app/port",
+  :display_name => "Application Listen Port",
+  :description => "The port that the application service is listening on.",
+  :default => "8000",
+  :recipes => [ 'app::default' ],
+  :required => "optional"
+  

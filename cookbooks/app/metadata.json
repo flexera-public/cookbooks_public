@@ -10,6 +10,20 @@
   "name": "app",
   "maintainer_email": "support@rightscale.com",
   "attributes": {
+    "app/port": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "8000",
+      "type": "string",
+      "recipes": [
+        "app::default"
+      ],
+      "display_name": "Application Listen Port",
+      "description": "The port that the application service is listening on."
+    }
   },
   "license": "Copyright RightScale, Inc. All rights reserved.",
   "suggestions": {
@@ -18,7 +32,7 @@
   },
   "maintainer": "RightScale, Inc.",
   "long_description": "= RightScale App Cookbook\n\n== DESCRIPTION:\n\nRightScale application server management cookbook\n\nThis cookbook contains recipes that generally applicable to all application\nservers.\n\nInitialized App resource and its actions cover default set of operations, required for typical application server setup.\n\nMore detailed info you can find in app::* recipes description.\n\n== REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage\n Corresponding app providers\n\n== SETUP:\n\nIn order to use App resource, you must create corresponding providers in your app server cookbook.\nSee for example app_passenger, app_php or app_tomcat cookbooks.\n\nYou must define app attributes which will be used in initialized app[default] resource\nRequired attributes:\n  node[:app][:provider] = \"app_passenger\"\nRecommended:\n  node[:app][:destination]\n  node[:app][:port]\n  node[:app][:root]\n  node[:app][:database_name]\n  node[:app][:database_user]\n  node[:app][:database_password]\n  node[:app][:database_sever_fqdn]\nMore detailed description of these attribute variables is located in resource file description.\n\n== USAGE:\n\n1. Add the default recipe to tag your server as an appserver. This is used by\n   servers (like databases) to identify their clients.\n2. Add desired app::do_* recipes to your application server ServerTemplate\n3. Develop corresponding providers in your application server cookbook.\n4. Define required and recommended attributes in your application server cookbook attributes file.\n\n == DETAILS:\n\nNote: app[default] resource uses \"persist true\" flag, which allow to save created resource and its attributes in memory for future use.\n\n== KNOWN LIMITATIONS:\n\n1. node[:app][:provider] must be defined\n2. app::default recipe must be present in ServerTemplate boot section.\n\n= LICENSE\n\nCopyright RightScale, Inc. All rights reserved.  All access and use subject to the\nRightScale Terms of Service available at http://www.rightscale.com/terms.php and,\nif applicable, other agreements such as a RightScale Master Subscription Agreement.\n",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "recommendations": {
   },
   "recipes": {

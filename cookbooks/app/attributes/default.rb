@@ -7,3 +7,4 @@
 
 # By default listen on port 8000
 set_unless[:app][:port] = 8000
+set_unless[:app][:ip] = node[:cloud][:private_ips][0]
