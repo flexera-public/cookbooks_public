@@ -8,7 +8,7 @@
 rs_utils_marker :begin
 
 
-###memcached install
+##memcached install
 log "  Installing memcached package for #{node[:platform]}"
 
 package "memcached" do
@@ -25,7 +25,7 @@ service "memcached" do
 end
 
 
-###memcached config
+##memcached config
 log "  Cache size will be set to #{node[:memcached][:memtotal_percent]}% of total system memory #{node[:memory][:total]} : #{node[:memcached][:memtotal]}kB"
 
 #thread number check
@@ -67,7 +67,21 @@ template "#{node[:memcached][:config_file]}" do
 end
 
 log "  Memcached configuration done."
-log "  Memcached server started."
+
+#checking if memcached actually started
+#  problem: when starting memcached on amazon with a public listening ip the daemon doesn't really start though says so
+#  there is no interface with public ip on amazon thus you can find
+#  "failed to listen on TCP port XXXXX: Cannot assign requested address" in /var/log/memcached.log
+#  therefor must use "any ip" aka 0.0.0.0 to listen externally
+begin
+    TCPSocket.new('#{node[:memcached][:ip]}', "#{node[:memcached][:tcp_port]}").close
+    log "  Memcached server started."
+rescue Errno::ECONNREFUSED
+    raise "  Memcached service didn't start."
+end
+
+
+
 
 ##collectd configuration
 log "  Configuring collectd memcached plugin."
