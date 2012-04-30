@@ -46,7 +46,7 @@ case node[:memcached][:ip]
     when "public"
         node[:memcached][:ip] = node[:cloud][:public_ips][0]
     when "any"
-        node[:memcached][:ip] = "0"
+        node[:memcached][:ip] = "0.0.0.0"
 end
 
 #writing settings
@@ -157,7 +157,7 @@ end
 
 ##firewall configuration
 sys_firewall "Open memcached port" do
-    port node[:memcached][:tcp_port]
+    port node[:memcached][:tcp_port].to_i
     enable true
     action :update
 end
