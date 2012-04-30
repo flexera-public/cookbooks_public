@@ -86,19 +86,19 @@ end
 #  therefor must use "any ip" aka 0.0.0.0 to listen externally
 ruby_block "memcached_check" do
     block do
+        #assigning test_ip
         if "#{node[:memcached][:ip]}" == "0.0.0.0"
-            test_ip = "#{node[:cloud][:private_ips][0]}"
+            test_ip = "#{node[:cloud][:public_ips][0]}"
         else
             test_ip = "#{node[:memcached][:ip]}"
         end
-
+        #checking connection
         begin
             TCPSocket.new(test_ip, "#{node[:memcached][:tcp_port]}").close
             Chef::Log.info("  Memcached server started.")
         rescue Errno::ECONNREFUSED
             raise "  Memcached service didn't start."
         end
-
     end
     action :create
 end
