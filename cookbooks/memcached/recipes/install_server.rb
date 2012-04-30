@@ -89,6 +89,7 @@ ruby_block "memcached_check" do
             rescue Errno::ECONNREFUSED
                 raise "  Memcached service didn't start."
             end
+        end
     end
     action :create
 end
