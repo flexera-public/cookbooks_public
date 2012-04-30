@@ -18,7 +18,7 @@ set_unless[:memcached][:cluster_id]       = ""
 
 
 # Calculated attributes
-node[:memcached][:memtotal] = ((node[:memcached][:memtotal_percent].to_i/100.0)*node[:memory][:total].to_i).to_i
+node[:memcached][:memtotal] = (((node[:memcached][:memtotal_percent].to_i/100.0)*node[:memory][:total].to_i)/1024.0).to_i
 
 case node[:platform]
 

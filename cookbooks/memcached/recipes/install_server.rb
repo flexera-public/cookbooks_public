@@ -75,12 +75,20 @@ log "  Memcached configuration done."
 #  therefor must use "any ip" aka 0.0.0.0 to listen externally
 ruby_block "memcached_check" do
     block do
-        begin
-            TCPSocket.new("#{node[:memcached][:ip]}", "#{node[:memcached][:tcp_port]}").close
-            Chef::Log.info("  Memcached server started.")
-        rescue Errno::ECONNREFUSED
-            raise "  Memcached service didn't start."
-        end
+        if node[:memcached][:ip] == "0.0.0.0"
+            begin
+                TCPSocket.new("#{node[:cloud][:private_ips][0]}", "#{node[:memcached][:tcp_port]}").close
+                Chef::Log.info("  Memcached server started.")
+            rescue Errno::ECONNREFUSED
+                raise "  Memcached service didn't start."
+            end
+        else
+            begin
+                TCPSocket.new("#{node[:memcached][:ip]}", "#{node[:memcached][:tcp_port]}").close
+                Chef::Log.info("  Memcached server started.")
+            rescue Errno::ECONNREFUSED
+                raise "  Memcached service didn't start."
+            end
     end
     action :create
 end
@@ -94,7 +102,7 @@ service "collectd" do
     action :stop
 end
 
-log "  Attention: when using a listening public ip make sure the #{node[:memcached][:tcp_port]} port is open in the firewall (Security Group for EC2)!"
+log "  Attention: when using a listening public ip make sure the #{node[:memcached][:tcp_port]} port is open in the firewall (Security Group for EC2)."
 
 ruby_block "process_memcached" do
     block do
@@ -142,7 +150,7 @@ log "  Collectd configuration done."
 
 
 ##log rotation
-log"  Generating new logrotatate config for memcached application"
+log "  Generating new logrotatate config for memcached application."
 
 rs_utils_logrotate_app "memcached" do
     cookbook "rs_utils"
@@ -155,6 +163,8 @@ end
 
 
 ##firewall configuration
+log "  Opened port #{node[:memcached][:tcp_port]} in iptables."
+
 sys_firewall "Open memcached port" do
     port node[:memcached][:tcp_port].to_i
     enable true
