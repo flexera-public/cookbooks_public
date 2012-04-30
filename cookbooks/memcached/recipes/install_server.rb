@@ -68,7 +68,18 @@ end
 
 log "  Memcached configuration done."
 
-#checking if memcached actually started
+
+##firewall configuration
+log "  Opened port #{node[:memcached][:tcp_port]} in iptables."
+
+sys_firewall "Open memcached port" do
+    port node[:memcached][:tcp_port].to_i
+    enable true
+    action :update
+end
+
+
+##checking if memcached actually started
 #  problem: when starting memcached on amazon with a public listening ip the daemon doesn't really start though says so
 #  there is no interface with public ip on amazon thus you can find
 #  "failed to listen on TCP port XXXXX: Cannot assign requested address" in /var/log/memcached.log
@@ -160,14 +171,4 @@ rs_utils_logrotate_app "memcached" do
     frequency "size 10M"
     rotate 4
     create "644 root root"
-end
-
-
-##firewall configuration
-log "  Opened port #{node[:memcached][:tcp_port]} in iptables."
-
-sys_firewall "Open memcached port" do
-    port node[:memcached][:tcp_port].to_i
-    enable true
-    action :update
 end
