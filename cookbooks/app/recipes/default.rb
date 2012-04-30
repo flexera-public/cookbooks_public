@@ -18,8 +18,9 @@ app "default" do
   action :install
 end
 
-
 # Let others know we are an appserver
 right_link_tag "appserver:active=true"
+right_link_tag "appserver:listen_ip=#{node[:app][:ip]}"
+right_link_tag "appserver:listen_port=#{node[:app][:port]}"
 
 rs_utils_marker :end
