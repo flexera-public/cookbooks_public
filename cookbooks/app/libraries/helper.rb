@@ -35,7 +35,7 @@ module RightScale
       
       # Return the port that this application server listens on
       def self.bind_port()
-        node[:app][:port]
+        node[:app][:port].to_i
       end
 
       # Returns array from a comma seperated list
