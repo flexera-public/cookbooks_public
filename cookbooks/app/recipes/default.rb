@@ -8,6 +8,8 @@
 rs_utils_marker :begin
 
 log "  Provider is #{node[:app][:provider]}"
+log "  Application IP is #{node[:app][:ip]}"
+log "  Application port is #{node[:app][:port]}"
 log "  Installing #{node[:app][:packages]}" if node[:app][:packages]
 
 # Setup default values for database resource and install required packages
