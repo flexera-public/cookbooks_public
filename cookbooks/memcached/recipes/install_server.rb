@@ -73,17 +73,13 @@ log "  Memcached configuration done."
 #  there is no interface with public ip on amazon thus you can find
 #  "failed to listen on TCP port XXXXX: Cannot assign requested address" in /var/log/memcached.log
 #  therefor must use "any ip" aka 0.0.0.0 to listen externally
-ruby_block "memcached_check" do
-    block do
-        begin
-            TCPSocket.new('#{node[:memcached][:ip]}', "#{node[:memcached][:tcp_port]}").close
-            log "  Memcached server started."
-        rescue Errno::ECONNREFUSED
-            raise "  Memcached service didn't start."
-        end
-    end
-    action :create
+begin
+    TCPSocket.new('#{node[:memcached][:ip]}', '#{node[:memcached][:tcp_port]}').close
+    Chef::Log.info("  Memcached server started.")
+rescue Errno::ECONNREFUSED
+    raise "  Memcached service didn't start."
 end
+
 
 
 ##collectd configuration
