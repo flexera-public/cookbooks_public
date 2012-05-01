@@ -102,6 +102,7 @@ action :update_request do
 
   # Deal with attributes
   port = new_resource.port ? new_resource.port : new_resource.name
+  protocol = new_resource.protocol
   to_enable = new_resource.enable
   ip_addr = new_resource.ip_addr
   raise "ERROR: client_ip must be specified." unless ip_addr
@@ -112,11 +113,13 @@ action :update_request do
   msg = "Requesting port #{port} be #{to_enable ? "opened" : "closed"}"
   msg << " only for #{ip_addr}." if ip_addr
   msg << " on servers with tag: #{tag}."
+  msg << " using protocol #{protocol}." if protocol
   log msg
   
   # Setup attributes
   attrs = {:sys_firewall => {:rule => Hash.new}}
   attrs[:sys_firewall][:rule][:port] = port
+  attrs[:sys_firewall][:rule][:protocol] = protocol
   attrs[:sys_firewall][:rule][:enable] = (to_enable == true) ? "enable" : "disable"
   attrs[:sys_firewall][:rule][:ip_address] = ip_addr
   
