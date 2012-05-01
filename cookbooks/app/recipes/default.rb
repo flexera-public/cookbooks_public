@@ -12,7 +12,7 @@ log "  Application IP is #{node[:app][:ip]}"
 log "  Application port is #{node[:app][:port]}"
 log "  Installing #{node[:app][:packages]}" if node[:app][:packages]
 
-# Setup default values for database resource and install required packages
+# Setup default values for application resource and install required packages
 app "default" do
   persist true
   provider node[:app][:provider]
