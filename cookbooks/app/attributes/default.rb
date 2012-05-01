@@ -7,7 +7,7 @@
 
 # Set a default provider for app to connect with lb cookbook attach/detach
 # for application servers without their own provider.
-set_unless node[:app][:provider] = "app"
+set_unless[:app][:provider] = "app"
 # By default listen on port 8000
 set_unless[:app][:port] = "8000"
 # By default listen on the first private IP
