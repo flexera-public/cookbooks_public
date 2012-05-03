@@ -9,13 +9,16 @@ rs_utils_marker :begin
 
 
 ##memcached install
-log "  Installing memcached package for #{node[:platform]}"
-
-package "memcached" do
-    not_if {File.exists?("#{node[:memcached][:config_file]}")}
+if File.exists?("#{node[:memcached][:config_file]}")
+    log " Memcached already installed."
+else
+    log "  Installing memcached package for #{node[:platform]}"
+    package "memcached" do
+        action :install
+    end
+    log "  Installation complete."
 end
 
-log "  Installation complete."
 
 service "memcached" do
     action :nothing
@@ -63,14 +66,19 @@ template "#{node[:memcached][:config_file]}" do
             :log_level        => node[:memcached][:log_level]
     )
     cookbook 'memcached'
-    notifies :restart, resources(:service => "memcached"), :immediately
+end
+
+#had to move the restart out of the template due to start problem after server reboot
+service "memcached" do
+    action :restart
 end
 
 log "  Memcached configuration done."
 
 
 ##firewall configuration
-log "  Opened port #{node[:memcached][:tcp_port]} in iptables."
+log "  Attention: when using a listening public ip make sure the #{node[:memcached][:tcp_port]} port is open in the firewall (Security Group for EC2)."
+log "  Opening port #{node[:memcached][:tcp_port]} in iptables."
 
 sys_firewall "Open memcached port" do
     port node[:memcached][:tcp_port].to_i
@@ -111,8 +119,6 @@ log "  Configuring collectd memcached plugin."
 service "collectd" do
     action :stop
 end
-
-log "  Attention: when using a listening public ip make sure the #{node[:memcached][:tcp_port]} port is open in the firewall (Security Group for EC2)."
 
 ruby_block "process_memcached" do
     block do
