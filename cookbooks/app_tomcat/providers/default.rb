@@ -148,6 +148,7 @@ action :setup_vhost do
     cookbook 'app_tomcat'
     variables(
             :doc_root => node[:tomcat][:docroot]
+            :app_port => node[:app][:port]
           )
   end
 
@@ -413,11 +414,5 @@ action :code_update do
   node[:delete_docroot_executed] = true
 
 end
-
-
-
-
-
-
 
 
