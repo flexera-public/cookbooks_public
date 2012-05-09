@@ -11,11 +11,11 @@ module RightScale
      KEYFILE = "/tmp/gitkey"
 
      # Add ssh key and exec script
-     def create(ssh_key)
+     def create(git_ssh_key)
        Chef::Log.info("Creating ssh key")
 
        keyfile = nil
-       keyname = ssh_key
+       keyname = git_ssh_key
        if "#{keyname}" != ""
          keyfile = KEYFILE
          system("echo -n '#{keyname}' > #{keyfile}")

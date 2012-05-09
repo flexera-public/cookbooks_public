@@ -35,7 +35,7 @@ attribute "repo/default/revision",
   :default => "master",
   :recipes => ["repo::default"]
 
-#SVN
+# SVN
 attribute "repo/default/svn_username",
   :display_name => "SVN username",
   :description => "Username for SVN repository.",
@@ -50,18 +50,18 @@ attribute "repo/default/svn_password",
   :default => "",
   :recipes => ["repo::default"]
 
-#GIT
-attribute "repo/default/ssh_key",
-  :display_name => "SSH Key",
+# GIT
+attribute "repo/default/git_ssh_key",
+  :display_name => "Git SSH Key",
   :description => "The private SSH key of the git repository.",
   :default => "",
   :required => "recommended",
   :recipes => ["repo::default"]
 
-#ROS
+# ROS
 attribute "repo/default/storage_account_provider",
   :display_name => "ROS Storage Account Provider",
-  :description => "Location where the source file is saved. Used by recipes to upload to Amazon S3 or Rackspace Cloud Files.",
+  :description => "Location where the source file is saved. Used to pull source from Remote Object Stores.",
   :required => "optional",
   :choice => [ "S3", "CloudFiles" ],
   :recipes => ["repo::default"]
@@ -90,19 +90,16 @@ attribute "repo/default/prefix",
   :required => "optional",
   :recipes => ["repo::default"]
 
-#capistrano attributes used in repo::do_pull
-
 attribute "repo/default/perform_action",
   :display_name => "Action",
   :description => "Choose the pull action which will be performed, 'pull'- standard repo pull, 'capistrano_pull' standard pull and then capistrano deployment style will be applied.",
   :choice => [ "pull", "capistrano_pull" ],
-  :required => "recommended",
-  :recipes => ["repo::do_pull"]
-
+  :default => "pull",
+  :required => "optional",
+  :recipes => ["repo::default"]
 
 attribute "repo/default/destination",
   :display_name => "Project App root",
-  :description => "Path to where project repo will be pulled",
+  :description => "Destination location path for project repo",
   :required => "recommended",
-  :recipes => ["repo::do_pull"]
-
+  :recipes => ["repo::default"]

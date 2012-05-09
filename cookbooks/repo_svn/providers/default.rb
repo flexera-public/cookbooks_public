@@ -35,7 +35,7 @@ action :pull do
     end
   end
 
-  Log "  ROS repo pull action - finished successfully!"
+  Log "  SVN repo pull action - finished successfully!"
 end
 
 action :capistrano_pull do

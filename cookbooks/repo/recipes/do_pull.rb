@@ -14,8 +14,8 @@ if ( node[:repo][:default][:destination]== "") then
 end
 
 repo "default" do
-  destination                 node[:repo][:default][:destination]
-  action                      node[:repo][:default][:perform_action]
+  destination node[:repo][:default][:destination]
+  action      node[:repo][:default][:perform_action].to_sym
 end
 
 rs_utils_marker :end

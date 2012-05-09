@@ -21,9 +21,4 @@ set_unless[:repo][:default][:environment]= ({})
 set_unless[:repo][:default][:symlinks]= ({})
 set_unless[:repo][:default][:purge_before_symlink] = %w{}
 set_unless[:repo][:default][:create_dirs_before_symlink] = %w{}
-
-if set_unless[:repo][:default][:perform_action] == "pull"
-  set_unless[:repo][:default][:perform_action] = :pull
-else
-  set_unless[:repo][:default][:perform_action] = :capistrano_pull
-end
+set_unless[:repo][:default][:perform_action] = :pull
