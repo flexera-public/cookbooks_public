@@ -36,8 +36,8 @@ attribute :svn_arguments, :kind_of => String
 
 #Git only
 
-#Ssh key
-attribute :ssh_key, :kind_of => String
+#Git Ssh key
+attribute :git_ssh_key, :kind_of => String
 
 #Capistrano
 

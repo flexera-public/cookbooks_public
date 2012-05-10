@@ -14,7 +14,7 @@ node[:repo].each do |resource_name, entry|
   url = (entry[:repository]) ? entry[:repository] : ""
   svn_username = (entry[:svn_username]) ? entry[:svn_username] : ""
   svn_password = (entry[:svn_password]) ? entry[:svn_password] : ""
-  key = (entry[:ssh_key]) ? entry[:ssh_key] : ""
+  key = (entry[:git_ssh_key]) ? entry[:git_ssh_key] : ""
   storage_account_provider = (entry[:storage_account_provider]) ? entry[:storage_account_provider] : ""
   storage_account_id = (entry[:storage_account_id]) ? entry[:storage_account_id] : ""
   storage_account_secret = (entry[:storage_account_secret]) ? entry[:storage_account_secret] : ""
@@ -33,7 +33,7 @@ node[:repo].each do |resource_name, entry|
     provider entry[:provider]
     repository url
     revision branch
-    ssh_key key
+    git_ssh_key key
     svn_username svn_username
     svn_password svn_password
     storage_account_provider storage_account_provider
